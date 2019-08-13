@@ -1,8 +1,8 @@
-export interface Foo {
+export interface SliderTemplate {
     
-  }
+}
   
-export class SliderTemplate implements Foo {
+export class SliderTemplate implements SliderTemplate {
     
 }
 
