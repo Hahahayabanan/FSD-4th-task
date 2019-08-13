@@ -9,15 +9,42 @@ import { SliderSettings } from './Model/SliderSettings';
 describe('Model / Slider / Test initialization', () => {
 
     let slider = new Slider();
-    let sliderSettings = new SliderSettings('single', 1, 10, 1, false);
 
-    slider.setSettings(sliderSettings);
 
 
     it('Should to initializate slider object', () => {
-        expect(slider.settings).toEqual(new SliderSettings('single', 1, 10, 1, false))
+        
+        slider.setSettings({
+            type: 'single', 
+            minVal: 1, 
+            maxVal: 10, 
+            stepVal: 1, 
+            followerVal: false
+        });
+
+        expect(slider.settings).toEqual(new SliderSettings({
+            type: 'single', 
+            minVal: 1, 
+            maxVal: 10, 
+            stepVal: 1, 
+            followerVal: false
+        }));
     });
-    
+       
+
+    it('Should to change slider settings', () => {
+        slider.settings.setType('range');
+        slider.settings.setMaxVal(100);
+
+        expect(slider.settings).toEqual(new SliderSettings({
+            type: 'range', 
+            minVal: 1, 
+            maxVal: 100, 
+            stepVal: 1, 
+            followerVal: false
+        }))
+    });
+
 
 })
 

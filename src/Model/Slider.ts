@@ -1,18 +1,25 @@
 import { SliderSettings } from './SliderSettings';
 
+
 export interface Slider {
     
 }
   
 export class Slider implements Slider {
     
-    public settings: object;
+    public settings: SliderSettings;
 
-    constructor(){}
-
-    setSettings(sett: SliderSettings){
-        this.settings = sett;
+    constructor(sett?: object){
+        this.settings = new SliderSettings(sett);
     }
+
+    
+    setSettings(sett: object){
+        this.settings = new SliderSettings(sett);
+    }
+
+    
+    
 }
 
 export default Slider;
