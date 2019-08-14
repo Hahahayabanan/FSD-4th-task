@@ -29,12 +29,12 @@ export class SliderSettings{
         if(this.settings.minVal > this.settings.maxVal){
             this.settings.maxVal = this.defaultSettings.maxVal;
             this.settings.minVal = this.defaultSettings.minVal;
-            throw new Error('Min slider range value cant be bigger then max value');
+            throw 'Min slider range value cant be bigger then max value';
         }
 
         if(this.settings.maxVal - this.settings.minVal <= this.settings.stepVal){
             this.settings.stepVal = this.defaultSettings.stepVal;
-            throw new Error('Step cant be bigger then min and max range');
+            throw 'Step cant be bigger then min and max range';
         }
     }
 
@@ -56,7 +56,7 @@ export class SliderSettings{
             this.settings.stepVal = tmp;
             return this.settings.stepVal;
         }else{
-            throw new Error('Step cant be bigger then min and max range')
+            throw 'Step cant be bigger then min and max range';
         }      
     }
     

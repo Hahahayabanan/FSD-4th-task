@@ -10,7 +10,7 @@ describe('Model / Slider / Test initialization', () => {
 
     let slider = new Slider();
 
-    it('Should to initializate slider object', () => {
+    it('Should initializate slider object', () => {
         
         slider.setSettings({
             range: false, 
@@ -28,7 +28,7 @@ describe('Model / Slider / Test initialization', () => {
     });
        
 
-    it('Should to change slider settings', () => {
+    it('Should change slider settings', () => {
 
         slider.settings.setMaxVal(100);
 
@@ -48,8 +48,10 @@ describe('Model / Slider / Test moving', () => {
     let slider = new Slider({
         minVal: 20,
         maxVal: 100,
-        stepVal: 5
+        stepVal: 2
     }); 
+
+    slider.settings.setStepVal(5);
            
     it('Should change pointer position', ()=>{
         slider.setPointerPosition(58);
@@ -73,19 +75,30 @@ describe('Model / Slider / Test moving', () => {
 
 describe('View / Slider template / Test initialization', () => {
 
-    let slider = function createSlider(){
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
 
-        let shadowSlider = document.createElement('div');
-
-        let shadowSliderThumb = document.createElement('div');
-        shadowSlider.appendChild(shadowSliderThumb);
-        
-        return new SliderTemplate();
-    }
-
-
-  it('A ', () => {
     
-  });
+    let slider = new SliderTemplate(shadowSlider);
+
+    slider.$slider.style.cssText = 'width: 300px';
+    
+    it('Curr position should be set', ()=>{
+        slider.currPos = 150;
+        expect(slider.currPos).toEqual(150);
+    });
+
+    it('Should update value of curr position on change', () => {
+        
+        slider.currPos = 100;
+        // width  300px - 100 %
+        // newPos 100px -  33 %
+        expect(slider.thumb.style.left).toEqual('33%');
+
+        slider.currPos = 236;
+        // width  300px - 100 %
+        // newPos 236px -  79 %
+        expect(slider.thumb.style.left).toEqual('79%');
+    });
 
 });
