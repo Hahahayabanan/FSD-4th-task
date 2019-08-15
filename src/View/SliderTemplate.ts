@@ -6,7 +6,7 @@ export class SliderTemplate implements SliderTemplate {
 
     public $slider: any;
     public thumb: any;
-    public _currPos: number;
+    protected _currPos: number;
 
     constructor($elem: any){
         this.$slider = $elem;
@@ -29,7 +29,7 @@ export class SliderTemplate implements SliderTemplate {
         this.thumb = document.createElement('div');
         this.thumb.classList.add('j-plugin-slider__thumb');
 
-        this.$slider.appendChild(this.thumb);       
+        this.$slider.appendChild(this.thumb);   
     }
 
     createEventListeners(){
@@ -37,7 +37,6 @@ export class SliderTemplate implements SliderTemplate {
             event.preventDefault(); // предотвратить запуск выделения (действие браузера)
 
             let shiftX = event.clientX - this.$slider.getBoundingClientRect().left;
-            // shiftY здесь не нужен, слайдер двигается только по горизонтали
 
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
@@ -50,7 +49,7 @@ export class SliderTemplate implements SliderTemplate {
                     newLeft = 0;
                 }
 
-                let rightEdge = this.$slider.offsetWidth - this.$slider.offsetWidth;
+                let rightEdge = this.$slider.offsetWidth - this.thumb.offsetWidth;
 
                 if (newLeft > rightEdge) {
                     newLeft = rightEdge;
@@ -69,6 +68,14 @@ export class SliderTemplate implements SliderTemplate {
         this.thumb.ondragstart = function() {
             return false;
         };
+
+        this.$slider.click = function(event:any) {
+            event.preventDefault(); // предотвратить запуск выделения (действие браузера)
+
+            let newLeft = event.clientX - this.$slider.getBoundingClientRect().left;
+           
+            this.currPos = newLeft;           
+        }
     }
 
     renderCurrentPos(){
@@ -76,11 +83,12 @@ export class SliderTemplate implements SliderTemplate {
         return this.thumb.style.left;
     }
 
-    calculateCurrPosInPercents(newPos:number){
-        // exapmle
-        // slider.width  300 px - 100%
-        // thumb newPos  50  px - ? %
 
+
+    // exapmle
+    // slider.width  300 px - 100%
+    // thumb newPos  50  px - ? %
+    calculateCurrPosInPercents(newPos:number){
         let sliderStyle = this.$slider.getBoundingClientRect().width || this.$slider.style.width;
 
         return Math.round(newPos * 100 / parseInt(sliderStyle, 10));

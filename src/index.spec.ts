@@ -45,6 +45,7 @@ describe('Model / Slider / Test initialization', () => {
 
 describe('Model / Slider / Test moving', () => {
 
+    
     let slider = new Slider({
         minVal: 20,
         maxVal: 100,
@@ -73,7 +74,8 @@ describe('Model / Slider / Test moving', () => {
 
 
 
-describe('View / Slider template / Test initialization', () => {
+describe('View / Slider template / Test of setting pointer positions', () => {
+
 
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
@@ -81,8 +83,10 @@ describe('View / Slider template / Test initialization', () => {
     
     let slider = new SliderTemplate(shadowSlider);
 
+    // setting style.width because we dont have DOM
     slider.$slider.style.cssText = 'width: 300px';
-    
+
+     
     it('Curr position should be set', ()=>{
         slider.currPos = 150;
         expect(slider.currPos).toEqual(150);
