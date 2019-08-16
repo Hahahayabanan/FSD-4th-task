@@ -4,6 +4,11 @@ import { SliderSettings } from './Model/SliderSettings';
 
 
 
+import { SliderPresenter } from './Presenter/SliderPresenter';
+import * as $ from 'jquery';
+
+
+
 
 
 describe('Model / Slider / Test initialization', () => {
@@ -106,3 +111,26 @@ describe('View / Slider template / Test of setting pointer positions', () => {
     });
 
 });
+
+
+
+
+
+describe('Presenter / SliderPresenter', () => {
+
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
+
+
+    const $ = require('jquery');
+    SliderPresenter.init($);
+    
+    console.log( $('.slider').slider({range: true}) )
+    
+    
+
+
+    
+
+
+})

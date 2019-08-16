@@ -1,11 +1,7 @@
 import { SliderSettings } from './SliderSettings';
 
 
-export interface Slider {
-    
-}
-  
-export class Slider implements Slider {
+export class Slider{
     
     public settings: SliderSettings;
     public pointer: number;

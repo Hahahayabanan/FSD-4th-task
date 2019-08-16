@@ -1,8 +1,4 @@
-export interface SliderTemplate {
-    
-}
-  
-export class SliderTemplate implements SliderTemplate {
+export class SliderTemplate{
 
     public $slider: any;
     public thumb: any;
@@ -34,7 +30,7 @@ export class SliderTemplate implements SliderTemplate {
 
     createEventListeners(){
         this.thumb.onmousedown = function(event:any) {
-            event.preventDefault(); // предотвратить запуск выделения (действие браузера)
+            event.preventDefault();
 
             let shiftX = event.clientX - this.$slider.getBoundingClientRect().left;
 
@@ -42,14 +38,14 @@ export class SliderTemplate implements SliderTemplate {
             document.addEventListener('mouseup', onMouseUp);
 
             function onMouseMove(event:any) {
-                let newLeft = event.clientX - shiftX - this.$slider.getBoundingClientRect().left;
+                let newLeft: number = event.clientX - shiftX - this.$slider.getBoundingClientRect().left;
                
-                // курсор вышел из слайдера => оставить бегунок в его границах.
+  
                 if (newLeft < 0) {
                     newLeft = 0;
                 }
 
-                let rightEdge = this.$slider.offsetWidth - this.thumb.offsetWidth;
+                let rightEdge: number = this.$slider.offsetWidth - this.thumb.offsetWidth;
 
                 if (newLeft > rightEdge) {
                     newLeft = rightEdge;
@@ -70,10 +66,8 @@ export class SliderTemplate implements SliderTemplate {
         };
 
         this.$slider.click = function(event:any) {
-            event.preventDefault(); // предотвратить запуск выделения (действие браузера)
-
-            let newLeft = event.clientX - this.$slider.getBoundingClientRect().left;
-           
+            event.preventDefault();
+            let newLeft: number = event.clientX - this.$slider.getBoundingClientRect().left;
             this.currPos = newLeft;           
         }
     }
@@ -88,9 +82,9 @@ export class SliderTemplate implements SliderTemplate {
     // exapmle
     // slider.width  300 px - 100%
     // thumb newPos  50  px - ? %
-    calculateCurrPosInPercents(newPos:number){
-        let sliderStyle = this.$slider.getBoundingClientRect().width || this.$slider.style.width;
 
+    calculateCurrPosInPercents(newPos:number){
+        let sliderStyle: string = this.$slider.getBoundingClientRect().width || this.$slider.style.width;
         return Math.round(newPos * 100 / parseInt(sliderStyle, 10));
     }
 

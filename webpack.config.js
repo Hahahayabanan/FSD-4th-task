@@ -43,6 +43,23 @@ var config = {
         exclude: [/\/node_modules\//],
         use: ['awesome-typescript-loader', 'source-map-loader']
       },
+     
+    // {
+    //     enforce: 'pre',
+    //     test: /\.js$/,
+    //     loader: 'source-map-loader'
+    // },
+    // {
+    //     enforce: 'pre',
+    //     test: /\.tsx?$/,
+    //     use: 'source-map-loader'
+    // },
+    // {
+    //     test: /\.tsx?$/,
+    //     loader: 'ts-loader',
+    //     exclude: /node_modules/
+    // },
+
       !isProd
         ? {
             test: /\.(js|ts)$/,

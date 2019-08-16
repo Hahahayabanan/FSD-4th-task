@@ -5,6 +5,15 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [{ pattern: './tests/unit/spec-bundle.js', watched: false }],
     preprocessors: { './tests/unit/spec-bundle.js': ['webpack', 'sourcemap'] },
+    karmaTypescriptConfig: {
+      compilerOptions: {
+        noImplicitAny: true,
+        noImplicitReturns: true,
+        noImplicitThis: true,
+        allowSyntheticDefaultImports: true,
+        lib: ['DOM', 'ES5', 'ScriptHost', 'ES2015.Core', 'ES2015.Iterable']
+      }
+    },
     webpack: {
       module: webpackConf.module,
       resolve: webpackConf.resolve
