@@ -3,33 +3,26 @@ import { Slider } from '../Model/Slider'
 import { SliderSettings } from '../Model/SliderSettings'
 import { ISliderSettings } from '../Model/SliderSettings'
 
+import * as $ from 'jquery';
+
+ 
+
+ export class SliderPresenter{
+
+    public static NAME: string = "slider";
+ 
+    private rootElement: object;
+    private settings: ISliderSettings;
 
 
-// import * as $ from 'jquery';
-
-
-
-export class SliderPresenter{
-
-    static init($: any){
-
-        $.fn.slider = function (node:HTMLElement, setting?:ISliderSettings):any {
-           return node;
-        }
-        
-    }
-
-
+    constructor(rootElement: object, options: ISliderSettings) {
+         
+        this.rootElement = rootElement;
+        this.settings = options;
+  
+        let model = new Slider(this.settings);
+        let view = new SliderTemplate(this.rootElement);
+    }    
 }
-
-   
-
-
-
-
-
-
-// const $ = require('jquery');
-
 
 

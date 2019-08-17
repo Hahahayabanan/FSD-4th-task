@@ -122,10 +122,8 @@ describe('Presenter / SliderPresenter', () => {
     shadowSlider.classList.add('slider');
 
 
-    const $ = require('jquery');
-    SliderPresenter.init($);
-    
-    console.log( $('.slider').slider({range: true}) )
+
+   
     
     
 

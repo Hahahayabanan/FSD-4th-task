@@ -12,12 +12,18 @@
 
   <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
 
-  <link href="./View/style.css" rel="stylesheet">
+  <!-- <link src="./View/styles.css" rel="stylesheet" type="text/css"> -->
 </head>
 
 <body>
   <div class="slider"></div>
   
+  <script src="lib/jquery.js"></script>
+  <script>
+$(function () {
+    $('.slider').slider()
+});
+  </script>
 </body>
 
 </html>
