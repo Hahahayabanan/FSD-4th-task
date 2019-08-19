@@ -11,16 +11,14 @@ export class SliderSettings{
     
     protected defaultSettings: ISliderSettings = {
         range : false,
-        minVal: 1,
+        minVal: 0,
         maxVal: 100,
         stepVal: 1,
     };
 
     public settings: ISliderSettings;
 
-    constructor(
-        setts: ISliderSettings
-    ){
+    constructor(setts: ISliderSettings){
         this.settings = $.extend(this.defaultSettings, setts);
         this.checkValidValues();
     }
@@ -41,6 +39,7 @@ export class SliderSettings{
 
 
     setRange(tmp: boolean){
+        this.settings.range = tmp;
         return this.settings.range;
     }
     setMinVal(tmp: number){

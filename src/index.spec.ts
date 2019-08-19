@@ -89,7 +89,7 @@ describe('View / Slider template / Test of setting pointer positions', () => {
     let slider = new SliderTemplate(shadowSlider);
 
     // setting style.width because we dont have DOM
-    slider.$slider.style.cssText = 'width: 300px';
+    slider.slider.style.cssText = 'width: 300px';
 
      
     it('Curr position should be set', ()=>{
@@ -116,19 +116,43 @@ describe('View / Slider template / Test of setting pointer positions', () => {
 
 
 
-describe('Presenter / SliderPresenter', () => {
+describe('Presenter / SliderPresenter / Test initialization', () => {
 
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
 
-
-
-   
     
+    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+        range: false,
+        minVal: 10,
+        maxVal: 100,
+        stepVal: 5
+    });
+
+    it("Should coincide constructor values", () => {
+        expect(slider.settings.stepVal).toEqual(5);
+    });
+    it("Should coincide constructor values", () => {
+        expect(slider.model.settings.settings.stepVal).toEqual(5);
+    });
+
+})
+
+
+describe('Presenter / SliderPresenter / Test calculating values', ()=>{
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
+
     
+    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+        range: false,
+        minVal: 10,
+        maxVal: 100,
+        stepVal: 5
+    });
 
-
-    
-
+    it("Should calculate curr value with the step and range values"){
+        expect(slider.calculateCurrPos(33)).toEqual(35);
+    }
 
 })

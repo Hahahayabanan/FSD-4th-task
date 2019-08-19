@@ -26,16 +26,16 @@ export class Slider{
 
             if(pos >= this.settings.settings.maxVal){
                 this.pointer = this.settings.settings.maxVal;
-                throw 'Current pointer position should be smaller then max range value';
+                // throw 'Current pointer position should be smaller then max range value';
             }
             if(pos <= this.settings.settings.minVal){
                 this.pointer = this.settings.settings.minVal;
-                throw 'Current pointer position should be bigger then min range value';
+                // throw 'Current pointer position should be bigger then min range value';
             }
 
             let currentStep = Math.round((pos - this.settings.settings.minVal) / step);
                
-            pos = (currentStep) * step  + this.settings.settings.minVal;
+            pos = currentStep * step  + this.settings.settings.minVal;
 
             this.pointer = pos;
    
@@ -45,6 +45,11 @@ export class Slider{
         return this.pointer;
     }
     
+
+
+
+
+
 }
 
 export default Slider;
