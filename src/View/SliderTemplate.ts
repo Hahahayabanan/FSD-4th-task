@@ -16,7 +16,7 @@ export class SliderTemplate{
     }
     set currPos(newCurrPos: number){
         this._currPos = newCurrPos;
-        // this.renderCurrentPos();
+
         this.slider.dispatchEvent(new CustomEvent('changePointer', {
             bubbles: true,
             detail: this.currPos

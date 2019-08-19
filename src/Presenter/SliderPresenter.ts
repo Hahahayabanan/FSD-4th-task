@@ -11,62 +11,80 @@ import * as $ from 'jquery';
 
     public static NAME: string = "slider";
  
-    public rootElement: any;
-    public settings: ISliderSettings;
-
     public model:Slider;
     public view:SliderTemplate;
 
-
+    
     constructor(rootElement: any, options: ISliderSettings) {
          
-        this.rootElement = rootElement;
-        this.settings = options;
-  
-        this.model = new Slider(this.settings);
-        this.view = new SliderTemplate(this.rootElement);
+        this.model = new Slider(options);
+        this.view = new SliderTemplate(rootElement);
 
-        this.rootElement.addEventListener('changePointer', (event:any)=>{
+        this.view.renderCurrentPosInPercents(this.getCurrPosFromValueToPercents(this.model.settings.settings.value));
+
+        let onChangePointer = (event:any)=>{
 
             let curPosInPixels = event.detail;
 
-            let minVal = this.model.settings.settings.minVal;
-            let maxVal = this.model.settings.settings.maxVal;
-            let rangeVal = maxVal - minVal; 
-              
-            let curPosInPercents = this.calculateCurrPos(curPosInPixels) * 100 / rangeVal;
+            let curPosInPercents = this.getCurrPosInPercents(curPosInPixels);
 
             this.view.renderCurrentPosInPercents(curPosInPercents);
-        });
+
+        }
+
+        this.view.slider.addEventListener('changePointer', onChangePointer);
     }
 
-    // EXAMPLE
+
+    // EXAMPLE how it works
     // rangeValInPixels    300px - 100%
     // curPosInPixels      236px -  79%
 
     // rangeVal 1000-100 = 900   - 100%
     // curPosInPercents    ?     -  79%
 
-    // curPosVal  =  900*79/100% = 711
+    // curPosValInVal  =  900*79/100% = 711
 
     // curPosInPercents = 711 / 900 * 100%
-
+    
     calculateCurrPos(curPosInPixels:number){
         let minVal = this.model.settings.settings.minVal;
         let maxVal = this.model.settings.settings.maxVal;
         let rangeVal = maxVal - minVal;     
-        let rangePixels = this.view.slider.getBoundingClientRect().width;
+        let rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
         
         let curPosInPercents = curPosInPixels * 100 / rangePixels;
 
         let curPosVal = rangeVal * curPosInPercents / 100;
 
-        curPosVal = this.model.setPointerPosition(curPosVal);
+        return this.model.settings.settings.value = this.model.setPointerPosition(curPosVal);
 
-        return curPosVal;
     }
 
-  
+    getCurrPosInPercents(curPosInPixels:number){
+        let minVal = this.model.settings.settings.minVal;
+        let maxVal = this.model.settings.settings.maxVal;
+        let rangeVal = maxVal - minVal; 
+            
+        let curPosInPercents = this.calculateCurrPos(curPosInPixels) * 100 / rangeVal;
+
+        return curPosInPercents;
+    }
+
+    // EXAMPLE how it works
+
+    // rangeVal 1000-100 = 900   - 100%
+    // curPosInVal         250   -   ?%
+    // curPosInPercents = 250 * 100% / 900
+    getCurrPosFromValueToPercents(curPosInValue:number){
+        let minVal = this.model.settings.settings.minVal;
+        let maxVal = this.model.settings.settings.maxVal;
+        let rangeVal = maxVal - minVal; 
+
+        let curPos = curPosInValue * 100 / rangeVal;       
+
+        return curPos;
+    }
 
 
 }

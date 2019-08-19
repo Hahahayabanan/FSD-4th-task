@@ -35,12 +35,13 @@ describe('Model / Slider / Test initialization', () => {
 
     it('Should change slider settings', () => {
 
-        slider.settings.setMaxVal(100);
+        slider.settings.setMaxVal(150);
+        slider.settings.setMinVal(5);
 
         expect(slider.settings).toEqual(new SliderSettings({
             range: false, 
-            minVal: 1, 
-            maxVal: 100, 
+            minVal: 5, 
+            maxVal: 150, 
             stepVal: 1, 
         }));
     });
@@ -99,12 +100,12 @@ describe('View / Slider template / Test of setting pointer positions', () => {
 
     it('Should update value of curr position on change', () => {
         
-        slider.currPos = 100;
+        slider.renderCurrentPos(100);
         // width  300px - 100 %
         // newPos 100px -  33 %
         expect(slider.thumb.style.left).toEqual('33%');
 
-        slider.currPos = 236;
+        slider.renderCurrentPos(236);
         // width  300px - 100 %
         // newPos 236px -  79 %
         expect(slider.thumb.style.left).toEqual('79%');
@@ -123,15 +124,12 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
 
     
     let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
-        range: false,
         minVal: 10,
+        stepVal: 5,
         maxVal: 100,
-        stepVal: 5
+        range: false
     });
 
-    it("Should coincide constructor values", () => {
-        expect(slider.settings.stepVal).toEqual(5);
-    });
     it("Should coincide constructor values", () => {
         expect(slider.model.settings.settings.stepVal).toEqual(5);
     });
@@ -143,16 +141,19 @@ describe('Presenter / SliderPresenter / Test calculating values', ()=>{
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
 
+   
     
     let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
         range: false,
         minVal: 10,
+        stepVal: 5,
         maxVal: 100,
-        stepVal: 5
+        value: 50
     });
 
-    it("Should calculate curr value with the step and range values"){
-        expect(slider.calculateCurrPos(33)).toEqual(35);
-    }
+    
+    it("Value should be calculated to view", ()=>{
+        expect(Math.ceil(parseInt(slider.view.thumb.style.left)/10)).toEqual(Math.ceil(50 * 100 / (100-10)/10));
+    });
 
 })
