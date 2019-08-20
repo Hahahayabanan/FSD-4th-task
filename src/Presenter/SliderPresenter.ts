@@ -26,19 +26,19 @@ import SliderTemplateVertical from '../View/SliderTemplateVertical';
             this.view = new SliderTemplate(rootElement);
         }
 
-        this.view.renderCurrentPosInPercents(this.getCurrPosFromValueToPercents(this.model.settings.settings.value));
 
         let onChangePointer = (event:any)=>{
-
-            let curPosInPixels = event.detail;
-
-            let curPosInPercents = this.getCurrPosInPercents(curPosInPixels);
-
-            this.view.renderCurrentPosInPercents(curPosInPercents);
-
+            let curPosInPixels:number = event.detail;
+            let curPosInVal:number = this.calculateCurrPosFromPixelsToValue(curPosInPixels);
+            let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
+            this.model.settings.settings.value = curPosInValWithStep;
+            let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
+            
+            this.view.renderCurrentPosInPercents(curPosInPercentsWithStep);
         }
-
+        
         this.view.slider.addEventListener('changePointer', onChangePointer);
+        this.initStartValue();
     }
 
 
@@ -53,51 +53,47 @@ import SliderTemplateVertical from '../View/SliderTemplateVertical';
 
     // curPosInPercents = 711 / 900 * 100%
     
-    calculateCurrPos(curPosInPixels:number){
-        let minVal = this.model.settings.settings.minVal;
-        let maxVal = this.model.settings.settings.maxVal;
-        let rangeVal = maxVal - minVal;     
-        let rangePixels = 1;
+    calculateCurrPosFromPixelsToValue(curPosInPixels:number){
+        let minVal:number = this.model.settings.settings.minVal;
+        let maxVal:number = this.model.settings.settings.maxVal;
+        let rangeVal:number = maxVal - minVal;     
+        let rangePixels:string = '1';
         if(this.model.settings.settings.orientation === 'vertical'){
             rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
         }else{
             rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
         }
         
-        let curPosInPercents = curPosInPixels * 100 / rangePixels;
+        let curPosInPercents:number = curPosInPixels * 100 / parseInt(rangePixels, 10);
+        let curPosInVal:number = rangeVal * curPosInPercents / 100;    
 
-        let curPosVal = rangeVal * curPosInPercents / 100;
-
-        return this.model.settings.settings.value = this.model.setPointerPosition(curPosVal);
-
+        return curPosInVal+minVal;
     }
 
-    getCurrPosInPercents(curPosInPixels:number){
-        let minVal = this.model.settings.settings.minVal;
-        let maxVal = this.model.settings.settings.maxVal;
-        let rangeVal = maxVal - minVal; 
-            
-        let curPosInPercents = this.calculateCurrPos(curPosInPixels) * 100 / rangeVal;
-
-        return curPosInPercents;
-    }
 
     // EXAMPLE how it works
 
-    // rangeVal 1000-100 = 900   - 100%
-    // curPosInVal         250   -   ?%
-    // curPosInPercents = 250 * 100% / 900
+    // rangeVal 1000-100   = 900   - 100%
+    // curPosInVal 350-100 = 250   -   ?%
+    // curPosInPercents    = 250 * 100% / 900 
     getCurrPosFromValueToPercents(curPosInValue:number){
-        let minVal = this.model.settings.settings.minVal;
-        let maxVal = this.model.settings.settings.maxVal;
-        let rangeVal = maxVal - minVal; 
+        let minVal:number = this.model.settings.settings.minVal;
+        let maxVal:number = this.model.settings.settings.maxVal;
+        let rangeVal:number = maxVal - minVal; 
 
-        let curPos = curPosInValue * 100 / rangeVal;       
+        let currPosInPercents:number = (curPosInValue-minVal) * 100 / rangeVal;       
 
-        return curPos;
+        return currPosInPercents;
     }
 
-
+    initStartValue(){
+        let curPosInValue:number = this.model.settings.settings.value;
+        let curPosInValWithStep = this.model.setPointerPosition(curPosInValue);
+        this.model.settings.settings.value = curPosInValWithStep;
+        let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
+        
+        this.view.renderCurrentPosInPercents(curPosInPercentsWithStep);        
+    }
 }
 
 

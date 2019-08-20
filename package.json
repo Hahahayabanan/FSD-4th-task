@@ -43,6 +43,7 @@
     "jasmine": "^3.4.0",
     "jasmine-core": "^3.4.0",
     "jquery": "^3.4.1",
+    "jsdom": "^15.1.1",
     "karma": "^4.2.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "^2.1.0",
@@ -75,9 +76,11 @@
     "server": "npm run server:dev",
     "server:dev": "webpack-dev-server --mode development --config ./webpack.config.js --hot --inline --progress --watch --open",
     "server:prod": "cross-env NODE_ENV=production webpack-dev-server  --mode production --config ./webpack.config.js --port 3000 --host 0.0.0.0 --hot --inline --progress  --watch --open --content-base dist/",
-    "start": "npm run server:dev",
+    "start": "npm run server:dev", 
     "test": "karma start"
   },
   "version": "0.0.1",
-  "dependencies": {}
+  "dependencies": {
+    "@types/jsdom": "^12.2.4"
+  }
 }

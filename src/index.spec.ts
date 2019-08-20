@@ -5,6 +5,7 @@ import { SliderTemplateVertical } from './View/SliderTemplateVertical'
 
 
 import { SliderPresenter } from './Presenter/SliderPresenter';
+
 import * as $ from 'jquery';
 
 
@@ -36,11 +37,11 @@ describe('Model / Slider / Test initialization', () => {
     it('Should change slider settings', () => {
 
         slider.settings.setMaxVal(150);
-        slider.settings.setMinVal(5);
+        slider.settings.setMinVal(10);
 
         expect(slider.settings).toEqual(new SliderSettings({
             range: false, 
-            minVal: 5, 
+            minVal: 10, 
             maxVal: 150, 
             stepVal: 1, 
         }));
@@ -60,14 +61,12 @@ describe('Model / Slider / Test moving', () => {
 
     slider.settings.setStepVal(5);
            
-    it('Should change pointer position', ()=>{
-        slider.setPointerPosition(58);
-        expect(slider.pointer).toEqual(60);
+    it('Should change pointer position 60', ()=>{
+        expect(slider.setPointerPosition(58)).toEqual(60);
     });
 
-    it('Should change pointer position', ()=>{
-        slider.setPointerPosition(92);
-        expect(slider.pointer).toEqual(90);
+    it('Should change pointer position 90', ()=>{
+        expect(slider.setPointerPosition(92)).toEqual(90);
     });
 
 })
@@ -139,11 +138,13 @@ describe('View / Vertical Slider template / Test of setting pointer positions', 
 
 
 describe('Presenter / SliderPresenter / Test initialization', () => {
-
+    
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
-
     
+    shadowSlider.style.cssText = 'width: 300px';
+    
+
     let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
         minVal: 10,
         stepVal: 5,
@@ -151,30 +152,25 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
         range: false
     });
 
-    it("Should coincide constructor values", () => {
+    it("Should coincide constructor set values 'value'", ()=>{
+        slider = new SliderPresenter(shadowSlider, {
+            range: false,
+            minVal: 10,
+            stepVal: 5,
+            maxVal: 100,
+            value: 53
+        });
+        expect(slider.model.settings.settings.value).toEqual(55);
+    });
+
+
+    it("Should coincide constructor values 'step'", () => {
         expect(slider.model.settings.settings.stepVal).toEqual(5);
     });
-
-})
-
-
-describe('Presenter / SliderPresenter / Test calculating values', ()=>{
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
-
+    it("Should coincide constructor values default 'value'", () => {
+        expect(slider.model.settings.settings.value).toEqual(10);
+    });
    
     
-    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
-        range: false,
-        minVal: 10,
-        stepVal: 5,
-        maxVal: 100,
-        value: 50
-    });
-
-    
-    it("Value should be calculated to view", ()=>{
-        expect(Math.ceil(parseInt(slider.view.thumb.style.left)/10)).toEqual(Math.ceil(50 * 100 / (100-10)/10));
-    });
-
 })
+

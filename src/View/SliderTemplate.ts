@@ -9,6 +9,7 @@ export class SliderTemplate{
 
         this.createTemplate();
         this.createEventListeners();
+
     }
 
     get currPos():number{
@@ -30,6 +31,7 @@ export class SliderTemplate{
         this.thumb.classList.add('j-plugin-slider__thumb');
 
         this.slider.appendChild(this.thumb);   
+
     }
 
     createEventListeners(){

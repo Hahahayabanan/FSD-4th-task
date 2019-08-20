@@ -4,11 +4,10 @@ import { SliderSettings } from './SliderSettings';
 export class Slider{
     
     public settings: SliderSettings;
-    public pointer: number;
+
 
     constructor(sett?: object){
         this.settings = new SliderSettings(sett);
-        this.pointer = this.settings.settings.minVal;
     }
     
     setSettings(sett: object){
@@ -17,39 +16,25 @@ export class Slider{
 
     
     setPointerPosition(pos: number){
-
-        let step = this.settings.settings.stepVal;
+        let maxVal = this.settings.settings.maxVal;
+        let minVal = this.settings.settings.minVal;
+        let step:number = this.settings.settings.stepVal;
+        let stepsRange:number = (maxVal - minVal);
         
-        let stepsRange = (this.settings.settings.maxVal - this.settings.settings.minVal);
+        let curVal:number = pos-minVal;
 
-        if(stepsRange % step === 0){
+        if(stepsRange % step === 0){        
 
-            if(pos > this.settings.settings.maxVal){
-                this.pointer = this.settings.settings.maxVal;
-                // throw 'Current pointer position should be smaller than max range value';
-            }
-            if(pos < this.settings.settings.minVal){
-                this.pointer = this.settings.settings.minVal;
-                // throw 'Current pointer position should be bigger than min range value';
-            }
-
-            let currentStep = Math.round((pos - this.settings.settings.minVal) / step);
+            let currentStep:number = Math.round(curVal / step);
                
-            pos = currentStep * step  + this.settings.settings.minVal;
+            curVal = currentStep * step ;
 
-            this.pointer = pos;
-   
+            return curVal + minVal;
+
         }else{
             throw 'Step should be an integer, commonly a dividend of the slider\'s maximum value';
         }
-        return this.pointer;
     }
-    
-
-
-
-
-
 }
 
 export default Slider;

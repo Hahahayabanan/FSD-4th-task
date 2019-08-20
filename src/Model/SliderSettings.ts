@@ -29,11 +29,40 @@ export class SliderSettings{
     constructor(setts: ISliderSettings){
         this.settings = $.extend(this.defaultSettings, setts);
 
-        
+        this.setValidValue();
         this.checkValidValues();
     }
 
-    checkValidValues(){
+    checkValidValues(){   
+
+        try{
+            if(this.settings.minVal > this.settings.maxVal){
+                this.settings.maxVal = this.defaultSettings.maxVal;
+                this.settings.minVal = this.defaultSettings.minVal;
+                throw 'Min slider range value cant be bigger than max value';
+            }
+            if(this.settings.maxVal - this.settings.minVal <= this.settings.stepVal){
+                this.settings.stepVal = this.defaultSettings.stepVal;
+                throw 'Step cant be bigger than min and max range';
+            }
+            if(this.settings.value > this.settings.maxVal){
+                this.settings.value = this.settings.minVal;
+                throw 'Value cant be bigger than max value'
+            }
+            if(this.settings.value < this.settings.minVal){
+                this.settings.value = this.settings.minVal;
+                throw `Value cant be smaller than min value`;
+            }
+            if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
+                this.settings.orientation = 'horizontal';
+                throw 'Orientation of slider has only two values \'horizontal\' or \'vertical\''
+            }
+        }catch(err){
+            console.error(err)
+        }
+    }
+
+    setValidValue(){
         if(this.settings.value === undefined && !this.settings.range){
             this.settings.value = this.settings.minVal;
         }
@@ -43,32 +72,7 @@ export class SliderSettings{
         if(this.settings.values[1] === undefined && this.settings.range){
             this.settings.values[1] = this.settings.maxVal;
         }
-
-        if(this.settings.minVal > this.settings.maxVal){
-            this.settings.maxVal = this.defaultSettings.maxVal;
-            this.settings.minVal = this.defaultSettings.minVal;
-            // throw 'Min slider range value cant be bigger than max value';
-        }
-        if(this.settings.maxVal - this.settings.minVal <= this.settings.stepVal){
-            this.settings.stepVal = this.defaultSettings.stepVal;
-            // throw 'Step cant be bigger than min and max range';
-        }
-        if(this.settings.value > this.settings.maxVal){
-            this.settings.value = this.settings.minVal;
-            // throw 'Value cant be bigger than max value'
-        }
-        if(this.settings.value < this.settings.minVal){
-            this.settings.value = this.settings.minVal;
-            // throw `Value ${this.settings.value} cant be smaller than min value ${this.settings.minVal}`
-        }
-        if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
-            this.settings.orientation = 'horizontal';
-            throw 'Orientation of slider has only two values \'horizontal\' or \'vertical\''
-        }
-
     }
-
-
 
     setRange(tmp: boolean){
         this.settings.range = tmp;
@@ -91,6 +95,7 @@ export class SliderSettings{
             this.checkValidValues();
             return this.settings.stepVal;
         }else{
+            this.settings.stepVal = this.defaultSettings.stepVal;
             throw 'Step cant be bigger then min and max range';
         }      
     }
