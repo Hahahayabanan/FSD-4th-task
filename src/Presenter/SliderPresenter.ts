@@ -4,6 +4,7 @@ import { SliderSettings } from '../Model/SliderSettings'
 import { ISliderSettings } from '../Model/SliderSettings'
 
 import * as $ from 'jquery';
+import SliderTemplateVertical from '../View/SliderTemplateVertical';
 
  
 
@@ -18,7 +19,12 @@ import * as $ from 'jquery';
     constructor(rootElement: any, options: ISliderSettings) {
          
         this.model = new Slider(options);
-        this.view = new SliderTemplate(rootElement);
+
+        if(this.model.settings.settings.orientation === 'vertical'){
+            this.view = new SliderTemplateVertical(rootElement);
+        }else{
+            this.view = new SliderTemplate(rootElement);
+        }
 
         this.view.renderCurrentPosInPercents(this.getCurrPosFromValueToPercents(this.model.settings.settings.value));
 
@@ -51,7 +57,12 @@ import * as $ from 'jquery';
         let minVal = this.model.settings.settings.minVal;
         let maxVal = this.model.settings.settings.maxVal;
         let rangeVal = maxVal - minVal;     
-        let rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
+        let rangePixels = 1;
+        if(this.model.settings.settings.orientation === 'vertical'){
+            rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
+        }else{
+            rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
+        }
         
         let curPosInPercents = curPosInPixels * 100 / rangePixels;
 

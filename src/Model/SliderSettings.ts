@@ -61,6 +61,10 @@ export class SliderSettings{
             this.settings.value = this.settings.minVal;
             // throw `Value ${this.settings.value} cant be smaller than min value ${this.settings.minVal}`
         }
+        if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
+            this.settings.orientation = 'horizontal';
+            throw 'Orientation of slider has only two values \'horizontal\' or \'vertical\''
+        }
 
     }
 

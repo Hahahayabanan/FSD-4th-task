@@ -16,4 +16,23 @@
   background: blue;
   cursor: pointer;
 }
+
+.j-plugin-slider_vertical {
+  border-radius: 5px;
+  background: #E0E0E0;
+  background: linear-gradient(left top, #E0E0E0, #EEEEEE);
+  height: 300px;
+  width: 15px;
+  margin: 5px;
+}
+  
+.j-plugin-slider__thumb_vertical {
+  height: 10px;
+  width: 25px;
+  border-radius: 3px;
+  position: relative;
+  left: -5px;
+  background: blue;
+  cursor: pointer;
+}
   

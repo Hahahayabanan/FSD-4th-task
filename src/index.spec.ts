@@ -1,7 +1,7 @@
 import { SliderTemplate } from './View/SliderTemplate';
 import { Slider } from './Model/Slider';
 import { SliderSettings } from './Model/SliderSettings';
-
+import { SliderTemplateVertical } from './View/SliderTemplateVertical'
 
 
 import { SliderPresenter } from './Presenter/SliderPresenter';
@@ -113,6 +113,27 @@ describe('View / Slider template / Test of setting pointer positions', () => {
 
 });
 
+describe('View / Vertical Slider template / Test of setting pointer positions', () => {
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
+    
+    let slider = new SliderTemplateVertical(shadowSlider);
+    slider.slider.style.cssText = 'height: 300px';
+     
+    it('Curr position should be set', ()=>{
+        slider.currPos = 150;
+        expect(slider.currPos).toEqual(150);
+    });
+
+    it('Should update value of curr position on change', () => {
+        slider.renderCurrentPos(100);
+        expect(slider.thumb.style.top).toEqual('33%');
+
+        slider.renderCurrentPos(236);
+        expect(slider.thumb.style.top).toEqual('79%');
+    });
+
+});
 
 
 

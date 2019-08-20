@@ -17,6 +17,7 @@
 
 <body>
   <div class="slider"></div>
+  <div class="slider2"></div>
   
   <script src="lib/jquery.js"></script>
   <script>
@@ -26,6 +27,13 @@ $(function () {
       maxVal: 500, 
       stepVal: 100,
       value: 100
+    })
+    $('.slider2').slider({
+      minVal: 200, 
+      maxVal: 500, 
+      stepVal: 100,
+      value: 100,
+      orientation: 'vertical'
     })
 });
   </script>
