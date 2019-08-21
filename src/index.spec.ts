@@ -1,7 +1,7 @@
 import { SliderTemplate } from './View/SliderTemplate';
 import { Slider } from './Model/Slider';
 import { SliderSettings } from './Model/SliderSettings';
-import { SliderTemplateVertical } from './View/SliderTemplateVertical'
+import { SliderPointer } from './View/SliderPointer'
 
 
 import { SliderPresenter } from './Presenter/SliderPresenter';
@@ -81,33 +81,31 @@ describe('Model / Slider / Test moving', () => {
 
 describe('View / Slider template / Test of setting pointer positions', () => {
 
-
+    
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
 
     
-    let slider = new SliderTemplate(shadowSlider);
+    let slider = new SliderTemplate(shadowSlider, false);
 
     // setting style.width because we dont have DOM
     slider.slider.style.cssText = 'width: 300px';
-
+        
      
     it('Curr position should be set', ()=>{
-        slider.currPos = 150;
-        expect(slider.currPos).toEqual(150);
+        slider.thumb.currPos = 150;
+        expect(slider.thumb.currPos).toEqual(150);
     });
 
-    it('Should update value of curr position on change', () => {
-        
-        slider.renderCurrentPos(100);
-        // width  300px - 100 %
-        // newPos 100px -  33 %
-        expect(slider.thumb.style.left).toEqual('33%');
-
-        slider.renderCurrentPos(236);
+    it('Should update value of curr position on change 236', () => {
+        slider.thumb.renderCurrentPosInPixels(236);
         // width  300px - 100 %
         // newPos 236px -  79 %
-        expect(slider.thumb.style.left).toEqual('79%');
+        expect(Math.round(parseInt(slider.thumb.thumb.style.left))).toEqual(78);
+    });
+    it('Should update value of curr position on change 33', () => {
+        slider.thumb.renderCurrentPosInPercents(33);
+        expect(slider.thumb.thumb.style.left).toEqual('33%');
     });
 
 });
@@ -116,21 +114,23 @@ describe('View / Vertical Slider template / Test of setting pointer positions', 
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
     
-    let slider = new SliderTemplateVertical(shadowSlider);
+    let slider = new SliderTemplate(shadowSlider, true);
     slider.slider.style.cssText = 'height: 300px';
      
     it('Curr position should be set', ()=>{
-        slider.currPos = 150;
-        expect(slider.currPos).toEqual(150);
+        slider.thumb.currPos = 150;
+        expect(slider.thumb.currPos).toEqual(150);
     });
 
-    it('Should update value of curr position on change', () => {
-        slider.renderCurrentPos(100);
-        expect(slider.thumb.style.top).toEqual('33%');
-
-        slider.renderCurrentPos(236);
-        expect(slider.thumb.style.top).toEqual('79%');
+    it('Should update value of curr position on change 236', () => {
+        slider.thumb.renderCurrentPosInPixelsVertical(236);
+        expect(Math.round(parseInt(slider.thumb.thumb.style.top))).toEqual(78);
     });
+    it('Should update value of curr position on change 33', () => {
+        slider.thumb.renderCurrentPosInPercentsVertical(33);
+        expect(slider.thumb.thumb.style.top).toEqual('33%');
+    });
+    
 
 });
 
@@ -174,3 +174,31 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
     
 })
 
+
+
+
+describe('Presenter / SliderPresenterRange / Test initialization', () => {
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
+    
+    shadowSlider.style.cssText = 'width: 300px';
+    
+    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+        minVal: 10,
+        stepVal: 5,
+        maxVal: 100,
+        range: true,
+        values: [25,35]
+    });
+
+    it("Should coincide constructor set values 'range'", ()=>{
+        expect(slider.model.settings.settings.range).toEqual(true);
+    });
+    it("Should coincide constructor set values 'values'", ()=>{
+        expect(slider.model.settings.settings.values).toEqual([25,35]);
+    });
+
+    
+
+
+})

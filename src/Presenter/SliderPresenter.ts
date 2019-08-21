@@ -2,9 +2,10 @@ import { SliderTemplate } from '../View/SliderTemplate'
 import { Slider } from '../Model/Slider'
 import { SliderSettings } from '../Model/SliderSettings'
 import { ISliderSettings } from '../Model/SliderSettings'
+import { SliderPointer } from '../View/SliderPointer'
 
 import * as $ from 'jquery';
-import SliderTemplateVertical from '../View/SliderTemplateVertical';
+
 
  
 
@@ -21,9 +22,9 @@ import SliderTemplateVertical from '../View/SliderTemplateVertical';
         this.model = new Slider(options);
 
         if(this.model.settings.settings.orientation === 'vertical'){
-            this.view = new SliderTemplateVertical(rootElement);
+            this.view = new SliderTemplate(rootElement, true);
         }else{
-            this.view = new SliderTemplate(rootElement);
+            this.view = new SliderTemplate(rootElement, false);
         }
 
 
@@ -34,14 +35,31 @@ import SliderTemplateVertical from '../View/SliderTemplateVertical';
             this.model.settings.settings.value = curPosInValWithStep;
             let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
             
-            this.view.renderCurrentPosInPercents(curPosInPercentsWithStep);
+            this.render(curPosInPercentsWithStep);
+
         }
         
         this.view.slider.addEventListener('changePointer', onChangePointer);
         this.initStartValue();
     }
 
+    initStartValue(){
+        let curPosInValue:number = this.model.settings.settings.value;
+        let curPosInValWithStep = this.model.setPointerPosition(curPosInValue);
+        this.model.settings.settings.value = curPosInValWithStep;
+        let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
 
+        this.render(curPosInPercentsWithStep);
+        
+    }
+
+    render(curPos:number){
+        if(this.model.settings.settings.orientation === 'vertical'){
+            this.view.thumb.renderCurrentPosInPercentsVertical(curPos);
+        }else{
+            this.view.thumb.renderCurrentPosInPercents(curPos);
+        }
+    }
     // EXAMPLE how it works
     // rangeValInPixels    300px - 100%
     // curPosInPixels      236px -  79%
@@ -86,14 +104,7 @@ import SliderTemplateVertical from '../View/SliderTemplateVertical';
         return currPosInPercents;
     }
 
-    initStartValue(){
-        let curPosInValue:number = this.model.settings.settings.value;
-        let curPosInValWithStep = this.model.setPointerPosition(curPosInValue);
-        this.model.settings.settings.value = curPosInValWithStep;
-        let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
-        
-        this.view.renderCurrentPosInPercents(curPosInPercentsWithStep);        
-    }
+    
 }
 
 
