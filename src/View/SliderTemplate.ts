@@ -4,55 +4,49 @@ export class SliderTemplate{
 
     public slider: any;
     public thumb: SliderPointer;
+    public isVertical: boolean;
 
-    constructor(elem: any, isVertical:boolean){
+    constructor(elem: any, isVertical?:string){
         this.slider = elem;
 
-        if(isVertical){
-            this.createTemplateVertical();
-            this.thumb.createEventListenersVertical();
-            this.addEventToSliderClickVertical()
+        if(isVertical === 'vertical'){
+            this.isVertical = true;
         }else{
-            this.createTemplate();
-            this.thumb.createEventListeners();
-            this.addEventToSliderClick()
+            this.isVertical = false;
         }
+
+        this.createTemplate();
+        this.thumb.createEventListeners();
+        this.addEventToSliderClick()
         
     }
     
     createTemplate(){
-        this.slider.classList.add('j-plugin-slider');
-
-        this.thumb = new SliderPointer(document.createElement('div'), this.slider);
-        this.thumb.thumb.classList.add('j-plugin-slider__thumb');
-
+        
+        this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
         this.slider.appendChild(this.thumb.thumb);   
+
+        if(this.isVertical){
+            this.slider.classList.add('j-plugin-slider_vertical');
+            this.thumb.thumb.classList.add('j-plugin-slider__thumb_vertical');
+        }else{
+            this.slider.classList.add('j-plugin-slider');
+            this.thumb.thumb.classList.add('j-plugin-slider__thumb');
+        }
     }
 
-    createTemplateVertical(){
-        this.slider.classList.add('j-plugin-slider_vertical');
 
-        this.thumb = new SliderPointer(document.createElement('div'), this.slider);
-        this.thumb.thumb.classList.add('j-plugin-slider__thumb_vertical');
-
-        this.slider.appendChild(this.thumb.thumb);   
-    }
 
     addEventToSliderClick(){
         this.slider.onclick = (event:any) => {
             event.preventDefault();
-            let newLeft: number = event.clientX - this.slider.getBoundingClientRect().left;
+            let newLeft: number = this.isVertical
+                ? event.clientY - this.slider.getBoundingClientRect().top
+                : event.clientX - this.slider.getBoundingClientRect().left;
             this.thumb.currPos = newLeft;           
         }
     }
 
-    addEventToSliderClickVertical(){
-        this.slider.onclick = (event:any) => {
-            event.preventDefault();
-            let newTop: number = event.clientY - this.slider.getBoundingClientRect().top;
-            this.thumb.currPos = newTop;           
-        }
-    }
 
 
     

@@ -3,13 +3,13 @@ import { Slider } from '../Model/Slider'
 import { SliderSettings } from '../Model/SliderSettings'
 import { ISliderSettings } from '../Model/SliderSettings'
 import { SliderPointer } from '../View/SliderPointer'
+import { SliderTemplateRange } from '../View/SliderTemplateRange'
 
 import * as $ from 'jquery';
 
 
- 
 
- export class SliderPresenter{
+export class SliderPresenter{
 
     public static NAME: string = "slider";
  
@@ -21,11 +21,12 @@ import * as $ from 'jquery';
          
         this.model = new Slider(options);
 
-        if(this.model.settings.settings.orientation === 'vertical'){
-            this.view = new SliderTemplate(rootElement, true);
+        if(this.model.settings.settings.range){
+            this.view = new SliderTemplateRange(rootElement, this.model.settings.settings.orientation);
         }else{
-            this.view = new SliderTemplate(rootElement, false);
+            this.view = new SliderTemplate(rootElement, this.model.settings.settings.orientation);
         }
+        
 
 
         let onChangePointer = (event:any)=>{
@@ -55,7 +56,7 @@ import * as $ from 'jquery';
 
     render(curPos:number){
         if(this.model.settings.settings.orientation === 'vertical'){
-            this.view.thumb.renderCurrentPosInPercentsVertical(curPos);
+            this.view.thumb.renderCurrentPosInPercents(curPos);
         }else{
             this.view.thumb.renderCurrentPosInPercents(curPos);
         }
@@ -104,7 +105,6 @@ import * as $ from 'jquery';
         return currPosInPercents;
     }
 
-    
 }
 
 
