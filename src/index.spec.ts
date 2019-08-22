@@ -226,6 +226,9 @@ describe('Presenter / SliderPresenterRange / Test initialization', () => {
     it("Should coincide constructor set values 'values'", ()=>{
         expect(slider.model.settings.settings.values).toEqual([25,35]);
     });
+    it("Should coincide constructor set values on range line", ()=>{
+        expect(slider.view.range.style.left).toEqual(slider.model.settings.settings.value);
+    });
     
 
 

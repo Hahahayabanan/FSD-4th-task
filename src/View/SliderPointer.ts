@@ -34,17 +34,15 @@ export class SliderPointer{
             let rightEdge: number = this.isVertical
                 ? this.slider.offsetHeight - this.thumb.offsetHeight
                 : this.slider.offsetWidth - this.thumb.offsetWidth;
-            let leftEdge: number = 0;
-
-            console.log(this.currPos + '       ' + anotherPointer.currPos)
-
-            
+            let leftEdge: number = 0;          
             
             let onMouseMove = (event:any) => {
-                if(this.currPos < anotherPointer.currPos){
-                    rightEdge = anotherPointer.currPos;
-                }else if(this.currPos > anotherPointer.currPos){
-                    leftEdge = anotherPointer.currPos;
+                if(anotherPointer){
+                    if(this.currPos < anotherPointer.currPos){
+                        rightEdge = anotherPointer.currPos;
+                    }else if(this.currPos > anotherPointer.currPos){
+                        leftEdge = anotherPointer.currPos;
+                    }
                 }
 
                 let newLeft: number = this.isVertical 

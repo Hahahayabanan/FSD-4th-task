@@ -40,3 +40,13 @@
   position: absolute;
 }
   
+.j-plugin-slider__range{
+  height: 15px;
+  position: absolute;
+  background: rgb(86, 169, 247);
+}
+.j-plugin-slider__range_vertical{
+  width: 15px;
+  position: absolute;
+  background: rgb(86, 169, 247);
+}

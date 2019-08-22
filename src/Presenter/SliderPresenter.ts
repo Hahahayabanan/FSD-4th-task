@@ -60,6 +60,8 @@ export class SliderPresenter{
             
             this.render(this.view.thumb1, curPosInPercentsWithStep[0]);
             this.render(this.view.thumb2, curPosInPercentsWithStep[1]);
+            this.view.initRangeLine();
+
         }else{
             let curPosInValue:number = this.model.settings.settings.value;
             let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
