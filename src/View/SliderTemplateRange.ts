@@ -1,15 +1,16 @@
 import SliderPointer from './SliderPointer'
 import SliderTemplate from './SliderTemplate'
 
-export class SliderTemplateRange extends SliderTemplate{
+export class SliderTemplateRange {
 
-    // public slider: any;
+    public slider: any;
+    public isVertical: boolean;
     public thumb1: SliderPointer;
     public thumb2: SliderPointer;
 
     constructor(elem: any, isVertical: string){
-        super(elem, isVertical)
-
+        this.slider = elem;
+       
         if(isVertical === 'vertical'){
             this.isVertical = true;
         }else{
@@ -17,9 +18,13 @@ export class SliderTemplateRange extends SliderTemplate{
         }
 
         this.createTemplate();
-        this.thumb1.createEventListeners();
-        this.thumb2.createEventListeners();
-        this.addEventToSliderClick()
+
+        
+
+        this.thumb1.createEventListeners(this.thumb2);
+        this.thumb2.createEventListeners(this.thumb1);
+        this.addEventToSliderClick();
+        
     }
     
     createTemplate(){
@@ -40,14 +45,11 @@ export class SliderTemplateRange extends SliderTemplate{
         }
         
     }
-    createTemplateVertical(){
-        
-    }
 
     
 
     addEventToSliderClick(){
-        this.slider.onclick = (event:any) => {
+        this.slider.onmousedown = (event:any) => {
             event.preventDefault();
             let newLeft: number = this.isVertical
                 ? event.clientY - this.slider.getBoundingClientRect().top
@@ -55,19 +57,19 @@ export class SliderTemplateRange extends SliderTemplate{
             
             let pointersRange = this.calculatePointersRange();
 
-            if(newLeft < pointersRange/2){
+            if(newLeft < pointersRange){
                 this.thumb1.currPos = newLeft;
             }
-            if(newLeft > pointersRange/2){
+            if(newLeft > pointersRange){
                 this.thumb2.currPos = newLeft;
             }
                        
         }
     }
 
-
     calculatePointersRange(){
-        return this.thumb2.currPos - this.thumb1.currPos;
+        let res:number = (this.thumb2.currPos-this.thumb1.currPos) / 2 + this.thumb1.currPos
+        return res;
     }
 
 

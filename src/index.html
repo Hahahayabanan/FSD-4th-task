@@ -18,6 +18,7 @@
 <body>
   <div class="slider"></div>
   <div class="slider2"></div>
+  <div class="slider3"></div>
   
   <script src="lib/jquery.js"></script>
   <script>
@@ -34,11 +35,12 @@ $(function () {
       stepVal: 1,
       orientation: 'vertical'
     })
-    $('.slider2').slider({
+    $('.slider3').slider({
       minVal: 10, 
       maxVal: 20, 
       stepVal: 1,
-      range: true
+      range: true,
+      values: [12, 15]
     })
 });
   </script>

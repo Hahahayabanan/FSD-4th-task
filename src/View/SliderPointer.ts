@@ -19,48 +19,45 @@ export class SliderPointer{
 
         this.slider.dispatchEvent(new CustomEvent('changePointer', {
             bubbles: true,
-            detail: this.currPos
+            detail: this
         }));
     }
 
     createEventListeners(anotherPointer?: any){
         this.thumb.onmousedown = (event:any) => {
             event.preventDefault();
-
             
             let shift: number = this.isVertical 
-                ? event.clientY - this.thumb.pointer.getBoundingClientRect().top
-                : event.clientX - this.thumb.pointer.getBoundingClientRect().left;
+                ? event.clientY - this.thumb.getBoundingClientRect().top
+                : event.clientX - this.thumb.getBoundingClientRect().left;
+
+            let rightEdge: number = this.isVertical
+                ? this.slider.offsetHeight - this.thumb.offsetHeight
+                : this.slider.offsetWidth - this.thumb.offsetWidth;
+            let leftEdge: number = 0;
+
+            console.log(this.currPos + '       ' + anotherPointer.currPos)
+
+            
             
             let onMouseMove = (event:any) => {
+                if(this.currPos < anotherPointer.currPos){
+                    rightEdge = anotherPointer.currPos;
+                }else if(this.currPos > anotherPointer.currPos){
+                    leftEdge = anotherPointer.currPos;
+                }
 
                 let newLeft: number = this.isVertical 
                     ? event.clientY - shift - this.slider.getBoundingClientRect().top 
                     : event.clientX - shift - this.slider.getBoundingClientRect().left 
-
-                let rightEdge: number = this.isVertical
-                    ? this.slider.offsetHeight - this.thumb.offsetHeight
-                    : this.slider.offsetWidth - this.thumb.offsetWidth;
-
+              
                
-                if (newLeft < 0) {
-                    newLeft = 0;
+                if (newLeft < leftEdge) {
+                    newLeft = leftEdge;
                 }
 
                 if (newLeft > rightEdge) {
                     newLeft = rightEdge;
-                }
-
-                if(anotherPointer){
-                    rightEdge = anotherPointer.currPos;
-
-                    if (newLeft > rightEdge) {
-                        newLeft = rightEdge;
-                    }
-
-                    if (newLeft < rightEdge) {
-                        newLeft = rightEdge;
-                    }
                 }
                 
                 this.currPos = newLeft;

@@ -32,9 +32,14 @@ describe('Model / Slider / Test initialization', () => {
             stepVal: 1, 
         }));
     });
-       
 
     it('Should change slider settings', () => {
+        slider.setSettings({
+            range: false, 
+            minVal: 1, 
+            maxVal: 10, 
+            stepVal: 1, 
+        });
 
         slider.settings.setMaxVal(150);
         slider.settings.setMinVal(10);
@@ -47,6 +52,23 @@ describe('Model / Slider / Test initialization', () => {
         }));
     });
 
+    it('Should initializate RANGE slider object', () => {
+        slider.setSettings({
+            range: true, 
+            minVal: 1, 
+            maxVal: 10, 
+            stepVal: 1, 
+            values: [7,8]
+        });
+
+        expect(slider.settings).toEqual(new SliderSettings({
+            range: true, 
+            minVal: 1, 
+            maxVal: 10, 
+            stepVal: 1, 
+            values: [7, 8]
+        }));
+    });  
     
 })
 
@@ -67,6 +89,9 @@ describe('Model / Slider / Test moving', () => {
 
     it('Should change pointer position 90', ()=>{
         expect(slider.setPointerPosition(92)).toEqual(90);
+    });
+    it('Should change pointer position 20,35', ()=>{
+        expect(slider.setPointerPosition([22,37])).toEqual([20, 35]);
     });
 
 })
@@ -162,12 +187,16 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
         });
         expect(slider.model.settings.settings.value).toEqual(55);
     });
-
-
     it("Should coincide constructor values 'step'", () => {
         expect(slider.model.settings.settings.stepVal).toEqual(5);
     });
     it("Should coincide constructor values default 'value'", () => {
+        slider = new SliderPresenter(shadowSlider, {
+            minVal: 10,
+            stepVal: 5,
+            maxVal: 100,
+            range: false
+        });
         expect(slider.model.settings.settings.value).toEqual(10);
     });
    
@@ -177,28 +206,27 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
 
 
 
-// describe('Presenter / SliderPresenterRange / Test initialization', () => {
-//     let shadowSlider = document.createElement('div');
-//     shadowSlider.classList.add('slider');
+describe('Presenter / SliderPresenterRange / Test initialization', () => {
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
     
-//     shadowSlider.style.cssText = 'width: 300px';
+    shadowSlider.style.cssText = 'width: 300px';
     
-//     let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
-//         minVal: 10,
-//         stepVal: 5,
-//         maxVal: 100,
-//         range: true,
-//         values: [25,35]
-//     });
+    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+        minVal: 10,
+        stepVal: 5,
+        maxVal: 100,
+        range: true,
+        values: [25,35]
+    });
 
-//     it("Should coincide constructor set values 'range'", ()=>{
-//         expect(slider.model.settings.settings.range).toEqual(true);
-//     });
-//     it("Should coincide constructor set values 'values'", ()=>{
-//         expect(slider.model.settings.settings.values).toEqual([25,35]);
-//     });
-
+    it("Should coincide constructor set values 'range'", ()=>{
+        expect(slider.model.settings.settings.range).toEqual(true);
+    });
+    it("Should coincide constructor set values 'values'", ()=>{
+        expect(slider.model.settings.settings.values).toEqual([25,35]);
+    });
     
 
 
-// })
+})
