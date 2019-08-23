@@ -5,11 +5,12 @@ export class SliderTemplateRange {
 
     public slider: any;
     public isVertical: boolean;
+    public isFollowerPoint: boolean = false;
     public thumb1: SliderPointer;
     public thumb2: SliderPointer;
     public range: any;
 
-    constructor(elem: any, isVertical: string){
+    constructor(elem: any, isVertical?: string, isFollowerPoint?: boolean){
         this.slider = elem;
        
         if(isVertical === 'vertical'){
@@ -17,6 +18,8 @@ export class SliderTemplateRange {
         }else{
             this.isVertical = false;
         }
+
+        this.isFollowerPoint = isFollowerPoint;
 
         this.createTemplate();
 
@@ -27,8 +30,8 @@ export class SliderTemplateRange {
     }
     
     createTemplate(){
-        this.thumb1 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
-        this.thumb2 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
+        this.thumb1 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical, this.isFollowerPoint);
+        this.thumb2 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical, this.isFollowerPoint);
         this.range = document.createElement('div');
 
         this.slider.appendChild(this.range);   
@@ -40,12 +43,20 @@ export class SliderTemplateRange {
             this.thumb1.thumb.classList.add('j-plugin-slider__thumb_vertical');
             this.thumb2.thumb.classList.add('j-plugin-slider__thumb_vertical');
             this.range.classList.add('j-plugin-slider__range_vertical');
+            if(this.isFollowerPoint){
+                this.slider.classList.add('j-plugin-slider_with-point_vertical');
+            }
         }else{
             this.thumb1.thumb.classList.add('j-plugin-slider__thumb');
             this.thumb2.thumb.classList.add('j-plugin-slider__thumb');
             this.slider.classList.add('j-plugin-slider');
             this.range.classList.add('j-plugin-slider__range');
+            if(this.isFollowerPoint){
+                this.slider.classList.add('j-plugin-slider_with-point');
+            }
         }
+
+        
         
     }
 

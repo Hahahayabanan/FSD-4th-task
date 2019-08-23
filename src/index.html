@@ -28,7 +28,8 @@ $(function () {
       minVal: 200, 
       maxVal: 500, 
       stepVal: 100,
-      value: 349
+      value: 349,
+      followerPoint: true
     })
     $('.slider2').slider({
       minVal: 10, 
@@ -41,15 +42,16 @@ $(function () {
       maxVal: 20, 
       stepVal: 1,
       range: true,
-      values: [12, 15]
+      values: [12, 15],
+      followerPoint: true,
+      orientation: 'vertical'
     })
     $('.slider4').slider({
       minVal: 1, 
       maxVal: 100, 
       stepVal: 1,
       range: true,
-      values: [12, 50],
-      orientation: 'vertical'
+      values: [12, 50]
     })
 });
   </script>

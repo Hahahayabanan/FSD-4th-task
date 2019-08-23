@@ -1,14 +1,20 @@
+import FollowerPoint from './FollowerPoint'
+
 export class SliderPointer{
 
     public thumb: any;
     public slider: any;
     public _curPos: number;
     public isVertical: boolean;
+    public followerPoint: FollowerPoint;
 
-    constructor(elem: any, slider:any, isVertical: boolean){
+    constructor(elem: any, slider:any, isVertical: boolean, isFollowerPoint: boolean){
         this.thumb = elem;
         this.slider = slider;
         this.isVertical = isVertical;
+        if(isFollowerPoint){
+            this.followerPoint = new FollowerPoint(this.thumb, this.isVertical);
+        }
     }
 
     get currPos():number{
@@ -32,8 +38,8 @@ export class SliderPointer{
                 : event.clientX - this.thumb.getBoundingClientRect().left;
 
             let rightEdge: number = this.isVertical
-                ? this.slider.offsetHeight - this.thumb.offsetHeight
-                : this.slider.offsetWidth - this.thumb.offsetWidth;
+                ? this.slider.offsetHeight
+                : this.slider.offsetWidth;
             let leftEdge: number = 0;          
             
             let onMouseMove = (event:any) => {
