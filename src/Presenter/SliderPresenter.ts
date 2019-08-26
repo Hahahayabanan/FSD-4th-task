@@ -11,19 +11,16 @@ import * as $ from 'jquery';
 
 export class SliderPresenter{
 
-    public static NAME: string = "slider";
- 
     public model:Slider;
     public view: any;
-    public isRange: boolean;
 
     
     constructor(rootElement: any, options: ISliderSettings) {
          
         this.model = new Slider(options);
-        this.isRange = this.model.settings.settings.range;
+        let isRange = this.model.settings.settings.range;
 
-        if(this.isRange){
+        if(isRange){
             this.view = new SliderTemplateRange(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
         }else{
             this.view = new SliderTemplate(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
@@ -47,7 +44,7 @@ export class SliderPresenter{
 
     initStartValue(){
         
-        if(this.isRange){
+        if(this.model.settings.settings.range){
             let curPosInValues:number[] = this.model.settings.settings.values;
             let curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
             this.model.settings.settings.values = curPosInValsWithStep;
@@ -64,7 +61,6 @@ export class SliderPresenter{
             this.setFollowerPointValue(this.view.thumb1, curPosInValsWithStep[0]);
             this.setFollowerPointValue(this.view.thumb2, curPosInValsWithStep[1]);
             this.view.initRangeLine();
-
         }else{
             let curPosInValue:number = this.model.settings.settings.value;
             let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
@@ -80,9 +76,18 @@ export class SliderPresenter{
     render(curThumb:any, curPos: number){
         curThumb.renderCurrentPosInPercents(curPos);
     }
+
     setFollowerPointValue(curThumb:any, currPosInValWithStep: number){
-        if(this.model.settings.settings.followerPoint) 
-            curThumb.followerPoint.setValue(currPosInValWithStep);
+        if(this.model.settings.settings.followerPoint){
+            if(curThumb.followerPoint){
+                curThumb.followerPoint.setValue(currPosInValWithStep);
+            }else{
+                curThumb.createFollowerPoint();
+                curThumb.followerPoint.setValue(currPosInValWithStep);
+            }
+        }else{
+            curThumb.deleteFollowerPiont();
+        }
     }
     
     // EXAMPLE how it works

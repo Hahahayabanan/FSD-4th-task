@@ -20,39 +20,71 @@
   <div class="slider2"></div>
   <div class="slider3"></div>
   <div class="slider4"></div>
+  <div class="slider5"></div>
   
   <script src="lib/jquery.js"></script>
   <script>
 $(function () {
-    $('.slider').slider({
-      minVal: 200, 
-      maxVal: 500, 
-      stepVal: 100,
-      value: 349,
-      followerPoint: true
-    })
-    $('.slider2').slider({
-      minVal: 10, 
-      maxVal: 20, 
-      stepVal: 1,
-      orientation: 'vertical'
-    })
-    $('.slider3').slider({
-      minVal: 10, 
-      maxVal: 20, 
-      stepVal: 1,
-      range: true,
-      values: [12, 15],
-      followerPoint: true,
-      orientation: 'vertical'
-    })
-    $('.slider4').slider({
-      minVal: 1, 
-      maxVal: 100, 
-      stepVal: 1,
-      range: true,
-      values: [12, 50]
-    })
+    // $('.slider').slider({
+    //   minVal: 200, 
+    //   maxVal: 500, 
+    //   stepVal: 100,
+    //   value: 349,
+    //   followerPoint: true
+    // })
+    // $('.slider2').slider({
+    //   minVal: 10, 
+    //   maxVal: 20, 
+    //   stepVal: 1,
+    //   orientation: 'vertical'
+    // })
+    // $('.slider3').slider({
+    //   minVal: 10, 
+    //   maxVal: 20, 
+    //   stepVal: 1,
+    //   range: true,
+    //   values: [12, 15],
+    //   followerPoint: true,
+    //   orientation: 'vertical'
+    // })
+    // $('.slider4').slider({
+    //   minVal: 1, 
+    //   maxVal: 100, 
+    //   stepVal: 1,
+    //   range: true,
+    //   values: [12, 50]
+    // })
+    $('.slider5').slider();
+
+    $('.slider5').slider('option', 'value', 35);
+    
+    $('.slider5').slider('option', 'followerPoint', true);
+    
+    setTimeout(()=>{
+      $('.slider5').slider('option', 'value', 85);
+    }, 1000);
+    setTimeout(()=>{
+      $('.slider5').slider('option', 'range', true);
+      $('.slider5').slider('option', 'values', [50,70]);
+    }, 2000);
+    setTimeout(()=>{
+      $('.slider5').slider('option', 'followerPoint', false);
+    }, 3000);   
+    setTimeout(()=>{
+      $('.slider5').slider('option', 'range', false);
+    }, 4000);   
+    setTimeout(()=>{
+      $('.slider5').slider('option', 'orientation', 'vertical');
+      $('.slider5').slider('option', 'followerPoint', true);
+    }, 4000);   
+    
+    
+    
+
+    
+      
+    
+
 });
   </script>
 </body>

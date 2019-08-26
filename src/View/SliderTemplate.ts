@@ -27,7 +27,7 @@ export class SliderTemplate{
     createTemplate(){
         
         this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical, this.isFollowerPoint);
-        this.slider.appendChild(this.thumb.thumb);   
+        this.slider.append(this.thumb.thumb);   
 
         if(this.isVertical){
             this.slider.classList.add('j-plugin-slider_vertical');
@@ -39,7 +39,7 @@ export class SliderTemplate{
             this.slider.classList.add('j-plugin-slider');
             this.thumb.thumb.classList.add('j-plugin-slider__thumb');
             if(this.isFollowerPoint){
-                this.slider.classList.add('j-plugin-slider_with-point');
+                this.thumb.createFollowerPoint();
             }
         }
 
@@ -58,7 +58,10 @@ export class SliderTemplate{
         }
     }
 
-
+    destroy(){
+        this.thumb.thumb.remove();
+        this.thumb.thumb.remove();
+    }
 
     
 }

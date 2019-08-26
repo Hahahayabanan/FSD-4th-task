@@ -19,6 +19,10 @@ export class FollowerPoint{
         this.elem.innerHTML = value;
     }
 
+    destroy(){
+        this.elem.remove();
+    }
+
 }
 
 export default FollowerPoint;

@@ -2,6 +2,8 @@ import { SliderTemplate } from './View/SliderTemplate';
 import { Slider } from './Model/Slider';
 import { SliderSettings } from './Model/SliderSettings';
 import { SliderPointer } from './View/SliderPointer'
+import {SliderPresenterAPI} from './Presenter/SliderPresenterAPI'
+
 
 
 import { SliderPresenter } from './Presenter/SliderPresenter';
@@ -216,6 +218,8 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
 
 
 
+
+
 describe('Presenter / SliderPresenterRange / Test initialization', () => {
     let shadowSlider = document.createElement('div');
     shadowSlider.classList.add('slider');
@@ -239,5 +243,79 @@ describe('Presenter / SliderPresenterRange / Test initialization', () => {
     it("Should coincide constructor set values on range line", ()=>{
         expect(slider.view.range.style.left).toEqual(slider.view.thumb1.thumb.style.left);
     });
+
+})
+
+
+
+
+
+
+
+
+
+describe('Presenter / SliderPresenterAPI / Test initialization', ()=>{
+    let shadowSlider = document.createElement('div');
+    shadowSlider.classList.add('slider');
+    
+    shadowSlider.style.cssText = 'width: 300px';
+
+    let slider: SliderPresenter;
+
+    beforeEach(()=>{
+        slider = new SliderPresenter(shadowSlider, {
+            minVal: -100,
+            stepVal: 5,
+            maxVal: 100,
+            followerPoint: true,
+        });
+    })
+    
+
+    it("Should coincide API set values 'step'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'stepVal', 10);
+        expect(slider.model.settings.settings.stepVal).toEqual(10);
+    });
+
+    it("Should coincide API set values 'value'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'value', -20);
+        expect(slider.model.settings.settings.value).toEqual(-20);
+    });
+    
+    it("Should coincide API set values 'range'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+        expect(slider.model.settings.settings.range).toEqual(true);
+        expect(slider.model.settings.settings.values).toEqual([-100, 100]);
+    });
+
+    it("Should coincide API set values 'range' on view", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+        expect(slider.view.thumb1.currPos).toEqual(0);
+        expect(slider.view.thumb2.currPos).toEqual(300);
+    });
+    
+    it("Should coincide API set values 'followerPoint'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'followerPoint', false);
+        expect(slider.model.settings.settings.followerPoint).toEqual(false)
+    });
+    
+    it("Should coincide API set values 'range'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+        expect(slider.model.settings.settings.range).toEqual(true);
+        expect(slider.model.settings.settings.values).toEqual([-100, 100]);
+    });
+    
+    it("Should coincide API set values 'values'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'values', [25,35]);
+        expect(slider.model.settings.settings.values).toEqual([25,35]);
+    });
+
+    it("Should coincide API set values 'orientation'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'orientation', 'vertical');
+        expect(slider.model.settings.settings.orientation).toEqual('vertical');
+    });
+    
+   
+    
 
 })

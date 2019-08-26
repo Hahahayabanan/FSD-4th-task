@@ -34,9 +34,9 @@ export class SliderTemplateRange {
         this.thumb2 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical, this.isFollowerPoint);
         this.range = document.createElement('div');
 
-        this.slider.appendChild(this.range);   
-        this.slider.appendChild(this.thumb1.thumb);   
-        this.slider.appendChild(this.thumb2.thumb);   
+        this.slider.append(this.range);   
+        this.slider.append(this.thumb1.thumb);   
+        this.slider.append(this.thumb2.thumb);   
         
         if(this.isVertical){
             this.slider.classList.add('j-plugin-slider_vertical');
@@ -100,7 +100,11 @@ export class SliderTemplateRange {
         return res;
     }
 
-
+    destroy(){
+        this.range.remove();
+        this.thumb1.thumb.remove();
+        this.thumb2.thumb.remove();
+    }
 
 
 }
