@@ -12,7 +12,7 @@ export class SliderPointer{
         this.thumb = elem;
         this.slider = slider;
         this.isVertical = isVertical;
-        if(isFollowerPoint) this.createFollowerPoint();
+        // if(isFollowerPoint) this.createFollowerPoint();
     }
 
     get currPos():number{
@@ -99,14 +99,17 @@ export class SliderPointer{
 
 
     createFollowerPoint(){
-        this.slider.classList.add('j-plugin-slider_with-point');
+        if(this.isVertical)this.slider.classList.add('j-plugin-slider_with-point_vertical');
+        else this.slider.classList.add('j-plugin-slider_with-point');
         this.followerPoint = new FollowerPoint(this.thumb, this.isVertical);
     }
     
     deleteFollowerPiont(){
         if(this.followerPoint !== undefined){
             this.followerPoint.destroy();
+            this.followerPoint = undefined;
             this.slider.classList.remove('j-plugin-slider_with-point');
+            this.slider.classList.remove('j-plugin-slider_with-point_vertical');
         }
     }
 

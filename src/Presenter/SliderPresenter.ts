@@ -28,6 +28,7 @@ export class SliderPresenter{
         
         let onChangePointer = (event:any)=>{
             let currThumb = event.detail;
+
             let curPosInPixels:number = currThumb.currPos;
             let curPosInVal:number = this.calculateCurrPosFromPixelsToValue(curPosInPixels);
             let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
@@ -36,7 +37,15 @@ export class SliderPresenter{
   
             this.render(currThumb, curPosInPercentsWithStep);
             this.setFollowerPointValue(currThumb, curPosInValWithStep);
+        
+            if(currThumb === this.view.thumb1){
+                this.model.settings.settings.values[0] = curPosInValWithStep;
+            }
+            if(currThumb === this.view.thumb2){
+                this.model.settings.settings.values[1] = curPosInValWithStep;
+            }
         }
+        
             
         this.view.slider.addEventListener('changePointer', onChangePointer);
         this.initStartValue();
@@ -52,10 +61,10 @@ export class SliderPresenter{
             curPosInPercentsWithStep[0] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[0]);
             curPosInPercentsWithStep[1] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[1]);
 
-            this.render(this.view.thumb1, curPosInPercentsWithStep[0]);
-            this.render(this.view.thumb2, curPosInPercentsWithStep[1]);
-            this.setFollowerPointValue(this.view.thumb1, curPosInValsWithStep[0]);
-            this.setFollowerPointValue(this.view.thumb2, curPosInValsWithStep[1]);
+            // this.render(this.view.thumb1, curPosInPercentsWithStep[0]);
+            // this.render(this.view.thumb2, curPosInPercentsWithStep[1]);
+            // this.setFollowerPointValue(this.view.thumb1, curPosInValsWithStep[0]);
+            // this.setFollowerPointValue(this.view.thumb2, curPosInValsWithStep[1]);
             this.view.initRangeLine();
 
             this.view.thumb1.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]);
@@ -67,8 +76,8 @@ export class SliderPresenter{
             
             let curPosInPercentsWithStep:number = this.getCurrPosFromValueToPercents(curPosInValWithStep);
 
-            this.render(this.view.thumb, curPosInPercentsWithStep);
-            this.setFollowerPointValue(this.view.thumb, curPosInValWithStep);
+            // this.render(this.view.thumb, curPosInPercentsWithStep);
+            // this.setFollowerPointValue(this.view.thumb, curPosInValWithStep);
                 
             this.view.thumb.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep);
         }       
@@ -82,7 +91,7 @@ export class SliderPresenter{
 
     setFollowerPointValue(curThumb:SliderPointer, currPosInValWithStep: number){
         if(this.model.settings.settings.followerPoint){
-            if(curThumb.followerPoint){
+            if(curThumb.followerPoint !== undefined){
                 curThumb.followerPoint.setValue(currPosInValWithStep);
             }else{
                 curThumb.createFollowerPoint();

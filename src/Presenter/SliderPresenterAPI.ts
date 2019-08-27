@@ -33,7 +33,7 @@ export class SliderPresenterAPI{
                 case 'values':  if(valuesOneOfTwoVals === undefined && typeof(value)!=='number'){ currReturn = this.setValues(<number[]>value);}
                                 else if(valuesOneOfTwoVals === undefined && typeof(value)==='number'){
                                     currReturn = this.getValues(value);
-                                }else{
+                                }else if(valuesOneOfTwoVals !== undefined && typeof(value)==='number'){
                                     currReturn = this.setValues(valuesOneOfTwoVals, <number>value);
                                 }
                     break;
@@ -42,21 +42,21 @@ export class SliderPresenterAPI{
             }
         }else{
             switch (setting){
-                case 'range':   currReturn = this.getRange()
+                case 'range':   currReturn = this.getRange();
                     break;
-                case 'minVal':  currReturn = this.getMinVal()
+                case 'minVal':  currReturn = this.getMinVal();
                     break;
-                case 'maxVal':  currReturn = this.getMaxVal()
+                case 'maxVal':  currReturn = this.getMaxVal();
                     break;
-                case 'stepVal': currReturn = this.getStepVal()
+                case 'stepVal': currReturn = this.getStepVal();
                     break;
-                case 'orientation': currReturn = this.getOrientation()
+                case 'orientation': currReturn = this.getOrientation();
                     break;
-                case 'value':   currReturn = this.getValue()
+                case 'value':   currReturn = this.getValue();
                     break;
                 case 'values':  currReturn = this.getValues();
                     break;
-                case 'followerPoint': currReturn = this.getFollowerPoint()
+                case 'followerPoint': currReturn = this.getFollowerPoint();
                     break;
             }
         }
@@ -65,7 +65,7 @@ export class SliderPresenterAPI{
     }
 
     static getFollowerPoint(): boolean{
-        return this.slider.model.settings.settings.range;
+        return this.slider.model.settings.settings.followerPoint;        
     }
     static setFollowerPoint(newVal: boolean): boolean{
         newVal = this.slider.model.settings.setFollowerPoint(newVal);
@@ -73,7 +73,7 @@ export class SliderPresenterAPI{
         return newVal;
     }
     static getRange(): boolean{
-        return this.slider.model.settings.settings.followerPoint;
+        return this.slider.model.settings.settings.range;
     }
     static setRange(newVal: boolean): boolean{
         newVal = this.slider.model.settings.setRange(newVal);

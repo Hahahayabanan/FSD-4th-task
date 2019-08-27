@@ -19,12 +19,13 @@ import './View/styles.css'
          let option = arguments[0];
          let setting = arguments[1];
          let value = arguments[2];
+         let valuesOnOfTwoVals = arguments[3];
          let retunValue:any;
          this.each(function (i:number, val:object) {
             let htmlElem = val;
             sliders.forEach((val, i)=>{
                if(val.view.slider === htmlElem){
-                  retunValue = SliderPresenterAPI.enterPoint(val, option, setting, value);
+                  retunValue = SliderPresenterAPI.enterPoint(val, option, setting, value, valuesOnOfTwoVals);
                }
             });
 
