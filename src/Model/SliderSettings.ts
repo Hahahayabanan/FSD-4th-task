@@ -46,7 +46,7 @@ export class SliderSettings{
                 throw 'Step cant be bigger than min and max range';
             }
             if(this.settings.value > this.settings.maxVal){
-                this.settings.value = this.settings.minVal;
+                this.settings.value = this.settings.maxVal;
                 throw 'Value cant be bigger than max value'
             }
             if(this.settings.value < this.settings.minVal){
@@ -68,6 +68,9 @@ export class SliderSettings{
             if(this.settings.values[1] < this.settings.values[0]){
                 this.settings.values[1] = this.settings.values[0];
                 throw `Second value cant be bigger than first value`;
+            }
+            if((this.settings.values[0] !== undefined || this.settings.values[1] !== undefined) && !this.settings.range){
+                throw 'To set values option range should be true';
             }
             if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
                 this.settings.orientation = 'horizontal';
@@ -118,11 +121,13 @@ export class SliderSettings{
     }
     setValue(tmp: number){
         this.settings.value = tmp;
+        this.setValidValue();
         this.checkValidValues();
         return this.settings.value;
     }
     setValues(tmp: number[]){
         this.settings.values = tmp;
+        this.setValidValue();
         this.checkValidValues();
         return this.settings.values;
     }

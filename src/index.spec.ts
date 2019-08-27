@@ -3,12 +3,8 @@ import { Slider } from './Model/Slider';
 import { SliderSettings } from './Model/SliderSettings';
 import { SliderPointer } from './View/SliderPointer'
 import {SliderPresenterAPI} from './Presenter/SliderPresenterAPI'
-
-
-
 import { SliderPresenter } from './Presenter/SliderPresenter';
 
-import * as $ from 'jquery';
 
 
 
@@ -308,6 +304,19 @@ describe('Presenter / SliderPresenterAPI / Test initialization', ()=>{
     it("Should coincide API set values 'values'", ()=>{
         SliderPresenterAPI.enterPoint(slider, 'option', 'values', [25,35]);
         expect(slider.model.settings.settings.values).toEqual([25,35]);
+    });
+
+    it("Should coincide API set values 'set only one of values'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 55);
+        expect(slider.model.settings.settings.values).toEqual([undefined,55]);
+        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, 35);
+        expect(slider.model.settings.settings.values).toEqual([35,55]);
+    });
+    it("Should coincide API set values 'get only one of values'", ()=>{
+        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, -10);
+        expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0)).toEqual(-10);
+        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 75);
+        expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1)).toEqual(75);
     });
 
     it("Should coincide API set values 'orientation'", ()=>{

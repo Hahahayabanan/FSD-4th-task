@@ -1,25 +1,20 @@
 import { SliderTemplate } from '../View/SliderTemplate'
-import { Slider } from '../Model/Slider'
-import { SliderSettings } from '../Model/SliderSettings'
-import { ISliderSettings } from '../Model/SliderSettings'
-import { SliderPointer } from '../View/SliderPointer'
 import { SliderTemplateRange } from '../View/SliderTemplateRange'
 import {SliderPresenter} from './SliderPresenter'
 
 
-import * as $ from 'jquery';
 
 
 export class SliderPresenterAPI{
 
     static slider: SliderPresenter;
     
-    static enterPoint(slider: SliderPresenter, option: string, setting: string, value: string | number | number[] | boolean){
+    static enterPoint(slider: SliderPresenter, option: string, setting: string, value: string | number | number[] | boolean, valuesOneOfTwoVals?: number){
 
         this.slider = slider;
         
         if(option !== 'option') throw 'First parameter should be \'option\''
-        let method:string;
+
         let currReturn: string | number | number[] | boolean;
         if(value !== undefined){
             switch (setting){
@@ -35,7 +30,12 @@ export class SliderPresenterAPI{
                     break;
                 case 'value':   currReturn = this.setValue(<number>value)
                     break;
-                case 'values':  currReturn = this.setValues(<number[]>value)
+                case 'values':  if(valuesOneOfTwoVals === undefined && typeof(value)!=='number'){ currReturn = this.setValues(<number[]>value);}
+                                else if(valuesOneOfTwoVals === undefined && typeof(value)==='number'){
+                                    currReturn = this.getValues(value);
+                                }else{
+                                    currReturn = this.setValues(valuesOneOfTwoVals, <number>value);
+                                }
                     break;
                 case 'followerPoint':   currReturn = this.setFollowerPoint(<boolean>value)
                     break;
@@ -54,13 +54,13 @@ export class SliderPresenterAPI{
                     break;
                 case 'value':   currReturn = this.getValue()
                     break;
-                case 'values':  currReturn = this.getValues()
+                case 'values':  currReturn = this.getValues();
                     break;
                 case 'followerPoint': currReturn = this.getFollowerPoint()
                     break;
             }
         }
-
+        
         return currReturn;
     }
 
@@ -81,8 +81,10 @@ export class SliderPresenterAPI{
         this.slider.view.destroy();
         if(newVal){
             this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+            this.slider.model.settings.settings.value = undefined;
         }else{
             this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+            this.slider.model.settings.settings.values = undefined;
         }
         
         this.slider.initStartValue();
@@ -135,13 +137,22 @@ export class SliderPresenterAPI{
         this.slider.initStartValue();
         return newVal;
     }
-    static getValues(): number[]{
-        return this.slider.model.settings.settings.values;
+    static getValues(numberCurrent?: number): number[] | number{
+        if(numberCurrent === undefined) return this.slider.model.settings.settings.values;
+        else return this.slider.model.settings.settings.values[numberCurrent];
     }
-    static setValues(newVal: number[]): number[]{
-        newVal = this.slider.model.settings.setValues(newVal);
+    static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number{
+        if(numberCurrent === undefined){
+            newVal = this.slider.model.settings.setValues(<number[]>newVal);
+            this.slider.initStartValue();
+            return newVal;
+        }else{
+            let tmp:number[] = this.slider.model.settings.settings.values;
+            tmp[numberCurrent] = <number>newVal;
+            newVal = this.slider.model.settings.setValues(<number[]>tmp);
+        }
         this.slider.initStartValue();
-        return newVal;
+        return this.slider.model.settings.settings.values[numberCurrent];
     }
     
     

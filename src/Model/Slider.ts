@@ -30,17 +30,19 @@ export class Slider{
         
                 let curVals:number[] = [   pos[0]-minVal  ,  pos[1]-minVal   ];   
                 let currentStep:number[] = [  Math.round(curVals[0] / step),  Math.round(curVals[1] / step)  ];
-                curVals = [  currentStep[0] * step  ,  currentStep[1] * step  ];
+                curVals = [  currentStep[0] * step + minVal ,  currentStep[1] * step + minVal ];
+    
                 this.settings.settings.values = curVals;
-                return [   curVals[0] + minVal  ,  curVals[1] + minVal   ];          
+                return curVals;          
 
             }else{
 
                 let curVal:number = pos-minVal;
                 let currentStep:number = Math.round(curVal / step);
                 curVal = currentStep * step ;
+                curVal += minVal;
                 this.settings.settings.value = curVal;
-                return curVal + minVal;
+                return  curVal;
             }
 
         }else{

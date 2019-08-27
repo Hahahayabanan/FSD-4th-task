@@ -15,72 +15,129 @@
   <!-- <link src="./View/styles.css" rel="stylesheet" type="text/css"> -->
 </head>
 
+<style>
+  .slider{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #000;
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  input{
+    height: 20px;
+    width: 100px;
+  }
+
+</style>
+
 <body>
-  <div class="slider"></div>
-  <div class="slider2"></div>
-  <div class="slider3"></div>
-  <div class="slider4"></div>
-  <div class="slider5"></div>
+  <div class="slider">
+    <div class="slider1"></div>
+  </div>
+  <div class="slider">
+    <div class="slider2"></div>
+  </div>
+  <div class="slider">
+    <div class="slider3"></div>
+  </div>
+  <div class="slider">
+    <div class="slider4"></div>
+  </div>
+  <div class="slider">
+    <div class="slider5"></div>
+  </div>
+
   
   <script src="lib/jquery.js"></script>
   <script>
 $(function () {
-    // $('.slider').slider({
-    //   minVal: 200, 
-    //   maxVal: 500, 
-    //   stepVal: 100,
-    //   value: 349,
-    //   followerPoint: true
-    // })
-    // $('.slider2').slider({
-    //   minVal: 10, 
-    //   maxVal: 20, 
-    //   stepVal: 1,
-    //   orientation: 'vertical'
-    // })
-    // $('.slider3').slider({
-    //   minVal: 10, 
-    //   maxVal: 20, 
-    //   stepVal: 1,
-    //   range: true,
-    //   values: [12, 15],
-    //   followerPoint: true,
-    //   orientation: 'vertical'
-    // })
-    // $('.slider4').slider({
-    //   minVal: 1, 
-    //   maxVal: 100, 
-    //   stepVal: 1,
-    //   range: true,
-    //   values: [12, 50]
-    // })
+    $('.slider1').slider({
+      minVal: 200, 
+      maxVal: 500, 
+      stepVal: 100,
+      value: 349,
+      followerPoint: true
+    })
+    $('.slider2').slider({
+      minVal: 10, 
+      maxVal: 20, 
+      stepVal: 1,
+      value: 18,
+      orientation: 'vertical'
+    })
+    $('.slider3').slider({
+      minVal: 10, 
+      maxVal: 20, 
+      stepVal: 1,
+      range: true,
+      values: [12, 15],
+      followerPoint: true,
+      orientation: 'vertical'
+    })
+    $('.slider4').slider({
+      minVal: 1, 
+      maxVal: 100, 
+      stepVal: 1,
+      range: true,
+      values: [12, 50]
+    })
     $('.slider5').slider();
 
-    $('.slider5').slider('option', 'value', 35);
-    
-    $('.slider5').slider('option', 'followerPoint', true);
-    
-    setTimeout(()=>{
-      $('.slider5').slider('option', 'value', 85);
-    }, 1000);
-    setTimeout(()=>{
-      $('.slider5').slider('option', 'range', true);
-      $('.slider5').slider('option', 'values', [50,70]);
-    }, 2000);
-    setTimeout(()=>{
-      $('.slider5').slider('option', 'followerPoint', false);
-    }, 3000);   
-    setTimeout(()=>{
-      $('.slider5').slider('option', 'range', false);
-    }, 4000);   
-    setTimeout(()=>{
-      $('.slider5').slider('option', 'orientation', 'vertical');
-      $('.slider5').slider('option', 'followerPoint', true);
-    }, 4000);   
-    
-    
-    
 
+    $('.slider').each(function (i,val){
+        let newInput = document.createElement('input');
+        newInput.setAttribute('type', 'text');
+        $(this).append(newInput);
+
+        let slider = this.lastElementChild;
+
+        if($(slider).slider('option', 'range')){
+            let newInput2 = document.createElement('input');
+            newInput.setAttribute('type', 'text');
+            $(this).append(newInput);
+
+            $(newInput).val($(slider).slider('option', 'values', 0))
+            $(newInput).on('change', ()=>{
+                $(slider).slider('option', 'values', $(newInput).val());
+            });
+            $(slider).on('changePointer', ()=>{
+                $(newInput).val($(slider).slider('option', 'values'))
+            })
+        }else{
+            $(newInput).val($(slider).slider('option', 'value'))
+            $(newInput).on('change', ()=>{
+                $(slider).slider('option', 'value', $(newInput).val());
+            });
+            $(slider).on('changePointer', ()=>{
+                $(newInput).val($(slider).slider('option', 'value'))
+            })
+        }
+
+
+      
+    })
+    // setTimeout(()=>{
+    //   $('.slider5').slider('option', 'value', 85);
+    // }, 1000);
+    // setTimeout(()=>{
+    //   $('.slider5').slider('option', 'range', true);
+    //   $('.slider5').slider('option', 'values', [50,70]);
+    // }, 2000);
+    // setTimeout(()=>{
+    //   $('.slider5').slider('option', 'followerPoint', false);
+    // }, 3000);   
+    // setTimeout(()=>{
+    //   $('.slider5').slider('option', 'range', false);
+    // }, 4000);   
+    // setTimeout(()=>{
+    //   $('.slider5').slider('option', 'orientation', 'vertical');
+    //   $('.slider5').slider('option', 'followerPoint', true);
+    // }, 4000);   
+    
+    
     
       
     
