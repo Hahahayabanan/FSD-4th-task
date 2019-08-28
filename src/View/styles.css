@@ -2,7 +2,6 @@
 .j-plugin-slider_vertical {
   border-radius: 5px;
   background: rgb(240, 240, 240);
-  background: linear-gradient(left top, #E0E0E0, #EEEEEE);
   width: 300px;
   height: 5px;
   position: relative;
@@ -11,6 +10,7 @@
 .j-plugin-slider_vertical {
   height: 300px;
   width: 5px;
+  min-width: 5px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -51,7 +51,6 @@
 }
 .j-plugin-slider__range_vertical{
   width: 5px;
-
 }
 
 

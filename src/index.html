@@ -33,8 +33,11 @@
   .control{
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      justify-content: flex-start;
       align-items: flex-end;
+  }
+  label{
+      white-space: nowrap;
   }
 
 </style>
@@ -95,10 +98,132 @@ $(function () {
         $(this).append(container);
         let slider = this.firstElementChild;
         
-        initValueInputs(container, slider);
         initFollowerPintCheckboxes(container,slider);
-      
-    })
+        initOrientation(container, slider);
+        initRange(container, slider);
+        initMinMax(container, slider);
+        initStep(container, slider)
+        initValueInputs(container, slider);
+    });
+
+    function initStep(container, slider){
+      let ilabel1 = document.createElement('label');
+        ilabel1.innerHTML = 'Step';
+        $(container).append(ilabel1);
+
+        let newInput1 = document.createElement('input');
+        newInput1.setAttribute('type', 'text');
+        $(ilabel1).append(newInput1);       
+       
+        $(newInput1).val($(slider).slider('option', 'stepVal'))
+        $(newInput1).on('change', ()=>{
+            $(slider).slider('option', 'stepVal', $(newInput1).val());
+        });
+
+        
+    }
+
+    function initMinMax(container, slider){
+      let ilabel1 = document.createElement('label');
+        ilabel1.innerHTML = 'Max';
+        $(container).append(ilabel1);
+
+        let newInput1 = document.createElement('input');
+        newInput1.setAttribute('type', 'text');
+        $(ilabel1).append(newInput1);
+
+      let ilabel2 = document.createElement('label');
+        ilabel2.innerHTML = 'Min';
+        $(container).append(ilabel2);
+
+        let newInput2 = document.createElement('input');
+        newInput2.setAttribute('type', 'text');
+        $(ilabel2).append(newInput2);
+        
+       
+        $(newInput1).val($(slider).slider('option', 'maxVal'))
+        $(newInput2).val($(slider).slider('option', 'minVal'))
+        $(newInput1).on('change', ()=>{
+            $(slider).slider('option', 'maxVal', $(newInput1).val());
+        });
+        $(newInput2).on('change', ()=>{
+            $(slider).slider('option', 'minVal', $(newInput2).val());
+        });
+        
+    }
+
+    function initRange(container, slider){
+        let ilabel1 = document.createElement('label');
+        ilabel1.innerHTML = 'false';
+        $(container).append(ilabel1);
+
+        let newInput1 = document.createElement('input');
+        newInput1.setAttribute('type', 'radio');
+        newInput1.setAttribute('name', 'range'+String(slider.classList).substring(0, 7));
+        $(ilabel1).append(newInput1);
+
+        let ilabel2 = document.createElement('label');
+        ilabel2.innerHTML = 'true';
+        $(container).append(ilabel2);
+
+        let newInput2 = document.createElement('input');
+        newInput2.setAttribute('type', 'radio');
+        newInput2.setAttribute('name', 'range'+String(slider.classList).substring(0, 7));
+        $(ilabel2).append(newInput2);
+
+
+        if($(slider).slider('option', 'range') === true){
+            newInput2.checked = true;
+        }else{
+            newInput1.checked = true;
+        }
+
+        $(ilabel1).change(function() {
+            $(slider).slider('option', 'range', false);
+            $('.val'+String(slider.classList).substring(0, 7)).remove();
+            initValueInputs(container, slider);
+        })
+        $(ilabel2).change(function() {
+            $(slider).slider('option', 'range', true);
+            $('.val'+String(slider.classList).substring(0, 7)).remove();
+            initValueInputs(container, slider);
+        })
+
+        
+    }
+
+    function initOrientation(container, slider){
+        let ilabel1 = document.createElement('label');
+        ilabel1.innerHTML = 'Horizontal';
+        $(container).append(ilabel1);
+
+        let newInput1 = document.createElement('input');
+        newInput1.setAttribute('type', 'radio');
+        newInput1.setAttribute('name', 'ori'+String(slider.classList).substring(0, 7));
+        $(ilabel1).append(newInput1);
+
+        let ilabel2 = document.createElement('label');
+        ilabel2.innerHTML = 'Vertical';
+        $(container).append(ilabel2);
+
+        let newInput2 = document.createElement('input');
+        newInput2.setAttribute('type', 'radio');
+        newInput2.setAttribute('name', 'ori'+String(slider.classList).substring(0, 7));
+        $(ilabel2).append(newInput2);
+
+        if($(slider).slider('option', 'orientation') === 'horizontal'){
+            newInput1.checked = true;
+        }else{
+            newInput2.checked = true;
+        }
+
+        $(ilabel1).change(function() {
+            $(slider).slider('option', 'orientation', 'horizontal');
+        })
+        $(ilabel2).change(function() {
+            $(slider).slider('option', 'orientation', 'vertical');
+        })
+    }
 
     function initFollowerPintCheckboxes(container, slider){
         let ilabel = document.createElement('label');
@@ -124,6 +249,7 @@ $(function () {
     
     function initValueInputs(container, slider){
         let ilabel = document.createElement('label');
+        ilabel.setAttribute('class', 'val'+String(slider.classList).substring(0, 7));
         ilabel.innerHTML = 'First pointer';
         $(container).append(ilabel);
 
@@ -134,6 +260,7 @@ $(function () {
 
         if($(slider).slider('option', 'range')){
             let ilabel2 = document.createElement('label');
+            ilabel2.setAttribute('class', 'val'+String(slider.classList).substring(0, 7));
             ilabel2.innerHTML = 'Second pointer';
             $(container).append(ilabel2);
 
@@ -165,29 +292,6 @@ $(function () {
             })
         }
     }
-    
-    
-    
-    // setTimeout(()=>{
-    //   $('.slider5').slider('option', 'value', 85);
-    // }, 1000);
-    // setTimeout(()=>{
-    //   $('.slider5').slider('option', 'range', true);
-    //   $('.slider5').slider('option', 'values', [50,70]);
-    // }, 2000);
-    // setTimeout(()=>{
-    //   $('.slider5').slider('option', 'followerPoint', false);
-    // }, 3000);   
-    // setTimeout(()=>{
-    //   $('.slider5').slider('option', 'range', false);
-    // }, 4000);   
-    // setTimeout(()=>{
-    //   $('.slider5').slider('option', 'orientation', 'vertical');
-    //   $('.slider5').slider('option', 'followerPoint', true);
-    // }, 4000);   
-    
-    
-    
       
     
 

@@ -104,6 +104,7 @@ export class SliderTemplateRange {
         this.range.remove();
         this.thumb1.thumb.remove();
         this.thumb2.thumb.remove();
+        this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider')
     }
 
 

@@ -7,6 +7,14 @@ export class SliderTemplate{
     public isVertical: boolean;
     public isFollowerPoint: boolean = false;
 
+    private sliderOnClick = (event:any)=>{
+        event.preventDefault();
+        let newLeft: number = this.isVertical
+            ? event.clientY - this.slider.getBoundingClientRect().top
+            : event.clientX - this.slider.getBoundingClientRect().left;
+        this.thumb.currPos = newLeft;    
+    }
+
     constructor(elem: any, isVertical?:string, isFollowerPoint?:boolean){
         this.slider = elem;
 
@@ -46,21 +54,15 @@ export class SliderTemplate{
         
     }
 
-
-
     addEventToSliderClick(){
-        this.slider.onclick = (event:any) => {
-            event.preventDefault();
-            let newLeft: number = this.isVertical
-                ? event.clientY - this.slider.getBoundingClientRect().top
-                : event.clientX - this.slider.getBoundingClientRect().left;
-            this.thumb.currPos = newLeft;           
-        }
+        this.slider.addEventListener('click', this.sliderOnClick);
     }
 
     destroy(){
+        this.slider.removeEventListener('click', this.sliderOnClick)
         this.thumb.thumb.remove();
-        this.thumb.thumb.remove();
+        this.thumb = undefined;
+        this.slider.classList.remove('j-plugin-slider', 'j-plugin-slider_vertical');
     }
 
     

@@ -70,7 +70,7 @@ export class SliderSettings{
                 throw `Second value cant be bigger than first value`;
             }
             if((this.settings.values[0] !== undefined || this.settings.values[1] !== undefined) && !this.settings.range){
-                throw 'To set values option range should be true';
+                throw 'Your slider has range values but it is not range';
             }
             if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
                 this.settings.orientation = 'horizontal';
@@ -84,6 +84,9 @@ export class SliderSettings{
     setValidValue(){
         if(this.settings.value === undefined && !this.settings.range){
             this.settings.value = this.settings.minVal;
+        }
+        if(this.settings.values === undefined && this.settings.range){
+            this.settings.values = [this.settings.minVal, this.settings.maxVal];
         }
         if(this.settings.values[0] === undefined && this.settings.range){
             this.settings.values[0] = this.settings.minVal;

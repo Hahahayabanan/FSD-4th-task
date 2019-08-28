@@ -81,10 +81,10 @@ export class SliderPresenterAPI{
         this.slider.view.destroy();
         if(newVal){
             this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-            this.slider.model.settings.settings.value = undefined;
+            // this.slider.model.settings.settings.value = undefined;
         }else{
             this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-            this.slider.model.settings.settings.values = undefined;
+            // this.slider.model.settings.settings.values = [undefined, undefined];
         }
         
         this.slider.initStartValue();
@@ -129,6 +129,7 @@ export class SliderPresenterAPI{
         newVal = this.slider.model.settings.setOrientation(newVal);
         let rootElement = this.slider.view.slider;
         this.slider.view.destroy();
+        this.slider.view = undefined;
         if(this.slider.model.settings.settings.range){
             this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
         }else{
