@@ -12,7 +12,6 @@ export class SliderPointer{
         this.thumb = elem;
         this.slider = slider;
         this.isVertical = isVertical;
-        // if(isFollowerPoint) this.createFollowerPoint();
     }
 
     get currPos():number{
@@ -27,7 +26,7 @@ export class SliderPointer{
         }));
     }
 
-    createEventListeners(anotherPointer?: any){
+    createEventListeners(anotherPointer?: SliderPointer){
         this.thumb.onmousedown = (event:any) => {
             event.preventDefault();
             

@@ -12,8 +12,11 @@ export class SliderPresenterAPI{
     static enterPoint(slider: SliderPresenter, option: string, setting: string, value: string | number | number[] | boolean, valuesOneOfTwoVals?: number){
 
         this.slider = slider;
-        
-        if(option !== 'option') throw 'First parameter should be \'option\''
+        try{
+            if(option !== 'option') throw 'First parameter should be \'option\''
+        }catch(err){
+            console.error(err)
+        }
 
         let currReturn: string | number | number[] | boolean;
         if(value !== undefined){
@@ -81,10 +84,8 @@ export class SliderPresenterAPI{
         this.slider.view.destroy();
         if(newVal){
             this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-            // this.slider.model.settings.settings.value = undefined;
         }else{
             this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-            // this.slider.model.settings.settings.values = [undefined, undefined];
         }
         
         this.slider.initStartValue();

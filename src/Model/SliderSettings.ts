@@ -19,8 +19,8 @@ export class SliderSettings{
         maxVal: 100,
         stepVal: 1,
         orientation: 'horizontal',
-        value: undefined,
-        values: [undefined, undefined],
+        value: null,
+        values: [null, null],
         followerPoint: false
     };
 
@@ -39,6 +39,9 @@ export class SliderSettings{
             if(this.settings.minVal > this.settings.maxVal){
                 this.settings.maxVal = this.defaultSettings.maxVal;
                 this.settings.minVal = this.defaultSettings.minVal;
+                this.settings.value = this.defaultSettings.value;
+                this.settings.values = this.defaultSettings.values;
+                this.settings.stepVal = this.defaultSettings.stepVal;
                 throw 'Min slider range value cant be bigger than max value';
             }
             if(this.settings.maxVal - this.settings.minVal <= this.settings.stepVal){
@@ -69,7 +72,7 @@ export class SliderSettings{
                 this.settings.values[1] = this.settings.values[0];
                 throw `Second value cant be bigger than first value`;
             }
-            if((this.settings.values[0] !== undefined || this.settings.values[1] !== undefined) && !this.settings.range){
+            if((this.settings.values[0] !== null || this.settings.values[1] !== null) && !this.settings.range){
                 throw 'Your slider has range values but it is not range';
             }
             if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
@@ -82,16 +85,16 @@ export class SliderSettings{
     }
 
     setValidValue(){
-        if(this.settings.value === undefined && !this.settings.range){
+        if(this.settings.value === null && !this.settings.range){
             this.settings.value = this.settings.minVal;
         }
-        if(this.settings.values === undefined && this.settings.range){
+        if(this.settings.values === null && this.settings.range){
             this.settings.values = [this.settings.minVal, this.settings.maxVal];
         }
-        if(this.settings.values[0] === undefined && this.settings.range){
+        if(this.settings.values[0] === null && this.settings.range){
             this.settings.values[0] = this.settings.minVal;
         }
-        if(this.settings.values[1] === undefined && this.settings.range){
+        if(this.settings.values[1] === null && this.settings.range){
             this.settings.values[1] = this.settings.maxVal;
         }
     }
@@ -103,24 +106,44 @@ export class SliderSettings{
         return this.settings.range;
     }
     setMinVal(tmp: number){
-        this.settings.minVal = tmp;
-        this.checkValidValues();
-        return this.settings.minVal;
+        try{
+            if(tmp > this.settings.maxVal){
+                throw 'Min slider range value cant be bigger than max value';
+            }
+            this.settings.minVal = tmp;
+            this.checkValidValues();
+            return this.settings.minVal;
+        }catch(err){
+            console.error(err)
+            return this.settings.minVal;
+        }
     }
     setMaxVal(tmp: number){
-        this.settings.maxVal = tmp;
-        this.checkValidValues();
-        return this.settings.maxVal;
+        try{
+            if(tmp < this.settings.minVal){
+                throw 'Max slider range value cant be smaller than min value';
+            }
+            this.settings.maxVal = tmp;
+            this.checkValidValues();
+            return this.settings.maxVal;
+        }catch(err){
+            console.error(err)
+            return this.settings.maxVal;
+        }
     }
     setStepVal(tmp: number){
-        if(tmp < (this.settings.maxVal - this.settings.minVal)){
-            this.settings.stepVal = tmp;
-            this.checkValidValues();
-            return this.settings.stepVal;
-        }else{
-            this.settings.stepVal = this.defaultSettings.stepVal;
-            throw 'Step cant be bigger then min and max range';
-        }      
+        try{
+            if(tmp < (this.settings.maxVal - this.settings.minVal)){
+                this.settings.stepVal = tmp;
+                this.checkValidValues();
+                return this.settings.stepVal;
+            }else{
+                this.settings.stepVal = this.defaultSettings.stepVal;
+                throw 'Step cant be bigger then min and max range';
+            }   
+        }catch(err){
+            console.error(err)
+        }   
     }
     setValue(tmp: number){
         this.settings.value = tmp;
