@@ -30,10 +30,10 @@ export class SliderPresenter{
             let currThumb = event.detail;
 
             let curPosInPixels:number = currThumb.currPos;
-            let curPosInVal:number = this.calculateCurrPosFromPixelsToValue(curPosInPixels);
+            let curPosInVal:number = this.calculateFromPixelsToValue(curPosInPixels);
             let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
             
-            let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
+            let curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
   
             this.render(currThumb, curPosInPercentsWithStep);
             this.setFollowerPointValue(currThumb, curPosInValWithStep);
@@ -58,13 +58,9 @@ export class SliderPresenter{
             let curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
             
             let curPosInPercentsWithStep: number[] = [ 0 , 0 ];
-            curPosInPercentsWithStep[0] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[0]);
-            curPosInPercentsWithStep[1] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[1]);
+            curPosInPercentsWithStep[0] = this.calculateFromValueToPercents(curPosInValsWithStep[0]);
+            curPosInPercentsWithStep[1] = this.calculateFromValueToPercents(curPosInValsWithStep[1]);
 
-            // this.render(this.view.thumb1, curPosInPercentsWithStep[0]);
-            // this.render(this.view.thumb2, curPosInPercentsWithStep[1]);
-            // this.setFollowerPointValue(this.view.thumb1, curPosInValsWithStep[0]);
-            // this.setFollowerPointValue(this.view.thumb2, curPosInValsWithStep[1]);
             this.view.initRangeLine();
 
             this.view.thumb1.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]);
@@ -74,11 +70,8 @@ export class SliderPresenter{
             let curPosInValue:number = this.model.settings.settings.value;
             let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
             
-            let curPosInPercentsWithStep:number = this.getCurrPosFromValueToPercents(curPosInValWithStep);
-
-            // this.render(this.view.thumb, curPosInPercentsWithStep);
-            // this.setFollowerPointValue(this.view.thumb, curPosInValWithStep);
-                
+            let curPosInPercentsWithStep:number = this.calculateFromValueToPercents(curPosInValWithStep);
+               
             this.view.thumb.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep);
         }       
         
@@ -98,7 +91,7 @@ export class SliderPresenter{
                 curThumb.followerPoint.setValue(currPosInValWithStep);
             }
         }else{
-            curThumb.deleteFollowerPiont();
+            curThumb.deleteFollowerPoint();
         }
     }
     
@@ -113,7 +106,7 @@ export class SliderPresenter{
 
     // curPosInPercents = 711 / 900 * 100%
     
-    calculateCurrPosFromPixelsToValue(curPosInPixels:number){
+    calculateFromPixelsToValue(curPosInPixels:number):number{
         let minVal:number = this.model.settings.settings.minVal;
         let maxVal:number = this.model.settings.settings.maxVal;
         let rangeVal:number = maxVal - minVal;     
@@ -137,7 +130,7 @@ export class SliderPresenter{
     // rangeVal 1000-100   = 900   - 100%
     // curPosInVal 350-100 = 250   -   ?%
     // curPosInPercents    = 250 * 100% / 900 
-    getCurrPosFromValueToPercents(curPosInValue:number){
+    calculateFromValueToPercents(curPosInValue:number):number{
         let minVal:number = this.model.settings.settings.minVal;
         let maxVal:number = this.model.settings.settings.maxVal;
         let rangeVal:number = maxVal - minVal; 
@@ -148,7 +141,7 @@ export class SliderPresenter{
     }
 
 
-    calculateFromPercentsToPixels(curPosInPercents: number){
+    calculateFromPercentsToPixels(curPosInPercents: number):number{
         let rangePixels:string = '1';
         if(this.model.settings.settings.orientation === 'vertical'){
             rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;

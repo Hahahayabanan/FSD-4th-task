@@ -2,15 +2,15 @@ import FollowerPoint from './FollowerPoint'
 
 export class SliderPointer{
 
-    public thumb: any;
-    public slider: any;
+    public thumbHTMLElem: any;
+    public sliderHTMLElem: any;
     public _curPos: number;
     public isVertical: boolean;
     public followerPoint: FollowerPoint;
 
-    constructor(elem: any, slider:any, isVertical: boolean, isFollowerPoint: boolean){
-        this.thumb = elem;
-        this.slider = slider;
+    constructor(elemHTML: any, sliderHTML:any, isVertical: boolean){
+        this.thumbHTMLElem = elemHTML;
+        this.sliderHTMLElem = sliderHTML;
         this.isVertical = isVertical;
     }
 
@@ -20,23 +20,23 @@ export class SliderPointer{
     set currPos(newCurrPos: number){
         this._curPos = newCurrPos;
 
-        this.slider.dispatchEvent(new CustomEvent('changePointer', {
+        this.sliderHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
             bubbles: true,
             detail: this
         }));
     }
 
     createEventListeners(anotherPointer?: SliderPointer){
-        this.thumb.onmousedown = (event:any) => {
+        this.thumbHTMLElem.onmousedown = (event:any) => {
             event.preventDefault();
             
             let shift: number = this.isVertical 
-                ? event.clientY - this.thumb.getBoundingClientRect().top
-                : event.clientX - this.thumb.getBoundingClientRect().left;
+                ? event.clientY - this.thumbHTMLElem.getBoundingClientRect().top
+                : event.clientX - this.thumbHTMLElem.getBoundingClientRect().left;
 
             let rightEdge: number = this.isVertical
-                ? this.slider.offsetHeight
-                : this.slider.offsetWidth;
+                ? this.sliderHTMLElem.offsetHeight
+                : this.sliderHTMLElem.offsetWidth;
             let leftEdge: number = 0;          
             
             let onMouseMove = (event:any) => {
@@ -49,8 +49,8 @@ export class SliderPointer{
                 }
 
                 let newLeft: number = this.isVertical 
-                    ? event.clientY - shift - this.slider.getBoundingClientRect().top 
-                    : event.clientX - shift - this.slider.getBoundingClientRect().left 
+                    ? event.clientY - shift - this.sliderHTMLElem.getBoundingClientRect().top 
+                    : event.clientX - shift - this.sliderHTMLElem.getBoundingClientRect().left 
               
                
                 if (newLeft < leftEdge) {
@@ -73,7 +73,7 @@ export class SliderPointer{
             document.addEventListener('mouseup', onMouseUp);
         };
 
-        this.thumb.ondragstart = function() {
+        this.thumbHTMLElem.ondragstart = function() {
             return false;
         };
 
@@ -81,8 +81,8 @@ export class SliderPointer{
 
     renderCurrentPosInPixels(newPos:number){
         let widthOrHeight: string = this.isVertical 
-            ? this.slider.getBoundingClientRect().height || this.slider.style.height
-            : this.slider.getBoundingClientRect().width || this.slider.style.width;
+            ? this.sliderHTMLElem.getBoundingClientRect().height || this.sliderHTMLElem.style.height
+            : this.sliderHTMLElem.getBoundingClientRect().width || this.sliderHTMLElem.style.width;
 
         newPos = newPos * 100 / parseInt(widthOrHeight, 10);
 
@@ -91,24 +91,24 @@ export class SliderPointer{
 
     renderCurrentPosInPercents(newPos: number){
         let newCssLeftOrTop: string = this.isVertical
-            ? this.thumb.style.top = newPos + '%'
-            : this.thumb.style.left = newPos + '%';
+            ? this.thumbHTMLElem.style.top = newPos + '%'
+            : this.thumbHTMLElem.style.left = newPos + '%';
         return newCssLeftOrTop;
     }
 
 
     createFollowerPoint(){
-        if(this.isVertical)this.slider.classList.add('j-plugin-slider_with-point_vertical');
-        else this.slider.classList.add('j-plugin-slider_with-point');
-        this.followerPoint = new FollowerPoint(this.thumb, this.isVertical);
+        if(this.isVertical)this.sliderHTMLElem.classList.add('j-plugin-slider_with-point_vertical');
+        else this.sliderHTMLElem.classList.add('j-plugin-slider_with-point');
+        this.followerPoint = new FollowerPoint(this.thumbHTMLElem, this.isVertical);
     }
     
-    deleteFollowerPiont(){
+    deleteFollowerPoint(){
         if(this.followerPoint !== undefined){
             this.followerPoint.destroy();
             this.followerPoint = undefined;
-            this.slider.classList.remove('j-plugin-slider_with-point');
-            this.slider.classList.remove('j-plugin-slider_with-point_vertical');
+            this.sliderHTMLElem.classList.remove('j-plugin-slider_with-point');
+            this.sliderHTMLElem.classList.remove('j-plugin-slider_with-point_vertical');
         }
     }
 

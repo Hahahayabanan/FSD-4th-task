@@ -20,7 +20,14 @@ SliderTemplate  | Реализует шаблон слайдера с одним
 SliderTemplateRange | Реализует шаблон слайдера с двумя бегунком
 PRESENTER       | 
 SliderPresenter | Реализует логику работы слайдера, содержит объект модели, объект отображения
-SliderPresenterAPI | Реализует API структуру
+SliderPresenterAPI | Статический класс, реализует методы, для получения, внесения данных в плагин
+
+## UML диаграмма
+
+![Diagram](https://github.com/Hahahayabanan/JQueryCustomSlider3/blob/master/uml.png)
+![Diagram](uml.png)
+![alt text](https://github.com/Hahahayabanan/JQueryCustomSlider3/blob/master/uml.png)
+![alt text](uml.png)
 
 ## Пример инициализации
 

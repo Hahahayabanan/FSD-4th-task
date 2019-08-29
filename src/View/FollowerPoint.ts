@@ -1,26 +1,26 @@
 
 
 export class FollowerPoint{
-    public elem: any;
+    public elemHTMLElement: any;
 
-    constructor(thumb: any, isVertical: boolean){
-        this.elem = document.createElement('div');
+    constructor(thumbHTML: any, isVertical: boolean){
+        this.elemHTMLElement = document.createElement('div');
 
         if(isVertical){
-            this.elem.classList.add('j-slider__follower-point_vertical');
+            this.elemHTMLElement.classList.add('j-slider__follower-point_vertical');
         }else{
-            this.elem.classList.add('j-slider__follower-point');
+            this.elemHTMLElement.classList.add('j-slider__follower-point');
         }
         
-        thumb.appendChild(this.elem);
+        thumbHTML.appendChild(this.elemHTMLElement);
     }
 
     setValue(value: number){
-        this.elem.innerHTML = value;
+        this.elemHTMLElement.innerHTML = value;
     }
 
     destroy(){
-        this.elem.remove();
+        this.elemHTMLElement.remove();
     }
 
 }

@@ -143,6 +143,7 @@ export class SliderSettings{
             }   
         }catch(err){
             console.error(err)
+            return this.settings.stepVal;
         }   
     }
     setValue(tmp: number){

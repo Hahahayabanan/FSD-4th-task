@@ -7,13 +7,7 @@ export class SliderTemplate{
     public isVertical: boolean;
     public isFollowerPoint: boolean = false;
 
-    private sliderOnClick = (event:any)=>{
-        event.preventDefault();
-        let newLeft: number = this.isVertical
-            ? event.clientY - this.slider.getBoundingClientRect().top
-            : event.clientX - this.slider.getBoundingClientRect().left;
-        this.thumb.currPos = newLeft;    
-    }
+    
 
     constructor(elem: any, isVertical?:string, isFollowerPoint?:boolean){
         this.slider = elem;
@@ -31,21 +25,29 @@ export class SliderTemplate{
         this.addEventToSliderClick()
         
     }
+
+    private sliderOnClick = (event:any)=>{
+        event.preventDefault();
+        let newLeft: number = this.isVertical
+            ? event.clientY - this.slider.getBoundingClientRect().top
+            : event.clientX - this.slider.getBoundingClientRect().left;
+        this.thumb.currPos = newLeft;    
+    }
     
     createTemplate(){
         
-        this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical, this.isFollowerPoint);
-        this.slider.append(this.thumb.thumb);   
+        this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
+        this.slider.append(this.thumb.thumbHTMLElem);   
 
         if(this.isVertical){
             this.slider.classList.add('j-plugin-slider_vertical');
-            this.thumb.thumb.classList.add('j-plugin-slider__thumb_vertical');
+            this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
             if(this.isFollowerPoint){
                 this.slider.classList.add('j-plugin-slider_with-point_vertical');
             }
         }else{
             this.slider.classList.add('j-plugin-slider');
-            this.thumb.thumb.classList.add('j-plugin-slider__thumb');
+            this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
             if(this.isFollowerPoint){
                 this.thumb.createFollowerPoint();
             }
@@ -60,7 +62,7 @@ export class SliderTemplate{
 
     destroy(){
         this.slider.removeEventListener('click', this.sliderOnClick)
-        this.thumb.thumb.remove();
+        this.thumb.thumbHTMLElem.remove();
         this.thumb = undefined;
         this.slider.classList.remove('j-plugin-slider', 'j-plugin-slider_vertical');
     }
