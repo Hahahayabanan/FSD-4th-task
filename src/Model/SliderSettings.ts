@@ -56,19 +56,19 @@ export class SliderSettings{
                 this.settings.value = this.settings.minVal;
                 throw `Value cant be smaller than min value`;
             }
-            if(this.settings.values[0] < this.settings.minVal){
+            if(this.settings.values[0] < this.settings.minVal && this.settings.range){
                 this.settings.values[0] = this.settings.minVal;
                 throw `First value cant be smaller than min value`;
             }
-            if(this.settings.values[1] > this.settings.maxVal){
+            if(this.settings.values[1] > this.settings.maxVal && this.settings.range){
                 this.settings.values[1] = this.settings.maxVal;
                 throw `Second value cant be bigger than max value`;
             }
-            if(this.settings.values[0] > this.settings.values[1]){
+            if(this.settings.values[0] > this.settings.values[1] && this.settings.range){
                 this.settings.values[0] = this.settings.values[1];
                 throw `First value cant be bigger than second value`;
             }
-            if(this.settings.values[1] < this.settings.values[0]){
+            if(this.settings.values[1] < this.settings.values[0] && this.settings.range){
                 this.settings.values[1] = this.settings.values[0];
                 throw `Second value cant be bigger than first value`;
             }

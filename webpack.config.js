@@ -24,7 +24,8 @@ const plugins = [
     }
   }),
   new CopyWebpackPlugin([
-    {from: '../node_modules/jquery/dist/jquery.js', to: './lib/jquery.js'}
+    {from: '../node_modules/jquery/dist/jquery.js', to: './lib/jquery.js'},
+    {from: '../src/View/styles.css', to: './styles.css'}
   ])
 
 ];
@@ -47,22 +48,7 @@ var config = {
         exclude: [/\/node_modules\//],
         use: ['awesome-typescript-loader', 'source-map-loader']
       },
-     
-    // {
-    //     enforce: 'pre',
-    //     test: /\.js$/,
-    //     loader: 'source-map-loader'
-    // },
-    // {
-    //     enforce: 'pre',
-    //     test: /\.tsx?$/,
-    //     use: 'source-map-loader'
-    // },
-    // {
-    //     test: /\.tsx?$/,
-    //     loader: 'ts-loader',
-    //     exclude: /node_modules/
-    // },
+   
 
       !isProd
         ? {
