@@ -1,10 +1,10 @@
-# JQuery Custom plugin
+# FSD The 4th task. JQuery Custom plugin
 
 ### выполнено для FSD Frontend 4 step education
 
-## Пример работы слайдера на демонстрационной [странице](./dist/index.html)
+## Пример работы слайдера на демонстрационной [странице](https://hahahayabanan.github.io/FSD-4th-task/dist/)
 ---
----
+
 # Архитектура проекта
 
 Имя класса      | Описание
@@ -25,9 +25,6 @@ SliderPresenterAPI | Статический класс, реализует ме�
 ## UML диаграмма
 
 ![Diagram](https://github.com/Hahahayabanan/JQueryCustomSlider3/blob/master/uml.png)
-![Diagram](uml.png)
-![alt text](https://github.com/Hahahayabanan/JQueryCustomSlider3/blob/master/uml.png)
-![alt text](uml.png)
 
 ## Пример инициализации
 
