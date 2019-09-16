@@ -1,7 +1,11 @@
-export declare class FollowerPoint {
-  elem: any;
-  constructor(thumb: any, isVertical: boolean);
-  setValue(value: number): void;
-  destroy(): void;
+declare class FollowerPoint {
+    elemHTMLElement: any;
+    isVertical: boolean;
+    thumbHTMLElement: any;
+    constructor(thumbHTML: any, isVertical: boolean);
+    createTemplate(): void;
+    setValue(value: number): void;
+    destroy(): void;
 }
+export { FollowerPoint };
 export default FollowerPoint;

@@ -1,6 +1,6 @@
-import {ISliderSettings} from './Model/SliderSettings'
-import {SliderPresenter} from './Presenter/SliderPresenter'
-import {SliderPresenterAPI} from './Presenter/SliderPresenterAPI'
+import { ISliderSettings } from './Model/ISliderSettings'
+import { SliderPresenter } from './Presenter/SliderPresenter'
+import { SliderPresenterAPI } from './Presenter/SliderPresenterAPI'
 import './View/styles.css'
 
 (function ($: JQueryStatic) {

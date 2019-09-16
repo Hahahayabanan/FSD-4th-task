@@ -1,13 +1,14 @@
 import SliderPointer from './SliderPointer';
-export declare class SliderTemplate {
-  slider: any;
-  thumb: SliderPointer;
-  isVertical: boolean;
-  isFollowerPoint: boolean;
-  private sliderOnClick;
-  constructor(elem: any, isVertical?: string, isFollowerPoint?: boolean);
-  createTemplate(): void;
-  addEventToSliderClick(): void;
-  destroy(): void;
+declare class SliderTemplate {
+    slider: any;
+    thumb: SliderPointer;
+    isVertical: boolean;
+    isFollowerPoint: boolean;
+    constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean);
+    private sliderOnClick;
+    createTemplate(): void;
+    addEventToSliderClick(): void;
+    destroy(): void;
 }
+export { SliderTemplate };
 export default SliderTemplate;

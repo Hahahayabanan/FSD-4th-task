@@ -145,15 +145,19 @@ class SliderPresenterAPI{
   }
 
   static checkValuesSetterType(valuesOneOfTwoVals:any, value:any){
-    let currReturn;
-    if(valuesOneOfTwoVals === undefined && typeof(value)!=='number'){ 
-      currReturn = this.setValues(<number[]>value);
-    }else if(valuesOneOfTwoVals === undefined && typeof(value)==='number'){
-      currReturn = this.getValues(value);
-    }else if(valuesOneOfTwoVals !== undefined && typeof(value)==='number'){
-      currReturn = this.setValues(valuesOneOfTwoVals, <number>value);
+    let ordersModule = {
+      TYPE: 'number'
     }
-    return currReturn;
+    let isValueNumber = typeof(value)===ordersModule.TYPE;
+    let isOneOfValuesUndefined = valuesOneOfTwoVals === undefined;
+
+    if(isOneOfValuesUndefined && !isValueNumber){ 
+      return this.setValues(<number[]>value);
+    }else if(isOneOfValuesUndefined && isValueNumber){
+      return this.getValues(value);
+    }else if(!isOneOfValuesUndefined && isValueNumber){
+      return this.setValues(valuesOneOfTwoVals, <number>value);
+    }
   }
   
 }

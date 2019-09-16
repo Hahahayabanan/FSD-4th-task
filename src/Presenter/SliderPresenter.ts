@@ -1,6 +1,6 @@
 import { SliderTemplate } from '../View/SliderTemplate'
 import { Slider } from '../Model/Slider'
-import { ISliderSettings } from '../Model/SliderSettings'
+import { ISliderSettings } from '../Model/ISliderSettings'
 import { SliderPointer } from '../View/SliderPointer'
 import { SliderTemplateRange } from '../View/SliderTemplateRange'
 
@@ -150,9 +150,9 @@ class SliderPresenter{
 
   checkOrientationIsVertical():boolean{
     let ordersModule = {
-      ORIENTATION_IS_VERTICAL: 'vertical'
+      ORIENTATION: 'vertical'
     }
-    if(this.model.settings.settings.orientation === ordersModule.ORIENTATION_IS_VERTICAL){
+    if(this.model.settings.settings.orientation === ordersModule.ORIENTATION){
       return true;
     }else{
       return false;

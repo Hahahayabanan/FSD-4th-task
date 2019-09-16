@@ -1,16 +1,8 @@
+import { ISliderSettings } from './ISliderSettings';
+
 import * as $ from 'jquery';
 
-interface ISliderSettings {
-  range? : boolean,
-  minVal?: number,
-  maxVal?: number,
-  stepVal?: number,
-  orientation?: string,
-  value?: number,
-  values?: Array<number>,
-  followerPoint?: boolean
-}
-  
+
 class SliderSettings{
   protected defaultSettings: ISliderSettings = {
     range : false,
@@ -34,7 +26,13 @@ class SliderSettings{
 
   checkValidValues(){   
     try{
-      let isOrientationSet = this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal';
+      let ordersModule = {
+        ORIENTATION_VERTICAL: 'vertical',
+        ORIENTATION_HORIZONTAL: 'horizontal'
+      }
+      let isOrientationVertical = this.settings.orientation !== ordersModule.ORIENTATION_VERTICAL;
+      let isOrientationHorizontal = this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
+      let isOrientationSet = isOrientationVertical && isOrientationHorizontal;
       let isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
       let valueRange = this.settings.maxVal - this.settings.minVal;
 
@@ -78,7 +76,7 @@ class SliderSettings{
         throw 'Your slider has range values but it is not range';
       }
       if(isOrientationSet){
-        this.settings.orientation = 'horizontal';
+        this.settings.orientation = this.defaultSettings.orientation;
         throw 'Orientation of slider has only two values \'horizontal\' or \'vertical\''
       }
     }catch(err){
@@ -174,8 +172,7 @@ class SliderSettings{
 }
 
 export {
-  SliderSettings,
-  ISliderSettings
+  SliderSettings
 }
 
 export default SliderSettings;
