@@ -25,7 +25,12 @@ import './View/styles.css'
         let htmlElem = val;
         sliders.forEach((val, i)=>{
           if(val.view.slider === htmlElem){
-            returnValue = SliderPresenterAPI.enterPoint(val, option, setting, value, valuesOnOfTwoVals);
+            returnValue = SliderPresenterAPI.enterPoint({
+              slider: val, 
+              option: option, 
+              setting: setting, 
+              value: value, 
+              valuesOneOfTwoVals: valuesOnOfTwoVals});
           }
         });
 

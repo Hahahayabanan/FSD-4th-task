@@ -37,6 +37,7 @@ class SliderPointer{
       let rightEdge: number = this.isVertical
         ? this.sliderHTMLElem.offsetHeight
         : this.sliderHTMLElem.offsetWidth;
+
       let leftEdge: number = 0;          
       
       let onMouseMove = (event:any) => {
@@ -47,20 +48,15 @@ class SliderPointer{
             leftEdge = anotherPointer.currPos;
           }
         }
-
         let newLeft: number = this.isVertical 
           ? event.clientY - shift - this.sliderHTMLElem.getBoundingClientRect().top 
           : event.clientX - shift - this.sliderHTMLElem.getBoundingClientRect().left 
-      
-        
         if (newLeft < leftEdge) {
           newLeft = leftEdge;
         }
-
         if (newLeft > rightEdge) {
           newLeft = rightEdge;
         }
-        
         this.currPos = newLeft;
       }
 
@@ -83,9 +79,7 @@ class SliderPointer{
     let widthOrHeight: string = this.isVertical 
       ? this.sliderHTMLElem.getBoundingClientRect().height || this.sliderHTMLElem.style.height
       : this.sliderHTMLElem.getBoundingClientRect().width || this.sliderHTMLElem.style.width;
-
     newPos = newPos * 100 / parseInt(widthOrHeight, 10);
-
     return this.renderCurrentPosInPercents(newPos);
   }
 

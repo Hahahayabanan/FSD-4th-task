@@ -1,45 +1,46 @@
-import { SliderTemplate } from '../View/SliderTemplate'
-import { SliderTemplateRange } from '../View/SliderTemplateRange'
 import { SliderPresenter } from './SliderPresenter'
-
-
-
 
 class SliderPresenterAPI{
 
   static slider: SliderPresenter;
   
-  static enterPoint(slider: SliderPresenter, option: string, setting: string, value?: string | number | number[] | boolean, valuesOneOfTwoVals?: number){
+  static enterPoint(options:{
+    slider: SliderPresenter, 
+    option: string, 
+    setting: string, 
+    value?: string | number | number[] | boolean, 
+    valuesOneOfTwoVals?: number
+  }){
 
-    this.slider = slider;
+    this.slider = options.slider;
     try{
-      if(option !== 'option') throw 'First parameter should be \'option\''
+      if(options.option !== 'option') throw 'First parameter should be \'option\''
     }catch(err){
       console.error(err)
     }
 
     let currReturn: string | number | number[] | boolean;
-    if(value !== undefined){
-      switch (setting){
-        case 'range':   currReturn = this.setRange(<boolean>value)
+    if(options.value !== undefined){
+      switch (options.setting){
+        case 'range':   currReturn = this.setRange(<boolean>options.value)
           break;
-        case 'minVal':  currReturn = this.setMinVal(<number>value)
+        case 'minVal':  currReturn = this.setMinVal(<number>options.value)
           break;
-        case 'maxVal':  currReturn = this.setMaxVal(<number>value)
+        case 'maxVal':  currReturn = this.setMaxVal(<number>options.value)
           break;
-        case 'stepVal': currReturn = this.setStepVal(<number>value)
+        case 'stepVal': currReturn = this.setStepVal(<number>options.value)
           break;
-        case 'orientation': currReturn = this.setOrientation(<string>value)
+        case 'orientation': currReturn = this.setOrientation(<string>options.value)
           break;
-        case 'value':   currReturn = this.setValue(<number>value)
+        case 'value':   currReturn = this.setValue(<number>options.value)
           break;
-        case 'values':  currReturn = this.checkValuesSetterType(valuesOneOfTwoVals, value)
+        case 'values':  currReturn = this.checkValuesSetterType(options.valuesOneOfTwoVals, options.value)
           break;
-        case 'followerPoint':   currReturn = this.setFollowerPoint(<boolean>value)
+        case 'followerPoint':   currReturn = this.setFollowerPoint(<boolean>options.value)
           break;
       }
     }else{
-      switch (setting){
+      switch (options.setting){
         case 'range':   currReturn = this.getRange();
           break;
         case 'minVal':  currReturn = this.getMinVal();

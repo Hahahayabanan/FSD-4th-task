@@ -1,18 +1,23 @@
-
-
 class FollowerPoint{
   public elemHTMLElement: any;
+  public isVertical: boolean;
+  public thumbHTMLElement: any;
 
   constructor(thumbHTML: any, isVertical: boolean){
     this.elemHTMLElement = document.createElement('div');
+    this.isVertical = isVertical;
+    this.thumbHTMLElement = thumbHTML;
+    
+    this.createTemplate();
+  }
 
-    if(isVertical){
+  createTemplate(){
+    if(this.isVertical){
       this.elemHTMLElement.classList.add('j-slider__follower-point_vertical');
     }else{
       this.elemHTMLElement.classList.add('j-slider__follower-point');
     }
-    
-    thumbHTML.appendChild(this.elemHTMLElement);
+    this.thumbHTMLElement.appendChild(this.elemHTMLElement);
   }
 
   setValue(value: number){
