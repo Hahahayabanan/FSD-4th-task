@@ -167,17 +167,7 @@
 <a name='L119'></a><a href='#L119'>119</a>
 <a name='L120'></a><a href='#L120'>120</a>
 <a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a>
-<a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L122'></a><a href='#L122'>122</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -300,137 +290,132 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import FollowerPoint from './FollowerPoint'
 &nbsp;
-export class SliderPointer{
+class SliderPointer{
 &nbsp;
-    public thumb: any;
-    public slider: any;
-    public _curPos: number;
-    public isVertical: boolean;
-    public followerPoint: FollowerPoint;
+  public thumbHTMLElem: any;
+  public sliderHTMLElem: any;
+  public _curPos: number;
+  public isVertical: boolean;
+  public followerPoint: FollowerPoint;
 &nbsp;
-    constructor(elem: any, slider:any, isVertical: boolean, isFollowerPoint: boolean){
-        this.thumb = elem;
-        this.slider = slider;
-        this.isVertical = isVertical;
-    }
+  constructor(elemHTML: any, sliderHTML:any, isVertical: boolean){
+    this.thumbHTMLElem = elemHTML;
+    this.sliderHTMLElem = sliderHTML;
+    this.isVertical = isVertical;
+  }
 &nbsp;
-    get currPos():number{
-        return this._curPos;
-    }
-    set currPos(newCurrPos: number){
-        this._curPos = newCurrPos;
+  get currPos():number{
+    return this._curPos;
+  }
+  set currPos(newCurrPos: number){
+    this._curPos = newCurrPos;
 &nbsp;
-        this.slider.dispatchEvent(new CustomEvent('changePointer', {
-            bubbles: true,
-            detail: this
-        }));
-    }
+    this.sliderHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
+      bubbles: true,
+      detail: this
+    }));
+  }
 &nbsp;
-    createEventListeners(anotherPointer?: SliderPointer){
-        this.thumb.onmousedown = (event:any) =&gt; {
-            event.preventDefault();
-            
-            let shift: number = this.isVertical 
-                ? event.clientY - this.thumb.getBoundingClientRect().top
-                : event.clientX - this.thumb.getBoundingClientRect().left;
+  createEventListeners(anotherPointer?: SliderPointer){
+    this.thumbHTMLElem.onmousedown = (event:any) =&gt; {
+      event.preventDefault();
+      
+      let shift: number = this.isVertical 
+        ? event.clientY - this.thumbHTMLElem.getBoundingClientRect().top
+        : event.clientX - this.thumbHTMLElem.getBoundingClientRect().left;
 &nbsp;
-            let rightEdge: number = this.isVertical
-                ? this.slider.offsetHeight
-                : this.slider.offsetWidth;
-            let leftEdge: number = 0;          
-            
-            let onMouseMove = (event:any) =&gt; {
-                if(anotherPointer){
-                    if(this.currPos &lt; anotherPointer.currPos){
-                        rightEdge = anotherPointer.currPos;
-                    }else if(this.currPos &gt; anotherPointer.currPos){
-                        leftEdge = anotherPointer.currPos;
-                    }
-                }
-&nbsp;
-                let newLeft: number = this.isVertical 
-                    ? event.clientY - shift - this.slider.getBoundingClientRect().top 
-                    : event.clientX - shift - this.slider.getBoundingClientRect().left 
-              
-               
-                if (newLeft &lt; leftEdge) {
-                    newLeft = leftEdge;
-                }
-&nbsp;
-                if (newLeft &gt; rightEdge) {
-                    newLeft = rightEdge;
-                }
-                
-                this.currPos = newLeft;
-            }
-&nbsp;
-            let onMouseUp = () =&gt; {
-                document.removeEventListener('mouseup', onMouseUp);
-                document.removeEventListener('mousemove', onMouseMove);
-            }
-&nbsp;
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        };
-&nbsp;
-        this.thumb.ondragstart = function() {
-            return false;
-        };
-&nbsp;
-    }  
-&nbsp;
-    renderCurrentPosInPixels(newPos:number){
-        let widthOrHeight: string = this.isVertical 
-            ? this.slider.getBoundingClientRect().height || this.slider.style.height
-            : this.slider.getBoundingClientRect().width || this.slider.style.width;
-&nbsp;
-        newPos = newPos * 100 / parseInt(widthOrHeight, 10);
-&nbsp;
-        return this.renderCurrentPosInPercents(newPos);
-    }
-&nbsp;
-    renderCurrentPosInPercents(newPos: number){
-        let newCssLeftOrTop: string = this.isVertical
-            ? this.thumb.style.top = newPos + '%'
-            : this.thumb.style.left = newPos + '%';
-        return newCssLeftOrTop;
-    }
-&nbsp;
-&nbsp;
-    createFollowerPoint(){
-        if(this.isVertical)this.slider.classList.add('j-plugin-slider_with-point_vertical');
-        else this.slider.classList.add('j-plugin-slider_with-point');
-        this.followerPoint = new FollowerPoint(this.thumb, this.isVertical);
-    }
-    
-    deleteFollowerPiont(){
-        if(this.followerPoint !== undefined){
-            this.followerPoint.destroy();
-            this.followerPoint = undefined;
-            this.slider.classList.remove('j-plugin-slider_with-point');
-            this.slider.classList.remove('j-plugin-slider_with-point_vertical');
+      let rightEdge: number = this.isVertical
+        ? this.sliderHTMLElem.offsetHeight
+        : this.sliderHTMLElem.offsetWidth;
+      let leftEdge: number = 0;          
+      
+      let onMouseMove = (event:any) =&gt; {
+        if(anotherPointer){
+          if(this.currPos &lt; anotherPointer.currPos){
+            rightEdge = anotherPointer.currPos;
+          }else if(this.currPos &gt; anotherPointer.currPos){
+            leftEdge = anotherPointer.currPos;
+          }
         }
+&nbsp;
+        let newLeft: number = this.isVertical 
+          ? event.clientY - shift - this.sliderHTMLElem.getBoundingClientRect().top 
+          : event.clientX - shift - this.sliderHTMLElem.getBoundingClientRect().left 
+      
+        
+        if (newLeft &lt; leftEdge) {
+          newLeft = leftEdge;
+        }
+&nbsp;
+        if (newLeft &gt; rightEdge) {
+          newLeft = rightEdge;
+        }
+        
+        this.currPos = newLeft;
+      }
+&nbsp;
+      let onMouseUp = () =&gt; {
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', onMouseMove);
+      }
+&nbsp;
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    };
+&nbsp;
+    this.thumbHTMLElem.ondragstart = function() {
+      return false;
+    };
+&nbsp;
+  }  
+&nbsp;
+  renderCurrentPosInPixels(newPos:number){
+    let widthOrHeight: string = this.isVertical 
+      ? this.sliderHTMLElem.getBoundingClientRect().height || this.sliderHTMLElem.style.height
+      : this.sliderHTMLElem.getBoundingClientRect().width || this.sliderHTMLElem.style.width;
+&nbsp;
+    newPos = newPos * 100 / parseInt(widthOrHeight, 10);
+&nbsp;
+    return this.renderCurrentPosInPercents(newPos);
+  }
+&nbsp;
+  renderCurrentPosInPercents(newPos: number){
+    let newCssLeftOrTop: string = this.isVertical
+      ? this.thumbHTMLElem.style.top = newPos + '%'
+      : this.thumbHTMLElem.style.left = newPos + '%';
+    return newCssLeftOrTop;
+  }
+&nbsp;
+&nbsp;
+  createFollowerPoint(){
+    if(this.isVertical){
+      this.sliderHTMLElem.classList.add('j-plugin-slider_with-point_vertical');
+    }else{
+      this.sliderHTMLElem.classList.add('j-plugin-slider_with-point');
     }
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
+    this.followerPoint = new FollowerPoint(this.thumbHTMLElem, this.isVertical);
+  }
+  
+  deleteFollowerPoint(){
+    if(this.followerPoint !== undefined){
+      this.followerPoint.destroy();
+      this.followerPoint = undefined;
+      this.sliderHTMLElem.classList.remove('j-plugin-slider_with-point');
+      this.sliderHTMLElem.classList.remove('j-plugin-slider_with-point_vertical');
+    }
+  }
 &nbsp;
 }
-&nbsp;
+export{
+  SliderPointer
+}
 export default SliderPointer;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Aug 29 2019 10:37:17 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:25:34 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

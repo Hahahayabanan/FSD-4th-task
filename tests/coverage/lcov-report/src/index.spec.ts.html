@@ -369,19 +369,7 @@
 <a name='L321'></a><a href='#L321'>321</a>
 <a name='L322'></a><a href='#L322'>322</a>
 <a name='L323'></a><a href='#L323'>323</a>
-<a name='L324'></a><a href='#L324'>324</a>
-<a name='L325'></a><a href='#L325'>325</a>
-<a name='L326'></a><a href='#L326'>326</a>
-<a name='L327'></a><a href='#L327'>327</a>
-<a name='L328'></a><a href='#L328'>328</a>
-<a name='L329'></a><a href='#L329'>329</a>
-<a name='L330'></a><a href='#L330'>330</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L324'></a><a href='#L324'>324</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -714,94 +702,88 @@ import { SliderPresenter } from './Presenter/SliderPresenter';
 &nbsp;
 &nbsp;
 &nbsp;
-&nbsp;
-&nbsp;
 describe('Model / Slider / Test initialization', () =&gt; {
 &nbsp;
-    let slider = new Slider();
+  let slider = new Slider();
 &nbsp;
-    it('Should initializate slider object', () =&gt; {
-        
-        slider.setSettings({
-            range: false, 
-            minVal: 1, 
-            maxVal: 10, 
-            stepVal: 1, 
-        });
-&nbsp;
-        expect(slider.settings).toEqual(new SliderSettings({
-            range: false, 
-            minVal: 1, 
-            maxVal: 10, 
-            stepVal: 1, 
-        }));
+  it('Should initializate slider object', () =&gt; {
+    slider.setSettings({
+      range: false, 
+      minVal: 1, 
+      maxVal: 10, 
+      stepVal: 1, 
     });
 &nbsp;
-    it('Should change slider settings', () =&gt; {
-        slider.setSettings({
-            range: false, 
-            minVal: 1, 
-            maxVal: 10, 
-            stepVal: 1, 
-        });
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: false, 
+      minVal: 1, 
+      maxVal: 10, 
+      stepVal: 1, 
+    }));
+  });
 &nbsp;
-        slider.settings.setMaxVal(150);
-        slider.settings.setMinVal(10);
-&nbsp;
-        expect(slider.settings).toEqual(new SliderSettings({
-            range: false, 
-            minVal: 10, 
-            maxVal: 150, 
-            stepVal: 1, 
-        }));
+  it('Should change slider settings', () =&gt; {
+    slider.setSettings({
+      range: false, 
+      minVal: 1, 
+      maxVal: 10, 
+      stepVal: 1, 
     });
 &nbsp;
-    it('Should initializate RANGE slider object', () =&gt; {
-        slider.setSettings({
-            range: true, 
-            minVal: 1, 
-            maxVal: 10, 
-            stepVal: 1, 
-            values: [7,8]
-        });
+    slider.settings.setMaxVal(150);
+    slider.settings.setMinVal(10);
 &nbsp;
-        expect(slider.settings).toEqual(new SliderSettings({
-            range: true, 
-            minVal: 1, 
-            maxVal: 10, 
-            stepVal: 1, 
-            values: [7, 8]
-        }));
-    });  
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: false, 
+      minVal: 10, 
+      maxVal: 150, 
+      stepVal: 1, 
+    }));
+  });
+&nbsp;
+  it('Should initializate RANGE slider object', () =&gt; {
+    slider.setSettings({
+      range: true, 
+      minVal: 1, 
+      maxVal: 10, 
+      stepVal: 1, 
+      values: [7,8]
+    });
+&nbsp;
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: true, 
+      minVal: 1, 
+      maxVal: 10, 
+      stepVal: 1, 
+      values: [7, 8]
+    }));
+  });  
     
 })
 &nbsp;
 describe('Model / Slider / Test moving', () =&gt; {
+   
+  let slider = new Slider({
+    minVal: 20,
+    maxVal: 100,
+    stepVal: 2
+  }); 
 &nbsp;
-    
-    let slider = new Slider({
-        minVal: 20,
-        maxVal: 100,
-        stepVal: 2
-    }); 
+  slider.settings.setStepVal(5);
+          
+  it('Should change pointer position 60', ()=&gt;{
+    expect(slider.setPointerPosition(58)).toEqual(60);
+  });
 &nbsp;
-    slider.settings.setStepVal(5);
-           
-    it('Should change pointer position 60', ()=&gt;{
-        expect(slider.setPointerPosition(58)).toEqual(60);
-    });
+  it('Should change pointer position 90', ()=&gt;{
+    expect(slider.setPointerPosition(92)).toEqual(90);
+  });
 &nbsp;
-    it('Should change pointer position 90', ()=&gt;{
-        expect(slider.setPointerPosition(92)).toEqual(90);
-    });
-    it('Should change pointer position 20,35', ()=&gt;{
-        expect(slider.setPointerPosition([22,37])).toEqual([20, 35]);
-    });
+  it('Should change pointer position 20,35', ()=&gt;{
+    expect(slider.setPointerPosition([22,37])).toEqual([20, 35]);
+  });
 &nbsp;
 })
-&nbsp;
-&nbsp;
-&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
@@ -809,58 +791,53 @@ describe('Model / Slider / Test moving', () =&gt; {
 &nbsp;
 &nbsp;
 describe('View / Slider template / Test of setting pointer positions', () =&gt; {
+   
+  let shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
 &nbsp;
+  let slider = new SliderTemplate(shadowSlider);
+&nbsp;
+  // setting style.width because we dont have DOM
+  slider.slider.style.cssText = 'width: 300px';
     
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
+  it('Curr position should be set', ()=&gt;{
+    slider.thumb.currPos = 150;
+    expect(slider.thumb.currPos).toEqual(150);
+  });
 &nbsp;
-    
-    let slider = new SliderTemplate(shadowSlider);
-&nbsp;
-    // setting style.width because we dont have DOM
-    slider.slider.style.cssText = 'width: 300px';
-        
-     
-    it('Curr position should be set', ()=&gt;{
-        slider.thumb.currPos = 150;
-        expect(slider.thumb.currPos).toEqual(150);
-    });
-&nbsp;
-    it('Should update value of curr position on change 236', () =&gt; {
-        slider.thumb.renderCurrentPosInPixels(236);
-        // width  300px - 100 %
-        // newPos 236px -  79 %
-        expect(Math.round(parseInt(slider.thumb.thumb.style.left))).toEqual(78);
-    });
-    it('Should update value of curr position on change 33', () =&gt; {
-        slider.thumb.renderCurrentPosInPercents(33);
-        expect(slider.thumb.thumb.style.left).toEqual('33%');
-    });
+  it('Should update value of curr position on change 236', () =&gt; {
+    slider.thumb.renderCurrentPosInPixels(236);
+    // width  300px - 100 %
+    // newPos 236px -  79 %
+    expect(Math.round(parseInt(slider.thumb.thumbHTMLElem.style.left))).toEqual(78);
+  });
+  it('Should update value of curr position on change 33', () =&gt; {
+    slider.thumb.renderCurrentPosInPercents(33);
+    expect(slider.thumb.thumbHTMLElem.style.left).toEqual('33%');
+  });
 &nbsp;
 });
 &nbsp;
 describe('View / Vertical Slider template / Test of setting pointer positions', () =&gt; {
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
+  let shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
+  
+  let slider = new SliderTemplate(shadowSlider, 'vertical');
+  slider.slider.style.cssText = 'height: 300px';
     
-    let slider = new SliderTemplate(shadowSlider, 'vertical');
-    slider.slider.style.cssText = 'height: 300px';
-     
-    it('Curr position should be set', ()=&gt;{
-        slider.thumb.currPos = 150;
-        expect(slider.thumb.currPos).toEqual(150);
-    });
+  it('Curr position should be set', ()=&gt;{
+    slider.thumb.currPos = 150;
+    expect(slider.thumb.currPos).toEqual(150);
+  });
 &nbsp;
-    it('Should update value of curr position on change 236', () =&gt; {
-        slider.thumb.renderCurrentPosInPixels(236);
-        expect(Math.round(parseInt(slider.thumb.thumb.style.top))).toEqual(78);
-    });
-    it('Should update value of curr position on change 33', () =&gt; {
-        slider.thumb.renderCurrentPosInPercents(33);
-        expect(slider.thumb.thumb.style.top).toEqual('33%');
-    });
-    
-&nbsp;
+  it('Should update value of curr position on change 236', () =&gt; {
+    slider.thumb.renderCurrentPosInPixels(236);
+    expect(Math.round(parseInt(slider.thumb.thumbHTMLElem.style.top))).toEqual(78);
+  });
+  it('Should update value of curr position on change 33', () =&gt; {
+    slider.thumb.renderCurrentPosInPercents(33);
+    expect(slider.thumb.thumbHTMLElem.style.top).toEqual('33%');
+  });
 });
 &nbsp;
 &nbsp;
@@ -869,51 +846,51 @@ describe('View / Vertical Slider template / Test of setting pointer positions', 
 &nbsp;
 describe('Presenter / SliderPresenter / Test initialization', () =&gt; {
     
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
-    
-    shadowSlider.style.cssText = 'width: 300px';
-    
+  let shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
+  
+  shadowSlider.style.cssText = 'width: 300px';
+  
 &nbsp;
-    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
-        minVal: 10,
-        stepVal: 5,
-        maxVal: 100,
-        range: false,
-        followerPoint: true
-    });
+  let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+    minVal: 10,
+    stepVal: 5,
+    maxVal: 100,
+    range: false,
+    followerPoint: true
+  });
 &nbsp;
-    it("Should coincide constructor set values 'value'", ()=&gt;{
-        slider = new SliderPresenter(shadowSlider, {
-            range: false,
-            minVal: 10,
-            stepVal: 5,
-            maxVal: 100,
-            value: 53
-        });
-        expect(slider.model.settings.settings.value).toEqual(55);
+  it("Should coincide constructor set values 'value'", ()=&gt;{
+    slider = new SliderPresenter(shadowSlider, {
+      range: false,
+      minVal: 10,
+      stepVal: 5,
+      maxVal: 100,
+      value: 53
     });
-    it("Should coincide constructor values 'step'", () =&gt; {
-        slider = new SliderPresenter(shadowSlider, {
-            stepVal: 5,
-        });
-        expect(slider.model.settings.settings.stepVal).toEqual(5);
+    expect(slider.model.settings.settings.value).toEqual(55);
+  });
+  it("Should coincide constructor values 'step'", () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      stepVal: 5,
     });
-    it("Should coincide constructor values default 'value'", () =&gt; {
-        slider = new SliderPresenter(shadowSlider, {
-            minVal: 10,
-            
-            maxVal: 100,
-            range: false
-        });
-        expect(slider.model.settings.settings.value).toEqual(10);
+    expect(slider.model.settings.settings.stepVal).toEqual(5);
+  });
+  it("Should coincide constructor values default 'value'", () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      minVal: 10,
+      
+      maxVal: 100,
+      range: false
     });
-    it("Should coincide follower pointer value", () =&gt; {
-        slider = new SliderPresenter(shadowSlider, {
-            followerPoint: true
-        });
-        expect(slider.model.settings.settings.value).toEqual(parseInt(slider.view.thumb.followerPoint.elem.innerHTML));
+    expect(slider.model.settings.settings.value).toEqual(10);
+  });
+  it("Should coincide follower pointer value", () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      followerPoint: true
     });
+    expect(slider.model.settings.settings.value).toEqual(parseInt(slider.view.thumb.followerPoint.elemHTMLElement.innerHTML));
+  });
     
 })
 &nbsp;
@@ -923,28 +900,28 @@ describe('Presenter / SliderPresenter / Test initialization', () =&gt; {
 &nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterRange / Test initialization', () =&gt; {
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
-    
-    shadowSlider.style.cssText = 'width: 300px';
-    
-    let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
-        minVal: 10,
-        stepVal: 5,
-        maxVal: 100,
-        range: true,
-        values: [25,35]
-    });
+  let shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
+  
+  shadowSlider.style.cssText = 'width: 300px';
+  
+  let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+    minVal: 10,
+    stepVal: 5,
+    maxVal: 100,
+    range: true,
+    values: [25,35]
+  });
 &nbsp;
-    it("Should coincide constructor set values 'range'", ()=&gt;{
-        expect(slider.model.settings.settings.range).toEqual(true);
-    });
-    it("Should coincide constructor set values 'values'", ()=&gt;{
-        expect(slider.model.settings.settings.values).toEqual([25,35]);
-    });
-    it("Should coincide constructor set values on range line", ()=&gt;{
-        expect(slider.view.range.style.left).toEqual(slider.view.thumb1.thumb.style.left);
-    });
+  it("Should coincide constructor set values 'range'", ()=&gt;{
+    expect(slider.model.settings.settings.range).toEqual(true);
+  });
+  it("Should coincide constructor set values 'values'", ()=&gt;{
+    expect(slider.model.settings.settings.values).toEqual([25,35]);
+  });
+  it("Should coincide constructor set values on range line", ()=&gt;{
+    expect(slider.view.range.style.left).toEqual(slider.view.thumb1.thumbHTMLElem.style.left);
+  });
 &nbsp;
 })
 &nbsp;
@@ -954,92 +931,97 @@ describe('Presenter / SliderPresenterRange / Test initialization', () =&gt; {
 &nbsp;
 &nbsp;
 &nbsp;
-&nbsp;
-&nbsp;
 describe('Presenter / SliderPresenterAPI / Test initialization', ()=&gt;{
-    let shadowSlider = document.createElement('div');
-    shadowSlider.classList.add('slider');
-    
-    shadowSlider.style.cssText = 'width: 300px';
+  let shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
+  
+  shadowSlider.style.cssText = 'width: 300px';
 &nbsp;
-    let slider: SliderPresenter;
+  let slider: SliderPresenter;
 &nbsp;
-    beforeEach(()=&gt;{
-        slider = new SliderPresenter(shadowSlider, {
-            minVal: -100,
-            stepVal: 5,
-            maxVal: 100,
-            followerPoint: true,
-        });
-    })
-    
+  beforeEach(()=&gt;{
+    slider = new SliderPresenter(shadowSlider, {
+      minVal: -100,
+      stepVal: 5,
+      maxVal: 100,
+      followerPoint: true,
+    });
+  })
+  
 &nbsp;
-    it("Should coincide API set values 'step'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'stepVal', 10);
-        expect(slider.model.settings.settings.stepVal).toEqual(10);
-    });
+  it("Should coincide API set values 'step'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'stepVal', 10);
+    expect(slider.model.settings.settings.stepVal).toEqual(10);
+  });
 &nbsp;
-    it("Should coincide API set values 'value'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'value', -20);
-        expect(slider.model.settings.settings.value).toEqual(-20);
-    });
-    
-    it("Should coincide API set values 'range'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
-        expect(slider.model.settings.settings.range).toEqual(true);
-        expect(slider.model.settings.settings.values).toEqual([-100, 100]);
-    });
+  it("Should coincide API set values 'value'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'value', -20);
+    expect(slider.model.settings.settings.value).toEqual(-20);
+  });
+  it("Should coincide API set values 'maxVal'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'maxVal', 100);
+    expect(slider.model.settings.settings.maxVal).toEqual(100);
+  });
+  it("Should coincide API set values 'minVal'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'minVal', 10);
+    let val = SliderPresenterAPI.enterPoint(slider, 'option', 'value');
+    expect(slider.model.settings.settings.value).toEqual(&lt;number&gt;val);
+    expect(slider.model.settings.settings.minVal).toEqual(10);
+  });
+  
+  it("Should coincide API set values 'range'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+    expect(slider.model.settings.settings.range).toEqual(true);
+    expect(slider.model.settings.settings.values).toEqual([-100, 100]);
+  });
 &nbsp;
-    it("Should coincide API set values 'range' on view", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
-        expect(slider.view.thumb1.currPos).toEqual(0);
-        expect(slider.view.thumb2.currPos).toEqual(300);
-    });
-    
-    it("Should coincide API set values 'followerPoint'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'followerPoint', false);
-        expect(slider.model.settings.settings.followerPoint).toEqual(false)
-    });
-    
-    it("Should coincide API set values 'range'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
-        expect(slider.model.settings.settings.range).toEqual(true);
-        expect(slider.model.settings.settings.values).toEqual([-100, 100]);
-    });
-    
-    it("Should coincide API set values 'values'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'values', [25,35]);
-        expect(slider.model.settings.settings.values).toEqual([25,35]);
-    });
+  it("Should coincide API set values 'range' on view", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+    expect(slider.view.thumb1.currPos).toEqual(0);
+    expect(slider.view.thumb2.currPos).toEqual(300);
+  });
+  
+  it("Should coincide API set values 'followerPoint'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'followerPoint', false);
+    expect(slider.model.settings.settings.followerPoint).toEqual(false)
+  });
+  
+  it("Should coincide API set values 'range'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'range', true);
+    expect(slider.model.settings.settings.range).toEqual(true);
+    expect(slider.model.settings.settings.values).toEqual([-100, 100]);
+  });
+  
+  it("Should coincide API set values 'values'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'values', [25,35]);
+    expect(slider.model.settings.settings.values).toEqual([25,35]);
+  });
 &nbsp;
-    it("Should coincide API set values 'set only one of values'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 55);
-        expect(slider.model.settings.settings.values).toEqual([null,55]);
-        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, 35);
-        expect(slider.model.settings.settings.values).toEqual([35,55]);
-    });
-    it("Should coincide API set values 'get only one of values'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, -10);
-        expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0)).toEqual(-10);
-        SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 75);
-        expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1)).toEqual(75);
-    });
+  it("Should coincide API set values 'set only one of values'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 55);
+    expect(slider.model.settings.settings.values).toEqual([null,55]);
+    SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, 35);
+    expect(slider.model.settings.settings.values).toEqual([35,55]);
+  });
+  it("Should coincide API set values 'get only one of values'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0, -10);
+    expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 0)).toEqual(-10);
+    SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1, 75);
+    expect(SliderPresenterAPI.enterPoint(slider, 'option', 'values', 1)).toEqual(75);
+  });
 &nbsp;
-    it("Should coincide API set values 'orientation'", ()=&gt;{
-        SliderPresenterAPI.enterPoint(slider, 'option', 'orientation', 'vertical');
-        expect(slider.model.settings.settings.orientation).toEqual('vertical');
-    });
+  it("Should coincide API set values 'orientation'", ()=&gt;{
+    SliderPresenterAPI.enterPoint(slider, 'option', 'orientation', 'vertical');
+    expect(slider.model.settings.settings.orientation).toEqual('vertical');
+  });
     
-   
-    
-&nbsp;
 })</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Aug 29 2019 10:37:17 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:25:34 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\prettify.js"></script>

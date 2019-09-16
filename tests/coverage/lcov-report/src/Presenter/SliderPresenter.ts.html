@@ -205,19 +205,7 @@
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
 <a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a>
-<a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a>
-<a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a>
-<a name='L165'></a><a href='#L165'>165</a>
-<a name='L166'></a><a href='#L166'>166</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L160'></a><a href='#L160'>160</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -378,176 +366,170 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderTemplate } from '../View/SliderTemplate'
 import { Slider } from '../Model/Slider'
-import { SliderSettings } from '../Model/SliderSettings'
 import { ISliderSettings } from '../Model/SliderSettings'
 import { SliderPointer } from '../View/SliderPointer'
 import { SliderTemplateRange } from '../View/SliderTemplateRange'
 &nbsp;
-import * as $ from 'jquery';
 &nbsp;
 &nbsp;
 &nbsp;
-export class SliderPresenter{
+class SliderPresenter{
 &nbsp;
-    public model:Slider;
-    public view: any;
+  public model:Slider;
+  public view: any;
 &nbsp;
     
-    constructor(rootElement: any, options: ISliderSettings) {
-         
-        this.model = new Slider(options);
-        let isRange = this.model.settings.settings.range;
-&nbsp;
-        if(isRange){
-            this.view = new SliderTemplateRange(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
-        }else{
-            this.view = new SliderTemplate(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
-        }
+  constructor(rootElement: any, options: ISliderSettings) {
         
-        let onChangePointer = (event:any)=&gt;{
-            let currThumb = event.detail;
+    this.model = new Slider(options);
+    let isRange = this.model.settings.settings.range;
 &nbsp;
-            let curPosInPixels:number = currThumb.currPos;
-            let curPosInVal:number = this.calculateCurrPosFromPixelsToValue(curPosInPixels);
-            let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
-            
-            let curPosInPercentsWithStep = this.getCurrPosFromValueToPercents(curPosInValWithStep);
+    if(isRange){
+      this.view = new SliderTemplateRange(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
+    }else{
+      this.view = new SliderTemplate(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
+    }
+      
+    let onChangePointer = (event:any)=&gt;{
+      let currThumb = event.detail;
+&nbsp;
+      let curPosInPixels:number = currThumb.currPos;
+      let curPosInVal:number = this.calculateFromPixelsToValue(curPosInPixels);
+      let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
+        
+      let curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
+&nbsp;
+      this.render(currThumb, curPosInPercentsWithStep);
+      this.setFollowerPointValue(currThumb, curPosInValWithStep);
   
-            this.render(currThumb, curPosInPercentsWithStep);
-            this.setFollowerPointValue(currThumb, curPosInValWithStep);
-        
-            if(currThumb === this.view.thumb1){
-                this.model.settings.settings.values[0] = curPosInValWithStep;
-            }
-            if(currThumb === this.view.thumb2){
-                this.model.settings.settings.values[1] = curPosInValWithStep;
-            }
-        }
-        
-            
-        this.view.slider.addEventListener('changePointer', onChangePointer);
-        this.initStartValue();
+      if(currThumb === this.view.thumb1){
+        this.model.settings.settings.values[0] = curPosInValWithStep;
+      }
+      if(currThumb === this.view.thumb2){
+        this.model.settings.settings.values[1] = curPosInValWithStep;
+      }
     }
+      
+          
+    this.view.slider.addEventListener('changePointer', onChangePointer);
+    this.initStartValue();
+  }
 &nbsp;
-    initStartValue(){
-        
-        if(this.model.settings.settings.range){
-            let curPosInValues:number[] = this.model.settings.settings.values;
-            let curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
-            
-            let curPosInPercentsWithStep: number[] = [ 0 , 0 ];
-            curPosInPercentsWithStep[0] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[0]);
-            curPosInPercentsWithStep[1] = this.getCurrPosFromValueToPercents(curPosInValsWithStep[1]);
+  initStartValue(){
+      
+    if(this.model.settings.settings.range){
+      let curPosInValues:number[] = this.model.settings.settings.values;
+      let curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
+      
+      let curPosInPercentsWithStep: number[] = [ 0 , 0 ];
+      curPosInPercentsWithStep[0] = this.calculateFromValueToPercents(curPosInValsWithStep[0]);
+      curPosInPercentsWithStep[1] = this.calculateFromValueToPercents(curPosInValsWithStep[1]);
 &nbsp;
-            // this.render(this.view.thumb1, curPosInPercentsWithStep[0]);
-            // this.render(this.view.thumb2, curPosInPercentsWithStep[1]);
-            // this.setFollowerPointValue(this.view.thumb1, curPosInValsWithStep[0]);
-            // this.setFollowerPointValue(this.view.thumb2, curPosInValsWithStep[1]);
-            this.view.initRangeLine();
+      this.view.initRangeLine();
 &nbsp;
-            this.view.thumb1.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]);
-            this.view.thumb2.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[1]);
-        }else{
+      this.view.thumb1.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]);
+      this.view.thumb2.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[1]);
+    }else{
 &nbsp;
-            let curPosInValue:number = this.model.settings.settings.value;
-            let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
-            
-            let curPosInPercentsWithStep:number = this.getCurrPosFromValueToPercents(curPosInValWithStep);
+      let curPosInValue:number = this.model.settings.settings.value;
+      let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
+      
+      let curPosInPercentsWithStep:number = this.calculateFromValueToPercents(curPosInValWithStep);
+          
+      this.view.thumb.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep);
+    }       
+      
+  }
 &nbsp;
-            // this.render(this.view.thumb, curPosInPercentsWithStep);
-            // this.setFollowerPointValue(this.view.thumb, curPosInValWithStep);
-                
-            this.view.thumb.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep);
-        }       
-        
+  
+  render(curThumb:SliderPointer, curPos: number){
+    curThumb.renderCurrentPosInPercents(curPos);
+  }
+&nbsp;
+  setFollowerPointValue(curThumb:SliderPointer, currPosInValWithStep: number){
+    if(this.model.settings.settings.followerPoint){
+      if(curThumb.followerPoint !== undefined){
+        curThumb.followerPoint.setValue(currPosInValWithStep);
+      }else{
+        curThumb.createFollowerPoint();
+        curThumb.followerPoint.setValue(currPosInValWithStep);
+      }
+    }else{
+      curThumb.deleteFollowerPoint();
     }
+  }
+  
+  // EXAMPLE how it works
+  // rangeValInPixels    300px - 100%
+  // curPosInPixels      236px -  79%
 &nbsp;
+  // rangeVal 1000-100 = 900   - 100%
+  // curPosInPercents    ?     -  79%
+&nbsp;
+  // curPosValInVal  =  900*79/100% = 711
+&nbsp;
+  // curPosInPercents = 711 / 900 * 100%
+  
+  calculateFromPixelsToValue(curPosInPixels:number):number{
+    let minVal:number = this.model.settings.settings.minVal;
+    let maxVal:number = this.model.settings.settings.maxVal;
+    let rangeVal:number = maxVal - minVal;     
+    let rangePixels:string = '1';
+    if(this.model.settings.settings.orientation === 'vertical'){
+      rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
+    }else{
+      rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
+    }
     
-    render(curThumb:SliderPointer, curPos: number){
-        curThumb.renderCurrentPosInPercents(curPos);
-    }
+    let curPosInPercents:number = curPosInPixels * 100 / parseInt(rangePixels, 10);
+    let curPosInVal:number = rangeVal * curPosInPercents / 100;    
 &nbsp;
-    setFollowerPointValue(curThumb:SliderPointer, currPosInValWithStep: number){
-        if(this.model.settings.settings.followerPoint){
-            if(curThumb.followerPoint !== undefined){
-                curThumb.followerPoint.setValue(currPosInValWithStep);
-            }else{
-                curThumb.createFollowerPoint();
-                curThumb.followerPoint.setValue(currPosInValWithStep);
-            }
-        }else{
-            curThumb.deleteFollowerPiont();
-        }
+    return curPosInVal+minVal;
+  }
+  
+&nbsp;
+&nbsp;
+  // EXAMPLE how it works
+&nbsp;
+  // rangeVal 1000-100   = 900   - 100%
+  // curPosInVal 350-100 = 250   -   ?%
+  // curPosInPercents    = 250 * 100% / 900 
+  calculateFromValueToPercents(curPosInValue:number):number{
+    let minVal:number = this.model.settings.settings.minVal;
+    let maxVal:number = this.model.settings.settings.maxVal;
+    let rangeVal:number = maxVal - minVal; 
+&nbsp;
+    let currPosInPercents:number = (curPosInValue-minVal) * 100 / rangeVal;       
+&nbsp;
+    return currPosInPercents;
+  }
+&nbsp;
+&nbsp;
+  calculateFromPercentsToPixels(curPosInPercents: number):number{
+    let rangePixels:string = '1';
+    if(this.model.settings.settings.orientation === 'vertical'){
+      rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
+    }else{
+      rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
     }
+    let currPosInPixels: number = curPosInPercents * parseInt(rangePixels, 10) / 100;
     
-    // EXAMPLE how it works
-    // rangeValInPixels    300px - 100%
-    // curPosInPixels      236px -  79%
-&nbsp;
-    // rangeVal 1000-100 = 900   - 100%
-    // curPosInPercents    ?     -  79%
-&nbsp;
-    // curPosValInVal  =  900*79/100% = 711
-&nbsp;
-    // curPosInPercents = 711 / 900 * 100%
-    
-    calculateCurrPosFromPixelsToValue(curPosInPixels:number){
-        let minVal:number = this.model.settings.settings.minVal;
-        let maxVal:number = this.model.settings.settings.maxVal;
-        let rangeVal:number = maxVal - minVal;     
-        let rangePixels:string = '1';
-        if(this.model.settings.settings.orientation === 'vertical'){
-            rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
-        }else{
-            rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
-        }
-        
-        let curPosInPercents:number = curPosInPixels * 100 / parseInt(rangePixels, 10);
-        let curPosInVal:number = rangeVal * curPosInPercents / 100;    
-&nbsp;
-        return curPosInVal+minVal;
-    }
-   
-&nbsp;
-&nbsp;
-    // EXAMPLE how it works
-&nbsp;
-    // rangeVal 1000-100   = 900   - 100%
-    // curPosInVal 350-100 = 250   -   ?%
-    // curPosInPercents    = 250 * 100% / 900 
-    getCurrPosFromValueToPercents(curPosInValue:number){
-        let minVal:number = this.model.settings.settings.minVal;
-        let maxVal:number = this.model.settings.settings.maxVal;
-        let rangeVal:number = maxVal - minVal; 
-&nbsp;
-        let currPosInPercents:number = (curPosInValue-minVal) * 100 / rangeVal;       
-&nbsp;
-        return currPosInPercents;
-    }
-&nbsp;
-&nbsp;
-    calculateFromPercentsToPixels(curPosInPercents: number){
-        let rangePixels:string = '1';
-        if(this.model.settings.settings.orientation === 'vertical'){
-            rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
-        }else{
-            rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
-        }
-        let currPosInPixels: number = curPosInPercents * parseInt(rangePixels, 10) / 100;
-        
-        return currPosInPixels;
-    }
+    return currPosInPixels;
+  }
 &nbsp;
 }
 &nbsp;
 &nbsp;
-&nbsp;</pre></td></tr>
+export {
+  SliderPresenter
+}
+export default SliderPresenter</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Aug 29 2019 10:37:17 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:25:34 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

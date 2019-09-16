@@ -209,7 +209,25 @@
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -374,174 +392,183 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderTemplate } from '../View/SliderTemplate'
 import { SliderTemplateRange } from '../View/SliderTemplateRange'
-import {SliderPresenter} from './SliderPresenter'
+import { SliderPresenter } from './SliderPresenter'
 &nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
-export class SliderPresenterAPI{
+class SliderPresenterAPI{
 &nbsp;
-    static slider: SliderPresenter;
-    
-    static enterPoint(slider: SliderPresenter, option: string, setting: string, value: string | number | number[] | boolean, valuesOneOfTwoVals?: number){
+  static slider: SliderPresenter;
+  
+  static enterPoint(slider: SliderPresenter, option: string, setting: string, value?: string | number | number[] | boolean, valuesOneOfTwoVals?: number){
 &nbsp;
-        this.slider = slider;
-        try{
-            if(option !== 'option') throw 'First parameter should be \'option\''
-        }catch(err){
-            console.error(err)
-        }
-&nbsp;
-        let currReturn: string | number | number[] | boolean;
-        if(value !== undefined){
-            switch (setting){
-                case 'range':   currReturn = this.setRange(&lt;boolean&gt;value)
-                    break;
-                case 'minVal':  currReturn = this.setMinVal(&lt;number&gt;value)
-                    break;
-                case 'maxVal':  currReturn = this.setMaxVal(&lt;number&gt;value)
-                    break;
-                case 'stepVal': currReturn = this.setStepVal(&lt;number&gt;value)
-                    break;
-                case 'orientation': currReturn = this.setOrientation(&lt;string&gt;value)
-                    break;
-                case 'value':   currReturn = this.setValue(&lt;number&gt;value)
-                    break;
-                case 'values':  if(valuesOneOfTwoVals === undefined &amp;&amp; typeof(value)!=='number'){ currReturn = this.setValues(&lt;number[]&gt;value);}
-                                else if(valuesOneOfTwoVals === undefined &amp;&amp; typeof(value)==='number'){
-                                    currReturn = this.getValues(value);
-                                }else if(valuesOneOfTwoVals !== undefined &amp;&amp; typeof(value)==='number'){
-                                    currReturn = this.setValues(valuesOneOfTwoVals, &lt;number&gt;value);
-                                }
-                    break;
-                case 'followerPoint':   currReturn = this.setFollowerPoint(&lt;boolean&gt;value)
-                    break;
-            }
-        }else{
-            switch (setting){
-                case 'range':   currReturn = this.getRange();
-                    break;
-                case 'minVal':  currReturn = this.getMinVal();
-                    break;
-                case 'maxVal':  currReturn = this.getMaxVal();
-                    break;
-                case 'stepVal': currReturn = this.getStepVal();
-                    break;
-                case 'orientation': currReturn = this.getOrientation();
-                    break;
-                case 'value':   currReturn = this.getValue();
-                    break;
-                case 'values':  currReturn = this.getValues();
-                    break;
-                case 'followerPoint': currReturn = this.getFollowerPoint();
-                    break;
-            }
-        }
-        
-        return currReturn;
+    this.slider = slider;
+    try{
+      if(option !== 'option') throw 'First parameter should be \'option\''
+    }catch(err){
+      console.error(err)
     }
 &nbsp;
-    static getFollowerPoint(): boolean{
-        return this.slider.model.settings.settings.followerPoint;        
-    }
-    static setFollowerPoint(newVal: boolean): boolean{
-        newVal = this.slider.model.settings.setFollowerPoint(newVal);
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getRange(): boolean{
-        return this.slider.model.settings.settings.range;
-    }
-    static setRange(newVal: boolean): boolean{
-        newVal = this.slider.model.settings.setRange(newVal);
-        let rootElement = this.slider.view.slider;
-        this.slider.view.destroy();
-        if(newVal){
-            this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-        }else{
-            this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-        }
-        
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getMinVal(): number{
-        return this.slider.model.settings.settings.minVal;
-    }
-    static setMinVal(newVal: number): number{
-        newVal = this.slider.model.settings.setMinVal(newVal);
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getMaxVal(): number{
-        return this.slider.model.settings.settings.maxVal;
-    }
-    static setMaxVal(newVal: number): number{
-        newVal = this.slider.model.settings.setMaxVal(newVal);
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getStepVal(): number{
-        return this.slider.model.settings.settings.stepVal;
-    }
-    static setStepVal(newVal: number): number{
-        newVal = this.slider.model.settings.setStepVal(newVal);
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getValue(): number{
-        return this.slider.model.settings.settings.value;
-    }
-    static setValue(newVal: number): number{
-        newVal = this.slider.model.settings.setValue(newVal);
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getOrientation(): string{
-        return this.slider.model.settings.settings.orientation;
-    }
-    static setOrientation(newVal: string): string{
-        newVal = this.slider.model.settings.setOrientation(newVal);
-        let rootElement = this.slider.view.slider;
-        this.slider.view.destroy();
-        this.slider.view = undefined;
-        if(this.slider.model.settings.settings.range){
-            this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-        }else{
-            this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-        }
-        this.slider.initStartValue();
-        return newVal;
-    }
-    static getValues(numberCurrent?: number): number[] | number{
-        if(numberCurrent === undefined) return this.slider.model.settings.settings.values;
-        else return this.slider.model.settings.settings.values[numberCurrent];
-    }
-    static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number{
-        if(numberCurrent === undefined){
-            newVal = this.slider.model.settings.setValues(&lt;number[]&gt;newVal);
-            this.slider.initStartValue();
-            return newVal;
-        }else{
-            let tmp:number[] = this.slider.model.settings.settings.values;
-            tmp[numberCurrent] = &lt;number&gt;newVal;
-            newVal = this.slider.model.settings.setValues(&lt;number[]&gt;tmp);
-        }
-        this.slider.initStartValue();
-        return this.slider.model.settings.settings.values[numberCurrent];
+    let currReturn: string | number | number[] | boolean;
+    if(value !== undefined){
+      switch (setting){
+        case 'range':   currReturn = this.setRange(&lt;boolean&gt;value)
+          break;
+        case 'minVal':  currReturn = this.setMinVal(&lt;number&gt;value)
+          break;
+        case 'maxVal':  currReturn = this.setMaxVal(&lt;number&gt;value)
+          break;
+        case 'stepVal': currReturn = this.setStepVal(&lt;number&gt;value)
+          break;
+        case 'orientation': currReturn = this.setOrientation(&lt;string&gt;value)
+          break;
+        case 'value':   currReturn = this.setValue(&lt;number&gt;value)
+          break;
+        case 'values':  currReturn = this.checkValuesSetterType(valuesOneOfTwoVals, value)
+          break;
+        case 'followerPoint':   currReturn = this.setFollowerPoint(&lt;boolean&gt;value)
+          break;
+      }
+    }else{
+      switch (setting){
+        case 'range':   currReturn = this.getRange();
+          break;
+        case 'minVal':  currReturn = this.getMinVal();
+          break;
+        case 'maxVal':  currReturn = this.getMaxVal();
+          break;
+        case 'stepVal': currReturn = this.getStepVal();
+          break;
+        case 'orientation': currReturn = this.getOrientation();
+          break;
+        case 'value':   currReturn = this.getValue();
+          break;
+        case 'values':  currReturn = this.getValues();
+          break;
+        case 'followerPoint': currReturn = this.getFollowerPoint();
+          break;
+      }
     }
     
-    
+    return currReturn;
+  }
 &nbsp;
+  static getFollowerPoint(): boolean{
+    return this.slider.model.settings.settings.followerPoint;        
+  }
+  static setFollowerPoint(newVal: boolean): boolean{
+    newVal = this.slider.model.settings.setFollowerPoint(newVal);
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getRange(): boolean{
+    return this.slider.model.settings.settings.range;
+  }
+  static setRange(newVal: boolean): boolean{
+    newVal = this.slider.model.settings.setRange(newVal);
+    let rootElement = this.slider.view.slider;
+    this.slider.view.destroy();
+    if(newVal){
+      this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+    }else{
+      this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+    }
+    
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getMinVal(): number{
+    return this.slider.model.settings.settings.minVal;
+  }
+  static setMinVal(newVal: number): number{
+    newVal = this.slider.model.settings.setMinVal(newVal);
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getMaxVal(): number{
+    return this.slider.model.settings.settings.maxVal;
+  }
+  static setMaxVal(newVal: number): number{
+    newVal = this.slider.model.settings.setMaxVal(newVal);
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getStepVal(): number{
+    return this.slider.model.settings.settings.stepVal;
+  }
+  static setStepVal(newVal: number): number{
+    newVal = this.slider.model.settings.setStepVal(newVal);
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getValue(): number{
+    return this.slider.model.settings.settings.value;
+  }
+  static setValue(newVal: number): number{
+    newVal = this.slider.model.settings.setValue(newVal);
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getOrientation(): string{
+    return this.slider.model.settings.settings.orientation;
+  }
+  static setOrientation(newVal: string): string{
+    newVal = this.slider.model.settings.setOrientation(newVal);
+    let rootElement = this.slider.view.slider;
+    this.slider.view.destroy();
+    this.slider.view = undefined;
+    if(this.slider.model.settings.settings.range){
+      this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+    }else{
+      this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
+    }
+    this.slider.initStartValue();
+    return newVal;
+  }
+  static getValues(numberCurrent?: number): number[] | number{
+    if(numberCurrent === undefined) return this.slider.model.settings.settings.values;
+    else return this.slider.model.settings.settings.values[numberCurrent];
+  }
+  static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number{
+    if(numberCurrent === undefined){
+      newVal = this.slider.model.settings.setValues(&lt;number[]&gt;newVal);
+      this.slider.initStartValue();
+      return newVal;
+    }else{
+      let tmp:number[] = this.slider.model.settings.settings.values;
+      tmp[numberCurrent] = &lt;number&gt;newVal;
+      newVal = this.slider.model.settings.setValues(&lt;number[]&gt;tmp);
+    }
+    this.slider.initStartValue();
+    return this.slider.model.settings.settings.values[numberCurrent];
+  }
+&nbsp;
+  static checkValuesSetterType(valuesOneOfTwoVals:any, value:any){
+    let currReturn;
+    if(valuesOneOfTwoVals === undefined &amp;&amp; typeof(value)!=='number'){ 
+      currReturn = this.setValues(&lt;number[]&gt;value);
+    }
+    else if(valuesOneOfTwoVals === undefined &amp;&amp; typeof(value)==='number'){
+        currReturn = this.getValues(value);
+    }else if(valuesOneOfTwoVals !== undefined &amp;&amp; typeof(value)==='number'){
+        currReturn = this.setValues(valuesOneOfTwoVals, &lt;number&gt;value);
+    }
+    return currReturn;
+  }
+  
 }
 &nbsp;
+export{
+  SliderPresenterAPI
+}
 export default SliderPresenterAPI;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Aug 29 2019 10:37:17 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:25:34 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

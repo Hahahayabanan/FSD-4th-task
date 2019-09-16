@@ -5,56 +5,35 @@ import './View/styles.css'
 
 (function ($: JQueryStatic) {
 
-   let sliders: SliderPresenter[] = new Array;
+  let sliders: SliderPresenter[] = new Array;
 
-   $.fn['slider'] = function () {
-      if(typeof arguments[0] === 'object' || arguments[0] === undefined){
-         let settings: ISliderSettings = arguments[0];
-         return this.each(function (i:number, val:object) {
-            let htmlElem = val;
-            sliders.push(new SliderPresenter(htmlElem, settings))
-         });
-      }
-      if(typeof arguments[0] === 'string'){
-         let option = arguments[0];
-         let setting = arguments[1];
-         let value = arguments[2];
-         let valuesOnOfTwoVals = arguments[3];
-         let retunValue:any;
-         this.each(function (i:number, val:object) {
-            let htmlElem = val;
-            sliders.forEach((val, i)=>{
-               if(val.view.slider === htmlElem){
-                  retunValue = SliderPresenterAPI.enterPoint(val, option, setting, value, valuesOnOfTwoVals);
-               }
-            });
+  $.fn['slider'] = function (...args:any) {
+    if(typeof args[0] === 'object' || args[0] === undefined){
+        let settings: ISliderSettings = args[0];
+        return this.each(function (i:number, val:object) {
+          let htmlElem = val;
+          sliders.push(new SliderPresenter(htmlElem, settings))
+        });
+    }
+    if(typeof args[0] === 'string'){
+        let option = args[0];
+        let setting = args[1];
+        let value = args[2];
+        let valuesOnOfTwoVals = args[3];
+        let returnValue:any;
+        this.each(function (i:number, val:object) {
+          let htmlElem = val;
+          sliders.forEach((val, i)=>{
+              if(val.view.slider === htmlElem){
+                returnValue = SliderPresenterAPI.enterPoint(val, option, setting, value, valuesOnOfTwoVals);
+              }
+          });
 
-         });
-         return retunValue;
-      }
-      
-   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   // $.fn['slider'] = function (settigns: ISliderSettings) {
-   //    return this.each(function (i:number, val:object) {
-   //       let htmlElem = val;
-   //       slider.push(new SliderPresenter(htmlElem, settigns))
-   //    });
-   // };
+        });
+        return returnValue;
+    }
+    
+  };
 
 
 
