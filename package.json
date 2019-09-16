@@ -75,11 +75,12 @@
     "server": "npm run server:dev",
     "server:dev": "webpack-dev-server --mode development --config ./webpack.config.js --hot --inline --progress --watch --open",
     "server:prod": "cross-env NODE_ENV=production webpack-dev-server  --mode production --config ./webpack.config.js --port 3000 --host 0.0.0.0 --hot --inline --progress  --watch --open --content-base dist/",
-    "start": "npm run server:dev", 
+    "start": "npm run server:dev",
     "test": "karma start"
   },
   "version": "0.0.1",
   "dependencies": {
-    "@types/jsdom": "^12.2.4"
+    "@types/jsdom": "^12.2.4",
+    "eslint-utils": "^1.4.2"
   }
 }

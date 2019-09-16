@@ -205,7 +205,23 @@
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
 <a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -377,46 +393,45 @@ class SliderPresenter{
 &nbsp;
   public model:Slider;
   public view: any;
-&nbsp;
     
   constructor(rootElement: any, options: ISliderSettings) {
-        
     this.model = new Slider(options);
-    let isRange = this.model.settings.settings.range;
-&nbsp;
-    if(isRange){
-      this.view = new SliderTemplateRange(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
-    }else{
-      this.view = new SliderTemplate(rootElement, this.model.settings.settings.orientation, this.model.settings.settings.followerPoint);
-    }
-      
-    let onChangePointer = (event:any)=&gt;{
-      let currThumb = event.detail;
-&nbsp;
-      let curPosInPixels:number = currThumb.currPos;
-      let curPosInVal:number = this.calculateFromPixelsToValue(curPosInPixels);
-      let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
-        
-      let curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
-&nbsp;
-      this.render(currThumb, curPosInPercentsWithStep);
-      this.setFollowerPointValue(currThumb, curPosInValWithStep);
-  
-      if(currThumb === this.view.thumb1){
-        this.model.settings.settings.values[0] = curPosInValWithStep;
-      }
-      if(currThumb === this.view.thumb2){
-        this.model.settings.settings.values[1] = curPosInValWithStep;
-      }
-    }
-      
+    
+    this.createView(rootElement);
           
-    this.view.slider.addEventListener('changePointer', onChangePointer);
+    this.view.slider.addEventListener('changePointer', this.onChangePointer.bind(this));
     this.initStartValue();
   }
 &nbsp;
-  initStartValue(){
+  onChangePointer(event:any){
+    let currThumb = event.detail;
+&nbsp;
+    let curPosInPixels:number = currThumb.currPos;
+    let curPosInVal:number = this.calculateFromPixelsToValue(curPosInPixels);
+    let curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
       
+    let curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
+&nbsp;
+    this.render(currThumb, curPosInPercentsWithStep);
+    this.setFollowerPointValue(currThumb, curPosInValWithStep);
+&nbsp;
+    if(currThumb === this.view.thumb1){
+      this.model.settings.settings.values[0] = curPosInValWithStep;
+    }
+    if(currThumb === this.view.thumb2){
+      this.model.settings.settings.values[1] = curPosInValWithStep;
+    }
+  }
+&nbsp;
+  createView(rootElement:any){
+    if(this.model.settings.settings.range){
+      this.view = new SliderTemplateRange(rootElement, this.checkOrientationIsVertical(), this.model.settings.settings.followerPoint);
+    }else{
+      this.view = new SliderTemplate(rootElement, this.checkOrientationIsVertical(), this.model.settings.settings.followerPoint);
+    }
+  }
+&nbsp;
+  initStartValue(){
     if(this.model.settings.settings.range){
       let curPosInValues:number[] = this.model.settings.settings.values;
       let curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
@@ -430,7 +445,6 @@ class SliderPresenter{
       this.view.thumb1.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]);
       this.view.thumb2.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep[1]);
     }else{
-&nbsp;
       let curPosInValue:number = this.model.settings.settings.value;
       let curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
       
@@ -438,7 +452,6 @@ class SliderPresenter{
           
       this.view.thumb.currPos = this.calculateFromPercentsToPixels(curPosInPercentsWithStep);
     }       
-      
   }
 &nbsp;
   
@@ -475,7 +488,7 @@ class SliderPresenter{
     let maxVal:number = this.model.settings.settings.maxVal;
     let rangeVal:number = maxVal - minVal;     
     let rangePixels:string = '1';
-    if(this.model.settings.settings.orientation === 'vertical'){
+    if(this.checkOrientationIsVertical()){
       rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
     }else{
       rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
@@ -507,7 +520,7 @@ class SliderPresenter{
 &nbsp;
   calculateFromPercentsToPixels(curPosInPercents: number):number{
     let rangePixels:string = '1';
-    if(this.model.settings.settings.orientation === 'vertical'){
+    if(this.checkOrientationIsVertical()){
       rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
     }else{
       rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
@@ -515,6 +528,17 @@ class SliderPresenter{
     let currPosInPixels: number = curPosInPercents * parseInt(rangePixels, 10) / 100;
     
     return currPosInPixels;
+  }
+&nbsp;
+  checkOrientationIsVertical():boolean{
+    let ordersModule = {
+      ORIENTATION_IS_VERTICAL: 'vertical'
+    }
+    if(this.model.settings.settings.orientation === ordersModule.ORIENTATION_IS_VERTICAL){
+      return true;
+    }else{
+      return false;
+    }
   }
 &nbsp;
 }
@@ -529,7 +553,7 @@ export default SliderPresenter</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:25:34 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 12:41:32 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

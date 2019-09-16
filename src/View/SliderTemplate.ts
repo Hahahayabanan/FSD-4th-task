@@ -4,18 +4,12 @@ class SliderTemplate{
 
   public slider: any;
   public thumb: SliderPointer;
-  public isVertical: boolean;
+  public isVertical: boolean = false;
   public isFollowerPoint: boolean = false;
 
-  constructor(elem: any, isVertical?:string, isFollowerPoint?:boolean){
+  constructor(elem: any, isVertical?:boolean, isFollowerPoint?:boolean){
     this.slider = elem;
-
-    if(isVertical === 'vertical'){
-      this.isVertical = true;
-    }else{
-      this.isVertical = false;
-    }
-
+    this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
 
     this.createTemplate();
@@ -47,9 +41,7 @@ class SliderTemplate{
       if(this.isFollowerPoint){
         this.thumb.createFollowerPoint();
       }
-    }
-
-      
+    }      
   }
 
   addEventToSliderClick(){

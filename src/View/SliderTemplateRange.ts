@@ -3,23 +3,16 @@ import SliderPointer from './SliderPointer'
 class SliderTemplateRange {
 
   public slider: any;
-  public isVertical: boolean;
+  public isVertical: boolean = false;
   public isFollowerPoint: boolean = false;
   public thumb1: SliderPointer;
   public thumb2: SliderPointer;
   public range: any;
 
-  constructor(elem: any, isVertical?: string, isFollowerPoint?: boolean){
+  constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean){
     this.slider = elem;
-    
-    if(isVertical === 'vertical'){
-      this.isVertical = true;
-    }else{
-      this.isVertical = false;
-    }
-
+    this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
-
     this.createTemplate();
     
     this.thumb1.createEventListeners(this.thumb2);

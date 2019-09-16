@@ -77,12 +77,7 @@ class SliderPresenterAPI{
     newVal = this.slider.model.settings.setRange(newVal);
     let rootElement = this.slider.view.slider;
     this.slider.view.destroy();
-    if(newVal){
-      this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-    }else{
-      this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-    }
-    
+    this.slider.createView(rootElement);
     this.slider.initStartValue();
     return newVal;
   }
@@ -126,11 +121,7 @@ class SliderPresenterAPI{
     let rootElement = this.slider.view.slider;
     this.slider.view.destroy();
     this.slider.view = undefined;
-    if(this.slider.model.settings.settings.range){
-      this.slider.view = new SliderTemplateRange(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-    }else{
-      this.slider.view = new SliderTemplate(rootElement, this.slider.model.settings.settings.orientation, this.slider.model.settings.settings.followerPoint);
-    }
+    this.slider.createView(rootElement);
     this.slider.initStartValue();
     return newVal;
   }
@@ -156,11 +147,10 @@ class SliderPresenterAPI{
     let currReturn;
     if(valuesOneOfTwoVals === undefined && typeof(value)!=='number'){ 
       currReturn = this.setValues(<number[]>value);
-    }
-    else if(valuesOneOfTwoVals === undefined && typeof(value)==='number'){
-        currReturn = this.getValues(value);
+    }else if(valuesOneOfTwoVals === undefined && typeof(value)==='number'){
+      currReturn = this.getValues(value);
     }else if(valuesOneOfTwoVals !== undefined && typeof(value)==='number'){
-        currReturn = this.setValues(valuesOneOfTwoVals, <number>value);
+      currReturn = this.setValues(valuesOneOfTwoVals, <number>value);
     }
     return currReturn;
   }

@@ -34,6 +34,10 @@ class SliderSettings{
 
   checkValidValues(){   
     try{
+      let isOrientationSet = this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal';
+      let isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
+      let valueRange = this.settings.maxVal - this.settings.minVal;
+
       if(this.settings.minVal > this.settings.maxVal){
         this.settings.maxVal = this.defaultSettings.maxVal;
         this.settings.minVal = this.defaultSettings.minVal;
@@ -42,7 +46,7 @@ class SliderSettings{
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw 'Min slider range value cant be bigger than max value';
       }
-      if(this.settings.maxVal - this.settings.minVal <= this.settings.stepVal){
+      if(valueRange <= this.settings.stepVal){
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw 'Step cant be bigger than min and max range';
       }
@@ -70,10 +74,10 @@ class SliderSettings{
         this.settings.values[1] = this.settings.values[0];
         throw `Second value cant be bigger than first value`;
       }
-      if((this.settings.values[0] !== null || this.settings.values[1] !== null) && !this.settings.range){
+      if(isOneOfRangeValueSet && !this.settings.range){
         throw 'Your slider has range values but it is not range';
       }
-      if(this.settings.orientation !== 'vertical' && this.settings.orientation !== 'horizontal'){
+      if(isOrientationSet){
         this.settings.orientation = 'horizontal';
         throw 'Orientation of slider has only two values \'horizontal\' or \'vertical\''
       }
@@ -131,7 +135,8 @@ class SliderSettings{
   }
   setStepVal(tmp: number){
     try{
-      if(Number(tmp) < (this.settings.maxVal - this.settings.minVal)){
+      let valueRange = this.settings.maxVal - this.settings.minVal;
+      if(Number(tmp) < valueRange){
         this.settings.stepVal = Number(tmp);
         this.checkValidValues();
         return this.settings.stepVal;
