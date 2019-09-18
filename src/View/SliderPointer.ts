@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-as-default
 import FollowerPoint from './FollowerPoint';
 
 class SliderPointer {
@@ -44,6 +45,7 @@ class SliderPointer {
 
       let leftEdge: number = 0;
 
+      // eslint-disable-next-line no-shadow
       const onMouseMove = (event:any) => {
         if (anotherPointer) {
           if (this.currPos < anotherPointer.currPos) {

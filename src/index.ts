@@ -26,7 +26,7 @@ import './View/styles.css';
       this.map((i:number, val:object) => {
         const htmlElem = val;
         // eslint-disable-next-line array-callback-return
-        sliders.map(htmlItem => {
+        sliders.map((htmlItem) => {
           if (htmlItem.view.slider === htmlElem) {
             returnValue = SliderPresenterAPI.enterPoint({
               valuesOneOfTwoVals,

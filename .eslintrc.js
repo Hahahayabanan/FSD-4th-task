@@ -16,7 +16,7 @@ module.exports = {
     ],
     "eol-last": [2, "always"],
     "no-confusing-arrow": 0,
-    "arrow-parens": [2, "as-needed"],
+    "arrow-parens": ["error", "always"],
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "arrow-body-style": [2, "as-needed"],
     "no-extra-parens": [
