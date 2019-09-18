@@ -10,5 +10,5 @@ declare class SliderTemplate {
     addEventToSliderClick(): void;
     destroy(): void;
 }
-export { SliderTemplate };
+export { SliderTemplate, };
 export default SliderTemplate;

@@ -15,5 +15,5 @@ declare class SliderPresenter {
     calculateFromPercentsToPixels(curPosInPercents: number): number;
     checkOrientationIsVertical(): boolean;
 }
-export { SliderPresenter };
+export { SliderPresenter, };
 export default SliderPresenter;

@@ -10,7 +10,7 @@ interface ISliderSettings {
 }
 
 export {
-  ISliderSettings
-}
+  ISliderSettings,
+};
 
 export default ISliderSettings;

@@ -26,5 +26,5 @@ declare class SliderPresenterAPI {
     static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number;
     static checkValuesSetterType(valuesOneOfTwoVals: any, value: any): number | number[];
 }
-export { SliderPresenterAPI };
+export { SliderPresenterAPI, };
 export default SliderPresenterAPI;

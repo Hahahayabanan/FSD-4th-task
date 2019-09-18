@@ -1,47 +1,44 @@
-import { ISliderSettings } from './Model/ISliderSettings'
-import { SliderPresenter } from './Presenter/SliderPresenter'
-import { SliderPresenterAPI } from './Presenter/SliderPresenterAPI'
-import './View/styles.css'
+/* eslint-disable consistent-return */
+import { ISliderSettings } from './Model/ISliderSettings';
+import { SliderPresenter } from './Presenter/SliderPresenter';
+import { SliderPresenterAPI } from './Presenter/SliderPresenterAPI';
+import './View/styles.css';
 
-(function ($: JQueryStatic) {
 
-  let sliders: SliderPresenter[] = new Array;
+(function initialization($: JQueryStatic) {
+  const sliders: SliderPresenter[] = [];
 
-  $.fn['slider'] = function (...args:any) {
-    if(typeof args[0] === 'object' || args[0] === undefined){
-      let settings: ISliderSettings = args[0];
-      return this.each(function (i:number, val:object) {
-        let htmlElem = val;
-        sliders.push(new SliderPresenter(htmlElem, settings))
+
+  // eslint-disable-next-line dot-notation
+  $.fn['slider'] = function getStart(...args:any) {
+    if (typeof args[0] === 'object' || args[0] === undefined) {
+      const settings: ISliderSettings = args[0];
+      return this.each((i:number, val:object) => {
+        const htmlElem = val;
+        return sliders.push(new SliderPresenter(htmlElem, settings));
       });
     }
-    if(typeof args[0] === 'string'){
-      let option = args[0];
-      let setting = args[1];
-      let value = args[2];
-      let valuesOnOfTwoVals = args[3];
+    if (typeof args[0] === 'string') {
+      const [option, setting, value, valuesOneOfTwoVals] = args;
+
       let returnValue:any;
-      this.each(function (i:number, val:object) {
-        let htmlElem = val;
-        sliders.forEach((val, i)=>{
-          if(val.view.slider === htmlElem){
+      // eslint-disable-next-line array-callback-return
+      this.map((i:number, val:object) => {
+        const htmlElem = val;
+        // eslint-disable-next-line array-callback-return
+        sliders.map(htmlItem => {
+          if (htmlItem.view.slider === htmlElem) {
             returnValue = SliderPresenterAPI.enterPoint({
-              slider: val, 
-              option: option, 
-              setting: setting, 
-              value: value, 
-              valuesOneOfTwoVals: valuesOnOfTwoVals});
+              valuesOneOfTwoVals,
+              value,
+              option,
+              setting,
+              slider: htmlItem,
+            });
           }
         });
-
       });
       return returnValue;
     }
-    
   };
-
-
-
-})(jQuery);
-
-
+}(jQuery));

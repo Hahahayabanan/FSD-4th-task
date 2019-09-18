@@ -1,13 +1,15 @@
-import SliderPointer from './SliderPointer'
+import SliderPointer from './SliderPointer';
 
-class SliderTemplate{
-
+class SliderTemplate {
   public slider: any;
+
   public thumb: SliderPointer;
+
   public isVertical: boolean = false;
+
   public isFollowerPoint: boolean = false;
 
-  constructor(elem: any, isVertical?:boolean, isFollowerPoint?:boolean){
+  constructor(elem: any, isVertical?:boolean, isFollowerPoint?:boolean) {
     this.slider = elem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
@@ -17,47 +19,45 @@ class SliderTemplate{
     this.addEventToSliderClick();
   }
 
-  private sliderOnClick = (event:any)=>{
+  private sliderOnClick = (event:any) => {
     event.preventDefault();
-    let newLeft: number = this.isVertical
+    const newLeft: number = this.isVertical
       ? event.clientY - this.slider.getBoundingClientRect().top
       : event.clientX - this.slider.getBoundingClientRect().left;
-    this.thumb.currPos = newLeft;    
-  }
-  
-  createTemplate(){
-    this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
-    this.slider.append(this.thumb.thumbHTMLElem);   
+    this.thumb.currPos = newLeft;
+  };
 
-    if(this.isVertical){
+  createTemplate() {
+    this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
+    this.slider.append(this.thumb.thumbHTMLElem);
+
+    if (this.isVertical) {
       this.slider.classList.add('j-plugin-slider_vertical');
       this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
-      if(this.isFollowerPoint){
+      if (this.isFollowerPoint) {
         this.slider.classList.add('j-plugin-slider_with-point_vertical');
       }
-    }else{
+    } else {
       this.slider.classList.add('j-plugin-slider');
       this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-      if(this.isFollowerPoint){
+      if (this.isFollowerPoint) {
         this.thumb.createFollowerPoint();
       }
-    }      
+    }
   }
 
-  addEventToSliderClick(){
+  addEventToSliderClick() {
     this.slider.addEventListener('click', this.sliderOnClick);
   }
 
-  destroy(){
-    this.slider.removeEventListener('click', this.sliderOnClick)
+  destroy() {
+    this.slider.removeEventListener('click', this.sliderOnClick);
     this.thumb.thumbHTMLElem.remove();
     this.thumb = undefined;
     this.slider.classList.remove('j-plugin-slider', 'j-plugin-slider_vertical');
   }
-    
 }
-export{
-  SliderTemplate
-}
+export {
+  SliderTemplate,
+};
 export default SliderTemplate;
-  

@@ -13,5 +13,5 @@ declare class SliderTemplateRange {
     calculatePointersRange(): number;
     destroy(): void;
 }
-export { SliderTemplateRange };
+export { SliderTemplateRange, };
 export default SliderTemplateRange;

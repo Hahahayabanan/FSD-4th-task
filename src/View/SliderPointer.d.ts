@@ -13,5 +13,5 @@ declare class SliderPointer {
     createFollowerPoint(): void;
     deleteFollowerPoint(): void;
 }
-export { SliderPointer };
+export { SliderPointer, };
 export default SliderPointer;

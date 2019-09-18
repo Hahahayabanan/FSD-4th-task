@@ -6,5 +6,5 @@ declare class Slider {
     setPointerPosition(pos: number[]): number[];
     setPointerPosition(pos: number): number;
 }
-export { Slider };
+export { Slider, };
 export default Slider;
