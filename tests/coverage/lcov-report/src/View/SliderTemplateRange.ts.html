@@ -146,7 +146,14 @@
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,113 +253,127 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import SliderPointer from './SliderPointer'
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// eslint-disable-next-line import/no-named-as-default
+import SliderPointer from './SliderPointer';
 &nbsp;
 class SliderTemplateRange {
-&nbsp;
   public slider: any;
+&nbsp;
   public isVertical: boolean = false;
+&nbsp;
   public isFollowerPoint: boolean = false;
+&nbsp;
   public thumb1: SliderPointer;
+&nbsp;
   public thumb2: SliderPointer;
+&nbsp;
   public range: any;
 &nbsp;
-  constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean){
+  constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean) {
     this.slider = elem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
     this.createTemplate();
-    
+&nbsp;
     this.thumb1.createEventListeners(this.thumb2);
     this.thumb2.createEventListeners(this.thumb1);
     this.addEventToSliderClick();
   }
-  
-  createTemplate(){
+&nbsp;
+  createTemplate() {
     this.thumb1 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
     this.thumb2 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
     this.range = document.createElement('div');
 &nbsp;
-    this.slider.append(this.range);   
-    this.slider.append(this.thumb1.thumbHTMLElem);   
-    this.slider.append(this.thumb2.thumbHTMLElem);   
-    
-    if(this.isVertical){
+    this.slider.append(this.range);
+    this.slider.append(this.thumb1.thumbHTMLElem);
+    this.slider.append(this.thumb2.thumbHTMLElem);
+&nbsp;
+    if (this.isVertical) {
       this.slider.classList.add('j-plugin-slider_vertical');
       this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
       this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
       this.range.classList.add('j-plugin-slider__range_vertical');
-      if(this.isFollowerPoint){
+      if (this.isFollowerPoint) {
         this.slider.classList.add('j-plugin-slider_with-point_vertical');
       }
-    }else{
+    } else {
       this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
       this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
       this.slider.classList.add('j-plugin-slider');
       this.range.classList.add('j-plugin-slider__range');
-      if(this.isFollowerPoint){
+      if (this.isFollowerPoint) {
         this.slider.classList.add('j-plugin-slider_with-point');
       }
     }
   }
 &nbsp;
-  initRangeLine(){
-    let rangeLine = (event:any)=&gt;{
-      if(this.isVertical){
+  initRangeLine() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const rangeLine = (event:any) =&gt; {
+      if (this.isVertical) {
         this.range.style.top = this.thumb1.thumbHTMLElem.style.top;
-        this.range.style.height = (parseInt(this.thumb2.thumbHTMLElem.style.top) - parseInt(this.thumb1.thumbHTMLElem.style.top)) + '%';
-      }else{
+        this.range.style.height = `${parseInt(this.thumb2.thumbHTMLElem.style.top, 10) - parseInt(this.thumb1.thumbHTMLElem.style.top, 10)}%`;
+      } else {
         this.range.style.left = this.thumb1.thumbHTMLElem.style.left;
-        this.range.style.width = (parseInt(this.thumb2.thumbHTMLElem.style.left) - parseInt(this.thumb1.thumbHTMLElem.style.left)) + '%';
+        this.range.style.width = `${parseInt(this.thumb2.thumbHTMLElem.style.left, 10) - parseInt(this.thumb1.thumbHTMLElem.style.left, 10)}%`;
       }
-    }
+    };
+    // eslint-disable-next-line no-restricted-globals
     rangeLine(event);
     this.slider.addEventListener('changePointer', rangeLine);
   }
-  
 &nbsp;
-  addEventToSliderClick(){
+&nbsp;
+  addEventToSliderClick() {
     this.slider.onmousedown = (event:any) =&gt; {
       event.preventDefault();
-      let newLeft: number = this.isVertical
+      const newLeft: number = this.isVertical
         ? event.clientY - this.slider.getBoundingClientRect().top
         : event.clientX - this.slider.getBoundingClientRect().left;
-      
-      let pointersRange = this.calculatePointersRange();
 &nbsp;
-      if(newLeft &lt; pointersRange){
-        this.thumb1.currPos = newLeft;
+      const pointersRange = this.calculatePointersRange();
+&nbsp;
+      if (newLeft &lt; pointersRange) {
+        this.thumb1.setCurPos(newLeft);
       }
-      if(newLeft &gt; pointersRange){
-        this.thumb2.currPos = newLeft;
+      if (newLeft &gt; pointersRange) {
+        this.thumb2.setCurPos(newLeft);
       }
-                    
-    }
+    };
   }
 &nbsp;
-  calculatePointersRange(){
-    let res:number = (this.thumb2.currPos-this.thumb1.currPos) / 2 + this.thumb1.currPos;
+  calculatePointersRange() {
+    const res:number = ((this.thumb2.curPos - this.thumb1.curPos) / 2) + this.thumb1.curPos;
     return res;
   }
 &nbsp;
-  destroy(){
+  destroy() {
     this.range.remove();
     this.thumb1.thumbHTMLElem.remove();
     this.thumb2.thumbHTMLElem.remove();
-    this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider')
+    this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider');
   }
 }
 &nbsp;
-export{
-  SliderTemplateRange
-}
-export default SliderTemplateRange;</pre></td></tr>
+export {
+  SliderTemplateRange,
+};
+export default SliderTemplateRange;
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 14:25:03 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Sep 18 2019 15:53:36 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

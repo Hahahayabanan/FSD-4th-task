@@ -314,7 +314,22 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
     expect(slider.model.settings.settings.values).toEqual([-100, 100]);
   });
 
+  it('Should coincide API cant set values \'values\'', () => {
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'values',
+      value: [25, 35],
+    });
+    expect(slider.model.settings.settings.values).toEqual([null, null]);
+  });
   it('Should coincide API set values \'values\'', () => {
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'range',
+      value: true,
+    });
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -324,7 +339,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
     expect(slider.model.settings.settings.values).toEqual([25, 35]);
   });
 
-  it('Should coincide API set values \'set only one of values\'', () => {
+  it('Should coincide API cant \'set only one of values\' in range', () => {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -332,7 +347,31 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       value: 1,
       valuesOneOfTwoVals: 55,
     });
-    expect(slider.model.settings.settings.values).toEqual([null, 55]);
+    expect(slider.model.settings.settings.values).toEqual([null, null]);
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'values',
+      value: 0,
+      valuesOneOfTwoVals: 35,
+    });
+    expect(slider.model.settings.settings.values).toEqual([null, null]);
+  });
+  it('Should coincide API set values \'set only one of values\'', () => {
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'range',
+      value: true,
+    });
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'values',
+      value: 1,
+      valuesOneOfTwoVals: 55,
+    });
+    expect(slider.model.settings.settings.values).toEqual([-100, 55]);
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -343,6 +382,12 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
     expect(slider.model.settings.settings.values).toEqual([35, 55]);
   });
   it('Should coincide API set values \'get only one of values\'', () => {
+    SliderPresenterAPI.enterPoint({
+      slider,
+      option: 'option',
+      setting: 'range',
+      value: true,
+    });
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
