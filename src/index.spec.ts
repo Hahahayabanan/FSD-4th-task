@@ -95,8 +95,8 @@ describe('View / Slider template / Test of setting pointer positions', () => {
   slider.slider.style.cssText = 'width: 300px';
 
   it('Curr position should be set', () => {
-    slider.thumb.currPos = 150;
-    expect(slider.thumb.currPos).toEqual(150);
+    slider.thumb.setCurPos(150);
+    expect(slider.thumb.curPos).toEqual(150);
   });
 
   it('Should update value of curr position on change 236', () => {
@@ -119,8 +119,8 @@ describe('View / Vertical Slider template / Test of setting pointer positions', 
   slider.slider.style.cssText = 'height: 300px';
 
   it('Curr position should be set', () => {
-    slider.thumb.currPos = 150;
-    expect(slider.thumb.currPos).toEqual(150);
+    slider.thumb.setCurPos(150);
+    expect(slider.thumb.curPos).toEqual(150);
   });
 
   it('Should update value of curr position on change 236', () => {
@@ -289,8 +289,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       setting: 'range',
       value: true,
     });
-    expect(slider.view.thumb1.currPos).toEqual(0);
-    expect(slider.view.thumb2.currPos).toEqual(300);
+    expect(slider.view.thumb1.curPos).toEqual(0);
+    expect(slider.view.thumb2.curPos).toEqual(300);
   });
 
   it('Should coincide API set values \'followerPoint\'', () => {

@@ -50,7 +50,7 @@ class SliderSettings {
       const isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
       const valueRange = this.settings.maxVal - this.settings.minVal;
 
-      if (this.settings.minVal > this.settings.maxVal) {
+      if (this.settings.minVal >= this.settings.maxVal) {
         this.settings.maxVal = this.defaultSettings.maxVal;
         this.settings.minVal = this.defaultSettings.minVal;
         this.settings.value = this.defaultSettings.value;
@@ -151,7 +151,7 @@ class SliderSettings {
 
   setMinVal(tmp: number) {
     try {
-      if (Number(tmp) > this.settings.maxVal) {
+      if (Number(tmp) >= this.settings.maxVal) {
         throw this.errors.minBiggerMax;
       }
       this.settings.minVal = Number(tmp);
@@ -165,7 +165,7 @@ class SliderSettings {
 
   setMaxVal(tmp: number) {
     try {
-      if (Number(tmp) < this.settings.minVal) {
+      if (Number(tmp) <= this.settings.minVal) {
         throw this.errors.minBiggerMax;
       }
       this.settings.maxVal = Number(tmp);

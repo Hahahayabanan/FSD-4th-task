@@ -25,7 +25,7 @@ class SliderTemplate {
     const newLeft: number = this.isVertical
       ? event.clientY - this.slider.getBoundingClientRect().top
       : event.clientX - this.slider.getBoundingClientRect().left;
-    this.thumb.currPos = newLeft;
+    this.thumb.setCurPos(newLeft);
   };
 
   createTemplate() {

@@ -80,16 +80,16 @@ class SliderTemplateRange {
       const pointersRange = this.calculatePointersRange();
 
       if (newLeft < pointersRange) {
-        this.thumb1.currPos = newLeft;
+        this.thumb1.setCurPos(newLeft);
       }
       if (newLeft > pointersRange) {
-        this.thumb2.currPos = newLeft;
+        this.thumb2.setCurPos(newLeft);
       }
     };
   }
 
   calculatePointersRange() {
-    const res:number = ((this.thumb2.currPos - this.thumb1.currPos) / 2) + this.thumb1.currPos;
+    const res:number = ((this.thumb2.curPos - this.thumb1.curPos) / 2) + this.thumb1.curPos;
     return res;
   }
 

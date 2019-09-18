@@ -6,7 +6,7 @@ class SliderPointer {
 
   public sliderHTMLElem: any;
 
-  public _curPos: number;
+  public curPos: number;
 
   public isVertical: boolean;
 
@@ -18,12 +18,8 @@ class SliderPointer {
     this.isVertical = isVertical;
   }
 
-  get currPos():number {
-    return this._curPos;
-  }
-
-  set currPos(newCurrPos: number) {
-    this._curPos = newCurrPos;
+  setCurPos(newCurrPos: number) {
+    this.curPos = newCurrPos;
 
     this.sliderHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
       bubbles: true,
@@ -48,10 +44,10 @@ class SliderPointer {
       // eslint-disable-next-line no-shadow
       const onMouseMove = (event:any) => {
         if (anotherPointer) {
-          if (this.currPos < anotherPointer.currPos) {
-            rightEdge = anotherPointer.currPos;
-          } else if (this.currPos > anotherPointer.currPos) {
-            leftEdge = anotherPointer.currPos;
+          if (this.curPos < anotherPointer.curPos) {
+            rightEdge = anotherPointer.curPos;
+          } else if (this.curPos > anotherPointer.curPos) {
+            leftEdge = anotherPointer.curPos;
           }
         }
         let newLeft: number = this.isVertical
@@ -63,7 +59,7 @@ class SliderPointer {
         if (newLeft > rightEdge) {
           newLeft = rightEdge;
         }
-        this.currPos = newLeft;
+        this.setCurPos(newLeft);
       };
 
       const onMouseUp = () => {
