@@ -49,6 +49,8 @@ class SliderSettings {
       const isOrientationSet = isOrientationVertical && isOrientationHorizontal;
       const isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
       const valueRange = this.settings.maxVal - this.settings.minVal;
+      const stepSmallerNull = this.settings.stepVal < 0;
+      const stepBiggerRange = this.settings.stepVal < valueRange;
 
       if (this.settings.minVal >= this.settings.maxVal) {
         this.settings.maxVal = this.defaultSettings.maxVal;
@@ -58,7 +60,7 @@ class SliderSettings {
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw this.errors.minBiggerMax;
       }
-      if (this.settings.stepVal >= valueRange) {
+      if (stepSmallerNull && stepBiggerRange) {
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw this.errors.stepBiggerMaxMin;
       }
@@ -105,12 +107,10 @@ class SliderSettings {
   }
 
   setValidValue() {
-    if (!this.settings.range) {
-      if (this.settings.values[0] !== null) {
-        // eslint-disable-next-line prefer-destructuring
-        this.settings.value = this.settings.values[0];
-        this.settings.values = [null, null];
-      }
+    if (this.settings.values[0] !== null && !this.settings.range) {
+      // eslint-disable-next-line prefer-destructuring
+      this.settings.value = this.settings.values[0];
+      this.settings.values = [null, null];
     }
     if (this.settings.value === null && !this.settings.range) {
       this.settings.value = this.settings.minVal;
@@ -180,7 +180,9 @@ class SliderSettings {
   setStepVal(tmp: number) {
     try {
       const valueRange = this.settings.maxVal - this.settings.minVal;
-      if (Number(tmp) < valueRange) {
+      const stepBiggerNull = Number(tmp) > 0;
+      const stepSmallerRange = Number(tmp) < valueRange;
+      if (stepBiggerNull && stepSmallerRange) {
         this.settings.stepVal = Number(tmp);
         this.checkValidValues();
         return this.settings.stepVal;
