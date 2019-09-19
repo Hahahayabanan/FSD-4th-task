@@ -41,9 +41,17 @@ class SliderPresenter {
 
   createView(rootElement:any) {
     if (this.model.settings.settings.range) {
-      this.view = new SliderTemplateRange(rootElement, this.checkOrientationIsVertical(), this.model.settings.settings.followerPoint);
+      this.view = new SliderTemplateRange(
+        rootElement,
+        this.checkOrientationIsVertical(),
+        this.model.settings.settings.followerPoint,
+      );
     } else {
-      this.view = new SliderTemplate(rootElement, this.checkOrientationIsVertical(), this.model.settings.settings.followerPoint);
+      this.view = new SliderTemplate(
+        rootElement,
+        this.checkOrientationIsVertical(),
+        this.model.settings.settings.followerPoint,
+      );
     }
   }
 

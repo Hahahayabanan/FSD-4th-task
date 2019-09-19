@@ -24,9 +24,19 @@ class Slider {
     const step:number = this.settings.settings.stepVal;
 
     if (isArray(pos)) {
-      let curVals:number[] = [pos[0] - minVal, pos[1] - minVal];
-      const currentStep:number[] = [Math.round(curVals[0] / step), Math.round(curVals[1] / step)];
-      curVals = [(currentStep[0] * step) + minVal, (currentStep[1] * step) + minVal];
+      const firstCurVal = pos[0] - minVal;
+      const secondCurVal = pos[1] - minVal;
+      let curVals:number[] = [firstCurVal, secondCurVal];
+
+      const firstCurValWithoutStep = Math.round(curVals[0] / step);
+      const secondCurValWithoutStep = Math.round(curVals[1] / step);
+
+      const currentStep:number[] = [firstCurValWithoutStep, secondCurValWithoutStep];
+
+      const firstCurValWithStep = (currentStep[0] * step) + minVal;
+      const secondCurValWithStep = (currentStep[1] * step) + minVal;
+      curVals = [firstCurValWithStep, secondCurValWithStep];
+
       this.settings.settings.values = curVals;
       return curVals;
     }

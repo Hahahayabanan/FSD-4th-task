@@ -35,7 +35,7 @@ module.exports = {
     "no-script-url": 0,
     "prefer-promise-reject-errors": 0,
     "no-unused-expressions": 0,
-    "max-len": ["error", { "code": 150 }],
+    "max-len": ["error", { "code": 120 }],
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
   }
 };

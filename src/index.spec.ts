@@ -178,7 +178,8 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
     slider = new SliderPresenter(shadowSlider, {
       followerPoint: true,
     });
-    expect(slider.model.settings.settings.value).toEqual(parseInt(slider.view.thumb.followerPoint.elemHTMLElement.innerHTML, 10));
+    expect(slider.model.settings.settings.value)
+      .toEqual(parseInt(slider.view.thumb.followerPoint.elemHTMLElement.innerHTML, 10));
   });
 });
 
