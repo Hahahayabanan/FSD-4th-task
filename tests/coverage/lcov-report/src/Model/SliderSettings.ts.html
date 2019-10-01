@@ -274,7 +274,29 @@
 <a name='L226'></a><a href='#L226'>226</a>
 <a name='L227'></a><a href='#L227'>227</a>
 <a name='L228'></a><a href='#L228'>228</a>
-<a name='L229'></a><a href='#L229'>229</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -553,8 +575,14 @@ class SliderSettings {
       const isOrientationSet = isOrientationVertical &amp;&amp; isOrientationHorizontal;
       const isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
       const valueRange = this.settings.maxVal - this.settings.minVal;
-      const stepSmallerNull = this.settings.stepVal &lt; 0;
-      const stepBiggerRange = this.settings.stepVal &lt; valueRange;
+      const isStepSmallerNull = this.settings.stepVal &lt; 0;
+      const isStepBiggerRange = this.settings.stepVal &lt; valueRange;
+      const isValueBiggerMaxVal = this.settings.value &gt; this.settings.maxVal;
+      const isValueSmallerMinVal = this.settings.value &lt; this.settings.minVal;
+      const isFirstValueSmallerMinVal = this.settings.values[0] &lt; this.settings.minVal;
+      const isSecondValueBiggerMaxVal = this.settings.values[1] &gt; this.settings.maxVal;
+      const isFirstValueBiggerSecond = this.settings.values[0] &gt; this.settings.values[1];
+      const isSecondValueSmallerFirst = this.settings.values[1] &lt; this.settings.values[0];
 &nbsp;
       if (this.settings.minVal &gt;= this.settings.maxVal) {
         this.settings.maxVal = this.defaultSettings.maxVal;
@@ -564,7 +592,7 @@ class SliderSettings {
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw this.errors.minBiggerMax;
       }
-      if (stepSmallerNull &amp;&amp; stepBiggerRange) {
+      if (isStepSmallerNull &amp;&amp; isStepBiggerRange) {
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw this.errors.stepBiggerMaxMin;
       }
@@ -572,28 +600,28 @@ class SliderSettings {
         this.settings.stepVal = this.defaultSettings.stepVal;
         throw this.errors.stepInteger;
       }
-      if (this.settings.value &gt; this.settings.maxVal &amp;&amp; !this.settings.range) {
+      if (isValueBiggerMaxVal &amp;&amp; !this.settings.range) {
         this.settings.value = this.settings.maxVal;
         throw this.errors.valueBiggerMax;
       }
-      if (this.settings.value &lt; this.settings.minVal &amp;&amp; !this.settings.range) {
+      if (isValueSmallerMinVal &amp;&amp; !this.settings.range) {
         this.settings.value = this.settings.minVal;
         throw this.errors.valueSmallerMin;
       }
-      if (this.settings.values[0] &lt; this.settings.minVal &amp;&amp; this.settings.range) {
+      if (isFirstValueSmallerMinVal &amp;&amp; this.settings.range) {
         this.settings.values[0] = this.settings.minVal;
         throw this.errors.firstValueSmallerMin;
       }
-      if (this.settings.values[1] &gt; this.settings.maxVal &amp;&amp; this.settings.range) {
+      if (isSecondValueBiggerMaxVal &amp;&amp; this.settings.range) {
         this.settings.values[1] = this.settings.maxVal;
         throw this.errors.secondValueBiggerMax;
       }
-      if (this.settings.values[0] &gt; this.settings.values[1] &amp;&amp; this.settings.range) {
+      if (isFirstValueBiggerSecond &amp;&amp; this.settings.range) {
         // eslint-disable-next-line prefer-destructuring
         this.settings.values[0] = this.settings.values[1];
         throw this.errors.firstValueBiggerSecond;
       }
-      if (this.settings.values[1] &lt; this.settings.values[0] &amp;&amp; this.settings.range) {
+      if (isSecondValueSmallerFirst &amp;&amp; this.settings.range) {
         // eslint-disable-next-line prefer-destructuring
         this.settings.values[1] = this.settings.values[0];
         throw this.errors.secondValueBiggerFirst;
@@ -611,37 +639,42 @@ class SliderSettings {
   }
 &nbsp;
   setValidValue() {
-    if (this.settings.values[0] !== null &amp;&amp; !this.settings.range) {
+    const isFirstValueNull = this.settings.values[0] === null;
+    const isSecondValueNull = this.settings.values[1] === null;
+    const isValuesNull = this.settings.values === [null, null];
+    const isValueNull = this.settings.value === null;
+&nbsp;
+    if (!isFirstValueNull &amp;&amp; !this.settings.range) {
       // eslint-disable-next-line prefer-destructuring
       this.settings.value = this.settings.values[0];
       this.settings.values = [null, null];
     }
-    if (this.settings.value === null &amp;&amp; !this.settings.range) {
+    if (isValueNull &amp;&amp; !this.settings.range) {
       this.settings.value = this.settings.minVal;
     }
-    if (this.settings.values === [null, null] &amp;&amp; this.settings.range) {
-      if (this.settings.value !== null) {
+    if (isValuesNull &amp;&amp; this.settings.range) {
+      if (!isValueNull) {
         this.settings.values = [this.settings.value, this.settings.maxVal];
       } else {
         this.settings.values = [this.settings.minVal, this.settings.maxVal];
       }
       this.settings.value = null;
     }
-    if (this.settings.values[0] === null &amp;&amp; this.settings.range) {
-      if (this.settings.value !== null) {
+    if (isFirstValueNull &amp;&amp; this.settings.range) {
+      if (!isValueNull) {
         this.settings.values[0] = this.settings.value;
         this.settings.value = null;
       } else {
         this.settings.values[0] = this.settings.minVal;
       }
     }
-    if (this.settings.values[1] === null &amp;&amp; this.settings.range) {
+    if (isSecondValueNull &amp;&amp; this.settings.range) {
       this.settings.values[1] = this.settings.maxVal;
     }
-    if (this.settings.value !== null &amp;&amp; this.settings.range) {
+    if (!isValueNull &amp;&amp; this.settings.range) {
       this.settings.value = null;
     }
-    if (this.settings.values !== [null, null] &amp;&amp; !this.settings.range) {
+    if (!isValuesNull &amp;&amp; !this.settings.range) {
       this.settings.values = [null, null];
     }
   }
@@ -736,7 +769,7 @@ export default SliderSettings;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Sep 19 2019 15:04:58 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Oct 01 2019 07:37:48 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

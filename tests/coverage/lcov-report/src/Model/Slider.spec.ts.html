@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/View/SliderTemplate.ts</title>
+    <title>Code coverage report for src/Model/Slider.spec.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\index.html">All files</a> / <a href="index.html">src/View</a> SliderTemplate.ts
+      <a href="..\..\index.html">All files</a> / <a href="index.html">src/Model</a> Slider.spec.ts
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -110,7 +110,24 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,70 +191,104 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// eslint-disable-next-line import/no-named-as-default
-import SliderPointer from './SliderPointer';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Slider } from './Slider';
+import { SliderSettings } from './SliderSettings';
 &nbsp;
-class SliderTemplate {
-  public slider: any;
+describe('Model / Slider / Test initialization', () =&gt; {
+  const slider = new Slider();
 &nbsp;
-  public thumb: SliderPointer;
+  it('Should initialize slider object', () =&gt; {
+    slider.setSettings({
+      range: false,
+      minVal: 1,
+      maxVal: 10,
+      stepVal: 1,
+    });
 &nbsp;
-  public isVertical: boolean = false;
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: false,
+      minVal: 1,
+      maxVal: 10,
+      stepVal: 1,
+    }));
+  });
 &nbsp;
-  public isFollowerPoint: boolean = false;
+  it('Should change slider settings', () =&gt; {
+    slider.setSettings({
+      range: false,
+      minVal: 1,
+      maxVal: 10,
+      stepVal: 1,
+    });
 &nbsp;
-  constructor(elem: any, isVertical?:boolean, isFollowerPoint?:boolean) {
-    this.slider = elem;
-    this.isVertical = isVertical;
-    this.isFollowerPoint = isFollowerPoint;
+    slider.settings.setMaxVal(150);
+    slider.settings.setMinVal(10);
 &nbsp;
-    this.createTemplate();
-    this.thumb.createEventListeners();
-    this.addEventToSliderClick();
-  }
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: false,
+      minVal: 10,
+      maxVal: 150,
+      stepVal: 1,
+    }));
+  });
 &nbsp;
-  private sliderOnClick = (event:any) =&gt; {
-    event.preventDefault();
-    const newLeft: number = this.isVertical
-      ? event.clientY - this.slider.getBoundingClientRect().top
-      : event.clientX - this.slider.getBoundingClientRect().left;
-    this.thumb.setCurPos(newLeft);
-  };
+  it('Should initialize RANGE slider object', () =&gt; {
+    slider.setSettings({
+      range: true,
+      minVal: 1,
+      maxVal: 10,
+      stepVal: 1,
+      values: [7, 8],
+    });
 &nbsp;
-  createTemplate() {
-    this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
-    this.slider.append(this.thumb.thumbHTMLElem);
+    expect(slider.settings).toEqual(new SliderSettings({
+      range: true,
+      minVal: 1,
+      maxVal: 10,
+      stepVal: 1,
+      values: [7, 8],
+    }));
+  });
+});
 &nbsp;
-    if (this.isVertical) {
-      this.slider.classList.add('j-plugin-slider_vertical');
-      this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
-      if (this.isFollowerPoint) {
-        this.slider.classList.add('j-plugin-slider_with-point_vertical');
-      }
-    } else {
-      this.slider.classList.add('j-plugin-slider');
-      this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-      if (this.isFollowerPoint) {
-        this.thumb.createFollowerPoint();
-      }
-    }
-  }
+describe('Model / Slider / Test moving', () =&gt; {
+  const slider = new Slider({
+    minVal: 20,
+    maxVal: 100,
+    stepVal: 2,
+  });
 &nbsp;
-  addEventToSliderClick() {
-    this.slider.addEventListener('click', this.sliderOnClick);
-  }
+  slider.settings.setStepVal(5);
 &nbsp;
-  destroy() {
-    this.slider.removeEventListener('click', this.sliderOnClick);
-    this.thumb.thumbHTMLElem.remove();
-    this.thumb = undefined;
-    this.slider.classList.remove('j-plugin-slider', 'j-plugin-slider_vertical');
-  }
-}
-export {
-  SliderTemplate,
-};
-export default SliderTemplate;
+  it('Should change pointer position 60', () =&gt; {
+    expect(slider.setPointerPosition(58)).toEqual(60);
+  });
+&nbsp;
+  it('Should change pointer position 90', () =&gt; {
+    expect(slider.setPointerPosition(92)).toEqual(90);
+  });
+&nbsp;
+  it('Should change pointer position 20,35', () =&gt; {
+    expect(slider.setPointerPosition([22, 37])).toEqual([20, 35]);
+  });
+});
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->

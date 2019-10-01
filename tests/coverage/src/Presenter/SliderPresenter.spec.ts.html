@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/View/SliderTemplate.ts</title>
+    <title>Code coverage report for src/Presenter/SliderPresenter.spec.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\index.html">All files</a> / <a href="index.html">src/View</a> SliderTemplate.ts
+      <a href="..\..\index.html">All files</a> / <a href="index.html">src/Presenter</a> SliderPresenter.spec.ts
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -110,7 +110,19 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,70 +186,94 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// eslint-disable-next-line import/no-named-as-default
-import SliderPointer from './SliderPointer';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderPresenter } from './SliderPresenter';
 &nbsp;
-class SliderTemplate {
-  public slider: any;
+describe('Presenter / SliderPresenter / Test initialization', () =&gt; {
+  const shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
 &nbsp;
-  public thumb: SliderPointer;
+  shadowSlider.style.cssText = 'width: 300px';
 &nbsp;
-  public isVertical: boolean = false;
 &nbsp;
-  public isFollowerPoint: boolean = false;
+  let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+    minVal: 10,
+    stepVal: 5,
+    maxVal: 100,
+    range: false,
+    followerPoint: true,
+  });
 &nbsp;
-  constructor(elem: any, isVertical?:boolean, isFollowerPoint?:boolean) {
-    this.slider = elem;
-    this.isVertical = isVertical;
-    this.isFollowerPoint = isFollowerPoint;
+  it('Should coincide constructor set values \'value\'', () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      range: false,
+      minVal: 10,
+      stepVal: 5,
+      maxVal: 100,
+      value: 53,
+    });
+    expect(slider.model.settings.settings.value).toEqual(55);
+  });
+  it('Should coincide constructor values \'step\'', () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      stepVal: 5,
+    });
+    expect(slider.model.settings.settings.stepVal).toEqual(5);
+  });
+  it('Should coincide constructor values default \'value\'', () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      minVal: 10,
 &nbsp;
-    this.createTemplate();
-    this.thumb.createEventListeners();
-    this.addEventToSliderClick();
-  }
+      maxVal: 100,
+      range: false,
+    });
+    expect(slider.model.settings.settings.value).toEqual(10);
+  });
+  it('Should coincide follower pointer value', () =&gt; {
+    slider = new SliderPresenter(shadowSlider, {
+      followerPoint: true,
+    });
+    expect(slider.model.settings.settings.value)
+      .toEqual(parseInt(slider.view.thumb.followerPoint.elemHTMLElement.innerHTML, 10));
+  });
+});
 &nbsp;
-  private sliderOnClick = (event:any) =&gt; {
-    event.preventDefault();
-    const newLeft: number = this.isVertical
-      ? event.clientY - this.slider.getBoundingClientRect().top
-      : event.clientX - this.slider.getBoundingClientRect().left;
-    this.thumb.setCurPos(newLeft);
-  };
 &nbsp;
-  createTemplate() {
-    this.thumb = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
-    this.slider.append(this.thumb.thumbHTMLElem);
+describe('Presenter / SliderPresenter Range / Test initialization', () =&gt; {
+  const shadowSlider = document.createElement('div');
+  shadowSlider.classList.add('slider');
 &nbsp;
-    if (this.isVertical) {
-      this.slider.classList.add('j-plugin-slider_vertical');
-      this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
-      if (this.isFollowerPoint) {
-        this.slider.classList.add('j-plugin-slider_with-point_vertical');
-      }
-    } else {
-      this.slider.classList.add('j-plugin-slider');
-      this.thumb.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-      if (this.isFollowerPoint) {
-        this.thumb.createFollowerPoint();
-      }
-    }
-  }
+  shadowSlider.style.cssText = 'width: 300px';
 &nbsp;
-  addEventToSliderClick() {
-    this.slider.addEventListener('click', this.sliderOnClick);
-  }
+  const slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+    minVal: 10,
+    stepVal: 5,
+    maxVal: 100,
+    range: true,
+    values: [25, 35],
+  });
 &nbsp;
-  destroy() {
-    this.slider.removeEventListener('click', this.sliderOnClick);
-    this.thumb.thumbHTMLElem.remove();
-    this.thumb = undefined;
-    this.slider.classList.remove('j-plugin-slider', 'j-plugin-slider_vertical');
-  }
-}
-export {
-  SliderTemplate,
-};
-export default SliderTemplate;
+  it('Should coincide constructor set values \'range\'', () =&gt; {
+    expect(slider.model.settings.settings.range).toEqual(true);
+  });
+  it('Should coincide constructor set values \'values\'', () =&gt; {
+    expect(slider.model.settings.settings.values).toEqual([25, 35]);
+  });
+  it('Should coincide constructor set values on range line', () =&gt; {
+    expect(slider.view.range.style.left).toEqual(slider.view.thumb1.thumbHTMLElem.style.left);
+  });
+});
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
