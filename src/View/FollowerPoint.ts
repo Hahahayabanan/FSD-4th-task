@@ -14,11 +14,7 @@ class FollowerPoint {
   }
 
   createTemplate() {
-    if (this.isVertical) {
-      this.elemHTMLElement.classList.add('j-slider__follower-point_vertical');
-    } else {
-      this.elemHTMLElement.classList.add('j-slider__follower-point');
-    }
+    this.elemHTMLElement.classList.add('j-plugin-slider__follower-point');
     this.thumbHTMLElement.appendChild(this.elemHTMLElement);
   }
 

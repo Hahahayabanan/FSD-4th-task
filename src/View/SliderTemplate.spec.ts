@@ -9,7 +9,7 @@ describe('View / Slider template / Test of setting pointer positions', () => {
   slider.slider.style.cssText = 'width: 300px';
 
   it('Curr position should be set', () => {
-    slider.thumb.setCurPos(150);
+    slider.thumb.setCurPosInPixels(150);
     expect(slider.thumb.curPos).toEqual(150);
   });
 
@@ -33,7 +33,7 @@ describe('View / Vertical Slider template / Test of setting pointer positions', 
   slider.slider.style.cssText = 'height: 300px';
 
   it('Curr position should be set', () => {
-    slider.thumb.setCurPos(150);
+    slider.thumb.setCurPosInPixels(150);
     expect(slider.thumb.curPos).toEqual(150);
   });
 

@@ -68,14 +68,14 @@ describe('Model / Slider / Test moving', () => {
   slider.settings.setStepVal(5);
 
   it('Should change pointer position 60', () => {
-    expect(slider.setPointerPosition(58)).toEqual(60);
+    expect(slider.calcPointerPosition(58)).toEqual(60);
   });
 
   it('Should change pointer position 90', () => {
-    expect(slider.setPointerPosition(92)).toEqual(90);
+    expect(slider.calcPointerPosition(92)).toEqual(90);
   });
 
   it('Should change pointer position 20,35', () => {
-    expect(slider.setPointerPosition([22, 37])).toEqual([20, 35]);
+    expect(slider.calcPointerPosition([22, 37])).toEqual([20, 35]);
   });
 });

@@ -22,9 +22,9 @@ class SliderPresenter {
   onChangePointer(event:any) {
     const currThumb = event.detail;
 
-    const curPosInPixels:number = currThumb.curPos;
-    const curPosInVal:number = this.calculateFromPixelsToValue(curPosInPixels);
-    const curPosInValWithStep = this.model.setPointerPosition(curPosInVal);
+    const curPosInPercents:number = currThumb.curPos;
+    const curPosInVal:number = this.calculateFromPercentsToValue(curPosInPercents);
+    const curPosInValWithStep = this.model.calcPointerPosition(curPosInVal);
 
     const curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
 
@@ -58,7 +58,7 @@ class SliderPresenter {
   initStartValue() {
     if (this.model.settings.settings.range) {
       const curPosInValues:number[] = this.model.settings.settings.values;
-      const curPosInValsWithStep:number[] = this.model.setPointerPosition(curPosInValues);
+      const curPosInValsWithStep:number[] = this.model.calcPointerPosition(curPosInValues);
 
       const curPosInPercentsWithStep: number[] = [0, 0];
       curPosInPercentsWithStep[0] = this.calculateFromValueToPercents(curPosInValsWithStep[0]);
@@ -66,20 +66,18 @@ class SliderPresenter {
 
       this.view.initRangeLine();
 
-      this.view.thumb1.setCurPos(this.calculateFromPercentsToPixels(curPosInPercentsWithStep[0]));
-      this.view.thumb2.setCurPos(this.calculateFromPercentsToPixels(curPosInPercentsWithStep[1]));
+      this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[0]);
+      this.view.thumb2.setCurPosInPercents(curPosInPercentsWithStep[1]);
     } else {
       const curPosInValue:number = this.model.settings.settings.value;
-      const curPosInValWithStep:number = this.model.setPointerPosition(curPosInValue);
+      const curPosInValWithStep:number = this.model.calcPointerPosition(curPosInValue);
 
       const curPosInPercentsWithStep:number = this.calculateFromValueToPercents(curPosInValWithStep);
 
-      this.view.thumb.setCurPos(this.calculateFromPercentsToPixels(curPosInPercentsWithStep));
+      this.view.thumb.setCurPosInPercents(curPosInPercentsWithStep);
     }
   }
 
-
-  // eslint-disable-next-line class-methods-use-this
   render(curThumb:SliderPointer, curPos: number) {
     curThumb.renderCurrentPosInPercents(curPos);
   }
@@ -97,40 +95,17 @@ class SliderPresenter {
     }
   }
 
-  // EXAMPLE how it works
-  // rangeValInPixels    300px - 100%
-  // curPosInPixels      236px -  79%
 
-  // rangeVal 1000-100 = 900   - 100%
-  // curPosInPercents    ?     -  79%
-
-  // curPosValInVal  =  900*79/100% = 711
-
-  // curPosInPercents = 711 / 900 * 100%
-
-  calculateFromPixelsToValue(curPosInPixels:number):number {
+  calculateFromPercentsToValue(curPosInPercents:number):number {
     const { minVal } = this.model.settings.settings;
     const { maxVal } = this.model.settings.settings;
     const rangeVal:number = maxVal - minVal;
-    let rangePixels:string = '1';
-    if (this.checkOrientationIsVertical()) {
-      rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
-    } else {
-      rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
-    }
 
-    const curPosInPercents:number = curPosInPixels * 100 / parseInt(rangePixels, 10);
-    const curPosInVal:number = rangeVal * curPosInPercents / 100;
+    const curPosInValue:number = rangeVal * curPosInPercents / 100;
 
-    return curPosInVal + minVal;
+    return curPosInValue + minVal;
   }
 
-
-  // EXAMPLE how it works
-
-  // rangeVal 1000-100   = 900   - 100%
-  // curPosInVal 350-100 = 250   -   ?%
-  // curPosInPercents    = 250 * 100% / 900
   calculateFromValueToPercents(curPosInValue:number):number {
     const { minVal } = this.model.settings.settings;
     const { maxVal } = this.model.settings.settings;
@@ -141,18 +116,6 @@ class SliderPresenter {
     return currPosInPercents;
   }
 
-
-  calculateFromPercentsToPixels(curPosInPercents: number):number {
-    let rangePixels:string = '1';
-    if (this.checkOrientationIsVertical()) {
-      rangePixels = this.view.slider.getBoundingClientRect().height || this.view.slider.style.height;
-    } else {
-      rangePixels = this.view.slider.getBoundingClientRect().width || this.view.slider.style.width;
-    }
-    const currPosInPixels: number = curPosInPercents * parseInt(rangePixels, 10) / 100;
-
-    return currPosInPixels;
-  }
 
   checkOrientationIsVertical():boolean {
     const ordersModule = {

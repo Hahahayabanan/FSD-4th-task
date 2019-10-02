@@ -4,6 +4,8 @@ import SliderPointer from './SliderPointer';
 class SliderTemplateRange {
   public slider: any;
 
+  public sliderPath: any;
+
   public isVertical: boolean = false;
 
   public isFollowerPoint: boolean = false;
@@ -25,31 +27,50 @@ class SliderTemplateRange {
     this.addEventToSliderClick();
   }
 
+  private sliderOnClick = (event:any) => {
+    event.preventDefault();
+
+    const isValidClick = event.target.className === 'j-plugin-slider__thumb';
+    if (isValidClick) return;
+
+    const newLeft: number = this.isVertical
+      ? event.clientY - this.slider.getBoundingClientRect().top
+      : event.clientX - this.slider.getBoundingClientRect().left;
+
+
+    const pointersRange = this.calculatePointersRange();
+
+    if (newLeft < pointersRange) {
+      this.thumb1.setCurPosInPixels(newLeft);
+      this.thumb1.endPos = this.thumb1.curPos;
+    }
+    if (newLeft > pointersRange) {
+      this.thumb2.setCurPosInPixels(newLeft);
+      this.thumb2.endPos = this.thumb2.curPos;
+    }
+  };
+
   createTemplate() {
-    this.thumb1 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
-    this.thumb2 = new SliderPointer(document.createElement('div'), this.slider, this.isVertical);
+    this.slider.classList.add('j-plugin-slider');
+    this.sliderPath = document.createElement('div');
+    this.sliderPath.classList.add('j-plugin-slider__path');
+    this.slider.append(this.sliderPath);
+
+    this.thumb1 = new SliderPointer(document.createElement('div'), this.sliderPath, this.isVertical);
+    this.thumb2 = new SliderPointer(document.createElement('div'), this.sliderPath, this.isVertical);
     this.range = document.createElement('div');
 
-    this.slider.append(this.range);
-    this.slider.append(this.thumb1.thumbHTMLElem);
-    this.slider.append(this.thumb2.thumbHTMLElem);
-
+    this.sliderPath.append(this.range);
+    this.sliderPath.append(this.thumb1.thumbHTMLElem);
+    this.sliderPath.append(this.thumb2.thumbHTMLElem);
+    this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
+    this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
+    this.range.classList.add('j-plugin-slider__range');
     if (this.isVertical) {
       this.slider.classList.add('j-plugin-slider_vertical');
-      this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
-      this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb_vertical');
-      this.range.classList.add('j-plugin-slider__range_vertical');
-      if (this.isFollowerPoint) {
-        this.slider.classList.add('j-plugin-slider_with-point_vertical');
-      }
-    } else {
-      this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-      this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-      this.slider.classList.add('j-plugin-slider');
-      this.range.classList.add('j-plugin-slider__range');
-      if (this.isFollowerPoint) {
-        this.slider.classList.add('j-plugin-slider_with-point');
-      }
+    }
+    if (this.isFollowerPoint) {
+      this.slider.classList.add('j-plugin-slider_with-point');
     }
   }
 
@@ -71,29 +92,12 @@ class SliderTemplateRange {
 
 
   addEventToSliderClick() {
-    this.slider.onmousedown = (event:any) => {
-      event.preventDefault();
-      const newLeft: number = this.isVertical
-        ? event.clientY - this.slider.getBoundingClientRect().top
-        : event.clientX - this.slider.getBoundingClientRect().left;
-
-      const isValidClick = event.target.className === 'j-plugin-slider__thumb'
-      || event.target.className === 'j-plugin-slider__thumb_vertical';
-      if (isValidClick) return;
-
-      const pointersRange = this.calculatePointersRange();
-
-      if (newLeft < pointersRange) {
-        this.thumb1.setCurPos(newLeft);
-      }
-      if (newLeft > pointersRange) {
-        this.thumb2.setCurPos(newLeft);
-      }
-    };
+    this.sliderPath.addEventListener('click', this.sliderOnClick);
   }
 
+
   calculatePointersRange() {
-    const res:number = ((this.thumb2.curPos - this.thumb1.curPos) / 2) + this.thumb1.curPos;
+    const res:number = ((this.thumb2.getCurPosInPixels() - this.thumb1.getCurPosInPixels()) / 2) + this.thumb1.getCurPosInPixels();
     return res;
   }
 
@@ -101,7 +105,8 @@ class SliderTemplateRange {
     this.range.remove();
     this.thumb1.thumbHTMLElem.remove();
     this.thumb2.thumbHTMLElem.remove();
-    this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider');
+    this.sliderPath.remove();
+    this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider', 'j-plugin-slider_with-point');
   }
 }
 

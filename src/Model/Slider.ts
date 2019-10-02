@@ -13,13 +13,11 @@ class Slider {
     this.settings = new SliderSettings(sett);
   }
 
-  setPointerPosition(pos: number[]): number[];
+  calcPointerPosition(pos: number[]): number[];
 
-  // eslint-disable-next-line no-dupe-class-members
-  setPointerPosition(pos: number): number;
+  calcPointerPosition(pos: number): number;
 
-  // eslint-disable-next-line no-dupe-class-members
-  setPointerPosition(pos: any) {
+  calcPointerPosition(pos: any) {
     const { minVal } = this.settings.settings;
     const step:number = this.settings.settings.stepVal;
 
