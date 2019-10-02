@@ -28,7 +28,7 @@ declare global {
       const [option, setting, value, valuesOneOfTwoVals] = args;
 
       let returnValue:any;
-      this.forEach((i:number, val:object) => {
+      this.map((i:number, val:object) => {
         const htmlElem = val;
         sliders.forEach(htmlItem => {
           if (htmlItem.view.slider === htmlElem) {

@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-named-as-default
-import FollowerPoint from './FollowerPoint';
+import { FollowerPoint } from './FollowerPoint';
 
 class SliderPointer {
   public thumbHTMLElem: any;
@@ -11,6 +10,12 @@ class SliderPointer {
   public isVertical: boolean;
 
   public followerPoint: FollowerPoint;
+
+  public anotherPointer:SliderPointer;
+
+  public mouseMoveParameters: { rightEdge:number, leftEdge:number, mouseX: number, mouseY:number};
+
+  public endPos: number;
 
   constructor(elemHTML: any, sliderHTML:any, isVertical: boolean) {
     this.thumbHTMLElem = elemHTML;
@@ -27,54 +32,70 @@ class SliderPointer {
     }));
   }
 
-  createEventListeners(anotherPointer?: SliderPointer) {
-    this.thumbHTMLElem.onmousedown = (event:any) => {
-      event.preventDefault();
-
-      const shift: number = this.isVertical
-        ? event.clientY - this.thumbHTMLElem.getBoundingClientRect().top
-        : event.clientX - this.thumbHTMLElem.getBoundingClientRect().left;
-
-      let rightEdge: number = this.isVertical
-        ? this.sliderHTMLElem.offsetHeight
-        : this.sliderHTMLElem.offsetWidth;
-
-      let leftEdge: number = 0;
-
-      // eslint-disable-next-line no-shadow
-      const onMouseMove = (event:any) => {
-        if (anotherPointer) {
-          if (this.curPos < anotherPointer.curPos) {
-            rightEdge = anotherPointer.curPos;
-          } else if (this.curPos > anotherPointer.curPos) {
-            leftEdge = anotherPointer.curPos;
-          }
-        }
-        let newLeft: number = this.isVertical
-          ? event.clientY - shift - this.sliderHTMLElem.getBoundingClientRect().top
-          : event.clientX - shift - this.sliderHTMLElem.getBoundingClientRect().left;
-        if (newLeft < leftEdge) {
-          newLeft = leftEdge;
-        }
-        if (newLeft > rightEdge) {
-          newLeft = rightEdge;
-        }
-        this.setCurPos(newLeft);
-      };
-
-      const onMouseUp = () => {
-        document.removeEventListener('mouseup', onMouseUp);
-        document.removeEventListener('mousemove', onMouseMove);
-      };
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    };
-
+  bindEventListeners(anotherPoint?: SliderPointer) {
+    this.anotherPointer = anotherPoint;
+    this.thumbHTMLElem.addEventListener('mousedown', this.mouseDown);
     this.thumbHTMLElem.ondragstart = function onDragStart() {
       return false;
     };
   }
+
+  mouseDown = (event:any) => {
+    event.preventDefault();
+    this.endPos = this.curPos;
+    this.mouseMoveParameters = this.calcMoveBorders(event);
+    document.addEventListener('mousemove', this.mouseMove);
+    document.addEventListener('mouseup', this.mouseUp);
+  };
+
+  mouseUp = () => {
+    document.removeEventListener('mouseup', this.mouseUp);
+    document.removeEventListener('mousemove', this.mouseMove);
+  };
+
+  mouseMove = (event:any) => {
+    event.preventDefault();
+    const {
+      rightEdge, leftEdge, mouseX, mouseY
+    } = this.mouseMoveParameters;
+    let newCurPos: number = this.isVertical
+      ? this.endPos - mouseY + event.clientY
+      : this.endPos - mouseX + event.clientX;
+
+    if (newCurPos < leftEdge) {
+      newCurPos = leftEdge;
+    }
+    if (newCurPos > rightEdge) {
+      newCurPos = rightEdge;
+    }
+    console.log(this.endPos);
+    this.setCurPos(newCurPos);
+  };
+
+
+  calcMoveBorders(event:any) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    let rightEdge: number = this.isVertical
+      ? this.sliderHTMLElem.offsetHeight
+      : this.sliderHTMLElem.offsetWidth;
+
+    let leftEdge: number = 0;
+
+    if (this.anotherPointer) {
+      if (this.curPos < this.anotherPointer.curPos) {
+        rightEdge = this.anotherPointer.curPos;
+      } else if (this.curPos > this.anotherPointer.curPos) {
+        leftEdge = this.anotherPointer.curPos;
+      }
+    }
+
+    return {
+      rightEdge, leftEdge, mouseX, mouseY,
+    };
+  }
+
 
   renderCurrentPosInPixels(newPos:number) {
     const widthOrHeight: string = this.isVertical

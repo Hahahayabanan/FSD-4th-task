@@ -20,8 +20,8 @@ class SliderTemplateRange {
     this.isFollowerPoint = isFollowerPoint;
     this.createTemplate();
 
-    this.thumb1.createEventListeners(this.thumb2);
-    this.thumb2.createEventListeners(this.thumb1);
+    this.thumb1.bindEventListeners(this.thumb2);
+    this.thumb2.bindEventListeners(this.thumb1);
     this.addEventToSliderClick();
   }
 
@@ -54,8 +54,7 @@ class SliderTemplateRange {
   }
 
   initRangeLine() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const rangeLine = (event:any) => {
+    const calcRangeLine = () => {
       if (this.isVertical) {
         this.range.style.top = this.thumb1.thumbHTMLElem.style.top;
         this.range.style.height = `${parseInt(this.thumb2.thumbHTMLElem.style.top, 10)
@@ -66,9 +65,8 @@ class SliderTemplateRange {
           - parseInt(this.thumb1.thumbHTMLElem.style.left, 10)}%`;
       }
     };
-    // eslint-disable-next-line no-restricted-globals
-    rangeLine(event);
-    this.slider.addEventListener('changePointer', rangeLine);
+    calcRangeLine();
+    this.slider.addEventListener('changePointer', calcRangeLine);
   }
 
 
@@ -78,6 +76,10 @@ class SliderTemplateRange {
       const newLeft: number = this.isVertical
         ? event.clientY - this.slider.getBoundingClientRect().top
         : event.clientX - this.slider.getBoundingClientRect().left;
+
+      const isValidClick = event.target.className === 'j-plugin-slider__thumb'
+      || event.target.className === 'j-plugin-slider__thumb_vertical';
+      if (isValidClick) return;
 
       const pointersRange = this.calculatePointersRange();
 

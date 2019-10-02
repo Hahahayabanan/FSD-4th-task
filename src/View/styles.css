@@ -5,22 +5,23 @@
   width: 300px;
   height: 5px;
   position: relative;
-  margin: 10px 15px;
+  padding: 10px 15px;
+  box-sizing: content-box;
 }
 .j-plugin-slider_vertical {
   height: 300px;
   width: 5px;
   min-width: 5px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .j-plugin-slider.j-plugin-slider_with-point{
-  margin-top: 40px;
+  padding-top: 40px;
 }
 .j-plugin-slider_with-point_vertical{
-  margin-right: 40px;
-  margin-top: 20px;
+  padding-right: 40px;
+  padding-top: 20px;
 }
 
   

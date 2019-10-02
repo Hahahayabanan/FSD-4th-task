@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-named-as-default
-import SliderPointer from './SliderPointer';
+import { SliderPointer } from './SliderPointer';
 
 class SliderTemplate {
   public slider: any;
@@ -16,12 +15,17 @@ class SliderTemplate {
     this.isFollowerPoint = isFollowerPoint;
 
     this.createTemplate();
-    this.thumb.createEventListeners();
+    this.thumb.bindEventListeners();
     this.addEventToSliderClick();
   }
 
   private sliderOnClick = (event:any) => {
     event.preventDefault();
+
+    const isValidClick = event.target.className === 'j-plugin-slider__thumb'
+    || event.target.className === 'j-plugin-slider__thumb_vertical';
+    if (isValidClick) return;
+
     const newLeft: number = this.isVertical
       ? event.clientY - this.slider.getBoundingClientRect().top
       : event.clientX - this.slider.getBoundingClientRect().left;
