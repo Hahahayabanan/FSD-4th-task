@@ -10,7 +10,7 @@ class SliderPresenter {
 
   public view: any;
 
-  constructor(rootElement: any, options: ISliderSettings) {
+  constructor(rootElement: HTMLElement, options: ISliderSettings) {
     this.model = new Slider(options);
 
     this.createView(rootElement);

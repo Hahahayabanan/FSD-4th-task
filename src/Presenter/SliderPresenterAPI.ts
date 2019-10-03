@@ -164,7 +164,6 @@ class SliderPresenterAPI {
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 
-  // eslint-disable-next-line consistent-return
   static checkValuesSetterType(valuesOneOfTwoVals:any, value:any) {
     const isValueNumber = typeof value === 'number';
     const isOneOfValuesUndefined = valuesOneOfTwoVals === undefined;

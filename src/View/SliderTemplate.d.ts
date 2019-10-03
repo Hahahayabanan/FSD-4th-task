@@ -1,13 +1,21 @@
-import SliderPointer from './SliderPointer';
+import { SliderPointer } from './SliderPointer';
 declare class SliderTemplate {
-    slider: any;
+    slider: HTMLElement;
+    sliderPath: HTMLElement;
     thumb: SliderPointer;
     isVertical: boolean;
     isFollowerPoint: boolean;
-    constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean);
-    private sliderOnClick;
+    styleClasses: {
+        SLIDER: string;
+        PATH: string;
+        THUMB: string;
+        SLIDER_VERTICAL: string;
+        SLIDER_WITH_POINT: string;
+    };
+    constructor(elem: HTMLElement, isVertical?: boolean, isFollowerPoint?: boolean);
+    sliderOnClick: (event: any) => void;
     createTemplate(): void;
-    addEventToSliderClick(): void;
+    bindEventListeners(): void;
     destroy(): void;
 }
 export { SliderTemplate, };

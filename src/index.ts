@@ -18,7 +18,7 @@ declare global {
   $.fn.slider = function getStart(...args:any) {
     if (typeof args[0] === 'object' || args[0] === undefined) {
       const settings: ISliderSettings = args[0];
-      return this.each((i:number, val:object) => {
+      return this.each((i:number, val:HTMLElement) => {
         const htmlElem = val;
         return sliders.push(new SliderPresenter(htmlElem, settings));
       });

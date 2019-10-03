@@ -1,11 +1,11 @@
 class FollowerPoint {
-  public elemHTMLElement: any;
+  public elemHTMLElement: HTMLElement;
 
   public isVertical: boolean;
 
-  public thumbHTMLElement: any;
+  public thumbHTMLElement: HTMLElement;
 
-  constructor(thumbHTML: any, isVertical: boolean) {
+  constructor(thumbHTML: HTMLElement, isVertical: boolean) {
     this.elemHTMLElement = document.createElement('div');
     this.isVertical = isVertical;
     this.thumbHTMLElement = thumbHTML;
@@ -19,7 +19,7 @@ class FollowerPoint {
   }
 
   setValue(value: number) {
-    this.elemHTMLElement.innerHTML = value;
+    this.elemHTMLElement.textContent = `${value}`;
   }
 
   destroy() {

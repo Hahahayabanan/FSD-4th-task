@@ -1,8 +1,8 @@
 declare class FollowerPoint {
-    elemHTMLElement: any;
+    elemHTMLElement: HTMLElement;
     isVertical: boolean;
-    thumbHTMLElement: any;
-    constructor(thumbHTML: any, isVertical: boolean);
+    thumbHTMLElement: HTMLElement;
+    constructor(thumbHTML: HTMLElement, isVertical: boolean);
     createTemplate(): void;
     setValue(value: number): void;
     destroy(): void;

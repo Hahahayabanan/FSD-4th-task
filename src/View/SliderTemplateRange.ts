@@ -1,10 +1,9 @@
-// eslint-disable-next-line import/no-named-as-default
-import SliderPointer from './SliderPointer';
+import { SliderPointer } from './SliderPointer';
 
 class SliderTemplateRange {
-  public slider: any;
+  public slider: HTMLElement;
 
-  public sliderPath: any;
+  public sliderPath: HTMLElement;
 
   public isVertical: boolean = false;
 
@@ -14,29 +13,35 @@ class SliderTemplateRange {
 
   public thumb2: SliderPointer;
 
-  public range: any;
+  public range: HTMLElement;
 
-  constructor(elem: any, isVertical?: boolean, isFollowerPoint?: boolean) {
+  public styleClasses = {
+    SLIDER: 'j-plugin-slider',
+    PATH: 'j-plugin-slider__path',
+    THUMB: 'j-plugin-slider__thumb',
+    RANGE: 'j-plugin-slider__range',
+    SLIDER_VERTICAL: 'j-plugin-slider_vertical',
+    SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
+  };
+
+  constructor(elem: HTMLElement, isVertical?: boolean, isFollowerPoint?: boolean) {
     this.slider = elem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
-    this.createTemplate();
 
-    this.thumb1.bindEventListeners(this.thumb2);
-    this.thumb2.bindEventListeners(this.thumb1);
-    this.addEventToSliderClick();
+    this.createTemplate();
+    this.bindEventListeners();
   }
 
-  private sliderOnClick = (event:any) => {
+  sliderOnClick = (event:any) => {
     event.preventDefault();
 
-    const isValidClick = event.target.className === 'j-plugin-slider__thumb';
+    const isValidClick = event.currentTarget.className === this.styleClasses.THUMB;
     if (isValidClick) return;
 
     const newLeft: number = this.isVertical
-      ? event.clientY - this.slider.getBoundingClientRect().top
-      : event.clientX - this.slider.getBoundingClientRect().left;
-
+      ? event.clientY - this.sliderPath.getBoundingClientRect().top
+      : event.clientX - this.sliderPath.getBoundingClientRect().left;
 
     const pointersRange = this.calculatePointersRange();
 
@@ -51,26 +56,31 @@ class SliderTemplateRange {
   };
 
   createTemplate() {
-    this.slider.classList.add('j-plugin-slider');
+    this.slider.classList.add(this.styleClasses.SLIDER);
     this.sliderPath = document.createElement('div');
-    this.sliderPath.classList.add('j-plugin-slider__path');
+    this.sliderPath.classList.add(this.styleClasses.PATH);
     this.slider.append(this.sliderPath);
 
-    this.thumb1 = new SliderPointer(document.createElement('div'), this.sliderPath, this.isVertical);
-    this.thumb2 = new SliderPointer(document.createElement('div'), this.sliderPath, this.isVertical);
+    const thumb1 = document.createElement('div');
+    const thumb2 = document.createElement('div');
+    thumb1.classList.add(this.styleClasses.THUMB);
+    thumb2.classList.add(this.styleClasses.THUMB);
+
     this.range = document.createElement('div');
+    this.range.classList.add(this.styleClasses.RANGE);
 
     this.sliderPath.append(this.range);
-    this.sliderPath.append(this.thumb1.thumbHTMLElem);
-    this.sliderPath.append(this.thumb2.thumbHTMLElem);
-    this.thumb1.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-    this.thumb2.thumbHTMLElem.classList.add('j-plugin-slider__thumb');
-    this.range.classList.add('j-plugin-slider__range');
+    this.sliderPath.append(thumb1);
+    this.sliderPath.append(thumb2);
+
+    this.thumb1 = new SliderPointer(thumb1, this.sliderPath, this.isVertical);
+    this.thumb2 = new SliderPointer(thumb2, this.sliderPath, this.isVertical);
+
     if (this.isVertical) {
-      this.slider.classList.add('j-plugin-slider_vertical');
+      this.slider.classList.add(this.styleClasses.SLIDER_VERTICAL);
     }
     if (this.isFollowerPoint) {
-      this.slider.classList.add('j-plugin-slider_with-point');
+      this.slider.classList.add(this.styleClasses.SLIDER_WITH_POINT);
     }
   }
 
@@ -91,13 +101,16 @@ class SliderTemplateRange {
   }
 
 
-  addEventToSliderClick() {
+  bindEventListeners() {
     this.sliderPath.addEventListener('click', this.sliderOnClick);
+    this.thumb1.bindEventListeners(this.thumb2);
+    this.thumb2.bindEventListeners(this.thumb1);
   }
 
 
   calculatePointersRange() {
-    const res:number = ((this.thumb2.getCurPosInPixels() - this.thumb1.getCurPosInPixels()) / 2) + this.thumb1.getCurPosInPixels();
+    const res:number = ((this.thumb2.getCurPosInPixels() - this.thumb1.getCurPosInPixels()) / 2)
+      + this.thumb1.getCurPosInPixels();
     return res;
   }
 
@@ -106,7 +119,11 @@ class SliderTemplateRange {
     this.thumb1.thumbHTMLElem.remove();
     this.thumb2.thumbHTMLElem.remove();
     this.sliderPath.remove();
-    this.slider.classList.remove('j-plugin-slider_vertical', 'j-plugin-slider', 'j-plugin-slider_with-point');
+    this.slider.classList.remove(
+      this.styleClasses.SLIDER,
+      this.styleClasses.SLIDER_VERTICAL,
+      this.styleClasses.SLIDER_WITH_POINT,
+    );
   }
 }
 

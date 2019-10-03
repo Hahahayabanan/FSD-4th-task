@@ -1,9 +1,9 @@
 import { FollowerPoint } from './FollowerPoint';
 
 class SliderPointer {
-  public thumbHTMLElem: any;
+  public thumbHTMLElem: HTMLElement;
 
-  public sliderHTMLElem: any;
+  public sliderHTMLElem: HTMLElement;
 
   public curPos: number;
 
@@ -11,13 +11,13 @@ class SliderPointer {
 
   public followerPoint: FollowerPoint;
 
-  public anotherPointer:SliderPointer;
+  public anotherPointer: SliderPointer;
 
   public mouseMoveParameters: { rightEdge:number, leftEdge:number, mouseX: number, mouseY:number};
 
   public endPos: number;
 
-  constructor(elemHTML: any, sliderHTML:any, isVertical: boolean) {
+  constructor(elemHTML: HTMLElement, sliderHTML:HTMLElement, isVertical: boolean) {
     this.thumbHTMLElem = elemHTML;
     this.sliderHTMLElem = sliderHTML;
     this.isVertical = isVertical;
@@ -111,8 +111,10 @@ class SliderPointer {
 
   getPathLength() {
     const widthOrHeight: number = this.isVertical
-      ? parseInt(this.sliderHTMLElem.getBoundingClientRect().height || this.sliderHTMLElem.style.height, 10)
-      : parseInt(this.sliderHTMLElem.getBoundingClientRect().width || this.sliderHTMLElem.style.width, 10);
+      ? this.sliderHTMLElem.getBoundingClientRect().height
+        || parseInt(this.sliderHTMLElem.style.height, 10)
+      : this.sliderHTMLElem.getBoundingClientRect().width
+        || parseInt(this.sliderHTMLElem.style.width, 10);
     return widthOrHeight;
   }
 
@@ -143,7 +145,8 @@ class SliderPointer {
 
 
   createFollowerPoint() {
-    this.sliderHTMLElem.parentNode.classList.add('j-plugin-slider_with-point');
+    const sliderWrap = this.sliderHTMLElem.parentNode as HTMLElement;
+    sliderWrap.classList.add('j-plugin-slider_with-point');
     this.followerPoint = new FollowerPoint(this.thumbHTMLElem, this.isVertical);
   }
 
@@ -151,7 +154,8 @@ class SliderPointer {
     if (this.followerPoint !== undefined) {
       this.followerPoint.destroy();
       this.followerPoint = undefined;
-      this.sliderHTMLElem.parentNode.classList.remove('j-plugin-slider_with-point');
+      const sliderWrap = this.sliderHTMLElem.parentNode as HTMLElement;
+      sliderWrap.classList.remove('j-plugin-slider_with-point');
     }
   }
 }
