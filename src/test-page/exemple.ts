@@ -31,200 +31,200 @@ $(() => {
   $('.slider5').slider();
 
 
-  function initStep(container:HTMLElement, slider:HTMLElement) {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'Step';
-    $(container).append(ilabel1);
+  class ExampleParameters {
+    public exampleContainer: HTMLElement;
 
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'text');
-    $(ilabel1).append(newInput1);
+    public $container: JQuery<Object>;
 
-    $(newInput1).val($(slider).slider('option', 'stepVal') as number);
-    $(newInput1).on('change', () => {
-      $(slider).slider('option', 'stepVal', $(newInput1).val());
-    });
-  }
+    public $slider: JQuery<Object>;
 
-  function initMinMax(container:HTMLElement, slider:HTMLElement) {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'Max';
-    $(container).append(ilabel1);
+    constructor(exampleContainer: HTMLElement) {
+      this.exampleContainer = exampleContainer;
 
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'text');
-    $(ilabel1).append(newInput1);
+      this.createContainer();
+      this.$slider = $(this.exampleContainer.firstElementChild);
 
-    const ilabel2 = document.createElement('label');
-    ilabel2.innerHTML = 'Min';
-    $(container).append(ilabel2);
+      this.initFollowerPointCheckboxes();
+      this.initRange();
+      this.initOrientation();
 
-    const newInput2 = document.createElement('input');
-    newInput2.setAttribute('type', 'text');
-    $(ilabel2).append(newInput2);
-
-
-    $(newInput1).val($(slider).slider('option', 'maxVal') as number);
-    $(newInput2).val($(slider).slider('option', 'minVal') as number);
-    $(newInput1).on('change', () => {
-      $(slider).slider('option', 'maxVal', $(newInput1).val());
-    });
-    $(newInput2).on('change', () => {
-      $(slider).slider('option', 'minVal', $(newInput2).val());
-    });
-  }
-
-  function initRange(container:HTMLElement, slider:HTMLElement) {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'single';
-    $(container).append(ilabel1);
-
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'radio');
-    newInput1.setAttribute('name', `range${String(slider.classList).substring(0, 7)}`);
-    $(ilabel1).append(newInput1);
-
-    const ilabel2 = document.createElement('label');
-    ilabel2.innerHTML = 'range';
-    $(container).append(ilabel2);
-
-    const newInput2 = document.createElement('input');
-    newInput2.setAttribute('type', 'radio');
-    newInput2.setAttribute('name', `range${String(slider.classList).substring(0, 7)}`);
-    $(ilabel2).append(newInput2);
-
-
-    if ($(slider).slider('option', 'range') === true) {
-      newInput2.checked = true;
-    } else {
-      newInput1.checked = true;
+      this.initMinMax();
+      this.initStep();
+      this.initValueInputs();
     }
 
-    $(ilabel1).change(() => {
-      $(slider).slider('option', 'range', false);
-      $(`.val${String(slider.classList).substring(0, 7)}`).remove();
-      initValueInputs(container, slider);
-    });
-    $(ilabel2).change(() => {
-      $(slider).slider('option', 'range', true);
-      $(`.val${String(slider.classList).substring(0, 7)}`).remove();
-      initValueInputs(container, slider);
-    });
-  }
-
-  function initOrientation(container:HTMLElement, slider:HTMLElement) {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'Horizontal';
-    $(container).append(ilabel1);
-
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'radio');
-    newInput1.setAttribute('name', `ori${String(slider.classList).substring(0, 7)}`);
-    $(ilabel1).append(newInput1);
-
-    const ilabel2 = document.createElement('label');
-    ilabel2.innerHTML = 'Vertical';
-    $(container).append(ilabel2);
-
-    const newInput2 = document.createElement('input');
-    newInput2.setAttribute('type', 'radio');
-    newInput2.setAttribute('name', `ori${String(slider.classList).substring(0, 7)}`);
-    $(ilabel2).append(newInput2);
-
-    if ($(slider).slider('option', 'orientation') === 'horizontal') {
-      newInput1.checked = true;
-    } else {
-      newInput2.checked = true;
+    createContainer() {
+      const container = document.createElement('div');
+      container.classList.add('control');
+      $(this.exampleContainer).append(container);
+      this.$container = $(container);
     }
 
-    $(ilabel1).change(() => {
-      $(slider).slider('option', 'orientation', 'horizontal');
-    });
-    $(ilabel2).change(() => {
-      $(slider).slider('option', 'orientation', 'vertical');
-    });
-  }
+    initFollowerPointCheckboxes() {
+      const label = document.createElement('label');
+      label.innerHTML = 'Follower point';
+      this.$container.append(label);
 
-  function initFollowerPintCheckboxes(container:HTMLElement, slider:HTMLElement) {
-    const ilabel = document.createElement('label');
-    ilabel.innerHTML = 'Follower point';
-    $(container).append(ilabel);
+      const checkbox = document.createElement('input');
+      checkbox.setAttribute('type', 'checkbox');
+      $(label).append(checkbox);
 
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    $(ilabel).append(checkbox);
-
-    if ($(slider).slider('option', 'followerPoint')) {
-      checkbox.checked = true;
-    }
-
-    $(checkbox).change(() => {
-      if (checkbox.checked) {
-        $(slider).slider('option', 'followerPoint', true);
-      } else {
-        $(slider).slider('option', 'followerPoint', false);
+      if (this.$slider.slider('option', 'followerPoint')) {
+        checkbox.checked = true;
       }
-    });
-  }
 
+      $(checkbox).change(() => {
+        if (checkbox.checked) {
+          this.$slider.slider('option', 'followerPoint', true);
+        } else {
+          this.$slider.slider('option', 'followerPoint', false);
+        }
+      });
+    }
 
-  function initValueInputs(container:HTMLElement, slider:HTMLElement) {
-    const ilabel = document.createElement('label');
-    ilabel.setAttribute('class', `val${String(slider.classList).substring(0, 7)}`);
-    ilabel.innerHTML = 'First pointer';
-    $(container).append(ilabel);
+    initRange() {
+      const label = document.createElement('label');
+      label.innerHTML = 'Is range';
+      this.$container.append(label);
 
-    const newInput = document.createElement('input');
-    newInput.setAttribute('type', 'text');
-    $(ilabel).append(newInput);
+      const checkbox = document.createElement('input');
+      checkbox.setAttribute('type', 'checkbox');
+      $(label).append(checkbox);
 
+      if (this.$slider.slider('option', 'range')) {
+        checkbox.checked = true;
+      }
 
-    if ($(slider).slider('option', 'range')) {
+      $(checkbox).change(() => {
+        if (checkbox.checked) {
+          this.$slider.slider('option', 'range', true);
+          this.initValueInputs();
+        } else {
+          this.$slider.slider('option', 'range', false);
+          this.initValueInputs();
+        }
+      });
+    }
+
+    initOrientation() {
+      const label = document.createElement('label');
+      label.innerHTML = 'Is vertical';
+      this.$container.append(label);
+
+      const checkbox = document.createElement('input');
+      checkbox.setAttribute('type', 'checkbox');
+      $(label).append(checkbox);
+
+      if (this.$slider.slider('option', 'orientation') === 'vertical') {
+        checkbox.checked = true;
+      }
+
+      $(checkbox).change(() => {
+        if (checkbox.checked) {
+          this.$slider.slider('option', 'orientation', 'vertical');
+        } else {
+          this.$slider.slider('option', 'orientation', 'horizontal');
+        }
+      });
+    }
+
+    initMinMax() {
+      const ilabel1 = document.createElement('label');
+      ilabel1.innerHTML = 'Max';
+      this.$container.append(ilabel1);
+
+      const newInput1 = document.createElement('input');
+      newInput1.setAttribute('type', 'text');
+      $(ilabel1).append(newInput1);
+
       const ilabel2 = document.createElement('label');
-      ilabel2.setAttribute('class', `val${String(slider.classList).substring(0, 7)}`);
-      ilabel2.innerHTML = 'Second pointer';
-      $(container).append(ilabel2);
+      ilabel2.innerHTML = 'Min';
+      this.$container.append(ilabel2);
 
       const newInput2 = document.createElement('input');
       newInput2.setAttribute('type', 'text');
       $(ilabel2).append(newInput2);
 
-      $(newInput).val($(slider).slider('option', 'values', 0) as number);
-      $(newInput2).val($(slider).slider('option', 'values', 1) as number);
 
-      $(newInput).on('change', () => {
-        $(slider).slider('option', 'values', 0, $(newInput).val());
+      $(newInput1).val(this.$slider.slider('option', 'maxVal') as number);
+      $(newInput2).val(this.$slider.slider('option', 'minVal') as number);
+      $(newInput1).on('change', () => {
+        this.$slider.slider('option', 'maxVal', $(newInput1).val());
       });
       $(newInput2).on('change', () => {
-        $(slider).slider('option', 'values', 1, $(newInput2).val());
+        this.$slider.slider('option', 'minVal', $(newInput2).val());
       });
+    }
 
-      $(slider).on('changePointer', () => {
-        $(newInput).val($(slider).slider('option', 'values', 0) as number);
-        $(newInput2).val($(slider).slider('option', 'values', 1) as number);
+    initStep() {
+      const ilabel1 = document.createElement('label');
+      ilabel1.innerHTML = 'Step';
+      this.$container.append(ilabel1);
+
+      const newInput1 = document.createElement('input');
+      newInput1.setAttribute('type', 'text');
+      $(ilabel1).append(newInput1);
+
+      $(newInput1).val(this.$slider.slider('option', 'stepVal') as number);
+      $(newInput1).on('change', () => {
+        this.$slider.slider('option', 'stepVal', $(newInput1).val());
       });
-    } else {
-      $(newInput).val($(slider).slider('option', 'value') as number);
-      $(newInput).on('change', () => {
-        $(slider).slider('option', 'value', $(newInput).val());
-      });
-      $(slider).on('changePointer', () => {
-        $(newInput).val($(slider).slider('option', 'value') as number);
-      });
+    }
+
+    initValueInputs() {
+      const label = this.$container.find('.value');
+      label.remove();
+
+      const ilabel = document.createElement('label');
+      this.$container.append(ilabel);
+      ilabel.innerText = 'Value';
+      ilabel.classList.add('value');
+
+      const newInput = document.createElement('input');
+      newInput.setAttribute('type', 'text');
+      $(ilabel).append(newInput);
+
+
+      if (this.$slider.slider('option', 'range')) {
+        ilabel.childNodes[0].nodeValue = 'First pointer value';
+        const ilabel2 = document.createElement('label');
+        ilabel2.classList.add('value');
+        ilabel2.innerText = 'Second pointer value';
+        this.$container.append(ilabel2);
+
+        const newInput2 = document.createElement('input');
+        newInput2.setAttribute('type', 'text');
+        $(ilabel2).append(newInput2);
+
+        $(newInput).val(this.$slider.slider('option', 'values', 0) as number);
+        $(newInput2).val(this.$slider.slider('option', 'values', 1) as number);
+
+        $(newInput).on('change', () => {
+          this.$slider.slider('option', 'values', 0, $(newInput).val());
+        });
+        $(newInput2).on('change', () => {
+          this.$slider.slider('option', 'values', 1, $(newInput2).val());
+        });
+
+        this.$slider.on('changePointer', () => {
+          $(newInput).val(this.$slider.slider('option', 'values', 0) as number);
+          $(newInput2).val(this.$slider.slider('option', 'values', 1) as number);
+        });
+      } else {
+        ilabel.childNodes[0].nodeValue = 'Value';
+        $(newInput).val(this.$slider.slider('option', 'value') as number);
+        $(newInput).on('change', () => {
+          this.$slider.slider('option', 'value', $(newInput).val());
+        });
+        this.$slider.on('changePointer', () => {
+          $(newInput).val(this.$slider.slider('option', 'value') as number);
+        });
+      }
     }
   }
 
-  $('.slider').each(function (i, val) {
-    const container = document.createElement('div');
-    container.classList.add('control');
-    $(this).append(container);
-    const slider = this.firstElementChild as HTMLElement;
 
-    initFollowerPintCheckboxes(container, slider);
-    initOrientation(container, slider);
-    initRange(container, slider);
-    initMinMax(container, slider);
-    initStep(container, slider);
-    initValueInputs(container, slider);
+  $('.slider').each((i, val) => {
+    new ExampleParameters(val);
   });
 });
