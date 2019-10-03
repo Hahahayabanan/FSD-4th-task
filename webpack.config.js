@@ -17,8 +17,7 @@ const plugins = [
     filename: './css/[name].[hash].css',
   }),
   new HtmlWebpackPlugin({
-    title: 'Test example page',
-    template: '!!ejs-loader!src/index.html',
+    template: './test-page/index.pug',
   }),
   new webpack.LoaderOptionsPlugin({
     options: {
@@ -27,6 +26,10 @@ const plugins = [
         failOnHint: true,
       },
     },
+  }),
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
   }),
   new CopyWebpackPlugin([
     { from: '../node_modules/jquery/dist/jquery.js', to: './lib/jquery.js' },

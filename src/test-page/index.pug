@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+  head
+    title= pageTitle
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel = 'shortcut icon' href = 'static/favicon.ico')
+  body
+    block content
+      each val in [1, 2, 3, 4, 5]
+        .slider
+          div(class = `slider${val}`)
+    
+    
