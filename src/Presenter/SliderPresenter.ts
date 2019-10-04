@@ -2,8 +2,6 @@ import { SliderTemplate } from '../View/SliderTemplate';
 import { Slider } from '../Model/Slider';
 import { ISliderSettings } from '../Model/ISliderSettings';
 import { SliderPointer } from '../View/SliderPointer';
-import { SliderTemplateRange } from '../View/SliderTemplateRange';
-
 
 class SliderPresenter {
   public model:Slider;
@@ -31,28 +29,25 @@ class SliderPresenter {
     this.render(currThumb, curPosInPercentsWithStep);
     this.setFollowerPointValue(currThumb, curPosInValWithStep);
 
-    if (currThumb === this.view.thumb1) {
-      this.model.settings.settings.values[0] = curPosInValWithStep;
-    }
-    if (currThumb === this.view.thumb2) {
-      this.model.settings.settings.values[1] = curPosInValWithStep;
+    if (this.model.settings.settings.range) {
+      if (currThumb === this.view.thumb0) {
+        this.model.settings.settings.values[0] = curPosInValWithStep;
+      }
+      if (currThumb === this.view.thumb1) {
+        this.model.settings.settings.values[1] = curPosInValWithStep;
+      }
+    } else {
+      this.model.settings.settings.value = curPosInValWithStep;
     }
   }
 
   createView(rootElement:any) {
-    if (this.model.settings.settings.range) {
-      this.view = new SliderTemplateRange(
-        rootElement,
-        this.checkOrientationIsVertical(),
-        this.model.settings.settings.followerPoint,
-      );
-    } else {
-      this.view = new SliderTemplate(
-        rootElement,
-        this.checkOrientationIsVertical(),
-        this.model.settings.settings.followerPoint,
-      );
-    }
+    this.view = new SliderTemplate(
+      rootElement,
+      this.checkOrientationIsVertical(),
+      this.model.settings.settings.followerPoint,
+      this.model.settings.settings.range
+    );
   }
 
   initStartValue() {
@@ -64,17 +59,15 @@ class SliderPresenter {
       curPosInPercentsWithStep[0] = this.calculateFromValueToPercents(curPosInValsWithStep[0]);
       curPosInPercentsWithStep[1] = this.calculateFromValueToPercents(curPosInValsWithStep[1]);
 
-      this.view.initRangeLine();
-
-      this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[0]);
-      this.view.thumb2.setCurPosInPercents(curPosInPercentsWithStep[1]);
+      this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep[0]);
+      this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[1]);
     } else {
       const curPosInValue:number = this.model.settings.settings.value;
       const curPosInValWithStep:number = this.model.calcPointerPosition(curPosInValue);
 
       const curPosInPercentsWithStep:number = this.calculateFromValueToPercents(curPosInValWithStep);
 
-      this.view.thumb.setCurPosInPercents(curPosInPercentsWithStep);
+      this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep);
     }
   }
 

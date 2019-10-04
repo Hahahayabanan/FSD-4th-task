@@ -1,11 +1,4 @@
-import './slider';
-import './test-page/exemple';
-
-window.onload = function windowHasLoaded() {
-  // document
-  // .querySelectorAll('.example');
-  // .forEach((example: HTMLElement) => new Example(example));
-};
+import './test-page/example';
 
 
 function importAll(resolve: any) {

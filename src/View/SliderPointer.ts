@@ -98,9 +98,9 @@ class SliderPointer {
 
     if (this.anotherPointer) {
       if (this.curPos < this.anotherPointer.curPos) {
-        rightEdge = this.anotherPointer.curPos;
+        rightEdge = this.calcPercentsToPixels(this.anotherPointer.curPos);
       } else if (this.curPos > this.anotherPointer.curPos) {
-        leftEdge = this.anotherPointer.curPos;
+        leftEdge = this.calcPercentsToPixels(this.anotherPointer.curPos);
       }
     }
 
