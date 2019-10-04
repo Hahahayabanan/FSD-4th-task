@@ -42,12 +42,12 @@ class SliderPresenter {
   }
 
   createView(rootElement:any) {
-    this.view = new SliderTemplate(
-      rootElement,
-      this.checkOrientationIsVertical(),
-      this.model.settings.settings.followerPoint,
-      this.model.settings.settings.range
-    );
+    this.view = new SliderTemplate({
+      rootElem: rootElement,
+      isVertical: this.checkOrientationIsVertical(),
+      isFollowerPoint: this.model.settings.settings.followerPoint,
+      isRange: this.model.settings.settings.range
+    });
   }
 
   initStartValue() {

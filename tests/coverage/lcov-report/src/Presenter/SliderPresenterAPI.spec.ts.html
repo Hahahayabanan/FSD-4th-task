@@ -479,47 +479,7 @@
 <a name='L431'></a><a href='#L431'>431</a>
 <a name='L432'></a><a href='#L432'>432</a>
 <a name='L433'></a><a href='#L433'>433</a>
-<a name='L434'></a><a href='#L434'>434</a>
-<a name='L435'></a><a href='#L435'>435</a>
-<a name='L436'></a><a href='#L436'>436</a>
-<a name='L437'></a><a href='#L437'>437</a>
-<a name='L438'></a><a href='#L438'>438</a>
-<a name='L439'></a><a href='#L439'>439</a>
-<a name='L440'></a><a href='#L440'>440</a>
-<a name='L441'></a><a href='#L441'>441</a>
-<a name='L442'></a><a href='#L442'>442</a>
-<a name='L443'></a><a href='#L443'>443</a>
-<a name='L444'></a><a href='#L444'>444</a>
-<a name='L445'></a><a href='#L445'>445</a>
-<a name='L446'></a><a href='#L446'>446</a>
-<a name='L447'></a><a href='#L447'>447</a>
-<a name='L448'></a><a href='#L448'>448</a>
-<a name='L449'></a><a href='#L449'>449</a>
-<a name='L450'></a><a href='#L450'>450</a>
-<a name='L451'></a><a href='#L451'>451</a>
-<a name='L452'></a><a href='#L452'>452</a>
-<a name='L453'></a><a href='#L453'>453</a>
-<a name='L454'></a><a href='#L454'>454</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L434'></a><a href='#L434'>434</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -955,12 +915,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderPresenterAPI } from './SliderPresenterAPI';
 import { SliderPresenter } from './SliderPresenter';
 &nbsp;
+document.body.innerHTML = '&lt;div id="test" class="slider"&gt;&lt;/div&gt;';
+&nbsp;
+const shadowSlider = document.querySelector('#test') as HTMLElement;
+&nbsp;
+&nbsp;
 describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-&nbsp;
-  shadowSlider.style.cssText = 'width: 300px';
-&nbsp;
   let slider: SliderPresenter;
 &nbsp;
   beforeEach(() =&gt; {
@@ -1035,8 +995,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
       setting: 'range',
       value: true,
     });
-    expect(slider.view.thumb1.curPos).toEqual(0);
-    expect(slider.view.thumb2.curPos).toEqual(300);
+    expect(slider.view.thumb0.curPos).toEqual(0);
+    expect(slider.view.thumb1.curPos).toEqual(100);
   });
 &nbsp;
   it('Should coincide API set values \'followerPoint\'', () =&gt; {
@@ -1169,11 +1129,6 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
 &nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test creating slider', () =&gt; {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-&nbsp;
-  shadowSlider.style.cssText = 'width: 300px';
-&nbsp;
   let slider: SliderPresenter;
 &nbsp;
   beforeEach(() =&gt; {
@@ -1202,11 +1157,6 @@ describe('Presenter / SliderPresenterAPI / Test creating slider', () =&gt; {
 &nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', () =&gt; {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-&nbsp;
-  shadowSlider.style.cssText = 'width: 300px';
-&nbsp;
   let slider: SliderPresenter;
 &nbsp;
   beforeEach(() =&gt; {
@@ -1253,11 +1203,6 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
 &nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', () =&gt; {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-&nbsp;
-  shadowSlider.style.cssText = 'width: 300px';
-&nbsp;
   let slider: SliderPresenter;
 &nbsp;
   beforeEach(() =&gt; {
@@ -1294,11 +1239,6 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', (
 &nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-&nbsp;
-  shadowSlider.style.cssText = 'width: 300px';
-&nbsp;
   let slider: SliderPresenter;
 &nbsp;
   beforeEach(() =&gt; {
@@ -1411,7 +1351,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Oct 01 2019 07:37:48 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Oct 04 2019 12:47:58 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/View/FollowerPoint.ts</title>
+    <title>Code coverage report for src/View/SliderPointer.spec.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\index.html">All files</a> / <a href="index.html">src/View</a> FollowerPoint.ts
+      <a href="..\..\index.html">All files</a> / <a href="index.html">src/View</a> SliderPointer.spec.ts
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -75,7 +75,12 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -104,35 +109,45 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">class FollowerPoint {
-  public elemHTMLElement: HTMLElement;
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { SliderPointer } from './SliderPointer';
 &nbsp;
-  public thumbHTMLElement: HTMLElement;
+document.body.innerHTML = '&lt;div class="j-slider-plugin__path"&gt;&lt;div id="test" class="j-slider-plugin__thumb"&gt;&lt;/div&gt;&lt;/div&gt;';
 &nbsp;
-  constructor(thumbHTML: HTMLElement) {
-    this.thumbHTMLElement = thumbHTML;
+const shadowSlider = document.querySelector('.j-slider-plugin__thumb') as HTMLElement;
+const shadowpath = document.querySelector('.j-slider-plugin__path') as HTMLElement;
 &nbsp;
-    this.createTemplate();
-  }
 &nbsp;
-  createTemplate() {
-    this.elemHTMLElement = document.createElement('div');
-    this.elemHTMLElement.classList.add('j-plugin-slider__follower-point');
-    this.thumbHTMLElement.appendChild(this.elemHTMLElement);
-  }
+describe('View / Slider Pointer / Test of setting', () =&gt; {
+  const pointer = new SliderPointer(shadowSlider);
+  beforeEach(() =&gt; {
+    shadowpath.style.width = '300px';
+  });
 &nbsp;
-  setValue(value: number) {
-    this.elemHTMLElement.textContent = `${value}`;
-  }
-&nbsp;
-  destroy() {
-    this.elemHTMLElement.remove();
-  }
-}
-export {
-  FollowerPoint,
-};
-export default FollowerPoint;
+  it('Slider pointer should be set', () =&gt; {
+    expect(pointer).toBeDefined(SliderPointer);
+  });
+  it('Curpos should be set in percents', async () =&gt; {
+    await pointer.setCurPosInPercents(33);
+    expect(Math.round(pointer.curPos)).toEqual(33);
+  });
+  it('Curpos should be set in pixels', async () =&gt; {
+    await pointer.setCurPosInPixels(100);
+    expect(Math.round(pointer.curPos)).toBeCloseTo(33);
+  });
+  it('Get curpos in pixels', async () =&gt; {
+    await pointer.setCurPosInPixels(55);
+    expect(Math.round(pointer.getCurPosInPixels())).toBeCloseTo(55);
+  });
+  it('Render in pixels', async () =&gt; {
+    await pointer.renderCurrentPosInPercents(29);
+    expect(Math.round(parseInt(pointer.thumbHTMLElem.style.left, 10))).toBeCloseTo(29);
+  });
+});
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->

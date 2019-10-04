@@ -26,13 +26,16 @@ class SliderTemplate {
     SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
   };
 
-  constructor(
-    elem: HTMLElement,
-    isVertical?:boolean,
-    isFollowerPoint?:boolean,
-    isRange?:boolean,
-  ) {
-    this.slider = elem;
+  constructor(options: {
+    rootElem: HTMLElement,
+    isVertical?: boolean,
+    isFollowerPoint?: boolean,
+    isRange?: boolean
+  }) {
+    const {
+      rootElem, isVertical, isFollowerPoint, isRange
+    } = options;
+    this.slider = rootElem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
     this.isRange = isRange;
@@ -49,13 +52,13 @@ class SliderTemplate {
 
     let thumb = document.createElement('div');
     this.sliderPath.append(thumb);
-    this.thumb0 = new SliderPointer(thumb, this.sliderPath, this.isVertical);
+    this.thumb0 = new SliderPointer(thumb, this.isVertical);
     this.thumb0.thumbHTMLElem.classList.add(this.styleClasses.THUMB);
 
     if (this.isRange) {
       thumb = document.createElement('div');
       this.sliderPath.append(thumb);
-      this.thumb1 = new SliderPointer(thumb, this.sliderPath, this.isVertical);
+      this.thumb1 = new SliderPointer(thumb, this.isVertical);
       this.thumb1.thumbHTMLElem.classList.add(this.styleClasses.THUMB);
 
       this.range = document.createElement('div');

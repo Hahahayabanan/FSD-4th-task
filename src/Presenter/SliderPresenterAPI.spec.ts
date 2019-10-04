@@ -1,12 +1,12 @@
 import { SliderPresenterAPI } from './SliderPresenterAPI';
 import { SliderPresenter } from './SliderPresenter';
 
+document.body.innerHTML = '<div id="test" class="slider"></div>';
+
+const shadowSlider = document.querySelector('#test') as HTMLElement;
+
+
 describe('Presenter / SliderPresenterAPI / Test initialization', () => {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-
-  shadowSlider.style.cssText = 'width: 300px';
-
   let slider: SliderPresenter;
 
   beforeEach(() => {
@@ -81,8 +81,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       setting: 'range',
       value: true,
     });
-    expect(slider.view.thumb1.curPos).toEqual(0);
-    expect(slider.view.thumb2.curPos).toEqual(300);
+    expect(slider.view.thumb0.curPos).toEqual(0);
+    expect(slider.view.thumb1.curPos).toEqual(100);
   });
 
   it('Should coincide API set values \'followerPoint\'', () => {
@@ -215,11 +215,6 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
 
 
 describe('Presenter / SliderPresenterAPI / Test creating slider', () => {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-
-  shadowSlider.style.cssText = 'width: 300px';
-
   let slider: SliderPresenter;
 
   beforeEach(() => {
@@ -248,11 +243,6 @@ describe('Presenter / SliderPresenterAPI / Test creating slider', () => {
 
 
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', () => {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-
-  shadowSlider.style.cssText = 'width: 300px';
-
   let slider: SliderPresenter;
 
   beforeEach(() => {
@@ -299,11 +289,6 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
 
 
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', () => {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-
-  shadowSlider.style.cssText = 'width: 300px';
-
   let slider: SliderPresenter;
 
   beforeEach(() => {
@@ -340,11 +325,6 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', (
 
 
 describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
-  const shadowSlider = document.createElement('div');
-  shadowSlider.classList.add('slider');
-
-  shadowSlider.style.cssText = 'width: 300px';
-
   let slider: SliderPresenter;
 
   beforeEach(() => {

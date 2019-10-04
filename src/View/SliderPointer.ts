@@ -3,11 +3,9 @@ import { FollowerPoint } from './FollowerPoint';
 class SliderPointer {
   public thumbHTMLElem: HTMLElement;
 
-  public sliderHTMLElem: HTMLElement;
-
   public curPos: number;
 
-  public isVertical: boolean;
+  public isVertical: boolean = false;
 
   public followerPoint: FollowerPoint;
 
@@ -17,16 +15,15 @@ class SliderPointer {
 
   public endPos: number;
 
-  constructor(elemHTML: HTMLElement, sliderHTML:HTMLElement, isVertical: boolean) {
+  constructor(elemHTML: HTMLElement, isVertical?: boolean) {
     this.thumbHTMLElem = elemHTML;
-    this.sliderHTMLElem = sliderHTML;
     this.isVertical = isVertical;
   }
 
   setCurPosInPercents(newCurrPos: number) {
     this.curPos = newCurrPos;
 
-    this.sliderHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
+    this.thumbHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
       bubbles: true,
       detail: this,
     }));
@@ -35,7 +32,7 @@ class SliderPointer {
   setCurPosInPixels(newCurrPos: number) {
     this.curPos = this.calcPixelsToPercents(newCurrPos);
 
-    this.sliderHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
+    this.thumbHTMLElem.dispatchEvent(new CustomEvent('changePointer', {
       bubbles: true,
       detail: this,
     }));
@@ -111,10 +108,10 @@ class SliderPointer {
 
   getPathLength() {
     const widthOrHeight: number = this.isVertical
-      ? this.sliderHTMLElem.getBoundingClientRect().height
-        || parseInt(this.sliderHTMLElem.style.height, 10)
-      : this.sliderHTMLElem.getBoundingClientRect().width
-        || parseInt(this.sliderHTMLElem.style.width, 10);
+      ? this.thumbHTMLElem.parentElement.getBoundingClientRect().height
+    || parseInt(this.thumbHTMLElem.parentElement.style.height, 10)
+      : this.thumbHTMLElem.parentElement.getBoundingClientRect().width
+    || parseInt(this.thumbHTMLElem.parentElement.style.width, 10);
     return widthOrHeight;
   }
 
@@ -131,8 +128,7 @@ class SliderPointer {
   }
 
   renderCurrentPosInPixels(newPos:number) {
-    const length = this.getPathLength();
-    const newPosition = newPos * 100 / length;
+    const newPosition = this.calcPixelsToPercents(newPos);
     return this.renderCurrentPosInPercents(newPosition);
   }
 
@@ -145,16 +141,16 @@ class SliderPointer {
 
 
   createFollowerPoint() {
-    const sliderWrap = this.sliderHTMLElem.parentNode as HTMLElement;
+    this.followerPoint = new FollowerPoint(this.thumbHTMLElem);
+    const sliderWrap = this.thumbHTMLElem.parentNode.parentNode as HTMLElement;
     sliderWrap.classList.add('j-plugin-slider_with-point');
-    this.followerPoint = new FollowerPoint(this.thumbHTMLElem, this.isVertical);
   }
 
   deleteFollowerPoint() {
     if (this.followerPoint !== undefined) {
       this.followerPoint.destroy();
       this.followerPoint = undefined;
-      const sliderWrap = this.sliderHTMLElem.parentNode as HTMLElement;
+      const sliderWrap = this.thumbHTMLElem.parentNode.parentNode as HTMLElement;
       sliderWrap.classList.remove('j-plugin-slider_with-point');
     }
   }

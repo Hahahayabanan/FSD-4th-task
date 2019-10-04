@@ -1,19 +1,16 @@
 class FollowerPoint {
   public elemHTMLElement: HTMLElement;
 
-  public isVertical: boolean;
-
   public thumbHTMLElement: HTMLElement;
 
-  constructor(thumbHTML: HTMLElement, isVertical: boolean) {
-    this.elemHTMLElement = document.createElement('div');
-    this.isVertical = isVertical;
+  constructor(thumbHTML: HTMLElement) {
     this.thumbHTMLElement = thumbHTML;
 
     this.createTemplate();
   }
 
   createTemplate() {
+    this.elemHTMLElement = document.createElement('div');
     this.elemHTMLElement.classList.add('j-plugin-slider__follower-point');
     this.thumbHTMLElement.appendChild(this.elemHTMLElement);
   }

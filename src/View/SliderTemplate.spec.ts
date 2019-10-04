@@ -1,97 +1,39 @@
-// import { SliderTemplate } from './SliderTemplate';
+import { SliderTemplate } from './SliderTemplate';
+import { SliderPointer } from './SliderPointer';
 
-// describe('View / Slider template / Test of setting pointer positions', () => {
-//   const shadowSlider = document.createElement('div');
-//   shadowSlider.classList.add('slider');
+document.body.innerHTML = '<div id="test" class="slider"></div>';
 
-//   const slider = new SliderTemplate(shadowSlider);
+const shadowSlider = document.querySelector('#test') as HTMLElement;
 
-//   slider.slider.style.cssText = 'width: 300px';
+describe('View / Slider template / Test of setting pointer positions', () => {
+  const slider = new SliderTemplate({
+    rootElem: shadowSlider,
+    isVertical: true,
+    isFollowerPoint: true,
+  });
 
-//   it('Curr position should be set', () => {
-//     slider.thumb.setCurPosInPixels(150);
-//     expect(slider.thumb.curPos).toEqual(150);
-//   });
+  it('Slider pointer should be set', () => {
+    expect(slider.thumb0).toBeDefined(SliderPointer);
+  });
+  it('Slider class with point should be set', () => {
+    expect(slider.slider).toHaveClass(slider.styleClasses.SLIDER_WITH_POINT);
+  });
+  it('Slider class vertical should be set', () => {
+    expect(slider.slider).toHaveClass(slider.styleClasses.SLIDER_VERTICAL);
+  });
+  it('Slider should be vertical', () => {
+    expect(slider.isVertical).toBeTruthy();
+  });
+});
 
-//   it('Should update value of curr position on change 236', () => {
-//     slider.thumb.renderCurrentPosInPixels(236);
-//     // width  300px - 100 %
-//     // newPos 236px -  79 %
-//     expect(Math.round(parseInt(slider.thumb.thumbHTMLElem.style.left, 10))).toEqual(78);
-//   });
-//   it('Should update value of curr position on change 33', () => {
-//     slider.thumb.renderCurrentPosInPercents(33);
-//     expect(slider.thumb.thumbHTMLElem.style.left).toEqual('33%');
-//   });
-// });
+describe('View / Slider template / Test of setting pointer positions', () => {
+  const slider = new SliderTemplate({
+    rootElem: shadowSlider,
+    isRange: true,
+  });
 
-// describe('View / Vertical Slider template / Test of setting pointer positions', () => {
-//   const shadowSlider = document.createElement('div');
-//   shadowSlider.classList.add('slider');
-
-//   const slider = new SliderTemplate(shadowSlider, true);
-//   slider.slider.style.cssText = 'height: 300px';
-
-//   it('Curr position should be set', () => {
-//     slider.thumb.setCurPosInPixels(150);
-//     expect(slider.thumb.curPos).toEqual(150);
-//   });
-
-//   it('Should update value of curr position on change 236', () => {
-//     slider.thumb.renderCurrentPosInPixels(236);
-//     expect(Math.round(parseInt(slider.thumb.thumbHTMLElem.style.top, 10))).toEqual(78);
-//   });
-//   it('Should update value of curr position on change 33', () => {
-//     slider.thumb.renderCurrentPosInPercents(33);
-//     expect(slider.thumb.thumbHTMLElem.style.top).toEqual('33%');
-//   });
-// });
-
-// import { SliderTemplateRange } from './SliderTemplateRange';
-
-// describe('View / Slider template / Test of setting pointer positions', () => {
-//   const shadowSlider = document.createElement('div');
-//   shadowSlider.classList.add('slider');
-
-//   const slider = new SliderTemplateRange(shadowSlider);
-
-//   slider.slider.style.cssText = 'width: 300px';
-
-//   it('Curr positions should be set', () => {
-//     slider.thumb1.setCurPosInPixels(150);
-//     expect(slider.thumb1.curPos).toEqual(150);
-//   });
-
-//   it('Should update value of curr position on change 236', () => {
-//     slider.thumb1.renderCurrentPosInPixels(236);
-//     // width  300px - 100 %
-//     // newPos 236px -  79 %
-//     expect(Math.round(parseInt(slider.thumb1.thumbHTMLElem.style.left, 10))).toEqual(78);
-//   });
-//   it('Should update value of curr position on change 33', () => {
-//     slider.thumb1.renderCurrentPosInPercents(33);
-//     expect(slider.thumb1.thumbHTMLElem.style.left).toEqual('33%');
-//   });
-// });
-
-// describe('View / Vertical Slider template / Test of setting pointer positions', () => {
-//   const shadowSlider = document.createElement('div');
-//   shadowSlider.classList.add('slider');
-
-//   const slider = new SliderTemplateRange(shadowSlider, true);
-//   slider.slider.style.cssText = 'height: 300px';
-
-//   it('Curr position should be set', () => {
-//     slider.thumb2.setCurPosInPixels(150);
-//     expect(slider.thumb2.curPos).toEqual(150);
-//   });
-
-//   it('Should update value of curr position on change 236', () => {
-//     slider.thumb2.renderCurrentPosInPixels(236);
-//     expect(Math.round(parseInt(slider.thumb2.thumbHTMLElem.style.top, 10))).toEqual(78);
-//   });
-//   it('Should update value of curr position on change 33', () => {
-//     slider.thumb2.renderCurrentPosInPercents(33);
-//     expect(slider.thumb2.thumbHTMLElem.style.top).toEqual('33%');
-//   });
-// });
+  it('Slider pointers should be set', () => {
+    expect(slider.thumb0).toBeDefined(SliderPointer);
+    expect(slider.thumb1).toBeDefined(SliderPointer);
+  });
+});

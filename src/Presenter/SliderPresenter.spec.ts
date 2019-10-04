@@ -45,7 +45,7 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
       followerPoint: true,
     });
     expect(slider.model.settings.settings.value)
-      .toEqual(parseInt(slider.view.thumb.followerPoint.elemHTMLElement.innerHTML, 10));
+      .toEqual(parseInt(slider.view.thumb0.followerPoint.elemHTMLElement.innerHTML, 10));
   });
 });
 
@@ -71,6 +71,6 @@ describe('Presenter / SliderPresenter Range / Test initialization', () => {
     expect(slider.model.settings.settings.values).toEqual([25, 35]);
   });
   it('Should coincide constructor set values on range line', () => {
-    expect(slider.view.range.style.left).toEqual(slider.view.thumb1.thumbHTMLElem.style.left);
+    expect(slider.view.range.style.left).toEqual(slider.view.thumb0.thumbHTMLElem.style.left);
   });
 });
