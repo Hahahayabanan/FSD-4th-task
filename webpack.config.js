@@ -88,6 +88,17 @@ const config = {
           },
         ],
       },
+      {
+        test: /\.(svg|png|ico|xml|json)$/,
+        exclude: [/node_modules/],
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'favicons/',
+          },
+        }],
+      },
     ].filter(Boolean),
   },
   resolve: {

@@ -1,7 +1,6 @@
 import { FollowerPoint } from './FollowerPoint';
 declare class SliderPointer {
     thumbHTMLElem: HTMLElement;
-    sliderHTMLElem: HTMLElement;
     curPos: number;
     isVertical: boolean;
     followerPoint: FollowerPoint;
@@ -13,7 +12,7 @@ declare class SliderPointer {
         mouseY: number;
     };
     endPos: number;
-    constructor(elemHTML: HTMLElement, sliderHTML: HTMLElement, isVertical: boolean);
+    constructor(elemHTML: HTMLElement, isVertical?: boolean);
     setCurPosInPercents(newCurrPos: number): void;
     setCurPosInPixels(newCurrPos: number): void;
     getCurPosInPixels(): number;
