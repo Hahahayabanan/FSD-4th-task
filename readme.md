@@ -7,7 +7,7 @@
 
 ## Развёртывание
 Клонировать
->git clone https://github.com/Hahahayabanan/FSD-2nd-task.git
+>git clone https://github.com/Hahahayabanan/FSD-4th-task.git
 
 Установка
 >npm i
