@@ -30,6 +30,8 @@ class SliderPresenter {
     this.setFollowerPointValue(currThumb, curPosInValWithStep);
 
     if (this.model.settings.settings.range) {
+      this.view.calculateAndApplyRangeLine();
+
       if (currThumb === this.view.thumb0) {
         this.model.settings.settings.values[0] = curPosInValWithStep;
       }

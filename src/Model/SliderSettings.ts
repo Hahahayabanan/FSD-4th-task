@@ -91,12 +91,10 @@ class SliderSettings {
         throw this.errors.secondValueBiggerMax;
       }
       if (isFirstValueBiggerSecond && this.settings.range) {
-        // eslint-disable-next-line prefer-destructuring
         this.settings.values[0] = this.settings.values[1];
         throw this.errors.firstValueBiggerSecond;
       }
       if (isSecondValueSmallerFirst && this.settings.range) {
-        // eslint-disable-next-line prefer-destructuring
         this.settings.values[1] = this.settings.values[0];
         throw this.errors.secondValueBiggerFirst;
       }
@@ -119,7 +117,6 @@ class SliderSettings {
     const isValueNull = this.settings.value === null;
 
     if (!isFirstValueNull && !this.settings.range) {
-      // eslint-disable-next-line prefer-destructuring
       this.settings.value = this.settings.values[0];
       this.settings.values = [null, null];
     }

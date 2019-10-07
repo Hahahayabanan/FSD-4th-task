@@ -80,8 +80,6 @@ class SliderTemplate {
     if (this.isRange) {
       this.thumb0.bindEventListeners(this.thumb1);
       this.thumb1.bindEventListeners(this.thumb0);
-      this.calculateAndApplyRangeLine();
-      this.slider.addEventListener('changePointer', this.calculateAndApplyRangeLine);
     } else {
       this.thumb0.bindEventListeners();
     }
@@ -117,11 +115,15 @@ class SliderTemplate {
 
   calculateAndApplyRangeLine = () => {
     if (this.isVertical) {
-      this.range.style.top = `${this.thumb0.curPos}%`;
-      this.range.style.height = `${this.thumb1.curPos - this.thumb0.curPos}%`;
+      this.range.style.top = this.thumb0.thumbHTMLElem.style.top;
+      const range = parseInt(this.thumb1.thumbHTMLElem.style.top, 10)
+        - parseInt(this.thumb0.thumbHTMLElem.style.top, 10);
+      this.range.style.height = `${range}%`;
     } else {
-      this.range.style.left = `${this.thumb0.curPos}%`;
-      this.range.style.width = `${this.thumb1.curPos - this.thumb0.curPos}%`;
+      this.range.style.left = this.thumb0.thumbHTMLElem.style.left;
+      const range = parseInt(this.thumb1.thumbHTMLElem.style.left, 10)
+        - parseInt(this.thumb0.thumbHTMLElem.style.left, 10);
+      this.range.style.width = `${range}%`;
     }
   };
 

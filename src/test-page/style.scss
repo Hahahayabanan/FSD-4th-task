@@ -1,4 +1,4 @@
-.slider{
+.slider {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -8,16 +8,19 @@
   padding: 5px;
   box-sizing: border-box;
 }
-input{
+
+input {
   height: 20px;
   width: 100px;
 }
-.control{
+
+.control {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
 }
-label{
+
+label {
   white-space: nowrap;
 }
