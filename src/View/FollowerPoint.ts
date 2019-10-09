@@ -23,7 +23,5 @@ class FollowerPoint {
     this.elemHTMLElement.remove();
   }
 }
-export {
-  FollowerPoint,
-};
+export { FollowerPoint };
 export default FollowerPoint;

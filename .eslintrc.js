@@ -6,8 +6,8 @@ module.exports = {
     jasmine: true,
   },
   extends: [
-    "airbnb-typescript/base",
-    // "plugin:prettier/recommended",
+    'airbnb-typescript/base',
+    'plugin:prettier/recommended',
   ],
   rules: {
     'linebreak-style':'off',
@@ -15,8 +15,9 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-new': 'off',
     'no-underscore-dangle': 'off',
-    "comma-dangle": ["error", "only-multiline"],
-    "import/extensions": [2, "ignorePackages"],
-    "consistent-return": [1],
+    'comma-dangle': ['error', 'only-multiline'],
+    'import/extensions': [2, 'ignorePackages'],
+    'consistent-return': [1],
+    'no-dupe-class-members': 'off'
   }
 };

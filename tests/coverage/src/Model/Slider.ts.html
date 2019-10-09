@@ -101,7 +101,45 @@
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -159,7 +197,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { isArray } from 'util';
 import { SliderSettings } from './SliderSettings';
 &nbsp;
-&nbsp;
 class Slider {
   public settings: SliderSettings;
 &nbsp;
@@ -177,38 +214,58 @@ class Slider {
 &nbsp;
   calcPointerPosition(pos: any) {
     const { minVal } = this.settings.settings;
-    const step:number = this.settings.settings.stepVal;
+    const step: number = this.settings.settings.stepVal;
 &nbsp;
     if (isArray(pos)) {
       const firstCurVal = pos[0] - minVal;
       const secondCurVal = pos[1] - minVal;
-      let curVals:number[] = [firstCurVal, secondCurVal];
+      let curVals: number[] = [firstCurVal, secondCurVal];
 &nbsp;
       const firstCurValWithoutStep = Math.round(curVals[0] / step);
       const secondCurValWithoutStep = Math.round(curVals[1] / step);
 &nbsp;
-      const currentStep:number[] = [firstCurValWithoutStep, secondCurValWithoutStep];
+      const currentStep: number[] = [
+        firstCurValWithoutStep,
+        secondCurValWithoutStep,
+      ];
 &nbsp;
-      const firstCurValWithStep = (currentStep[0] * step) + minVal;
-      const secondCurValWithStep = (currentStep[1] * step) + minVal;
+      const firstCurValWithStep = currentStep[0] * step + minVal;
+      const secondCurValWithStep = currentStep[1] * step + minVal;
       curVals = [firstCurValWithStep, secondCurValWithStep];
 &nbsp;
       this.settings.settings.values = curVals;
       return curVals;
     }
 &nbsp;
-    let curVal:number = pos - minVal;
-    const currentStep:number = Math.round(curVal / step);
+    let curVal: number = pos - minVal;
+    const currentStep: number = Math.round(curVal / step);
     curVal = currentStep * step;
     curVal += minVal;
     this.settings.settings.value = curVal;
     return curVal;
   }
+&nbsp;
+  calculateFromPercentsToValue(curPosInPercents: number): number {
+    const { minVal, maxVal } = this.settings.settings;
+    const rangeVal: number = maxVal - minVal;
+&nbsp;
+    const curPosInValue: number = (rangeVal * curPosInPercents) / 100;
+&nbsp;
+    return curPosInValue + minVal;
+  }
+&nbsp;
+  calculateFromValueToPercents(curPosInValue: number): number {
+    const { minVal, maxVal } = this.settings.settings;
+    const rangeVal: number = maxVal - minVal;
+&nbsp;
+    const currPosInPercents: number =
+      ((curPosInValue - minVal) * 100) / rangeVal;
+&nbsp;
+    return currPosInPercents;
+  }
 }
 &nbsp;
-export {
-  Slider,
-};
+export { Slider };
 &nbsp;
 export default Slider;
 &nbsp;</pre></td></tr>
@@ -217,7 +274,7 @@ export default Slider;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Oct 04 2019 12:47:58 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 09 2019 14:08:35 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

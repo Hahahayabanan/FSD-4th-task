@@ -3,19 +3,17 @@ import { SliderPresenter } from './SliderPresenter';
 class SliderPresenterAPI {
   static slider: SliderPresenter;
 
-  static enterPoint(
-    options:{
-      slider: SliderPresenter,
-      option: string,
-      setting: string,
-      value?: string | number | number[] | boolean,
-      valuesOneOfTwoVals?: number
-    },
-  ) {
+  static enterPoint(options: {
+    slider: SliderPresenter;
+    option: string;
+    setting: string;
+    value?: string | number | number[] | boolean;
+    valuesOneOfTwoVals?: number;
+  }) {
     this.slider = options.slider;
     try {
       if (options.option !== 'option') {
-        const errorFirstParameterOption = 'First parameter should be \'option\'';
+        const errorFirstParameterOption = "First parameter should be 'option'";
         throw errorFirstParameterOption;
       }
     } catch (err) {
@@ -25,41 +23,60 @@ class SliderPresenterAPI {
     let currReturn: string | number | number[] | boolean;
     if (options.value !== undefined) {
       switch (options.setting) {
-        case 'range': currReturn = this.setRange(<boolean>options.value);
+        case 'range':
+          currReturn = this.setRange(<boolean>options.value);
           break;
-        case 'minVal': currReturn = this.setMinVal(<number>options.value);
+        case 'minVal':
+          currReturn = this.setMinVal(<number>options.value);
           break;
-        case 'maxVal': currReturn = this.setMaxVal(<number>options.value);
+        case 'maxVal':
+          currReturn = this.setMaxVal(<number>options.value);
           break;
-        case 'stepVal': currReturn = this.setStepVal(<number>options.value);
+        case 'stepVal':
+          currReturn = this.setStepVal(<number>options.value);
           break;
-        case 'orientation': currReturn = this.setOrientation(<string>options.value);
+        case 'orientation':
+          currReturn = this.setOrientation(<string>options.value);
           break;
-        case 'value': currReturn = this.setValue(<number>options.value);
+        case 'value':
+          currReturn = this.setValue(<number>options.value);
           break;
-        case 'values': currReturn = this.checkValuesSetterType(options.valuesOneOfTwoVals, options.value);
+        case 'values':
+          currReturn = this.checkValuesSetterType(
+            options.valuesOneOfTwoVals,
+            options.value,
+          );
           break;
-        case 'followerPoint': currReturn = this.setFollowerPoint(<boolean>options.value);
+        case 'followerPoint':
+          currReturn = this.setFollowerPoint(<boolean>options.value);
           break;
         default:
       }
     } else {
       switch (options.setting) {
-        case 'range': currReturn = this.getRange();
+        case 'range':
+          currReturn = this.getRange();
           break;
-        case 'minVal': currReturn = this.getMinVal();
+        case 'minVal':
+          currReturn = this.getMinVal();
           break;
-        case 'maxVal': currReturn = this.getMaxVal();
+        case 'maxVal':
+          currReturn = this.getMaxVal();
           break;
-        case 'stepVal': currReturn = this.getStepVal();
+        case 'stepVal':
+          currReturn = this.getStepVal();
           break;
-        case 'orientation': currReturn = this.getOrientation();
+        case 'orientation':
+          currReturn = this.getOrientation();
           break;
-        case 'value': currReturn = this.getValue();
+        case 'value':
+          currReturn = this.getValue();
           break;
-        case 'values': currReturn = this.getValues();
+        case 'values':
+          currReturn = this.getValues();
           break;
-        case 'followerPoint': currReturn = this.getFollowerPoint();
+        case 'followerPoint':
+          currReturn = this.getFollowerPoint();
           break;
         default:
       }
@@ -146,17 +163,21 @@ class SliderPresenterAPI {
   }
 
   static getValues(numberCurrent?: number): number[] | number {
-    if (numberCurrent === undefined) return this.slider.model.settings.settings.values;
+    if (numberCurrent === undefined)
+      return this.slider.model.settings.settings.values;
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 
-  static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number {
+  static setValues(
+    newVal: number[] | number,
+    numberCurrent?: number,
+  ): number[] | number {
     if (numberCurrent === undefined) {
       const newValue = this.slider.model.settings.setValues(<number[]>newVal);
       this.slider.initStartValue();
       return newValue;
     }
-    const tmp:number[] = this.slider.model.settings.settings.values;
+    const tmp: number[] = this.slider.model.settings.settings.values;
     tmp[numberCurrent] = <number>newVal;
     this.slider.model.settings.setValues(<number[]>tmp);
 
@@ -164,21 +185,21 @@ class SliderPresenterAPI {
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 
-  static checkValuesSetterType(valuesOneOfTwoVals:any, value:any) {
+  static checkValuesSetterType(valuesOneOfTwoVals: any, value: any) {
     const isValueNumber = typeof value === 'number';
     const isOneOfValuesUndefined = valuesOneOfTwoVals === undefined;
 
     if (isOneOfValuesUndefined && !isValueNumber) {
       return this.setValues(<number[]>value);
-    } if (isOneOfValuesUndefined && isValueNumber) {
+    }
+    if (isOneOfValuesUndefined && isValueNumber) {
       return this.getValues(value);
-    } if (!isOneOfValuesUndefined && isValueNumber) {
+    }
+    if (!isOneOfValuesUndefined && isValueNumber) {
       return this.setValues(valuesOneOfTwoVals, <number>value);
     }
   }
 }
 
-export {
-  SliderPresenterAPI,
-};
+export { SliderPresenterAPI };
 export default SliderPresenterAPI;

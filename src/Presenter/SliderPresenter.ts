@@ -4,7 +4,7 @@ import { ISliderSettings } from '../Model/ISliderSettings';
 import { SliderPointer } from '../View/SliderPointer';
 
 class SliderPresenter {
-  public model:Slider;
+  public model: Slider;
 
   public view: any;
 
@@ -13,19 +13,25 @@ class SliderPresenter {
 
     this.createView(rootElement);
 
-    this.view.slider.addEventListener('changePointer', this.onChangePointer.bind(this));
+    this.view.slider.addEventListener(
+      'changePointer',
+      this.onChangePointer.bind(this),
+    );
     this.initStartValue();
   }
 
-  onChangePointer(event:any) {
+  onChangePointer(event: any) {
     const currThumb = event.detail;
 
-    const curPosInPercents:number = currThumb.curPos;
-    const curPosInVal:number = this.calculateFromPercentsToValue(curPosInPercents);
+    const curPosInPercents: number = currThumb.curPos;
+    const curPosInVal: number = this.model.calculateFromPercentsToValue(
+      curPosInPercents,
+    );
     const curPosInValWithStep = this.model.calcPointerPosition(curPosInVal);
 
-    const curPosInPercentsWithStep = this.calculateFromValueToPercents(curPosInValWithStep);
-
+    const curPosInPercentsWithStep = this.model.calculateFromValueToPercents(
+      curPosInValWithStep,
+    );
     this.render(currThumb, curPosInPercentsWithStep);
     this.setFollowerPointValue(currThumb, curPosInValWithStep);
 
@@ -43,41 +49,51 @@ class SliderPresenter {
     }
   }
 
-  createView(rootElement:any) {
+  createView(rootElement: any) {
     this.view = new SliderTemplate({
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
       isFollowerPoint: this.model.settings.settings.followerPoint,
-      isRange: this.model.settings.settings.range
+      isRange: this.model.settings.settings.range,
     });
   }
 
   initStartValue() {
     if (this.model.settings.settings.range) {
-      const curPosInValues:number[] = this.model.settings.settings.values;
-      const curPosInValsWithStep:number[] = this.model.calcPointerPosition(curPosInValues);
+      const curPosInValues: number[] = this.model.settings.settings.values;
+      const curPosInValsWithStep: number[] = this.model.calcPointerPosition(
+        curPosInValues,
+      );
 
       const curPosInPercentsWithStep: number[] = [0, 0];
-      curPosInPercentsWithStep[0] = this.calculateFromValueToPercents(curPosInValsWithStep[0]);
-      curPosInPercentsWithStep[1] = this.calculateFromValueToPercents(curPosInValsWithStep[1]);
+      curPosInPercentsWithStep[0] = this.model.calculateFromValueToPercents(
+        curPosInValsWithStep[0],
+      );
+      curPosInPercentsWithStep[1] = this.model.calculateFromValueToPercents(
+        curPosInValsWithStep[1],
+      );
 
       this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep[0]);
       this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[1]);
     } else {
-      const curPosInValue:number = this.model.settings.settings.value;
-      const curPosInValWithStep:number = this.model.calcPointerPosition(curPosInValue);
+      const curPosInValue: number = this.model.settings.settings.value;
+      const curPosInValWithStep: number = this.model.calcPointerPosition(
+        curPosInValue,
+      );
 
-      const curPosInPercentsWithStep:number = this.calculateFromValueToPercents(curPosInValWithStep);
+      const curPosInPercentsWithStep: number = this.model.calculateFromValueToPercents(
+        curPosInValWithStep,
+      );
 
       this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep);
     }
   }
 
-  render(curThumb:SliderPointer, curPos: number) {
+  render(curThumb: SliderPointer, curPos: number) {
     curThumb.renderCurrentPosInPercents(curPos);
   }
 
-  setFollowerPointValue(curThumb:SliderPointer, currPosInValWithStep: number) {
+  setFollowerPointValue(curThumb: SliderPointer, currPosInValWithStep: number) {
     if (this.model.settings.settings.followerPoint) {
       if (curThumb.followerPoint !== undefined) {
         curThumb.followerPoint.setValue(currPosInValWithStep);
@@ -90,29 +106,7 @@ class SliderPresenter {
     }
   }
 
-
-  calculateFromPercentsToValue(curPosInPercents:number):number {
-    const { minVal } = this.model.settings.settings;
-    const { maxVal } = this.model.settings.settings;
-    const rangeVal:number = maxVal - minVal;
-
-    const curPosInValue:number = rangeVal * curPosInPercents / 100;
-
-    return curPosInValue + minVal;
-  }
-
-  calculateFromValueToPercents(curPosInValue:number):number {
-    const { minVal } = this.model.settings.settings;
-    const { maxVal } = this.model.settings.settings;
-    const rangeVal:number = maxVal - minVal;
-
-    const currPosInPercents:number = (curPosInValue - minVal) * 100 / rangeVal;
-
-    return currPosInPercents;
-  }
-
-
-  checkOrientationIsVertical():boolean {
+  checkOrientationIsVertical(): boolean {
     const ordersModule = {
       ORIENTATION: 'vertical',
     };
@@ -123,8 +117,5 @@ class SliderPresenter {
   }
 }
 
-
-export {
-  SliderPresenter,
-};
+export { SliderPresenter };
 export default SliderPresenter;

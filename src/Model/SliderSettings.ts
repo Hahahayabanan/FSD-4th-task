@@ -2,7 +2,6 @@
 import * as $ from 'jquery';
 import { ISliderSettings } from './ISliderSettings';
 
-
 class SliderSettings {
   protected defaultSettings: ISliderSettings = {
     range: false,
@@ -20,7 +19,8 @@ class SliderSettings {
   public errors = {
     minBiggerMax: 'Min slider range value cant be bigger than max value',
     stepBiggerMaxMin: 'Step cant be bigger than min and max range',
-    stepInteger: 'Step should be an integer, commonly a dividend of the slider\'s maximum value',
+    stepInteger:
+      "Step should be an integer, commonly a dividend of the slider's maximum value",
     valueBiggerMax: 'Value cant be bigger than max value',
     valueSmallerMin: 'Value cant be smaller than min value',
     firstValueSmallerMin: 'First value cant be smaller than min value',
@@ -28,7 +28,8 @@ class SliderSettings {
     firstValueBiggerSecond: 'First value cant be bigger than second value',
     secondValueBiggerFirst: 'Second value cant be bigger than first value',
     rangeValuesInSingle: 'Slider has range values but it is not range',
-    notValidOrientation: 'Orientation of slider has only two values "horizontal" or "vertical"',
+    notValidOrientation:
+      'Orientation of slider has only two values "horizontal" or "vertical"',
   };
 
   constructor(setts: ISliderSettings) {
@@ -39,74 +40,74 @@ class SliderSettings {
   }
 
   checkValidValues() {
-    try {
-      const ordersModule = {
-        ORIENTATION_VERTICAL: 'vertical',
-        ORIENTATION_HORIZONTAL: 'horizontal',
-      };
-      const isOrientationVertical = this.settings.orientation !== ordersModule.ORIENTATION_VERTICAL;
-      const isOrientationHorizontal = this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
-      const isOrientationSet = isOrientationVertical && isOrientationHorizontal;
-      const isOneOfRangeValueSet = this.settings.values[0] !== null || this.settings.values[1] !== null;
-      const valueRange = this.settings.maxVal - this.settings.minVal;
-      const isStepSmallerNull = this.settings.stepVal < 0;
-      const isStepBiggerRange = this.settings.stepVal < valueRange;
-      const isValueBiggerMaxVal = this.settings.value > this.settings.maxVal;
-      const isValueSmallerMinVal = this.settings.value < this.settings.minVal;
-      const isFirstValueSmallerMinVal = this.settings.values[0] < this.settings.minVal;
-      const isSecondValueBiggerMaxVal = this.settings.values[1] > this.settings.maxVal;
-      const isFirstValueBiggerSecond = this.settings.values[0] > this.settings.values[1];
-      const isSecondValueSmallerFirst = this.settings.values[1] < this.settings.values[0];
+    const ordersModule = {
+      ORIENTATION_VERTICAL: 'vertical',
+      ORIENTATION_HORIZONTAL: 'horizontal',
+    };
+    const isOrientationVertical =
+      this.settings.orientation !== ordersModule.ORIENTATION_VERTICAL;
+    const isOrientationHorizontal =
+      this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
+    const isOrientationSet = isOrientationVertical && isOrientationHorizontal;
+    const valueRange = this.settings.maxVal - this.settings.minVal;
+    const isStepSmallerNull = this.settings.stepVal < 0;
+    const isStepBiggerRange = this.settings.stepVal < valueRange;
+    const isValueBiggerMaxVal = this.settings.value > this.settings.maxVal;
+    const isValueSmallerMinVal = this.settings.value < this.settings.minVal;
+    const isFirstValueSmallerMinVal =
+      this.settings.values[0] < this.settings.minVal;
+    const isSecondValueBiggerMaxVal =
+      this.settings.values[1] > this.settings.maxVal;
+    const isFirstValueBiggerMaxVal =
+      this.settings.values[0] > this.settings.maxVal;
+    const isSecondValueSmallerMinVal =
+      this.settings.values[1] < this.settings.minVal;
+    const isFirstValueBiggerSecond =
+      this.settings.values[0] > this.settings.values[1];
+    const isSecondValueSmallerFirst =
+      this.settings.values[1] < this.settings.values[0];
 
-      if (this.settings.minVal >= this.settings.maxVal) {
-        this.settings.maxVal = this.defaultSettings.maxVal;
-        this.settings.minVal = this.defaultSettings.minVal;
-        this.settings.value = this.defaultSettings.value;
-        this.settings.values = this.defaultSettings.values;
-        this.settings.stepVal = this.defaultSettings.stepVal;
-        throw this.errors.minBiggerMax;
-      }
-      if (isStepSmallerNull && isStepBiggerRange) {
-        this.settings.stepVal = this.defaultSettings.stepVal;
-        throw this.errors.stepBiggerMaxMin;
-      }
-      if (valueRange % this.settings.stepVal !== 0) {
-        this.settings.stepVal = this.defaultSettings.stepVal;
-        throw this.errors.stepInteger;
-      }
-      if (isValueBiggerMaxVal && !this.settings.range) {
-        this.settings.value = this.settings.maxVal;
-        throw this.errors.valueBiggerMax;
-      }
-      if (isValueSmallerMinVal && !this.settings.range) {
-        this.settings.value = this.settings.minVal;
-        throw this.errors.valueSmallerMin;
-      }
-      if (isFirstValueSmallerMinVal && this.settings.range) {
-        this.settings.values[0] = this.settings.minVal;
-        throw this.errors.firstValueSmallerMin;
-      }
-      if (isSecondValueBiggerMaxVal && this.settings.range) {
-        this.settings.values[1] = this.settings.maxVal;
-        throw this.errors.secondValueBiggerMax;
-      }
-      if (isFirstValueBiggerSecond && this.settings.range) {
-        this.settings.values[0] = this.settings.values[1];
-        throw this.errors.firstValueBiggerSecond;
-      }
-      if (isSecondValueSmallerFirst && this.settings.range) {
-        this.settings.values[1] = this.settings.values[0];
-        throw this.errors.secondValueBiggerFirst;
-      }
-      if (isOneOfRangeValueSet && !this.settings.range) {
-        throw this.errors.rangeValuesInSingle;
-      }
-      if (isOrientationSet) {
-        this.settings.orientation = this.defaultSettings.orientation;
-        throw this.errors.notValidOrientation;
-      }
-    } catch (err) {
-      console.error(err);
+    if (this.settings.minVal >= this.settings.maxVal) {
+      this.settings.maxVal = this.defaultSettings.maxVal;
+      this.settings.minVal = this.defaultSettings.minVal;
+      this.settings.value = this.defaultSettings.value;
+      this.settings.values = this.defaultSettings.values;
+      this.settings.stepVal = this.defaultSettings.stepVal;
+    }
+    if (isStepSmallerNull && isStepBiggerRange) {
+      this.settings.stepVal = this.defaultSettings.stepVal;
+    }
+    if (valueRange % this.settings.stepVal !== 0) {
+      this.settings.stepVal = this.defaultSettings.stepVal;
+    }
+    if (isValueBiggerMaxVal && !this.settings.range) {
+      this.settings.value = this.settings.maxVal;
+    }
+    if (isValueSmallerMinVal && !this.settings.range) {
+      this.settings.value = this.settings.minVal;
+    }
+    if (isFirstValueSmallerMinVal && this.settings.range) {
+      this.settings.values[0] = this.settings.minVal;
+    }
+    if (isSecondValueBiggerMaxVal && this.settings.range) {
+      this.settings.values[1] = this.settings.maxVal;
+    }
+    if (isFirstValueBiggerMaxVal && this.settings.range) {
+      this.settings.values[0] = this.settings.maxVal - this.settings.stepVal;
+    }
+    if (isSecondValueSmallerMinVal && this.settings.range) {
+      this.settings.values[1] = this.settings.minVal + this.settings.stepVal;
+    }
+    if (isFirstValueBiggerSecond && this.settings.range) {
+      const first = this.settings.values[1];
+      this.settings.values[0] = first;
+    }
+    if (isSecondValueSmallerFirst && this.settings.range) {
+      const first = this.settings.values[0];
+      this.settings.values[1] = first;
+    }
+    if (isOrientationSet) {
+      this.settings.orientation = this.defaultSettings.orientation;
     }
   }
 
@@ -229,8 +230,6 @@ class SliderSettings {
   }
 }
 
-export {
-  SliderSettings,
-};
+export { SliderSettings };
 
 export default SliderSettings;

@@ -14,7 +14,8 @@ declare global {
 (function initialization($: JQueryStatic) {
   const sliders: SliderPresenter[] = [];
 
-  $.fn.slider = function getStart(...args:any): JQuery<Element> | string | number | number[] | boolean | undefined {
+  $.fn.slider = function getStart(...args:any):
+  JQuery<Element> | string | number | number[] | boolean | undefined {
     if (typeof args[0] === 'object' || args[0] === undefined) {
       const settings: ISliderSettings = args[0];
       return this.each((i:number, val:HTMLElement) => {

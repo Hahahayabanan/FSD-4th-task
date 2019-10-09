@@ -17,6 +17,8 @@ class SliderTemplate {
 
   public range: HTMLElement;
 
+  public lastThumbMoved: SliderPointer;
+
   public styleClasses = {
     SLIDER: 'j-plugin-slider',
     PATH: 'j-plugin-slider__path',
@@ -27,14 +29,12 @@ class SliderTemplate {
   };
 
   constructor(options: {
-    rootElem: HTMLElement,
-    isVertical?: boolean,
-    isFollowerPoint?: boolean,
-    isRange?: boolean
+    rootElem: HTMLElement;
+    isVertical?: boolean;
+    isFollowerPoint?: boolean;
+    isRange?: boolean;
   }) {
-    const {
-      rootElem, isVertical, isFollowerPoint, isRange
-    } = options;
+    const { rootElem, isVertical, isFollowerPoint, isRange } = options;
     this.slider = rootElem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
@@ -72,25 +72,120 @@ class SliderTemplate {
     if (this.isFollowerPoint) {
       this.slider.classList.add(this.styleClasses.SLIDER_WITH_POINT);
     }
+    this.lastThumbMoved = this.thumb0;
   }
 
   bindEventListeners() {
-    this.sliderPath.addEventListener('click', this.sliderOnClick);
+    this.sliderPath.addEventListener('mousedown', this.sliderOnClick);
 
+    this.bindThumbEventListeners();
+  }
+
+  bindThumbEventListeners() {
+    this.thumb0.thumbHTMLElem.addEventListener('mousedown', this.mouseDown);
+    this.thumb0.thumbHTMLElem.ondragstart = function onDragStart() {
+      return false;
+    };
     if (this.isRange) {
-      this.thumb0.bindEventListeners(this.thumb1);
-      this.thumb1.bindEventListeners(this.thumb0);
-    } else {
-      this.thumb0.bindEventListeners();
+      this.thumb1.thumbHTMLElem.addEventListener('mousedown', this.mouseDown);
+      this.thumb1.thumbHTMLElem.ondragstart = function onDragStart() {
+        return false;
+      };
     }
   }
 
-  sliderOnClick = (event:any) => {
+  mouseDown = (event: any) => {
     event.preventDefault();
-    const curTarget: HTMLElement = event.currentTarget;
 
-    const isValidClick = curTarget.className === this.styleClasses.THUMB;
-    if (isValidClick) return;
+    const thisThumb: HTMLElement = event.currentTarget;
+    let currentThumb: SliderPointer;
+
+    if (this.isRange && this.thumb0.curPos === this.thumb1.curPos) {
+      currentThumb = this.lastThumbMoved;
+    } else if (thisThumb === this.thumb0.thumbHTMLElem) {
+      currentThumb = this.thumb0;
+    } else if (thisThumb === this.thumb1.thumbHTMLElem) {
+      currentThumb = this.thumb1;
+    }
+
+    const { rightEdge, leftEdge, mouseX, mouseY } = this.calcMoveBorders(
+      event,
+      currentThumb,
+    );
+    currentThumb.endPos = currentThumb.curPos;
+
+    const mouseMove = (event: any) => {
+      event.preventDefault();
+      const endPosInPixels = currentThumb.calcPercentsToPixels(
+        currentThumb.endPos,
+      );
+
+      let newCurPos: number = this.isVertical
+        ? endPosInPixels - mouseY + event.clientY
+        : endPosInPixels - mouseX + event.clientX;
+
+      if (newCurPos < leftEdge) {
+        newCurPos = leftEdge;
+      }
+      if (newCurPos > rightEdge) {
+        newCurPos = rightEdge;
+      }
+
+      currentThumb.setCurPosInPercents(
+        currentThumb.calcPixelsToPercents(newCurPos),
+      );
+    };
+
+    const mouseUp = () => {
+      this.lastThumbMoved = currentThumb;
+
+      document.removeEventListener('mouseup', mouseUp);
+      document.removeEventListener('mousemove', mouseMove);
+    };
+
+    document.addEventListener('mousemove', mouseMove);
+    document.addEventListener('mouseup', mouseUp);
+  };
+
+  calcMoveBorders(event: any, currentThumb: SliderPointer) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    let leftEdge: number = 0;
+    let rightEdge: number = currentThumb.getPathLength();
+
+    if (this.isRange) {
+      if (
+        this.thumb0.curPos === this.thumb1.curPos &&
+        currentThumb !== this.lastThumbMoved
+      ) {
+        leftEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
+        rightEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
+      } else if (currentThumb === this.thumb0) {
+        leftEdge = 0;
+        rightEdge = currentThumb.calcPercentsToPixels(this.thumb1.curPos);
+      } else if (currentThumb === this.thumb1) {
+        leftEdge = currentThumb.calcPercentsToPixels(this.thumb0.curPos);
+        rightEdge = this.thumb1.getPathLength();
+      }
+    }
+
+    return {
+      rightEdge,
+      leftEdge,
+      mouseX,
+      mouseY,
+    };
+  }
+
+  sliderOnClick = (event: any) => {
+    event.preventDefault();
+    const curTarget: HTMLElement = event.target;
+
+    const isValidClick =
+      curTarget.className === this.styleClasses.PATH ||
+      curTarget.className === this.styleClasses.RANGE;
+    if (!isValidClick) return;
 
     const newLeft: number = this.isVertical
       ? event.clientY - this.sliderPath.getBoundingClientRect().top
@@ -101,35 +196,42 @@ class SliderTemplate {
 
       if (newLeft < pointersRange) {
         this.thumb0.setCurPosInPixels(newLeft);
-        this.thumb0.endPos = this.thumb0.curPos;
       }
       if (newLeft > pointersRange) {
         this.thumb1.setCurPosInPixels(newLeft);
-        this.thumb1.endPos = this.thumb1.curPos;
       }
     } else {
       this.thumb0.setCurPosInPixels(newLeft);
-      this.thumb0.endPos = this.thumb0.curPos;
     }
+
+    // const mouseUp = () => {
+    //   this.thumb0.endPos = this.thumb0.curPos;
+    //   this.thumb1.endPos = this.thumb1.curPos;
+    //   curTarget.removeEventListener('mouseup', mouseUp);
+    // };
+    // curTarget.addEventListener('mouseup', mouseUp);
   };
 
   calculateAndApplyRangeLine = () => {
     if (this.isVertical) {
       this.range.style.top = this.thumb0.thumbHTMLElem.style.top;
-      const range = parseInt(this.thumb1.thumbHTMLElem.style.top, 10)
-        - parseInt(this.thumb0.thumbHTMLElem.style.top, 10);
+      const range =
+        parseInt(this.thumb1.thumbHTMLElem.style.top, 10) -
+        parseInt(this.thumb0.thumbHTMLElem.style.top, 10);
       this.range.style.height = `${range}%`;
     } else {
       this.range.style.left = this.thumb0.thumbHTMLElem.style.left;
-      const range = parseInt(this.thumb1.thumbHTMLElem.style.left, 10)
-        - parseInt(this.thumb0.thumbHTMLElem.style.left, 10);
+      const range =
+        parseInt(this.thumb1.thumbHTMLElem.style.left, 10) -
+        parseInt(this.thumb0.thumbHTMLElem.style.left, 10);
       this.range.style.width = `${range}%`;
     }
   };
 
   calculatePointersRange() {
-    const res:number = ((this.thumb1.getCurPosInPixels() - this.thumb0.getCurPosInPixels()) / 2)
-      + this.thumb0.getCurPosInPixels();
+    const res: number =
+      (this.thumb1.getCurPosInPixels() - this.thumb0.getCurPosInPixels()) / 2 +
+      this.thumb0.getCurPosInPixels();
     return res;
   }
 
@@ -144,7 +246,5 @@ class SliderTemplate {
     );
   }
 }
-export {
-  SliderTemplate,
-};
+export { SliderTemplate };
 export default SliderTemplate;

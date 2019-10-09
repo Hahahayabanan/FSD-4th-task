@@ -230,7 +230,49 @@
 <a name='L182'></a><a href='#L182'>182</a>
 <a name='L183'></a><a href='#L183'>183</a>
 <a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -419,19 +461,17 @@
 class SliderPresenterAPI {
   static slider: SliderPresenter;
 &nbsp;
-  static enterPoint(
-    options:{
-      slider: SliderPresenter,
-      option: string,
-      setting: string,
-      value?: string | number | number[] | boolean,
-      valuesOneOfTwoVals?: number
-    },
-  ) {
+  static enterPoint(options: {
+    slider: SliderPresenter;
+    option: string;
+    setting: string;
+    value?: string | number | number[] | boolean;
+    valuesOneOfTwoVals?: number;
+  }) {
     this.slider = options.slider;
     try {
       if (options.option !== 'option') {
-        const errorFirstParameterOption = 'First parameter should be \'option\'';
+        const errorFirstParameterOption = "First parameter should be 'option'";
         throw errorFirstParameterOption;
       }
     } catch (err) {
@@ -441,41 +481,60 @@ class SliderPresenterAPI {
     let currReturn: string | number | number[] | boolean;
     if (options.value !== undefined) {
       switch (options.setting) {
-        case 'range': currReturn = this.setRange(&lt;boolean&gt;options.value);
+        case 'range':
+          currReturn = this.setRange(&lt;boolean&gt;options.value);
           break;
-        case 'minVal': currReturn = this.setMinVal(&lt;number&gt;options.value);
+        case 'minVal':
+          currReturn = this.setMinVal(&lt;number&gt;options.value);
           break;
-        case 'maxVal': currReturn = this.setMaxVal(&lt;number&gt;options.value);
+        case 'maxVal':
+          currReturn = this.setMaxVal(&lt;number&gt;options.value);
           break;
-        case 'stepVal': currReturn = this.setStepVal(&lt;number&gt;options.value);
+        case 'stepVal':
+          currReturn = this.setStepVal(&lt;number&gt;options.value);
           break;
-        case 'orientation': currReturn = this.setOrientation(&lt;string&gt;options.value);
+        case 'orientation':
+          currReturn = this.setOrientation(&lt;string&gt;options.value);
           break;
-        case 'value': currReturn = this.setValue(&lt;number&gt;options.value);
+        case 'value':
+          currReturn = this.setValue(&lt;number&gt;options.value);
           break;
-        case 'values': currReturn = this.checkValuesSetterType(options.valuesOneOfTwoVals, options.value);
+        case 'values':
+          currReturn = this.checkValuesSetterType(
+            options.valuesOneOfTwoVals,
+            options.value,
+          );
           break;
-        case 'followerPoint': currReturn = this.setFollowerPoint(&lt;boolean&gt;options.value);
+        case 'followerPoint':
+          currReturn = this.setFollowerPoint(&lt;boolean&gt;options.value);
           break;
         default:
       }
     } else {
       switch (options.setting) {
-        case 'range': currReturn = this.getRange();
+        case 'range':
+          currReturn = this.getRange();
           break;
-        case 'minVal': currReturn = this.getMinVal();
+        case 'minVal':
+          currReturn = this.getMinVal();
           break;
-        case 'maxVal': currReturn = this.getMaxVal();
+        case 'maxVal':
+          currReturn = this.getMaxVal();
           break;
-        case 'stepVal': currReturn = this.getStepVal();
+        case 'stepVal':
+          currReturn = this.getStepVal();
           break;
-        case 'orientation': currReturn = this.getOrientation();
+        case 'orientation':
+          currReturn = this.getOrientation();
           break;
-        case 'value': currReturn = this.getValue();
+        case 'value':
+          currReturn = this.getValue();
           break;
-        case 'values': currReturn = this.getValues();
+        case 'values':
+          currReturn = this.getValues();
           break;
-        case 'followerPoint': currReturn = this.getFollowerPoint();
+        case 'followerPoint':
+          currReturn = this.getFollowerPoint();
           break;
         default:
       }
@@ -562,17 +621,21 @@ class SliderPresenterAPI {
   }
 &nbsp;
   static getValues(numberCurrent?: number): number[] | number {
-    if (numberCurrent === undefined) return this.slider.model.settings.settings.values;
+    if (numberCurrent === undefined)
+      return this.slider.model.settings.settings.values;
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 &nbsp;
-  static setValues(newVal: number[] | number, numberCurrent?: number): number[] | number {
+  static setValues(
+    newVal: number[] | number,
+    numberCurrent?: number,
+  ): number[] | number {
     if (numberCurrent === undefined) {
       const newValue = this.slider.model.settings.setValues(&lt;number[]&gt;newVal);
       this.slider.initStartValue();
       return newValue;
     }
-    const tmp:number[] = this.slider.model.settings.settings.values;
+    const tmp: number[] = this.slider.model.settings.settings.values;
     tmp[numberCurrent] = &lt;number&gt;newVal;
     this.slider.model.settings.setValues(&lt;number[]&gt;tmp);
 &nbsp;
@@ -580,23 +643,23 @@ class SliderPresenterAPI {
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 &nbsp;
-  static checkValuesSetterType(valuesOneOfTwoVals:any, value:any) {
+  static checkValuesSetterType(valuesOneOfTwoVals: any, value: any) {
     const isValueNumber = typeof value === 'number';
     const isOneOfValuesUndefined = valuesOneOfTwoVals === undefined;
 &nbsp;
     if (isOneOfValuesUndefined &amp;&amp; !isValueNumber) {
       return this.setValues(&lt;number[]&gt;value);
-    } if (isOneOfValuesUndefined &amp;&amp; isValueNumber) {
+    }
+    if (isOneOfValuesUndefined &amp;&amp; isValueNumber) {
       return this.getValues(value);
-    } if (!isOneOfValuesUndefined &amp;&amp; isValueNumber) {
+    }
+    if (!isOneOfValuesUndefined &amp;&amp; isValueNumber) {
       return this.setValues(valuesOneOfTwoVals, &lt;number&gt;value);
     }
   }
 }
 &nbsp;
-export {
-  SliderPresenterAPI,
-};
+export { SliderPresenterAPI };
 export default SliderPresenterAPI;
 &nbsp;</pre></td></tr>
 </table></pre>
@@ -604,7 +667,7 @@ export default SliderPresenterAPI;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Oct 04 2019 12:47:58 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 09 2019 14:08:35 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
