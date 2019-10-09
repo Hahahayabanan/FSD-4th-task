@@ -17,7 +17,7 @@ class Slider {
   calcPointerPosition(pos: number): number;
 
   calcPointerPosition(pos: any) {
-    const { minVal } = this.settings.settings;
+    const { minVal, maxVal } = this.settings.settings;
     const step: number = this.settings.settings.stepVal;
 
     if (isArray(pos)) {
@@ -33,11 +33,14 @@ class Slider {
         secondCurValWithoutStep,
       ];
 
-      const firstCurValWithStep = currentStep[0] * step + minVal;
-      const secondCurValWithStep = currentStep[1] * step + minVal;
-      curVals = [firstCurValWithStep, secondCurValWithStep];
+      let firstCurValWithStep = currentStep[0] * step + minVal;
+      let secondCurValWithStep = currentStep[1] * step + minVal;
 
-      this.settings.settings.values = curVals;
+      if (firstCurValWithStep > maxVal) firstCurValWithStep = maxVal;
+      if (secondCurValWithStep > maxVal) secondCurValWithStep = maxVal;
+
+      curVals = [firstCurValWithStep, secondCurValWithStep];
+      this.settings.setValues(curVals);
       return curVals;
     }
 
@@ -45,7 +48,8 @@ class Slider {
     const currentStep: number = Math.round(curVal / step);
     curVal = currentStep * step;
     curVal += minVal;
-    this.settings.settings.value = curVal;
+    if (curVal > maxVal) curVal = maxVal;
+    this.settings.setValue(curVal);
     return curVal;
   }
 

@@ -118,7 +118,8 @@ class SliderSettings {
     const isValueNull = this.settings.value === null;
 
     if (!isFirstValueNull && !this.settings.range) {
-      this.settings.value = this.settings.values[0];
+      const first = this.settings.values[0];
+      this.settings.value = first;
       this.settings.values = [null, null];
     }
     if (isValueNull && !this.settings.range) {
