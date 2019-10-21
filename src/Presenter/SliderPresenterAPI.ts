@@ -91,7 +91,7 @@ class SliderPresenterAPI {
 
   static setFollowerPoint(newVal: boolean): boolean {
     const newValue = this.slider.model.settings.setFollowerPoint(newVal);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -104,7 +104,7 @@ class SliderPresenterAPI {
     const rootElement = this.slider.view.slider;
     this.slider.view.destroy();
     this.slider.createView(rootElement);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -114,7 +114,7 @@ class SliderPresenterAPI {
 
   static setMinVal(newVal: number): number {
     const newValue = this.slider.model.settings.setMinVal(+newVal);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -124,7 +124,7 @@ class SliderPresenterAPI {
 
   static setMaxVal(newVal: number): number {
     const newValue = this.slider.model.settings.setMaxVal(newVal);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -134,7 +134,7 @@ class SliderPresenterAPI {
 
   static setStepVal(newVal: number): number {
     const newValue = this.slider.model.settings.setStepVal(newVal);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -144,7 +144,7 @@ class SliderPresenterAPI {
 
   static setValue(newVal: number): number {
     const newValue = this.slider.model.settings.setValue(newVal);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -158,7 +158,7 @@ class SliderPresenterAPI {
     this.slider.view.destroy();
     this.slider.view = undefined;
     this.slider.createView(rootElement);
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return newValue;
   }
 
@@ -174,14 +174,14 @@ class SliderPresenterAPI {
   ): number[] | number {
     if (numberCurrent === undefined) {
       const newValue = this.slider.model.settings.setValues(<number[]>newVal);
-      this.slider.initStartValue();
+      this.slider.updateValue();
       return newValue;
     }
     const tmp: number[] = this.slider.model.settings.settings.values;
     tmp[numberCurrent] = <number>newVal;
     this.slider.model.settings.setValues(<number[]>tmp);
 
-    this.slider.initStartValue();
+    this.slider.updateValue();
     return this.slider.model.settings.settings.values[numberCurrent];
   }
 

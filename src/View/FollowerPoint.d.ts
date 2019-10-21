@@ -6,5 +6,5 @@ declare class FollowerPoint {
     setValue(value: number): void;
     destroy(): void;
 }
-export { FollowerPoint, };
+export { FollowerPoint };
 export default FollowerPoint;

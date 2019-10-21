@@ -27,5 +27,5 @@ declare class SliderSettings {
     setOrientation(tmp: string): string;
     setFollowerPoint(tmp: boolean): boolean;
 }
-export { SliderSettings, };
+export { SliderSettings };
 export default SliderSettings;

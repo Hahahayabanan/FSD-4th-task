@@ -5,6 +5,8 @@ declare class Slider {
     setSettings(sett: object): void;
     calcPointerPosition(pos: number[]): number[];
     calcPointerPosition(pos: number): number;
+    calculateFromPercentsToValue(curPosInPercents: number): number;
+    calculateFromValueToPercents(curPosInValue: number): number;
 }
-export { Slider, };
+export { Slider };
 export default Slider;

@@ -203,13 +203,6 @@ class SliderTemplate {
     } else {
       this.thumb0.setCurPosInPixels(newLeft);
     }
-
-    // const mouseUp = () => {
-    //   this.thumb0.endPos = this.thumb0.curPos;
-    //   this.thumb1.endPos = this.thumb1.curPos;
-    //   curTarget.removeEventListener('mouseup', mouseUp);
-    // };
-    // curTarget.addEventListener('mouseup', mouseUp);
   };
 
   calculateAndApplyRangeLine = () => {
@@ -233,6 +226,10 @@ class SliderTemplate {
       (this.thumb1.getCurPosInPixels() - this.thumb0.getCurPosInPixels()) / 2 +
       this.thumb0.getCurPosInPixels();
     return res;
+  }
+
+  setDataAttribute(attr: string, value: string) {
+    this.slider.dataset[attr] = value;
   }
 
   destroy() {

@@ -17,7 +17,7 @@ class SliderPresenter {
       'changePointer',
       this.onChangePointer.bind(this),
     );
-    this.initStartValue();
+    this.updateValue();
   }
 
   onChangePointer(event: any) {
@@ -47,6 +47,7 @@ class SliderPresenter {
     } else {
       this.model.settings.settings.value = curPosInValWithStep;
     }
+    this.updateValuesDataAttributes();
   }
 
   createView(rootElement: any) {
@@ -58,7 +59,7 @@ class SliderPresenter {
     });
   }
 
-  initStartValue() {
+  updateValue() {
     if (this.model.settings.settings.range) {
       const curPosInValues: number[] = this.model.settings.settings.values;
       const curPosInValsWithStep: number[] = this.model.calcPointerPosition(
@@ -75,6 +76,7 @@ class SliderPresenter {
 
       this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep[0]);
       this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[1]);
+      this.updateDataAttributes();
     } else {
       const curPosInValue: number = this.model.settings.settings.value;
       const curPosInValWithStep: number = this.model.calcPointerPosition(
@@ -86,6 +88,7 @@ class SliderPresenter {
       );
 
       this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep);
+      this.updateDataAttributes();
     }
   }
 
@@ -114,6 +117,47 @@ class SliderPresenter {
       return true;
     }
     return false;
+  }
+
+  updateDataAttributes() {
+    this.view.setDataAttribute(
+      'minVal',
+      `${this.model.settings.settings.minVal}`,
+    );
+    this.view.setDataAttribute(
+      'minVal',
+      `${this.model.settings.settings.maxVal}`,
+    );
+    this.view.setDataAttribute(
+      'followerPoint',
+      `${this.model.settings.settings.followerPoint}`,
+    );
+    this.view.setDataAttribute(
+      'orientation',
+      `${this.model.settings.settings.orientation}`,
+    );
+    this.view.setDataAttribute(
+      'range',
+      `${this.model.settings.settings.range}`,
+    );
+    this.view.setDataAttribute(
+      'stepVal',
+      `${this.model.settings.settings.stepVal}`,
+    );
+  }
+
+  updateValuesDataAttributes() {
+    if (this.model.settings.settings.range) {
+      this.view.setDataAttribute(
+        'values',
+        `[${this.model.settings.settings.values}]`,
+      );
+    } else {
+      this.view.setDataAttribute(
+        'value',
+        `${this.model.settings.settings.value}`,
+      );
+    }
   }
 }
 

@@ -93,10 +93,16 @@ class SliderSettings {
       this.settings.values[1] = this.settings.maxVal;
     }
     if (isFirstValueBiggerMaxVal && this.settings.range) {
-      this.settings.values[0] = this.settings.maxVal - this.settings.stepVal;
+      this.settings.values[0] =
+        this.settings.maxVal - this.settings.stepVal < this.settings.maxVal
+          ? this.settings.maxVal - this.settings.stepVal
+          : this.settings.maxVal;
     }
     if (isSecondValueSmallerMinVal && this.settings.range) {
-      this.settings.values[1] = this.settings.minVal + this.settings.stepVal;
+      this.settings.values[1] =
+        this.settings.minVal + this.settings.stepVal < this.settings.minVal
+          ? this.settings.minVal + this.settings.stepVal
+          : this.settings.minVal;
     }
     if (isFirstValueBiggerSecond && this.settings.range) {
       const first = this.settings.values[1];

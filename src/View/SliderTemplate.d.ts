@@ -8,6 +8,7 @@ declare class SliderTemplate {
     isFollowerPoint: boolean;
     isRange: boolean;
     range: HTMLElement;
+    lastThumbMoved: SliderPointer;
     styleClasses: {
         SLIDER: string;
         PATH: string;
@@ -24,10 +25,18 @@ declare class SliderTemplate {
     });
     createTemplate(): void;
     bindEventListeners(): void;
+    bindThumbEventListeners(): void;
+    mouseDown: (event: any) => void;
+    calcMoveBorders(event: any, currentThumb: SliderPointer): {
+        rightEdge: number;
+        leftEdge: number;
+        mouseX: any;
+        mouseY: any;
+    };
     sliderOnClick: (event: any) => void;
     calculateAndApplyRangeLine: () => void;
     calculatePointersRange(): number;
     destroy(): void;
 }
-export { SliderTemplate, };
+export { SliderTemplate };
 export default SliderTemplate;

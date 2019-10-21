@@ -56,6 +56,18 @@ $( ".selector" ).slider({
       followerPoint: true
 })
 ```
+## Пример инициализации с помощью data-атрибутов
+```html
+<div class='slider' data-min-val=99 data-max-val=199 data-step-val=1 data-range='true' data-orientation='vertical' data-values='[105, 125]' data-follower-point='true'></div>
+
+<script>
+  $(() => {
+    $( ".slider" ).slider()
+  })
+</script>
+```
+
+При инициализации data-атрибуты имеют наименьший приоритет, а в остальных случаях пассивны
 
 # API настройки
 

@@ -10,9 +10,7 @@ declare class SliderPresenter {
     initStartValue(): void;
     render(curThumb: SliderPointer, curPos: number): void;
     setFollowerPointValue(curThumb: SliderPointer, currPosInValWithStep: number): void;
-    calculateFromPercentsToValue(curPosInPercents: number): number;
-    calculateFromValueToPercents(curPosInValue: number): number;
     checkOrientationIsVertical(): boolean;
 }
-export { SliderPresenter, };
+export { SliderPresenter };
 export default SliderPresenter;
