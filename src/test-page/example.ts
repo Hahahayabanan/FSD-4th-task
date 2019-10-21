@@ -4,9 +4,9 @@ import { ExampleParameters } from './ExampleParameters';
 $(() => {
   $('.slider1').slider({
     minVal: 200,
-    maxVal: 500,
+    maxVal: 500000000,
     stepVal: 100,
-    value: 349,
+    value: 349000000,
     followerPoint: true,
   });
   $('.slider2').slider({

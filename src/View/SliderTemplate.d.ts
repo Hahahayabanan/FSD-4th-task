@@ -13,6 +13,7 @@ declare class SliderTemplate {
         SLIDER: string;
         PATH: string;
         THUMB: string;
+        THUMB_SELECTED: string;
         RANGE: string;
         SLIDER_VERTICAL: string;
         SLIDER_WITH_POINT: string;
@@ -36,6 +37,8 @@ declare class SliderTemplate {
     sliderOnClick: (event: any) => void;
     calculateAndApplyRangeLine: () => void;
     calculatePointersRange(): number;
+    setDataAttribute(attr: string, value: string): void;
+    updateZIndex(curThumb: SliderPointer): void;
     destroy(): void;
 }
 export { SliderTemplate };

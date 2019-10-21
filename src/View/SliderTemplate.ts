@@ -23,6 +23,7 @@ class SliderTemplate {
     SLIDER: 'j-plugin-slider',
     PATH: 'j-plugin-slider__path',
     THUMB: 'j-plugin-slider__thumb',
+    THUMB_SELECTED: 'j-plugin-slider__thumb_selected',
     RANGE: 'j-plugin-slider__range',
     SLIDER_VERTICAL: 'j-plugin-slider_vertical',
     SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
@@ -107,6 +108,8 @@ class SliderTemplate {
     } else if (thisThumb === this.thumb1.thumbHTMLElem) {
       currentThumb = this.thumb1;
     }
+
+    this.updateZIndex(currentThumb);
 
     const { rightEdge, leftEdge, mouseX, mouseY } = this.calcMoveBorders(
       event,
@@ -230,6 +233,17 @@ class SliderTemplate {
 
   setDataAttribute(attr: string, value: string) {
     this.slider.dataset[attr] = value;
+  }
+
+  updateZIndex(curThumb: SliderPointer) {
+    this.thumb0.thumbHTMLElem.classList.remove(
+      this.styleClasses.THUMB_SELECTED,
+    );
+    if (this.isRange)
+      this.thumb1.thumbHTMLElem.classList.remove(
+        this.styleClasses.THUMB_SELECTED,
+      );
+    curThumb.thumbHTMLElem.classList.add(this.styleClasses.THUMB_SELECTED);
   }
 
   destroy() {

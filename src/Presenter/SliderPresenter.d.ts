@@ -7,10 +7,12 @@ declare class SliderPresenter {
     constructor(rootElement: HTMLElement, options: ISliderSettings);
     onChangePointer(event: any): void;
     createView(rootElement: any): void;
-    initStartValue(): void;
+    updateValue(): void;
     render(curThumb: SliderPointer, curPos: number): void;
     setFollowerPointValue(curThumb: SliderPointer, currPosInValWithStep: number): void;
     checkOrientationIsVertical(): boolean;
+    updateDataAttributes(): void;
+    updateValuesDataAttributes(): void;
 }
 export { SliderPresenter };
 export default SliderPresenter;

@@ -42,7 +42,7 @@
 
       &::after{
         top: 30%;
-        left: -3px;
+        left: 0px;
       }
     }
   }
@@ -60,6 +60,11 @@
     background: rgb(240, 78, 50);
     cursor: pointer;
     position: absolute;
+    z-index: 0;
+
+    &_selected {
+      z-index: 1;
+    }
   }
 
   &__range {
@@ -69,17 +74,20 @@
   }
 
   &__follower-point {
-    width: 30px;
+    min-width: 30px;
     height: 18px;
     position: absolute;
+    padding-top: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
     top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
     background: rgb(240, 78, 50);
     color: white;
     font-size: 12px;
-    border-radius:4px;
-    transform: translateX(-6px);
+    border-radius: 4px;
     text-align: center;
-    padding-top: 2px;
     box-sizing: border-box;
 
     &::after {
@@ -89,9 +97,9 @@
       height: 7px;
       border-radius: 0 0 1px 0; 
       background-color: rgb(240, 78, 50);
-      transform: rotate(45deg);
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
       bottom: -3px;
-      left: 40%;
     }
   }
 }
