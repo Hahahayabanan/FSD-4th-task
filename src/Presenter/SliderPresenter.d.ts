@@ -6,7 +6,7 @@ declare class SliderPresenter {
     view: any;
     constructor(rootElement: HTMLElement, options: ISliderSettings);
     onChangePointer(event: any): void;
-    createView(rootElement: any): void;
+    createView(rootElement: any): any;
     updateValue(): void;
     render(curThumb: SliderPointer, curPos: number): void;
     setFollowerPointValue(curThumb: SliderPointer, currPosInValWithStep: number): void;

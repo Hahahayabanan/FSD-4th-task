@@ -99,6 +99,7 @@
   "version": "0.0.1",
   "dependencies": {
     "@types/jsdom": "^12.2.4",
-    "eslint-utils": "^1.4.2"
+    "eslint-utils": "^1.4.2",
+    "q": "^1.5.1"
   }
 }

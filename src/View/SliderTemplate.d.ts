@@ -27,14 +27,9 @@ declare class SliderTemplate {
     createTemplate(): void;
     bindEventListeners(): void;
     bindThumbEventListeners(): void;
-    mouseDown: (event: any) => void;
-    calcMoveBorders(event: any, currentThumb: SliderPointer): {
-        rightEdge: number;
-        leftEdge: number;
-        mouseX: any;
-        mouseY: any;
-    };
-    sliderOnClick: (event: any) => void;
+    private mouseDown;
+    private calcMoveBorders;
+    private sliderOnClick;
     calculateAndApplyRangeLine: () => void;
     calculatePointersRange(): number;
     setDataAttribute(attr: string, value: string): void;

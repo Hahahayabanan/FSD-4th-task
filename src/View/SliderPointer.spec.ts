@@ -1,15 +1,19 @@
 import { SliderPointer } from './SliderPointer';
 
-document.body.innerHTML = '<div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__thumb"></div></div>';
+document.body.innerHTML =
+  '<div class="slider"><div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__thumb"></div></div></div>';
 
-const shadowSlider = document.querySelector('.j-slider-plugin__thumb') as HTMLElement;
-const shadowpath = document.querySelector('.j-slider-plugin__path') as HTMLElement;
-
+const shadowThumb = document.querySelector(
+  '.j-slider-plugin__thumb',
+) as HTMLElement;
+const shadowPath = document.querySelector(
+  '.j-slider-plugin__path',
+) as HTMLElement;
+const pointer = new SliderPointer(shadowThumb);
 
 describe('View / Slider Pointer / Test of setting', () => {
-  const pointer = new SliderPointer(shadowSlider);
   beforeEach(() => {
-    shadowpath.style.width = '300px';
+    shadowPath.style.width = '300px';
   });
 
   it('Slider pointer should be set', () => {
@@ -29,6 +33,26 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
   it('Render in pixels', async () => {
     await pointer.renderCurrentPosInPercents(29);
-    expect(Math.round(parseInt(pointer.thumbHTMLElem.style.left, 10))).toBeCloseTo(29);
+    expect(
+      Math.round(parseInt(pointer.thumbHTMLElem.style.left, 10)),
+    ).toBeCloseTo(29);
+  });
+  it('Get path length', () => {
+    expect(pointer.getPathLength()).toBeCloseTo(300);
+  });
+  it('Calc pixels to percents', () => {
+    expect(Math.round(pointer.calcPixelsToPercents(150))).toBeCloseTo(50);
+  });
+  it('Calc percents to pixels', async () => {
+    expect(pointer.calcPercentsToPixels(60)).toBeCloseTo(180);
+  });
+  it('Create and delete follower point', async () => {
+    await pointer.createFollowerPoint();
+    expect(pointer.followerPoint).toBeDefined();
+    expect(pointer.followerPoint.elemHTMLElement).toHaveClass(
+      'j-plugin-slider__follower-point',
+    );
+    pointer.deleteFollowerPoint();
+    expect(pointer.followerPoint).toBeUndefined();
   });
 });

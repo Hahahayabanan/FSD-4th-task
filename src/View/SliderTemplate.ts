@@ -95,7 +95,7 @@ class SliderTemplate {
     }
   }
 
-  mouseDown = (event: any) => {
+  private mouseDown = (event: any) => {
     event.preventDefault();
 
     const thisThumb: HTMLElement = event.currentTarget;
@@ -150,7 +150,7 @@ class SliderTemplate {
     document.addEventListener('mouseup', mouseUp);
   };
 
-  calcMoveBorders(event: any, currentThumb: SliderPointer) {
+  private calcMoveBorders(event: any, currentThumb: SliderPointer) {
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
@@ -181,7 +181,7 @@ class SliderTemplate {
     };
   }
 
-  sliderOnClick = (event: any) => {
+  private sliderOnClick = (event: any) => {
     event.preventDefault();
     const curTarget: HTMLElement = event.target;
 
@@ -248,13 +248,20 @@ class SliderTemplate {
 
   destroy() {
     this.thumb0.thumbHTMLElem.remove();
-    if (this.isRange) this.thumb1.thumbHTMLElem.remove();
+    this.thumb0 = undefined;
+    if (this.isRange) {
+      this.thumb1.thumbHTMLElem.remove();
+      this.thumb1 = undefined;
+    }
     this.sliderPath.remove();
+    this.sliderPath = undefined;
     this.slider.classList.remove(
       this.styleClasses.SLIDER,
       this.styleClasses.SLIDER_VERTICAL,
       this.styleClasses.SLIDER_WITH_POINT,
     );
+    this.slider.remove();
+    this.slider = undefined;
   }
 }
 export { SliderTemplate };

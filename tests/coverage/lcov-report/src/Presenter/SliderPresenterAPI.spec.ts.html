@@ -479,7 +479,59 @@
 <a name='L431'></a><a href='#L431'>431</a>
 <a name='L432'></a><a href='#L432'>432</a>
 <a name='L433'></a><a href='#L433'>433</a>
-<a name='L434'></a><a href='#L434'>434</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L434'></a><a href='#L434'>434</a>
+<a name='L435'></a><a href='#L435'>435</a>
+<a name='L436'></a><a href='#L436'>436</a>
+<a name='L437'></a><a href='#L437'>437</a>
+<a name='L438'></a><a href='#L438'>438</a>
+<a name='L439'></a><a href='#L439'>439</a>
+<a name='L440'></a><a href='#L440'>440</a>
+<a name='L441'></a><a href='#L441'>441</a>
+<a name='L442'></a><a href='#L442'>442</a>
+<a name='L443'></a><a href='#L443'>443</a>
+<a name='L444'></a><a href='#L444'>444</a>
+<a name='L445'></a><a href='#L445'>445</a>
+<a name='L446'></a><a href='#L446'>446</a>
+<a name='L447'></a><a href='#L447'>447</a>
+<a name='L448'></a><a href='#L448'>448</a>
+<a name='L449'></a><a href='#L449'>449</a>
+<a name='L450'></a><a href='#L450'>450</a>
+<a name='L451'></a><a href='#L451'>451</a>
+<a name='L452'></a><a href='#L452'>452</a>
+<a name='L453'></a><a href='#L453'>453</a>
+<a name='L454'></a><a href='#L454'>454</a>
+<a name='L455'></a><a href='#L455'>455</a>
+<a name='L456'></a><a href='#L456'>456</a>
+<a name='L457'></a><a href='#L457'>457</a>
+<a name='L458'></a><a href='#L458'>458</a>
+<a name='L459'></a><a href='#L459'>459</a>
+<a name='L460'></a><a href='#L460'>460</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -919,7 +971,6 @@ document.body.innerHTML = '&lt;div id="test" class="slider"&gt;&lt;/div&gt;';
 &nbsp;
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 &nbsp;
-&nbsp;
 describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
   let slider: SliderPresenter;
 &nbsp;
@@ -932,8 +983,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
   });
 &nbsp;
-&nbsp;
-  it('Should coincide API set values \'step\'', () =&gt; {
+  it("Should coincide API set values 'step'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -943,7 +993,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.stepVal).toEqual(10);
   });
 &nbsp;
-  it('Should coincide API set values \'value\'', () =&gt; {
+  it("Should coincide API set values 'value'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -952,7 +1002,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
     expect(slider.model.settings.settings.value).toEqual(-20);
   });
-  it('Should coincide API set values \'maxVal\'', () =&gt; {
+&nbsp;
+  it("Should coincide API set values 'maxVal'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -961,7 +1012,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
     expect(slider.model.settings.settings.maxVal).toEqual(100);
   });
-  it('Should coincide API set values \'minVal\'', () =&gt; {
+&nbsp;
+  it("Should coincide API set values 'minVal'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -977,7 +1029,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.minVal).toEqual(10);
   });
 &nbsp;
-  it('Should coincide API set values \'range\'', () =&gt; {
+  it("Should coincide API set values 'range'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -988,7 +1040,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([-100, 100]);
   });
 &nbsp;
-  it('Should coincide API set values \'range\' on view', () =&gt; {
+  it("Should coincide API set values 'range' on view", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -999,7 +1051,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.view.thumb1.curPos).toEqual(100);
   });
 &nbsp;
-  it('Should coincide API set values \'followerPoint\'', () =&gt; {
+  it("Should coincide API set values 'followerPoint'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1009,7 +1061,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.followerPoint).toEqual(false);
   });
 &nbsp;
-  it('Should coincide API set values \'range\'', () =&gt; {
+  it("Should coincide API set values 'range'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1020,7 +1072,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([-100, 100]);
   });
 &nbsp;
-  it('Should coincide API cant set values \'values\'', () =&gt; {
+  it("Should coincide API cant set values 'values'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1029,7 +1081,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
     expect(slider.model.settings.settings.values).toEqual([null, null]);
   });
-  it('Should coincide API set values \'values\'', () =&gt; {
+&nbsp;
+  it("Should coincide API set values 'values'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1045,7 +1098,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([25, 35]);
   });
 &nbsp;
-  it('Should coincide API cant \'set only one of values\' in range', () =&gt; {
+  it("Should coincide API cant 'set only one of values' in range", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1063,7 +1116,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
     expect(slider.model.settings.settings.values).toEqual([null, null]);
   });
-  it('Should coincide API set values \'set only one of values\'', () =&gt; {
+&nbsp;
+  it("Should coincide API set values 'set only one of values'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1087,7 +1141,8 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     });
     expect(slider.model.settings.settings.values).toEqual([35, 55]);
   });
-  it('Should coincide API set values \'get only one of values\'', () =&gt; {
+&nbsp;
+  it("Should coincide API set values 'get only one of values'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1108,15 +1163,17 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
       value: 1,
       valuesOneOfTwoVals: 75,
     });
-    expect(SliderPresenterAPI.enterPoint({
-      slider,
-      option: 'option',
-      setting: 'values',
-      value: 1,
-    })).toEqual(75);
+    expect(
+      SliderPresenterAPI.enterPoint({
+        slider,
+        option: 'option',
+        setting: 'values',
+        value: 1,
+      }),
+    ).toEqual(75);
   });
 &nbsp;
-  it('Should coincide API set values \'orientation\'', () =&gt; {
+  it("Should coincide API set values 'orientation'", () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
       option: 'option',
@@ -1126,7 +1183,6 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () =&gt; {
     expect(slider.model.settings.settings.orientation).toEqual('vertical');
   });
 });
-&nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test creating slider', () =&gt; {
   let slider: SliderPresenter;
@@ -1138,23 +1194,27 @@ describe('Presenter / SliderPresenterAPI / Test creating slider', () =&gt; {
   it('Should init default orientation', () =&gt; {
     expect(slider.model.settings.settings.orientation).toEqual('horizontal');
   });
+&nbsp;
   it('Should init default range', () =&gt; {
     expect(slider.model.settings.settings.range).toEqual(false);
   });
+&nbsp;
   it('Should init default minVal', () =&gt; {
     expect(slider.model.settings.settings.minVal).toEqual(0);
   });
+&nbsp;
   it('Should init default stepVal', () =&gt; {
     expect(slider.model.settings.settings.stepVal).toEqual(1);
   });
+&nbsp;
   it('Should init default value', () =&gt; {
     expect(slider.model.settings.settings.value).toEqual(0);
   });
+&nbsp;
   it('Should init default values', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([null, null]);
   });
 });
-&nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', () =&gt; {
   let slider: SliderPresenter;
@@ -1172,15 +1232,19 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
   it('Should init default orientation', () =&gt; {
     expect(slider.model.settings.settings.orientation).toEqual('horizontal');
   });
+&nbsp;
   it('Should init default range', () =&gt; {
     expect(slider.model.settings.settings.range).toEqual(true);
   });
+&nbsp;
   it('Should init default minVal', () =&gt; {
     expect(slider.model.settings.settings.minVal).toEqual(0);
   });
+&nbsp;
   it('Should init default stepVal', () =&gt; {
     expect(slider.model.settings.settings.stepVal).toEqual(1);
   });
+&nbsp;
   it('Should init default value', () =&gt; {
     const promise = new Promise(() =&gt; {
       SliderPresenterAPI.enterPoint({
@@ -1190,17 +1254,15 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
         value: true,
       });
     });
-    promise.then(
-      () =&gt; {
-        expect(slider.model.settings.settings.value).toEqual(null);
-      },
-    );
+    promise.then(() =&gt; {
+      expect(slider.model.settings.settings.value).toEqual(null);
+    });
   });
+&nbsp;
   it('Should init default values', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([0, 100]);
   });
 });
-&nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', () =&gt; {
   let slider: SliderPresenter;
@@ -1220,23 +1282,27 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', (
   it('Should init default orientation', () =&gt; {
     expect(slider.model.settings.settings.orientation).toEqual('horizontal');
   });
+&nbsp;
   it('Should init default range', () =&gt; {
     expect(slider.model.settings.settings.range).toEqual(false);
   });
+&nbsp;
   it('Should init default minVal', () =&gt; {
     expect(slider.model.settings.settings.minVal).toEqual(0);
   });
+&nbsp;
   it('Should init default stepVal', () =&gt; {
     expect(slider.model.settings.settings.stepVal).toEqual(1);
   });
+&nbsp;
   it('Should init default value', () =&gt; {
     expect(slider.model.settings.settings.value).toEqual(0);
   });
+&nbsp;
   it('Should init default values', () =&gt; {
     expect(slider.model.settings.settings.values).toEqual([null, null]);
   });
 });
-&nbsp;
 &nbsp;
 describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
   let slider: SliderPresenter;
@@ -1257,8 +1323,11 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
       setting: 'value',
       value: 999,
     });
-    expect(slider.model.settings.settings.value).toEqual(slider.model.settings.settings.maxVal);
+    expect(slider.model.settings.settings.value).toEqual(
+      slider.model.settings.settings.maxVal,
+    );
   });
+&nbsp;
   it('Should not set wrong value', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1266,8 +1335,11 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
       setting: 'value',
       value: -999,
     });
-    expect(slider.model.settings.settings.value).toEqual(slider.model.settings.settings.minVal);
+    expect(slider.model.settings.settings.value).toEqual(
+      slider.model.settings.settings.minVal,
+    );
   });
+&nbsp;
   it('Should not set wrong range values', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1283,6 +1355,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.values).toEqual([50, 50]);
   });
+&nbsp;
   it('Should not set wrong first range value', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1299,6 +1372,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.values).toEqual([100, 100]);
   });
+&nbsp;
   it('Should not set wrong minVal', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1308,6 +1382,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.minVal).toEqual(50);
   });
+&nbsp;
   it('Should not set wrong maxVal', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1317,6 +1392,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.maxVal).toEqual(100);
   });
+&nbsp;
   it('Should not set wrong step', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1326,6 +1402,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.stepVal).toEqual(5);
   });
+&nbsp;
   it('Should not set wrong step', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1335,6 +1412,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
     });
     expect(slider.model.settings.settings.stepVal).toEqual(5);
   });
+&nbsp;
   it('Should not set wrong step', () =&gt; {
     SliderPresenterAPI.enterPoint({
       slider,
@@ -1351,7 +1429,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Oct 09 2019 14:13:28 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Oct 24 2019 17:48:09 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

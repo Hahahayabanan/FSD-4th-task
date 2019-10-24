@@ -57,6 +57,7 @@ class SliderPresenter {
       isFollowerPoint: this.model.settings.settings.followerPoint,
       isRange: this.model.settings.settings.range,
     });
+    return this.view;
   }
 
   updateValue() {
@@ -125,7 +126,7 @@ class SliderPresenter {
       `${this.model.settings.settings.minVal}`,
     );
     this.view.setDataAttribute(
-      'minVal',
+      'maxVal',
       `${this.model.settings.settings.maxVal}`,
     );
     this.view.setDataAttribute(
