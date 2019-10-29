@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { ISliderSettings } from './Model/ISliderSettings';
-import { SliderPresenter } from './Presenter/SliderPresenter';
-import { SliderPresenterAPI } from './Presenter/SliderPresenterAPI';
+import { Presenter } from './Presenter/Presenter';
+import { PresenterAPI } from './Presenter/PresenterAPI';
 
 declare global {
   interface Window {
@@ -49,7 +49,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 }
 
 (function initialization($: JQueryStatic) {
-  const sliders: SliderPresenter[] = [];
+  const sliders: Presenter[] = [];
 
   $.fn.slider = function getStart(
     ...args: any
@@ -59,7 +59,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       return this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
-        return sliders.push(new SliderPresenter(htmlElem, settings));
+        return sliders.push(new Presenter(htmlElem, settings));
       });
     }
 
@@ -71,7 +71,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
         const htmlElem = val;
         sliders.forEach(htmlItem => {
           if (htmlItem.view.slider === htmlElem) {
-            returnValue = SliderPresenterAPI.enterPoint({
+            returnValue = PresenterAPI.enterPoint({
               valuesOneOfTwoVals,
               value,
               option,

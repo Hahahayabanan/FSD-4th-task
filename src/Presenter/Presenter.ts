@@ -1,15 +1,15 @@
-import { SliderTemplate } from '../View/SliderTemplate';
-import { Slider } from '../Model/Slider';
+import { TemplateView } from '../View/TemplateView';
+import { Model } from '../Model/Model';
 import { ISliderSettings } from '../Model/ISliderSettings';
-import { SliderPointer } from '../View/SliderPointer';
+import { PointerView } from '../View/PointerView';
 
-class SliderPresenter {
-  public model: Slider;
+class Presenter {
+  public model: Model;
 
   public view: any;
 
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
-    this.model = new Slider(options);
+    this.model = new Model(options);
 
     this.createView(rootElement);
 
@@ -51,7 +51,7 @@ class SliderPresenter {
   }
 
   createView(rootElement: any) {
-    this.view = new SliderTemplate({
+    this.view = new TemplateView({
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
       isFollowerPoint: this.model.settings.settings.followerPoint,
@@ -93,11 +93,11 @@ class SliderPresenter {
     }
   }
 
-  render(curThumb: SliderPointer, curPos: number) {
+  render(curThumb: PointerView, curPos: number) {
     curThumb.renderCurrentPosInPercents(curPos);
   }
 
-  setFollowerPointValue(curThumb: SliderPointer, currPosInValWithStep: number) {
+  setFollowerPointValue(curThumb: PointerView, currPosInValWithStep: number) {
     if (this.model.settings.settings.followerPoint) {
       if (curThumb.followerPoint !== undefined) {
         curThumb.followerPoint.setValue(currPosInValWithStep);
@@ -162,5 +162,5 @@ class SliderPresenter {
   }
 }
 
-export { SliderPresenter };
-export default SliderPresenter;
+export { Presenter };
+export default Presenter;

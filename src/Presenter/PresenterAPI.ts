@@ -1,10 +1,10 @@
-import { SliderPresenter } from './SliderPresenter';
+import { Presenter } from './Presenter';
 
-class SliderPresenterAPI {
-  static slider: SliderPresenter;
+class PresenterAPI {
+  static slider: Presenter;
 
   static enterPoint(options: {
-    slider: SliderPresenter;
+    slider: Presenter;
     option: string;
     setting: string;
     value?: string | number | number[] | boolean;
@@ -201,5 +201,5 @@ class SliderPresenterAPI {
   }
 }
 
-export { SliderPresenterAPI };
-export default SliderPresenterAPI;
+export { PresenterAPI };
+export default PresenterAPI;

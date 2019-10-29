@@ -1,7 +1,7 @@
 import { isArray } from 'util';
 import { SliderSettings } from './SliderSettings';
 
-class Slider {
+class Model {
   public settings: SliderSettings;
 
   constructor(sett?: object) {
@@ -73,6 +73,6 @@ class Slider {
   }
 }
 
-export { Slider };
+export { Model };
 
-export default Slider;
+export default Model;

@@ -1,25 +1,25 @@
-import { FollowerPoint } from './FollowerPoint';
+import { TipView } from './TipView';
 
-class SliderPointer {
-  public thumbHTMLElem: HTMLElement;
+class PointerView {
+  public pointerHTML: HTMLElement;
 
   public curPos: number;
 
-  public isVertical: boolean = false;
-
-  public followerPoint: FollowerPoint;
-
   public endPos: number;
 
+  public isVertical: boolean = false;
+
+  public followerPoint: TipView;
+
   constructor(elemHTML: HTMLElement, isVertical?: boolean) {
-    this.thumbHTMLElem = elemHTML;
+    this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
   }
 
   setCurPosInPercents(newCurrPos: number) {
     this.curPos = newCurrPos;
 
-    this.thumbHTMLElem.dispatchEvent(
+    this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
         detail: this,
@@ -30,7 +30,7 @@ class SliderPointer {
   setCurPosInPixels(newCurrPos: number) {
     this.curPos = this.calcPixelsToPercents(newCurrPos);
 
-    this.thumbHTMLElem.dispatchEvent(
+    this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
         detail: this,
@@ -44,10 +44,10 @@ class SliderPointer {
 
   getPathLength() {
     const widthOrHeight: number = this.isVertical
-      ? this.thumbHTMLElem.parentElement.getBoundingClientRect().height ||
-        parseInt(this.thumbHTMLElem.parentElement.style.height, 10)
-      : this.thumbHTMLElem.parentElement.getBoundingClientRect().width ||
-        parseInt(this.thumbHTMLElem.parentElement.style.width, 10);
+      ? this.pointerHTML.parentElement.getBoundingClientRect().height ||
+        parseInt(this.pointerHTML.parentElement.style.height, 10)
+      : this.pointerHTML.parentElement.getBoundingClientRect().width ||
+        parseInt(this.pointerHTML.parentElement.style.width, 10);
     return widthOrHeight;
   }
 
@@ -70,14 +70,14 @@ class SliderPointer {
 
   renderCurrentPosInPercents(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
-      ? (this.thumbHTMLElem.style.top = `${newPos}%`)
-      : (this.thumbHTMLElem.style.left = `${newPos}%`);
+      ? (this.pointerHTML.style.top = `${newPos}%`)
+      : (this.pointerHTML.style.left = `${newPos}%`);
     return newCssLeftOrTop;
   }
 
   createFollowerPoint() {
-    this.followerPoint = new FollowerPoint(this.thumbHTMLElem);
-    const sliderWrap = this.thumbHTMLElem.parentNode.parentNode as HTMLElement;
+    this.followerPoint = new TipView(this.pointerHTML);
+    const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
     sliderWrap.classList.add('j-plugin-slider_with-point');
   }
 
@@ -85,11 +85,10 @@ class SliderPointer {
     if (this.followerPoint !== undefined) {
       this.followerPoint.destroy();
       this.followerPoint = undefined;
-      const sliderWrap = this.thumbHTMLElem.parentNode
-        .parentNode as HTMLElement;
+      const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
       sliderWrap.classList.remove('j-plugin-slider_with-point');
     }
   }
 }
-export { SliderPointer };
-export default SliderPointer;
+export { PointerView };
+export default PointerView;

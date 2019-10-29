@@ -1,15 +1,15 @@
-import { SliderTemplate } from './SliderTemplate';
-import { SliderPointer } from './SliderPointer';
+import { TemplateView } from './TemplateView';
+import { PointerView } from './PointerView';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
 describe('View / Slider template / Test of initialization parameters', () => {
-  let slider: SliderTemplate;
+  let slider: TemplateView;
 
   beforeEach(() => {
-    slider = new SliderTemplate({
+    slider = new TemplateView({
       rootElem: shadowSlider,
       isVertical: true,
       isFollowerPoint: true,
@@ -17,15 +17,17 @@ describe('View / Slider template / Test of initialization parameters', () => {
   });
 
   it('Slider pointer should be set', () => {
-    expect(slider.thumb0).toBeDefined(SliderPointer);
+    expect(slider.pointer0).toBeDefined(PointerView);
   });
 
   it('Slider class with point should be set', () => {
-    expect(slider.slider).toHaveClass(slider.styleClasses.SLIDER_WITH_POINT);
+    expect(slider.sliderHTML).toHaveClass(
+      slider.styleClasses.SLIDER_WITH_POINT,
+    );
   });
 
   it('Slider class vertical should be set', () => {
-    expect(slider.slider).toHaveClass(slider.styleClasses.SLIDER_VERTICAL);
+    expect(slider.sliderHTML).toHaveClass(slider.styleClasses.SLIDER_VERTICAL);
   });
 
   it('Slider should be vertical', () => {
@@ -34,29 +36,29 @@ describe('View / Slider template / Test of initialization parameters', () => {
 });
 
 describe('View / Slider template / Test of initialization pointers', () => {
-  const slider = new SliderTemplate({
+  const slider = new TemplateView({
     rootElem: shadowSlider,
     isRange: true,
   });
 
   it('Slider pointers should be set', () => {
-    expect(slider.thumb0).toBeDefined(SliderPointer);
-    expect(slider.thumb1).toBeDefined(SliderPointer);
+    expect(slider.pointer0).toBeDefined(PointerView);
+    expect(slider.pointer1).toBeDefined(PointerView);
   });
 });
 
 describe('View / Slider template / Test of calculations', () => {
-  let slider: SliderTemplate;
+  let slider: TemplateView;
 
   beforeEach(() => {
-    slider = new SliderTemplate({
+    slider = new TemplateView({
       rootElem: shadowSlider,
       isRange: true,
     });
-    slider.thumb0.setCurPosInPercents(20);
-    slider.thumb1.setCurPosInPercents(50);
-    slider.thumb0.renderCurrentPosInPercents(20);
-    slider.thumb1.renderCurrentPosInPercents(50);
+    slider.pointer0.setCurPosInPercents(20);
+    slider.pointer1.setCurPosInPercents(50);
+    slider.pointer0.renderCurrentPosInPercents(20);
+    slider.pointer1.renderCurrentPosInPercents(50);
   });
 
   it('calculateAndApplyRangeLine', async () => {
@@ -66,19 +68,19 @@ describe('View / Slider template / Test of calculations', () => {
 
   it('setDataAttribute', async () => {
     await slider.setDataAttribute('value', '99');
-    expect(slider.slider.dataset.value).toEqual('99');
+    expect(slider.sliderHTML.dataset.value).toEqual('99');
   });
 
   it('Update z-index', async () => {
-    await slider.updateZIndex(slider.thumb1);
-    expect(slider.thumb1.thumbHTMLElem).toHaveClass(
+    await slider.updateZIndex(slider.pointer1);
+    expect(slider.pointer1.pointerHTML).toHaveClass(
       slider.styleClasses.THUMB_SELECTED,
     );
   });
 
   it('destroy', async () => {
     await slider.destroy();
-    expect(slider.thumb1).toBeUndefined();
-    expect(slider.slider).toBeUndefined();
+    expect(slider.pointer1).toBeUndefined();
+    expect(slider.sliderHTML).toBeUndefined();
   });
 });

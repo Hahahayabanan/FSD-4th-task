@@ -1,13 +1,13 @@
-import { SliderPointer } from './SliderPointer';
+import { PointerView } from './PointerView';
 
-class SliderTemplate {
-  public slider: HTMLElement;
+class TemplateView {
+  public sliderHTML: HTMLElement;
 
-  public sliderPath: HTMLElement;
+  public pathHTML: HTMLElement;
 
-  public thumb0: SliderPointer = undefined;
+  public pointer0: PointerView = undefined;
 
-  public thumb1: SliderPointer = undefined;
+  public pointer1: PointerView = undefined;
 
   public isVertical: boolean = false;
 
@@ -17,7 +17,7 @@ class SliderTemplate {
 
   public range: HTMLElement;
 
-  public lastThumbMoved: SliderPointer;
+  public lastPointerMoved: PointerView;
 
   public styleClasses = {
     SLIDER: 'j-plugin-slider',
@@ -36,7 +36,7 @@ class SliderTemplate {
     isRange?: boolean;
   }) {
     const { rootElem, isVertical, isFollowerPoint, isRange } = options;
-    this.slider = rootElem;
+    this.sliderHTML = rootElem;
     this.isVertical = isVertical;
     this.isFollowerPoint = isFollowerPoint;
     this.isRange = isRange;
@@ -46,50 +46,50 @@ class SliderTemplate {
   }
 
   createTemplate() {
-    this.sliderPath = document.createElement('div');
-    this.slider.classList.add(this.styleClasses.SLIDER);
-    this.sliderPath.classList.add(this.styleClasses.PATH);
-    this.slider.append(this.sliderPath);
+    this.pathHTML = document.createElement('div');
+    this.sliderHTML.classList.add(this.styleClasses.SLIDER);
+    this.pathHTML.classList.add(this.styleClasses.PATH);
+    this.sliderHTML.append(this.pathHTML);
 
     let thumb = document.createElement('div');
-    this.sliderPath.append(thumb);
-    this.thumb0 = new SliderPointer(thumb, this.isVertical);
-    this.thumb0.thumbHTMLElem.classList.add(this.styleClasses.THUMB);
+    this.pathHTML.append(thumb);
+    this.pointer0 = new PointerView(thumb, this.isVertical);
+    this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
     if (this.isRange) {
       thumb = document.createElement('div');
-      this.sliderPath.append(thumb);
-      this.thumb1 = new SliderPointer(thumb, this.isVertical);
-      this.thumb1.thumbHTMLElem.classList.add(this.styleClasses.THUMB);
+      this.pathHTML.append(thumb);
+      this.pointer1 = new PointerView(thumb, this.isVertical);
+      this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
 
       this.range = document.createElement('div');
       this.range.classList.add(this.styleClasses.RANGE);
-      this.sliderPath.prepend(this.range);
+      this.pathHTML.prepend(this.range);
     }
 
     if (this.isVertical) {
-      this.slider.classList.add(this.styleClasses.SLIDER_VERTICAL);
+      this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
     }
     if (this.isFollowerPoint) {
-      this.slider.classList.add(this.styleClasses.SLIDER_WITH_POINT);
+      this.sliderHTML.classList.add(this.styleClasses.SLIDER_WITH_POINT);
     }
-    this.lastThumbMoved = this.thumb0;
+    this.lastPointerMoved = this.pointer0;
   }
 
   bindEventListeners() {
-    this.sliderPath.addEventListener('mousedown', this.sliderOnClick);
+    this.pathHTML.addEventListener('mousedown', this.sliderOnClick);
 
-    this.bindThumbEventListeners();
+    this.bindPointerEventListeners();
   }
 
-  bindThumbEventListeners() {
-    this.thumb0.thumbHTMLElem.addEventListener('mousedown', this.mouseDown);
-    this.thumb0.thumbHTMLElem.ondragstart = function onDragStart() {
+  bindPointerEventListeners() {
+    this.pointer0.pointerHTML.addEventListener('mousedown', this.mouseDown);
+    this.pointer0.pointerHTML.ondragstart = function onDragStart() {
       return false;
     };
     if (this.isRange) {
-      this.thumb1.thumbHTMLElem.addEventListener('mousedown', this.mouseDown);
-      this.thumb1.thumbHTMLElem.ondragstart = function onDragStart() {
+      this.pointer1.pointerHTML.addEventListener('mousedown', this.mouseDown);
+      this.pointer1.pointerHTML.ondragstart = function onDragStart() {
         return false;
       };
     }
@@ -99,14 +99,14 @@ class SliderTemplate {
     event.preventDefault();
 
     const thisThumb: HTMLElement = event.currentTarget;
-    let currentThumb: SliderPointer;
+    let currentThumb: PointerView;
 
-    if (this.isRange && this.thumb0.curPos === this.thumb1.curPos) {
-      currentThumb = this.lastThumbMoved;
-    } else if (thisThumb === this.thumb0.thumbHTMLElem) {
-      currentThumb = this.thumb0;
-    } else if (thisThumb === this.thumb1.thumbHTMLElem) {
-      currentThumb = this.thumb1;
+    if (this.isRange && this.pointer0.curPos === this.pointer1.curPos) {
+      currentThumb = this.lastPointerMoved;
+    } else if (thisThumb === this.pointer0.pointerHTML) {
+      currentThumb = this.pointer0;
+    } else if (thisThumb === this.pointer1.pointerHTML) {
+      currentThumb = this.pointer1;
     }
 
     this.updateZIndex(currentThumb);
@@ -117,7 +117,7 @@ class SliderTemplate {
     );
     currentThumb.endPos = currentThumb.curPos;
 
-    const mouseMove = (event: any) => {
+    const mouseMove = () => {
       event.preventDefault();
       const endPosInPixels = currentThumb.calcPercentsToPixels(
         currentThumb.endPos,
@@ -140,7 +140,7 @@ class SliderTemplate {
     };
 
     const mouseUp = () => {
-      this.lastThumbMoved = currentThumb;
+      this.lastPointerMoved = currentThumb;
 
       document.removeEventListener('mouseup', mouseUp);
       document.removeEventListener('mousemove', mouseMove);
@@ -150,7 +150,7 @@ class SliderTemplate {
     document.addEventListener('mouseup', mouseUp);
   };
 
-  private calcMoveBorders(event: any, currentThumb: SliderPointer) {
+  private calcMoveBorders(event: any, currentThumb: PointerView) {
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
@@ -159,17 +159,17 @@ class SliderTemplate {
 
     if (this.isRange) {
       if (
-        this.thumb0.curPos === this.thumb1.curPos &&
-        currentThumb !== this.lastThumbMoved
+        this.pointer0.curPos === this.pointer1.curPos &&
+        currentThumb !== this.lastPointerMoved
       ) {
         leftEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
         rightEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
-      } else if (currentThumb === this.thumb0) {
+      } else if (currentThumb === this.pointer0) {
         leftEdge = 0;
-        rightEdge = currentThumb.calcPercentsToPixels(this.thumb1.curPos);
-      } else if (currentThumb === this.thumb1) {
-        leftEdge = currentThumb.calcPercentsToPixels(this.thumb0.curPos);
-        rightEdge = this.thumb1.getPathLength();
+        rightEdge = currentThumb.calcPercentsToPixels(this.pointer1.curPos);
+      } else if (currentThumb === this.pointer1) {
+        leftEdge = currentThumb.calcPercentsToPixels(this.pointer0.curPos);
+        rightEdge = this.pointer1.getPathLength();
       }
     }
 
@@ -191,78 +191,79 @@ class SliderTemplate {
     if (!isValidClick) return;
 
     const newLeft: number = this.isVertical
-      ? event.clientY - this.sliderPath.getBoundingClientRect().top
-      : event.clientX - this.sliderPath.getBoundingClientRect().left;
+      ? event.clientY - this.pathHTML.getBoundingClientRect().top
+      : event.clientX - this.pathHTML.getBoundingClientRect().left;
 
     if (this.isRange) {
       const pointersRange = this.calculatePointersRange();
 
       if (newLeft < pointersRange) {
-        this.thumb0.setCurPosInPixels(newLeft);
+        this.pointer0.setCurPosInPixels(newLeft);
       }
       if (newLeft > pointersRange) {
-        this.thumb1.setCurPosInPixels(newLeft);
+        this.pointer1.setCurPosInPixels(newLeft);
       }
     } else {
-      this.thumb0.setCurPosInPixels(newLeft);
+      this.pointer0.setCurPosInPixels(newLeft);
     }
   };
 
   calculateAndApplyRangeLine = () => {
     if (this.isVertical) {
-      this.range.style.top = this.thumb0.thumbHTMLElem.style.top;
+      this.range.style.top = this.pointer0.pointerHTML.style.top;
       const range =
-        parseInt(this.thumb1.thumbHTMLElem.style.top, 10) -
-        parseInt(this.thumb0.thumbHTMLElem.style.top, 10);
+        parseInt(this.pointer1.pointerHTML.style.top, 10) -
+        parseInt(this.pointer0.pointerHTML.style.top, 10);
       this.range.style.height = `${range}%`;
     } else {
-      this.range.style.left = this.thumb0.thumbHTMLElem.style.left;
+      this.range.style.left = this.pointer0.pointerHTML.style.left;
       const range =
-        parseInt(this.thumb1.thumbHTMLElem.style.left, 10) -
-        parseInt(this.thumb0.thumbHTMLElem.style.left, 10);
+        parseInt(this.pointer1.pointerHTML.style.left, 10) -
+        parseInt(this.pointer0.pointerHTML.style.left, 10);
       this.range.style.width = `${range}%`;
     }
   };
 
   calculatePointersRange() {
     const res: number =
-      (this.thumb1.getCurPosInPixels() - this.thumb0.getCurPosInPixels()) / 2 +
-      this.thumb0.getCurPosInPixels();
+      (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels()) /
+        2 +
+      this.pointer0.getCurPosInPixels();
     return res;
   }
 
   setDataAttribute(attr: string, value: string) {
-    this.slider.dataset[attr] = value;
+    this.sliderHTML.dataset[attr] = value;
   }
 
-  updateZIndex(curThumb: SliderPointer) {
-    this.thumb0.thumbHTMLElem.classList.remove(
+  updateZIndex(curThumb: PointerView) {
+    this.pointer0.pointerHTML.classList.remove(
       this.styleClasses.THUMB_SELECTED,
     );
     if (this.isRange)
-      this.thumb1.thumbHTMLElem.classList.remove(
+      this.pointer1.pointerHTML.classList.remove(
         this.styleClasses.THUMB_SELECTED,
       );
-    curThumb.thumbHTMLElem.classList.add(this.styleClasses.THUMB_SELECTED);
+    curThumb.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
   }
 
   destroy() {
-    this.thumb0.thumbHTMLElem.remove();
-    this.thumb0 = undefined;
+    this.pointer0.pointerHTML.remove();
+    this.pointer0 = undefined;
     if (this.isRange) {
-      this.thumb1.thumbHTMLElem.remove();
-      this.thumb1 = undefined;
+      this.pointer1.pointerHTML.remove();
+      this.pointer1 = undefined;
     }
-    this.sliderPath.remove();
-    this.sliderPath = undefined;
-    this.slider.classList.remove(
+    this.pathHTML.remove();
+    this.pathHTML = undefined;
+    this.sliderHTML.classList.remove(
       this.styleClasses.SLIDER,
       this.styleClasses.SLIDER_VERTICAL,
       this.styleClasses.SLIDER_WITH_POINT,
     );
-    this.slider.remove();
-    this.slider = undefined;
+    this.sliderHTML.remove();
+    this.sliderHTML = undefined;
   }
 }
-export { SliderTemplate };
-export default SliderTemplate;
+export { TemplateView };
+export default TemplateView;

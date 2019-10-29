@@ -1,10 +1,10 @@
-import { Slider } from './Slider';
+import { Model } from './Model';
 import { SliderSettings } from './SliderSettings';
 
 describe('Model / Slider / Test initialization', () => {
-  const slider = new Slider();
+  const slider = new Model();
 
-  it('Should initialize slider object', () => {
+  it('Should initialize model object', () => {
     slider.setSettings({
       range: false,
       minVal: 1,
@@ -65,7 +65,7 @@ describe('Model / Slider / Test initialization', () => {
 });
 
 describe('Model / Slider / Test of setting other pointer values', () => {
-  const slider = new Slider({
+  const slider = new Model({
     minVal: 20,
     maxVal: 100,
     stepVal: 2,

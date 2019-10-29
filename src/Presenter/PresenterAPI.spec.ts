@@ -1,15 +1,15 @@
-import { SliderPresenterAPI } from './SliderPresenterAPI';
-import { SliderPresenter } from './SliderPresenter';
+import { PresenterAPI } from './PresenterAPI';
+import { Presenter } from './Presenter';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
-describe('Presenter / SliderPresenterAPI / Test initialization', () => {
-  let slider: SliderPresenter;
+describe('Presenter / PresenterAPI / Test initialization', () => {
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       minVal: -100,
       stepVal: 5,
       maxVal: 100,
@@ -18,7 +18,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'step'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'stepVal',
@@ -28,7 +28,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'value'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'value',
@@ -38,7 +38,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'maxVal'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'maxVal',
@@ -48,13 +48,13 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'minVal'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'minVal',
       value: 10,
     });
-    const val = SliderPresenterAPI.enterPoint({
+    const val = PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'value',
@@ -64,7 +64,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'range'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
@@ -75,7 +75,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'range' on view", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
@@ -86,7 +86,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'followerPoint'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'followerPoint',
@@ -96,7 +96,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'range'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
@@ -107,7 +107,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API cant set values 'values'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -117,13 +117,13 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'values'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
       value: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -133,7 +133,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API cant 'set only one of values' in range", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -141,7 +141,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       valuesOneOfTwoVals: 55,
     });
     expect(slider.model.settings.settings.values).toEqual([null, null]);
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -152,13 +152,13 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'set only one of values'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
       value: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -166,7 +166,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       valuesOneOfTwoVals: 55,
     });
     expect(slider.model.settings.settings.values).toEqual([-100, 55]);
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -177,20 +177,20 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'get only one of values'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
       value: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
       value: 0,
       valuesOneOfTwoVals: -10,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -198,7 +198,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
       valuesOneOfTwoVals: 75,
     });
     expect(
-      SliderPresenterAPI.enterPoint({
+      PresenterAPI.enterPoint({
         slider,
         option: 'option',
         setting: 'values',
@@ -208,7 +208,7 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'orientation'", () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'orientation',
@@ -218,11 +218,11 @@ describe('Presenter / SliderPresenterAPI / Test initialization', () => {
   });
 });
 
-describe('Presenter / SliderPresenterAPI / Test creating slider', () => {
-  let slider: SliderPresenter;
+describe('Presenter / PresenterAPI / Test creating slider', () => {
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider = new SliderPresenter(shadowSlider, {});
+    slider = new Presenter(shadowSlider, {});
   });
 
   it('Should init default orientation', () => {
@@ -250,12 +250,12 @@ describe('Presenter / SliderPresenterAPI / Test creating slider', () => {
   });
 });
 
-describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', () => {
-  let slider: SliderPresenter;
+describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider = new SliderPresenter(shadowSlider, {});
-    SliderPresenterAPI.enterPoint({
+    slider = new Presenter(shadowSlider, {});
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
@@ -281,7 +281,7 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
 
   it('Should init default value', () => {
     const promise = new Promise(() => {
-      SliderPresenterAPI.enterPoint({
+      PresenterAPI.enterPoint({
         slider,
         option: 'option',
         setting: 'range',
@@ -298,14 +298,14 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode true', ()
   });
 });
 
-describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', () => {
-  let slider: SliderPresenter;
+describe('Presenter / PresenterAPI / Test dynamic set range mode false', () => {
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       range: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
@@ -338,11 +338,11 @@ describe('Presenter / SliderPresenterAPI / Test dynamic set range mode false', (
   });
 });
 
-describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
-  let slider: SliderPresenter;
+describe('Presenter / PresenterAPI / Test wrong values', () => {
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       minVal: 50,
       stepVal: 5,
       maxVal: 100,
@@ -351,7 +351,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong value', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'value',
@@ -363,7 +363,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong value', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'value',
@@ -375,13 +375,13 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong range values', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
       value: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -391,13 +391,13 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong first range value', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'range',
       value: true,
     });
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
@@ -408,7 +408,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong minVal', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'minVal',
@@ -418,7 +418,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong maxVal', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'maxVal',
@@ -428,7 +428,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong step', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'stepVal',
@@ -438,7 +438,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong step', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'stepVal',
@@ -448,7 +448,7 @@ describe('Presenter / SliderPresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong step', () => {
-    SliderPresenterAPI.enterPoint({
+    PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'stepVal',

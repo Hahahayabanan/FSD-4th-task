@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as $ from 'jquery';
 import { ISliderSettings } from './ISliderSettings';
 

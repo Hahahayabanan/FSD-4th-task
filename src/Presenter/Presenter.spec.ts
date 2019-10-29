@@ -1,13 +1,13 @@
-import { SliderPresenter } from './SliderPresenter';
+import { Presenter } from './Presenter';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
-describe('Presenter / SliderPresenter / Test initialization', () => {
+describe('Presenter / Presenter / Test initialization', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  let slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+  let slider: Presenter = new Presenter(shadowSlider, {
     minVal: 10,
     stepVal: 5,
     maxVal: 100,
@@ -16,7 +16,7 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
   });
 
   it("Should coincide constructor set values 'value'", () => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       range: false,
       minVal: 10,
       stepVal: 5,
@@ -27,14 +27,14 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
   });
 
   it("Should coincide constructor values 'step'", () => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       stepVal: 5,
     });
     expect(slider.model.settings.settings.stepVal).toEqual(5);
   });
 
   it("Should coincide constructor values default 'value'", () => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       minVal: 10,
 
       maxVal: 100,
@@ -44,7 +44,7 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
   });
 
   it('Should coincide follower pointer value', () => {
-    slider = new SliderPresenter(shadowSlider, {
+    slider = new Presenter(shadowSlider, {
       followerPoint: true,
     });
     expect(slider.model.settings.settings.value).toEqual(
@@ -53,10 +53,10 @@ describe('Presenter / SliderPresenter / Test initialization', () => {
   });
 });
 
-describe('Presenter / SliderPresenter Range / Test initialization', () => {
+describe('Presenter / Presenter Range / Test initialization', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  const slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+  const slider: Presenter = new Presenter(shadowSlider, {
     minVal: 10,
     stepVal: 5,
     maxVal: 100,
@@ -79,10 +79,10 @@ describe('Presenter / SliderPresenter Range / Test initialization', () => {
   });
 });
 
-describe('Presenter / SliderPresenter Range / Test methods', () => {
+describe('Presenter / Presenter Range / Test methods', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  const slider: SliderPresenter = new SliderPresenter(shadowSlider, {
+  const slider: Presenter = new Presenter(shadowSlider, {
     minVal: 10,
     stepVal: 5,
     maxVal: 100,
