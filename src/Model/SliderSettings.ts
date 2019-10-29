@@ -4,13 +4,13 @@ import { ISliderSettings } from './ISliderSettings';
 class SliderSettings {
   protected defaultSettings: ISliderSettings = {
     range: false,
-    minVal: 0,
-    maxVal: 100,
-    stepVal: 1,
+    min: 0,
+    max: 100,
+    step: 1,
     orientation: 'horizontal',
     value: null,
     values: [null, null],
-    followerPoint: false,
+    hasTip: false,
   };
 
   public settings: ISliderSettings;
@@ -35,10 +35,10 @@ class SliderSettings {
     this.settings = $.extend(this.defaultSettings, setts);
 
     this.setValidValue();
-    this.checkValidValues();
+    this.checkValidSettings();
   }
 
-  checkValidValues() {
+  checkValidSettings() {
     const ordersModule = {
       ORIENTATION_VERTICAL: 'vertical',
       ORIENTATION_HORIZONTAL: 'horizontal',
@@ -48,60 +48,56 @@ class SliderSettings {
     const isOrientationHorizontal =
       this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
     const isOrientationSet = isOrientationVertical && isOrientationHorizontal;
-    const valueRange = this.settings.maxVal - this.settings.minVal;
-    const isStepSmallerNull = this.settings.stepVal < 0;
-    const isStepBiggerRange = this.settings.stepVal < valueRange;
-    const isValueBiggerMaxVal = this.settings.value > this.settings.maxVal;
-    const isValueSmallerMinVal = this.settings.value < this.settings.minVal;
-    const isFirstValueSmallerMinVal =
-      this.settings.values[0] < this.settings.minVal;
-    const isSecondValueBiggerMaxVal =
-      this.settings.values[1] > this.settings.maxVal;
-    const isFirstValueBiggerMaxVal =
-      this.settings.values[0] > this.settings.maxVal;
-    const isSecondValueSmallerMinVal =
-      this.settings.values[1] < this.settings.minVal;
+    const valueRange = this.settings.max - this.settings.min;
+    const isStepSmallerNull = this.settings.step < 0;
+    const isStepBiggerRange = this.settings.step < valueRange;
+    const isValueBiggerMax = this.settings.value > this.settings.max;
+    const isValueSmallerMin = this.settings.value < this.settings.min;
+    const isFirstValueSmallerMin = this.settings.values[0] < this.settings.min;
+    const isSecondValueBiggerMax = this.settings.values[1] > this.settings.max;
+    const isFirstValueBiggerMax = this.settings.values[0] > this.settings.max;
+    const isSecondValueSmallerMin = this.settings.values[1] < this.settings.min;
     const isFirstValueBiggerSecond =
       this.settings.values[0] > this.settings.values[1];
     const isSecondValueSmallerFirst =
       this.settings.values[1] < this.settings.values[0];
 
-    if (this.settings.minVal >= this.settings.maxVal) {
-      this.settings.maxVal = this.defaultSettings.maxVal;
-      this.settings.minVal = this.defaultSettings.minVal;
+    if (this.settings.min >= this.settings.max) {
+      this.settings.max = this.defaultSettings.max;
+      this.settings.min = this.defaultSettings.min;
       this.settings.value = this.defaultSettings.value;
       this.settings.values = this.defaultSettings.values;
-      this.settings.stepVal = this.defaultSettings.stepVal;
+      this.settings.step = this.defaultSettings.step;
     }
     if (isStepSmallerNull && isStepBiggerRange) {
-      this.settings.stepVal = this.defaultSettings.stepVal;
+      this.settings.step = this.defaultSettings.step;
     }
-    if (valueRange % this.settings.stepVal !== 0) {
-      this.settings.stepVal = this.defaultSettings.stepVal;
+    if (valueRange % this.settings.step !== 0) {
+      this.settings.step = this.defaultSettings.step;
     }
-    if (isValueBiggerMaxVal && !this.settings.range) {
-      this.settings.value = this.settings.maxVal;
+    if (isValueBiggerMax && !this.settings.range) {
+      this.settings.value = this.settings.max;
     }
-    if (isValueSmallerMinVal && !this.settings.range) {
-      this.settings.value = this.settings.minVal;
+    if (isValueSmallerMin && !this.settings.range) {
+      this.settings.value = this.settings.min;
     }
-    if (isFirstValueSmallerMinVal && this.settings.range) {
-      this.settings.values[0] = this.settings.minVal;
+    if (isFirstValueSmallerMin && this.settings.range) {
+      this.settings.values[0] = this.settings.min;
     }
-    if (isSecondValueBiggerMaxVal && this.settings.range) {
-      this.settings.values[1] = this.settings.maxVal;
+    if (isSecondValueBiggerMax && this.settings.range) {
+      this.settings.values[1] = this.settings.max;
     }
-    if (isFirstValueBiggerMaxVal && this.settings.range) {
+    if (isFirstValueBiggerMax && this.settings.range) {
       this.settings.values[0] =
-        this.settings.maxVal - this.settings.stepVal < this.settings.maxVal
-          ? this.settings.maxVal - this.settings.stepVal
-          : this.settings.maxVal;
+        this.settings.max - this.settings.step < this.settings.max
+          ? this.settings.max - this.settings.step
+          : this.settings.max;
     }
-    if (isSecondValueSmallerMinVal && this.settings.range) {
+    if (isSecondValueSmallerMin && this.settings.range) {
       this.settings.values[1] =
-        this.settings.minVal + this.settings.stepVal < this.settings.minVal
-          ? this.settings.minVal + this.settings.stepVal
-          : this.settings.minVal;
+        this.settings.min + this.settings.step < this.settings.min
+          ? this.settings.min + this.settings.step
+          : this.settings.min;
     }
     if (isFirstValueBiggerSecond && this.settings.range) {
       const first = this.settings.values[1];
@@ -128,13 +124,13 @@ class SliderSettings {
       this.settings.values = [null, null];
     }
     if (isValueNull && !this.settings.range) {
-      this.settings.value = this.settings.minVal;
+      this.settings.value = this.settings.min;
     }
     if (isValuesNull && this.settings.range) {
       if (!isValueNull) {
-        this.settings.values = [this.settings.value, this.settings.maxVal];
+        this.settings.values = [this.settings.value, this.settings.max];
       } else {
-        this.settings.values = [this.settings.minVal, this.settings.maxVal];
+        this.settings.values = [this.settings.min, this.settings.max];
       }
       this.settings.value = null;
     }
@@ -143,11 +139,11 @@ class SliderSettings {
         this.settings.values[0] = this.settings.value;
         this.settings.value = null;
       } else {
-        this.settings.values[0] = this.settings.minVal;
+        this.settings.values[0] = this.settings.min;
       }
     }
     if (isSecondValueNull && this.settings.range) {
-      this.settings.values[1] = this.settings.maxVal;
+      this.settings.values[1] = this.settings.max;
     }
     if (!isValueNull && this.settings.range) {
       this.settings.value = null;
@@ -160,79 +156,83 @@ class SliderSettings {
   setRange(tmp: boolean) {
     this.settings.range = Boolean(tmp);
     this.setValidValue();
-    this.checkValidValues();
+    this.checkValidSettings();
     return this.settings.range;
   }
 
-  setMinVal(tmp: number) {
+  setMin(tmp: number) {
     try {
-      if (Number(tmp) >= this.settings.maxVal) {
+      if (Number(tmp) >= this.settings.max) {
         throw this.errors.minBiggerMax;
       }
-      this.settings.minVal = Number(tmp);
-      this.checkValidValues();
-      return this.settings.minVal;
+      this.settings.min = Number(tmp);
+      this.checkValidSettings();
+      return this.settings.min;
     } catch (err) {
       console.error(err);
-      return this.settings.minVal;
+      return this.settings.min;
     }
   }
 
-  setMaxVal(tmp: number) {
+  setMax(tmp: number) {
     try {
-      if (Number(tmp) <= this.settings.minVal) {
+      if (Number(tmp) <= this.settings.min) {
         throw this.errors.minBiggerMax;
       }
-      this.settings.maxVal = Number(tmp);
-      this.checkValidValues();
-      return this.settings.maxVal;
+      this.settings.max = Number(tmp);
+      this.checkValidSettings();
+      return this.settings.max;
     } catch (err) {
       console.error(err);
-      return this.settings.maxVal;
+      return this.settings.max;
     }
   }
 
-  setStepVal(tmp: number) {
+  setStep(tmp: number) {
     try {
-      const valueRange = this.settings.maxVal - this.settings.minVal;
+      const valueRange = this.settings.max - this.settings.min;
       const stepBiggerNull = Number(tmp) > 0;
       const stepSmallerRange = Number(tmp) < valueRange;
       if (stepBiggerNull && stepSmallerRange) {
-        this.settings.stepVal = Number(tmp);
-        this.checkValidValues();
-        return this.settings.stepVal;
+        this.settings.step = Number(tmp);
+        this.checkValidSettings();
+        return this.settings.step;
       }
-      this.settings.stepVal = this.defaultSettings.stepVal;
+      this.settings.step = this.defaultSettings.step;
       throw this.errors.stepBiggerMaxMin;
     } catch (err) {
       console.error(err);
-      return this.settings.stepVal;
+      return this.settings.step;
     }
   }
 
-  setValue(tmp: number) {
-    this.settings.value = Number(tmp);
+  setValue(tmp: number, newValue?: number) {
+    if (newValue) {
+      this.settings.values[tmp] = newValue;
+    } else {
+      this.settings.value = Number(tmp);
+    }
     this.setValidValue();
-    this.checkValidValues();
+    this.checkValidSettings();
     return this.settings.value;
   }
 
   setValues(tmp: number[]) {
     this.settings.values = tmp;
     this.setValidValue();
-    this.checkValidValues();
+    this.checkValidSettings();
     return this.settings.values;
   }
 
   setOrientation(tmp: string) {
     this.settings.orientation = tmp;
-    this.checkValidValues();
+    this.checkValidSettings();
     return this.settings.orientation;
   }
 
-  setFollowerPoint(tmp: boolean) {
-    this.settings.followerPoint = Boolean(tmp);
-    return this.settings.followerPoint;
+  setHasTip(tmp: boolean) {
+    this.settings.hasTip = Boolean(tmp);
+    return this.settings.hasTip;
   }
 }
 

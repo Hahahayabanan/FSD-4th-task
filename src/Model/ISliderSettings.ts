@@ -1,12 +1,12 @@
 interface ISliderSettings {
   range?: boolean;
-  minVal?: number;
-  maxVal?: number;
-  stepVal?: number;
+  min?: number;
+  max?: number;
+  step?: number;
   orientation?: string;
   value?: number;
   values?: Array<number>;
-  followerPoint?: boolean;
+  hasTip?: boolean;
 }
 
 export { ISliderSettings };

@@ -11,7 +11,7 @@ class ExampleParameters {
     this.createContainer();
     this.$slider = $(this.exampleContainer.firstElementChild);
 
-    this.initFollowerPointCheckboxes();
+    this.initTipCheckboxes();
     this.initRange();
     this.initOrientation();
 
@@ -27,7 +27,7 @@ class ExampleParameters {
     this.$container = $(container);
   }
 
-  initFollowerPointCheckboxes() {
+  initTipCheckboxes() {
     const label = document.createElement('label');
     label.innerHTML = 'Follower point';
     this.$container.append(label);
@@ -36,15 +36,15 @@ class ExampleParameters {
     checkbox.setAttribute('type', 'checkbox');
     $(label).append(checkbox);
 
-    if (this.$slider.slider('option', 'followerPoint')) {
+    if (this.$slider.slider('option', 'hasTip')) {
       checkbox.checked = true;
     }
 
     $(checkbox).change(() => {
       if (checkbox.checked) {
-        this.$slider.slider('option', 'followerPoint', true);
+        this.$slider.slider('option', 'hasTip', true);
       } else {
-        this.$slider.slider('option', 'followerPoint', false);
+        this.$slider.slider('option', 'hasTip', false);
       }
     });
   }
@@ -112,14 +112,13 @@ class ExampleParameters {
     newInput2.setAttribute('type', 'text');
     $(ilabel2).append(newInput2);
 
-
-    $(newInput1).val(this.$slider.slider('option', 'maxVal') as number);
-    $(newInput2).val(this.$slider.slider('option', 'minVal') as number);
+    $(newInput1).val(this.$slider.slider('option', 'max') as number);
+    $(newInput2).val(this.$slider.slider('option', 'min') as number);
     $(newInput1).on('change', () => {
-      this.$slider.slider('option', 'maxVal', $(newInput1).val());
+      this.$slider.slider('option', 'max', $(newInput1).val());
     });
     $(newInput2).on('change', () => {
-      this.$slider.slider('option', 'minVal', $(newInput2).val());
+      this.$slider.slider('option', 'min', $(newInput2).val());
     });
   }
 
@@ -132,9 +131,9 @@ class ExampleParameters {
     newInput1.setAttribute('type', 'text');
     $(ilabel1).append(newInput1);
 
-    $(newInput1).val(this.$slider.slider('option', 'stepVal') as number);
+    $(newInput1).val(this.$slider.slider('option', 'step') as number);
     $(newInput1).on('change', () => {
-      this.$slider.slider('option', 'stepVal', $(newInput1).val());
+      this.$slider.slider('option', 'step', $(newInput1).val());
     });
   }
 
@@ -150,7 +149,6 @@ class ExampleParameters {
     const newInput = document.createElement('input');
     newInput.setAttribute('type', 'text');
     $(ilabel).append(newInput);
-
 
     if (this.$slider.slider('option', 'range')) {
       ilabel.childNodes[0].nodeValue = 'First pointer value';
@@ -194,6 +192,4 @@ export default {
   ExampleParameters,
 };
 
-export {
-  ExampleParameters,
-};
+export { ExampleParameters };

@@ -9,7 +9,7 @@ class PointerView {
 
   public isVertical: boolean = false;
 
-  public followerPoint: TipView;
+  public tip: TipView;
 
   constructor(elemHTML: HTMLElement, isVertical?: boolean) {
     this.pointerHTML = elemHTML;
@@ -75,16 +75,16 @@ class PointerView {
     return newCssLeftOrTop;
   }
 
-  createFollowerPoint() {
-    this.followerPoint = new TipView(this.pointerHTML);
+  createTip() {
+    this.tip = new TipView(this.pointerHTML);
     const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
     sliderWrap.classList.add('j-plugin-slider_with-point');
   }
 
-  deleteFollowerPoint() {
-    if (this.followerPoint !== undefined) {
-      this.followerPoint.destroy();
-      this.followerPoint = undefined;
+  deleteTip() {
+    if (this.tip !== undefined) {
+      this.tip.destroy();
+      this.tip = undefined;
       const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
       sliderWrap.classList.remove('j-plugin-slider_with-point');
     }

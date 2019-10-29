@@ -55,12 +55,10 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Create and delete follower point', async () => {
-    await pointer.createFollowerPoint();
-    expect(pointer.followerPoint).toBeDefined();
-    expect(pointer.followerPoint.tipHTML).toHaveClass(
-      'j-plugin-slider__follower-point',
-    );
-    pointer.deleteFollowerPoint();
-    expect(pointer.followerPoint).toBeUndefined();
+    await pointer.createTip();
+    expect(pointer.tip).toBeDefined();
+    expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');
+    pointer.deleteTip();
+    expect(pointer.tip).toBeUndefined();
   });
 });

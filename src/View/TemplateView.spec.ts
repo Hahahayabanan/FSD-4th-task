@@ -12,7 +12,7 @@ describe('View / Slider template / Test of initialization parameters', () => {
     slider = new TemplateView({
       rootElem: shadowSlider,
       isVertical: true,
-      isFollowerPoint: true,
+      hasTip: true,
     });
   });
 

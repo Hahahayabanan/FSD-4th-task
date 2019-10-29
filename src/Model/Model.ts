@@ -2,7 +2,7 @@ import { isArray } from 'util';
 import { SliderSettings } from './SliderSettings';
 
 class Model {
-  public settings: SliderSettings;
+  private settings: SliderSettings;
 
   constructor(sett?: object) {
     this.settings = new SliderSettings(sett);
@@ -12,64 +12,134 @@ class Model {
     this.settings = new SliderSettings(sett);
   }
 
+  getSettings() {
+    return this.settings;
+  }
+
   calcPointerPosition(pos: number[]): number[];
 
   calcPointerPosition(pos: number): number;
 
   calcPointerPosition(pos: any) {
-    const { minVal, maxVal } = this.settings.settings;
-    const step: number = this.settings.settings.stepVal;
+    const { min, max } = this.settings.settings;
+    const { step } = this.settings.settings;
 
     if (isArray(pos)) {
-      const firstCurVal = pos[0] - minVal;
-      const secondCurVal = pos[1] - minVal;
-      let curVals: number[] = [firstCurVal, secondCurVal];
+      const firstCurrentValue = pos[0] - min;
+      const secondCurrentValue = pos[1] - min;
+      let values: number[] = [firstCurrentValue, secondCurrentValue];
 
-      const firstCurValWithoutStep = Math.round(curVals[0] / step);
-      const secondCurValWithoutStep = Math.round(curVals[1] / step);
+      const firstCurrentValueWithoutStep = Math.round(values[0] / step);
+      const secondCurrentValueWithoutStep = Math.round(values[1] / step);
 
       const currentStep: number[] = [
-        firstCurValWithoutStep,
-        secondCurValWithoutStep,
+        firstCurrentValueWithoutStep,
+        secondCurrentValueWithoutStep,
       ];
 
-      let firstCurValWithStep = currentStep[0] * step + minVal;
-      let secondCurValWithStep = currentStep[1] * step + minVal;
+      let firstCurrentValueWithStep = currentStep[0] * step + min;
+      let secondCurrentValueWithStep = currentStep[1] * step + min;
 
-      if (firstCurValWithStep > maxVal) firstCurValWithStep = maxVal;
-      if (secondCurValWithStep > maxVal) secondCurValWithStep = maxVal;
+      if (firstCurrentValueWithStep > max) firstCurrentValueWithStep = max;
+      if (secondCurrentValueWithStep > max) secondCurrentValueWithStep = max;
 
-      curVals = [firstCurValWithStep, secondCurValWithStep];
-      this.settings.setValues(curVals);
-      return curVals;
+      values = [firstCurrentValueWithStep, secondCurrentValueWithStep];
+      this.settings.setValues(values);
+      return values;
     }
 
-    let curVal: number = pos - minVal;
-    const currentStep: number = Math.round(curVal / step);
-    curVal = currentStep * step;
-    curVal += minVal;
-    if (curVal > maxVal) curVal = maxVal;
-    this.settings.setValue(curVal);
-    return curVal;
+    let currentValue: number = pos - min;
+    const currentStep: number = Math.round(currentValue / step);
+    currentValue = currentStep * step;
+    currentValue += min;
+    if (currentValue > max) currentValue = max;
+    this.settings.setValue(currentValue);
+    return currentValue;
   }
 
   calculateFromPercentsToValue(curPosInPercents: number): number {
-    const { minVal, maxVal } = this.settings.settings;
-    const rangeVal: number = maxVal - minVal;
+    const { min, max } = this.settings.settings;
+    const rangeVal: number = max - min;
 
     const curPosInValue: number = (rangeVal * curPosInPercents) / 100;
 
-    return curPosInValue + minVal;
+    return curPosInValue + min;
   }
 
   calculateFromValueToPercents(curPosInValue: number): number {
-    const { minVal, maxVal } = this.settings.settings;
-    const rangeVal: number = maxVal - minVal;
+    const { min, max } = this.settings.settings;
+    const rangeVal: number = max - min;
 
-    const currPosInPercents: number =
-      ((curPosInValue - minVal) * 100) / rangeVal;
+    const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
 
     return currPosInPercents;
+  }
+
+  setRange(tmp: boolean) {
+    this.settings.setRange(tmp);
+  }
+
+  setMin(tmp: number) {
+    this.settings.setMin(tmp);
+  }
+
+  setMax(tmp: number) {
+    this.settings.setMax(tmp);
+  }
+
+  setStep(tmp: number) {
+    this.settings.setStep(tmp);
+  }
+
+  setValue(tmp: number, newValue?: number) {
+    this.settings.setValue(tmp, newValue);
+  }
+
+  setValues(tmp: number[]) {
+    this.settings.setValues(tmp);
+  }
+
+  setOrientation(tmp: string) {
+    this.settings.setOrientation(tmp);
+  }
+
+  setHasTip(tmp: boolean) {
+    this.settings.setHasTip(tmp);
+  }
+
+  getRange(): boolean {
+    return this.settings.settings.range;
+  }
+
+  getMin(): number {
+    return this.settings.settings.min;
+  }
+
+  getMax(): number {
+    return this.settings.settings.max;
+  }
+
+  getStep(): number {
+    return this.settings.settings.step;
+  }
+
+  getValue(): number {
+    return this.settings.settings.value;
+  }
+
+  getValues(number?: number): number | number[] {
+    if (number !== undefined) {
+      return this.settings.settings.values[number];
+    }
+    return this.settings.settings.values;
+  }
+
+  getOrientation(): string {
+    return this.settings.settings.orientation;
+  }
+
+  getHasTip(): boolean {
+    return this.settings.settings.hasTip;
   }
 }
 

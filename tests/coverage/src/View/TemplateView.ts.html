@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/Model/SliderSettings.ts</title>
+    <title>Code coverage report for src/View/TemplateView.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="..\..\prettify.css" />
     <link rel="stylesheet" href="..\..\base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="..\..\index.html">All files</a> / <a href="index.html">src/Model</a> SliderSettings.ts
+      <a href="..\..\index.html">All files</a> / <a href="index.html">src/View</a> TemplateView.ts
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -287,7 +287,35 @@
 <a name='L239'></a><a href='#L239'>239</a>
 <a name='L240'></a><a href='#L240'>240</a>
 <a name='L241'></a><a href='#L241'>241</a>
-<a name='L242'></a><a href='#L242'>242</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -528,247 +556,303 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as $ from 'jquery';
-import { ISliderSettings } from './ISliderSettings';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PointerView } from './PointerView';
 &nbsp;
-class SliderSettings {
-  protected defaultSettings: ISliderSettings = {
-    range: false,
-    min: 0,
-    max: 100,
-    step: 1,
-    orientation: 'horizontal',
-    value: null,
-    values: [null, null],
-    hasTip: false,
+class TemplateView {
+  public sliderHTML: HTMLElement;
+&nbsp;
+  public pathHTML: HTMLElement;
+&nbsp;
+  public pointer0: PointerView = undefined;
+&nbsp;
+  public pointer1: PointerView = undefined;
+&nbsp;
+  public isVertical: boolean = false;
+&nbsp;
+  public hasTip: boolean = false;
+&nbsp;
+  public isRange: boolean = false;
+&nbsp;
+  public range: HTMLElement;
+&nbsp;
+  public lastPointerMoved: PointerView;
+&nbsp;
+  public styleClasses = {
+    SLIDER: 'j-plugin-slider',
+    PATH: 'j-plugin-slider__path',
+    THUMB: 'j-plugin-slider__thumb',
+    THUMB_SELECTED: 'j-plugin-slider__thumb_selected',
+    RANGE: 'j-plugin-slider__range',
+    SLIDER_VERTICAL: 'j-plugin-slider_vertical',
+    SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
   };
 &nbsp;
-  public settings: ISliderSettings;
+  constructor(options: {
+    rootElem: HTMLElement;
+    isVertical?: boolean;
+    hasTip?: boolean;
+    isRange?: boolean;
+  }) {
+    const { rootElem, isVertical, hasTip, isRange } = options;
+    this.sliderHTML = rootElem;
+    this.isVertical = isVertical;
+    this.hasTip = hasTip;
+    this.isRange = isRange;
 &nbsp;
-  public errors = {
-    minBiggerMax: 'Min slider range value cant be bigger than max value',
-    stepBiggerMaxMin: 'Step cant be bigger than min and max range',
-    stepInteger:
-      "Step should be an integer, commonly a dividend of the slider's maximum value",
-    valueBiggerMax: 'Value cant be bigger than max value',
-    valueSmallerMin: 'Value cant be smaller than min value',
-    firstValueSmallerMin: 'First value cant be smaller than min value',
-    secondValueBiggerMax: 'Second value cant be bigger than max value',
-    firstValueBiggerSecond: 'First value cant be bigger than second value',
-    secondValueBiggerFirst: 'Second value cant be bigger than first value',
-    rangeValuesInSingle: 'Slider has range values but it is not range',
-    notValidOrientation:
-      'Orientation of slider has only two values "horizontal" or "vertical"',
-  };
-&nbsp;
-  constructor(setts: ISliderSettings) {
-    this.settings = $.extend(this.defaultSettings, setts);
-&nbsp;
-    this.setValidValue();
-    this.checkValidValues();
+    this.createTemplate();
+    this.bindEventListeners();
   }
 &nbsp;
-  checkValidValues() {
-    const ordersModule = {
-      ORIENTATION_VERTICAL: 'vertical',
-      ORIENTATION_HORIZONTAL: 'horizontal',
+  createTemplate() {
+    this.pathHTML = document.createElement('div');
+    this.sliderHTML.classList.add(this.styleClasses.SLIDER);
+    this.pathHTML.classList.add(this.styleClasses.PATH);
+    this.sliderHTML.append(this.pathHTML);
+&nbsp;
+    let thumb = document.createElement('div');
+    this.pathHTML.append(thumb);
+    this.pointer0 = new PointerView(thumb, this.isVertical);
+    this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
+&nbsp;
+    if (this.isRange) {
+      thumb = document.createElement('div');
+      this.pathHTML.append(thumb);
+      this.pointer1 = new PointerView(thumb, this.isVertical);
+      this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
+&nbsp;
+      this.range = document.createElement('div');
+      this.range.classList.add(this.styleClasses.RANGE);
+      this.pathHTML.prepend(this.range);
+    }
+&nbsp;
+    if (this.isVertical) {
+      this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
+    }
+    if (this.hasTip) {
+      this.sliderHTML.classList.add(this.styleClasses.SLIDER_WITH_POINT);
+    }
+    this.lastPointerMoved = this.pointer0;
+  }
+&nbsp;
+  bindEventListeners() {
+    this.pathHTML.addEventListener('mousedown', this.sliderOnClick);
+&nbsp;
+    this.bindPointerEventListeners();
+  }
+&nbsp;
+  bindPointerEventListeners() {
+    this.pointer0.pointerHTML.addEventListener('mousedown', this.mouseDown);
+    this.pointer0.pointerHTML.ondragstart = function onDragStart() {
+      return false;
     };
-    const isOrientationVertical =
-      this.settings.orientation !== ordersModule.ORIENTATION_VERTICAL;
-    const isOrientationHorizontal =
-      this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
-    const isOrientationSet = isOrientationVertical &amp;&amp; isOrientationHorizontal;
-    const valueRange = this.settings.max - this.settings.min;
-    const isStepSmallerNull = this.settings.step &lt; 0;
-    const isStepBiggerRange = this.settings.step &lt; valueRange;
-    const isValueBiggerMax = this.settings.value &gt; this.settings.max;
-    const isValueSmallerMin = this.settings.value &lt; this.settings.min;
-    const isFirstValueSmallerMin = this.settings.values[0] &lt; this.settings.min;
-    const isSecondValueBiggerMax = this.settings.values[1] &gt; this.settings.max;
-    const isFirstValueBiggerMax = this.settings.values[0] &gt; this.settings.max;
-    const isSecondValueSmallerMin = this.settings.values[1] &lt; this.settings.min;
-    const isFirstValueBiggerSecond =
-      this.settings.values[0] &gt; this.settings.values[1];
-    const isSecondValueSmallerFirst =
-      this.settings.values[1] &lt; this.settings.values[0];
-&nbsp;
-    if (this.settings.min &gt;= this.settings.max) {
-      this.settings.max = this.defaultSettings.max;
-      this.settings.min = this.defaultSettings.min;
-      this.settings.value = this.defaultSettings.value;
-      this.settings.values = this.defaultSettings.values;
-      this.settings.step = this.defaultSettings.step;
-    }
-    if (isStepSmallerNull &amp;&amp; isStepBiggerRange) {
-      this.settings.step = this.defaultSettings.step;
-    }
-    if (valueRange % this.settings.step !== 0) {
-      this.settings.step = this.defaultSettings.step;
-    }
-    if (isValueBiggerMax &amp;&amp; !this.settings.range) {
-      this.settings.value = this.settings.max;
-    }
-    if (isValueSmallerMin &amp;&amp; !this.settings.range) {
-      this.settings.value = this.settings.min;
-    }
-    if (isFirstValueSmallerMin &amp;&amp; this.settings.range) {
-      this.settings.values[0] = this.settings.min;
-    }
-    if (isSecondValueBiggerMax &amp;&amp; this.settings.range) {
-      this.settings.values[1] = this.settings.max;
-    }
-    if (isFirstValueBiggerMax &amp;&amp; this.settings.range) {
-      this.settings.values[0] =
-        this.settings.max - this.settings.step &lt; this.settings.max
-          ? this.settings.max - this.settings.step
-          : this.settings.max;
-    }
-    if (isSecondValueSmallerMin &amp;&amp; this.settings.range) {
-      this.settings.values[1] =
-        this.settings.min + this.settings.step &lt; this.settings.min
-          ? this.settings.min + this.settings.step
-          : this.settings.min;
-    }
-    if (isFirstValueBiggerSecond &amp;&amp; this.settings.range) {
-      const first = this.settings.values[1];
-      this.settings.values[0] = first;
-    }
-    if (isSecondValueSmallerFirst &amp;&amp; this.settings.range) {
-      const first = this.settings.values[0];
-      this.settings.values[1] = first;
-    }
-    if (isOrientationSet) {
-      this.settings.orientation = this.defaultSettings.orientation;
+    if (this.isRange) {
+      this.pointer1.pointerHTML.addEventListener('mousedown', this.mouseDown);
+      this.pointer1.pointerHTML.ondragstart = function onDragStart() {
+        return false;
+      };
     }
   }
 &nbsp;
-  setValidValue() {
-    const isFirstValueNull = this.settings.values[0] === null;
-    const isSecondValueNull = this.settings.values[1] === null;
-    const isValuesNull = this.settings.values === [null, null];
-    const isValueNull = this.settings.value === null;
+  private mouseDown = (event: any) =&gt; {
+    event.preventDefault();
 &nbsp;
-    if (!isFirstValueNull &amp;&amp; !this.settings.range) {
-      const first = this.settings.values[0];
-      this.settings.value = first;
-      this.settings.values = [null, null];
+    const thisThumb: HTMLElement = event.currentTarget;
+    let currentPointer: PointerView;
+&nbsp;
+    if (this.isRange &amp;&amp; this.pointer0.curPos === this.pointer1.curPos) {
+      currentPointer = this.lastPointerMoved;
+    } else if (thisThumb === this.pointer0.pointerHTML) {
+      currentPointer = this.pointer0;
+    } else if (thisThumb === this.pointer1.pointerHTML) {
+      currentPointer = this.pointer1;
     }
-    if (isValueNull &amp;&amp; !this.settings.range) {
-      this.settings.value = this.settings.min;
-    }
-    if (isValuesNull &amp;&amp; this.settings.range) {
-      if (!isValueNull) {
-        this.settings.values = [this.settings.value, this.settings.max];
-      } else {
-        this.settings.values = [this.settings.min, this.settings.max];
+&nbsp;
+    this.updateZIndex(currentPointer);
+&nbsp;
+    const { rightEdge, leftEdge, mouseX, mouseY } = this.calcMoveBorders(
+      event,
+      currentPointer,
+    );
+    currentPointer.endPos = currentPointer.curPos;
+&nbsp;
+    const mouseMove = () =&gt; {
+      event.preventDefault();
+      const endPosInPixels = currentPointer.calcPercentsToPixels(
+        currentPointer.endPos,
+      );
+&nbsp;
+      let newCurPos: number = this.isVertical
+        ? endPosInPixels - mouseY + event.clientY
+        : endPosInPixels - mouseX + event.clientX;
+&nbsp;
+      if (newCurPos &lt; leftEdge) {
+        newCurPos = leftEdge;
       }
-      this.settings.value = null;
-    }
-    if (isFirstValueNull &amp;&amp; this.settings.range) {
-      if (!isValueNull) {
-        this.settings.values[0] = this.settings.value;
-        this.settings.value = null;
-      } else {
-        this.settings.values[0] = this.settings.min;
+      if (newCurPos &gt; rightEdge) {
+        newCurPos = rightEdge;
+      }
+&nbsp;
+      currentPointer.setCurPosInPercents(
+        currentPointer.calcPixelsToPercents(newCurPos),
+      );
+    };
+&nbsp;
+    const mouseUp = () =&gt; {
+      this.lastPointerMoved = currentPointer;
+&nbsp;
+      document.removeEventListener('mouseup', mouseUp);
+      document.removeEventListener('mousemove', mouseMove);
+    };
+&nbsp;
+    document.addEventListener('mousemove', mouseMove);
+    document.addEventListener('mouseup', mouseUp);
+  };
+&nbsp;
+  private calcMoveBorders(event: any, currentPointer: PointerView) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+&nbsp;
+    let leftEdge: number = 0;
+    let rightEdge: number = currentPointer.getPathLength();
+&nbsp;
+    if (this.isRange) {
+      if (
+        this.pointer0.curPos === this.pointer1.curPos &amp;&amp;
+        currentPointer !== this.lastPointerMoved
+      ) {
+        leftEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
+        rightEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
+      } else if (currentPointer === this.pointer0) {
+        leftEdge = 0;
+        rightEdge = currentPointer.calcPercentsToPixels(this.pointer1.curPos);
+      } else if (currentPointer === this.pointer1) {
+        leftEdge = currentPointer.calcPercentsToPixels(this.pointer0.curPos);
+        rightEdge = this.pointer1.getPathLength();
       }
     }
-    if (isSecondValueNull &amp;&amp; this.settings.range) {
-      this.settings.values[1] = this.settings.max;
-    }
-    if (!isValueNull &amp;&amp; this.settings.range) {
-      this.settings.value = null;
-    }
-    if (!isValuesNull &amp;&amp; !this.settings.range) {
-      this.settings.values = [null, null];
-    }
+&nbsp;
+    return {
+      rightEdge,
+      leftEdge,
+      mouseX,
+      mouseY,
+    };
   }
 &nbsp;
-  setRange(tmp: boolean) {
-    this.settings.range = Boolean(tmp);
-    this.setValidValue();
-    this.checkValidValues();
-    return this.settings.range;
-  }
+  private sliderOnClick = (event: any) =&gt; {
+    event.preventDefault();
+    const curTarget: HTMLElement = event.target;
 &nbsp;
-  setMin(tmp: number) {
-    try {
-      if (Number(tmp) &gt;= this.settings.max) {
-        throw this.errors.minBiggerMax;
+    const isValidClick =
+      curTarget.className === this.styleClasses.PATH ||
+      curTarget.className === this.styleClasses.RANGE;
+    if (!isValidClick) return;
+&nbsp;
+    const newLeft: number = this.isVertical
+      ? event.clientY - this.pathHTML.getBoundingClientRect().top
+      : event.clientX - this.pathHTML.getBoundingClientRect().left;
+&nbsp;
+    if (this.isRange) {
+      const pointersRange = this.calculatePointersRange();
+&nbsp;
+      if (newLeft &lt; pointersRange) {
+        this.pointer0.setCurPosInPixels(newLeft);
       }
-      this.settings.min = Number(tmp);
-      this.checkValidValues();
-      return this.settings.min;
-    } catch (err) {
-      console.error(err);
-      return this.settings.min;
-    }
-  }
-&nbsp;
-  setMax(tmp: number) {
-    try {
-      if (Number(tmp) &lt;= this.settings.min) {
-        throw this.errors.minBiggerMax;
+      if (newLeft &gt; pointersRange) {
+        this.pointer1.setCurPosInPixels(newLeft);
       }
-      this.settings.max = Number(tmp);
-      this.checkValidValues();
-      return this.settings.max;
-    } catch (err) {
-      console.error(err);
-      return this.settings.max;
-    }
-  }
-&nbsp;
-  setStep(tmp: number) {
-    try {
-      const valueRange = this.settings.max - this.settings.min;
-      const stepBiggerNull = Number(tmp) &gt; 0;
-      const stepSmallerRange = Number(tmp) &lt; valueRange;
-      if (stepBiggerNull &amp;&amp; stepSmallerRange) {
-        this.settings.step = Number(tmp);
-        this.checkValidValues();
-        return this.settings.step;
-      }
-      this.settings.step = this.defaultSettings.step;
-      throw this.errors.stepBiggerMaxMin;
-    } catch (err) {
-      console.error(err);
-      return this.settings.step;
-    }
-  }
-&nbsp;
-  setValue(tmp: number, newValue?: number) {
-    if (newValue) {
-      this.settings.values[tmp] = newValue;
     } else {
-      this.settings.value = Number(tmp);
+      this.pointer0.setCurPosInPixels(newLeft);
     }
-    this.setValidValue();
-    this.checkValidValues();
-    return this.settings.value;
+  };
+&nbsp;
+  calculateAndApplyRangeLine = () =&gt; {
+    if (this.isVertical) {
+      this.range.style.top = this.pointer0.pointerHTML.style.top;
+      const range =
+        parseInt(this.pointer1.pointerHTML.style.top, 10) -
+        parseInt(this.pointer0.pointerHTML.style.top, 10);
+      this.range.style.height = `${range}%`;
+    } else {
+      this.range.style.left = this.pointer0.pointerHTML.style.left;
+      const range =
+        parseInt(this.pointer1.pointerHTML.style.left, 10) -
+        parseInt(this.pointer0.pointerHTML.style.left, 10);
+      this.range.style.width = `${range}%`;
+    }
+  };
+&nbsp;
+  calculatePointersRange() {
+    const res: number =
+      (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels()) /
+        2 +
+      this.pointer0.getCurPosInPixels();
+    return res;
   }
 &nbsp;
-  setValues(tmp: number[]) {
-    this.settings.values = tmp;
-    this.setValidValue();
-    this.checkValidValues();
-    return this.settings.values;
+  setDataAttribute(attr: string, value: string) {
+    this.sliderHTML.dataset[attr] = value;
   }
 &nbsp;
-  setOrientation(tmp: string) {
-    this.settings.orientation = tmp;
-    this.checkValidValues();
-    return this.settings.orientation;
+  updateZIndex(curThumb: PointerView) {
+    this.pointer0.pointerHTML.classList.remove(
+      this.styleClasses.THUMB_SELECTED,
+    );
+    if (this.isRange)
+      this.pointer1.pointerHTML.classList.remove(
+        this.styleClasses.THUMB_SELECTED,
+      );
+    curThumb.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
   }
 &nbsp;
-  setHasTip(tmp: boolean) {
-    this.settings.hasTip = Boolean(tmp);
-    return this.settings.hasTip;
+  destroy() {
+    this.pointer0.pointerHTML.remove();
+    this.pointer0 = undefined;
+    if (this.isRange) {
+      this.pointer1.pointerHTML.remove();
+      this.pointer1 = undefined;
+    }
+    this.pathHTML.remove();
+    this.pathHTML = undefined;
+    this.sliderHTML.classList.remove(
+      this.styleClasses.SLIDER,
+      this.styleClasses.SLIDER_VERTICAL,
+      this.styleClasses.SLIDER_WITH_POINT,
+    );
+    this.sliderHTML.remove();
+    this.sliderHTML = undefined;
   }
 }
-&nbsp;
-export { SliderSettings };
-&nbsp;
-export default SliderSettings;
+export { TemplateView };
+export default TemplateView;
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->

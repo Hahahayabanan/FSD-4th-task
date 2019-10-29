@@ -11,7 +11,7 @@ class TemplateView {
 
   public isVertical: boolean = false;
 
-  public isFollowerPoint: boolean = false;
+  public hasTip: boolean = false;
 
   public isRange: boolean = false;
 
@@ -32,13 +32,13 @@ class TemplateView {
   constructor(options: {
     rootElem: HTMLElement;
     isVertical?: boolean;
-    isFollowerPoint?: boolean;
+    hasTip?: boolean;
     isRange?: boolean;
   }) {
-    const { rootElem, isVertical, isFollowerPoint, isRange } = options;
+    const { rootElem, isVertical, hasTip, isRange } = options;
     this.sliderHTML = rootElem;
     this.isVertical = isVertical;
-    this.isFollowerPoint = isFollowerPoint;
+    this.hasTip = hasTip;
     this.isRange = isRange;
 
     this.createTemplate();
@@ -70,7 +70,7 @@ class TemplateView {
     if (this.isVertical) {
       this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
     }
-    if (this.isFollowerPoint) {
+    if (this.hasTip) {
       this.sliderHTML.classList.add(this.styleClasses.SLIDER_WITH_POINT);
     }
     this.lastPointerMoved = this.pointer0;
@@ -99,28 +99,28 @@ class TemplateView {
     event.preventDefault();
 
     const thisThumb: HTMLElement = event.currentTarget;
-    let currentThumb: PointerView;
+    let currentPointer: PointerView;
 
     if (this.isRange && this.pointer0.curPos === this.pointer1.curPos) {
-      currentThumb = this.lastPointerMoved;
+      currentPointer = this.lastPointerMoved;
     } else if (thisThumb === this.pointer0.pointerHTML) {
-      currentThumb = this.pointer0;
+      currentPointer = this.pointer0;
     } else if (thisThumb === this.pointer1.pointerHTML) {
-      currentThumb = this.pointer1;
+      currentPointer = this.pointer1;
     }
 
-    this.updateZIndex(currentThumb);
+    this.updateZIndex(currentPointer);
 
     const { rightEdge, leftEdge, mouseX, mouseY } = this.calcMoveBorders(
       event,
-      currentThumb,
+      currentPointer,
     );
-    currentThumb.endPos = currentThumb.curPos;
+    currentPointer.endPos = currentPointer.curPos;
 
-    const mouseMove = () => {
+    const mouseMove = (event: any) => {
       event.preventDefault();
-      const endPosInPixels = currentThumb.calcPercentsToPixels(
-        currentThumb.endPos,
+      const endPosInPixels = currentPointer.calcPercentsToPixels(
+        currentPointer.endPos,
       );
 
       let newCurPos: number = this.isVertical
@@ -134,13 +134,13 @@ class TemplateView {
         newCurPos = rightEdge;
       }
 
-      currentThumb.setCurPosInPercents(
-        currentThumb.calcPixelsToPercents(newCurPos),
+      currentPointer.setCurPosInPercents(
+        currentPointer.calcPixelsToPercents(newCurPos),
       );
     };
 
     const mouseUp = () => {
-      this.lastPointerMoved = currentThumb;
+      this.lastPointerMoved = currentPointer;
 
       document.removeEventListener('mouseup', mouseUp);
       document.removeEventListener('mousemove', mouseMove);
@@ -150,25 +150,25 @@ class TemplateView {
     document.addEventListener('mouseup', mouseUp);
   };
 
-  private calcMoveBorders(event: any, currentThumb: PointerView) {
+  private calcMoveBorders(event: any, currentPointer: PointerView) {
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
     let leftEdge: number = 0;
-    let rightEdge: number = currentThumb.getPathLength();
+    let rightEdge: number = currentPointer.getPathLength();
 
     if (this.isRange) {
       if (
         this.pointer0.curPos === this.pointer1.curPos &&
-        currentThumb !== this.lastPointerMoved
+        currentPointer !== this.lastPointerMoved
       ) {
-        leftEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
-        rightEdge = currentThumb.calcPercentsToPixels(currentThumb.curPos);
-      } else if (currentThumb === this.pointer0) {
+        leftEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
+        rightEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
+      } else if (currentPointer === this.pointer0) {
         leftEdge = 0;
-        rightEdge = currentThumb.calcPercentsToPixels(this.pointer1.curPos);
-      } else if (currentThumb === this.pointer1) {
-        leftEdge = currentThumb.calcPercentsToPixels(this.pointer0.curPos);
+        rightEdge = currentPointer.calcPercentsToPixels(this.pointer1.curPos);
+      } else if (currentPointer === this.pointer1) {
+        leftEdge = currentPointer.calcPercentsToPixels(this.pointer0.curPos);
         rightEdge = this.pointer1.getPathLength();
       }
     }

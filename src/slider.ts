@@ -37,14 +37,14 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     });
   }
   return {
-    minVal: checkDataset(htmlElem.dataset.minVal) as number,
-    maxVal: checkDataset(htmlElem.dataset.maxVal) as number,
-    stepVal: checkDataset(htmlElem.dataset.stepVal) as number,
+    min: checkDataset(htmlElem.dataset.min) as number,
+    max: checkDataset(htmlElem.dataset.max) as number,
+    step: checkDataset(htmlElem.dataset.step) as number,
     range: checkDataset(htmlElem.dataset.range) as boolean,
     orientation: htmlElem.dataset.orientation,
     values: values as number[],
     value: checkDataset(htmlElem.dataset.value) as number,
-    followerPoint: checkDataset(htmlElem.dataset.followerPoint) as boolean,
+    hasTip: checkDataset(htmlElem.dataset.hasTip) as boolean,
   };
 }
 
@@ -64,19 +64,19 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     }
 
     if (typeof args[0] === 'string') {
-      const [option, setting, value, valuesOneOfTwoVals] = args;
+      const [option, setting, value, oneOfTwoValues] = args;
 
       let returnValue: any;
       this.each((i: number, val: object) => {
-        const htmlElem = val;
-        sliders.forEach(htmlItem => {
-          if (htmlItem.view.slider === htmlElem) {
+        const htmlSlider = val;
+        sliders.forEach(presenter => {
+          if (presenter.view.sliderHTML === htmlSlider) {
             returnValue = PresenterAPI.enterPoint({
-              valuesOneOfTwoVals,
+              oneOfTwoValues,
               value,
               option,
               setting,
-              slider: htmlItem,
+              slider: presenter,
             });
           }
         });

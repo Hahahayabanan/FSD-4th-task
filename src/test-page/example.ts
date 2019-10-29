@@ -3,26 +3,27 @@ import { ExampleParameters } from './ExampleParameters';
 
 $(() => {
   $('.slider1').slider({
-    minVal: 200,
-    maxVal: 500000000,
-    stepVal: 100,
+    min: 200,
+    max: 500000000,
+    step: 100,
     value: 349000000,
-    followerPoint: true,
+    hasTip: true,
   });
+
   $('.slider2').slider({
-    minVal: 10,
-    maxVal: 20,
-    stepVal: 1,
+    min: 10,
+    max: 20,
+    step: 1,
     value: 18,
     orientation: 'vertical',
   });
   $('.slider3').slider({
-    minVal: 10,
-    maxVal: 20,
-    stepVal: 1,
+    min: 10,
+    max: 20,
+    step: 1,
     range: true,
     values: [12, 15],
-    followerPoint: true,
+    hasTip: true,
     orientation: 'vertical',
   });
   $('.slider4').slider({

@@ -13,7 +13,7 @@ class Presenter {
 
     this.createView(rootElement);
 
-    this.view.slider.addEventListener(
+    this.view.sliderHTML.addEventListener(
       'changePointer',
       this.onChangePointer.bind(this),
     );
@@ -21,9 +21,9 @@ class Presenter {
   }
 
   onChangePointer(event: any) {
-    const currThumb = event.detail;
+    const curPointer = event.detail;
 
-    const curPosInPercents: number = currThumb.curPos;
+    const curPosInPercents: number = curPointer.curPos;
     const curPosInVal: number = this.model.calculateFromPercentsToValue(
       curPosInPercents,
     );
@@ -32,20 +32,20 @@ class Presenter {
     const curPosInPercentsWithStep = this.model.calculateFromValueToPercents(
       curPosInValWithStep,
     );
-    this.render(currThumb, curPosInPercentsWithStep);
-    this.setFollowerPointValue(currThumb, curPosInValWithStep);
+    this.render(curPointer, curPosInPercentsWithStep);
+    this.setTipValue(curPointer, curPosInValWithStep);
 
-    if (this.model.settings.settings.range) {
+    if (this.model.getRange()) {
       this.view.calculateAndApplyRangeLine();
 
-      if (currThumb === this.view.thumb0) {
-        this.model.settings.settings.values[0] = curPosInValWithStep;
+      if (curPointer === this.view.pointer0) {
+        this.model.setValue(0, curPosInValWithStep);
       }
-      if (currThumb === this.view.thumb1) {
-        this.model.settings.settings.values[1] = curPosInValWithStep;
+      if (curPointer === this.view.pointer1) {
+        this.model.setValue(1, curPosInValWithStep);
       }
     } else {
-      this.model.settings.settings.value = curPosInValWithStep;
+      this.model.setValue(curPosInValWithStep);
     }
     this.updateValuesDataAttributes();
   }
@@ -54,15 +54,15 @@ class Presenter {
     this.view = new TemplateView({
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
-      isFollowerPoint: this.model.settings.settings.followerPoint,
-      isRange: this.model.settings.settings.range,
+      hasTip: this.model.getHasTip(),
+      isRange: this.model.getRange(),
     });
     return this.view;
   }
 
   updateValue() {
-    if (this.model.settings.settings.range) {
-      const curPosInValues: number[] = this.model.settings.settings.values;
+    if (this.model.getRange()) {
+      const curPosInValues: number[] = this.model.getValues() as number[];
       const curPosInValsWithStep: number[] = this.model.calcPointerPosition(
         curPosInValues,
       );
@@ -75,11 +75,11 @@ class Presenter {
         curPosInValsWithStep[1],
       );
 
-      this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep[0]);
-      this.view.thumb1.setCurPosInPercents(curPosInPercentsWithStep[1]);
+      this.view.pointer0.setCurPosInPercents(curPosInPercentsWithStep[0]);
+      this.view.pointer1.setCurPosInPercents(curPosInPercentsWithStep[1]);
       this.updateDataAttributes();
     } else {
-      const curPosInValue: number = this.model.settings.settings.value;
+      const curPosInValue: number = this.model.getValue();
       const curPosInValWithStep: number = this.model.calcPointerPosition(
         curPosInValue,
       );
@@ -88,25 +88,25 @@ class Presenter {
         curPosInValWithStep,
       );
 
-      this.view.thumb0.setCurPosInPercents(curPosInPercentsWithStep);
+      this.view.pointer0.setCurPosInPercents(curPosInPercentsWithStep);
       this.updateDataAttributes();
     }
   }
 
-  render(curThumb: PointerView, curPos: number) {
-    curThumb.renderCurrentPosInPercents(curPos);
+  render(curPointer: PointerView, curPos: number) {
+    curPointer.renderCurrentPosInPercents(curPos);
   }
 
-  setFollowerPointValue(curThumb: PointerView, currPosInValWithStep: number) {
-    if (this.model.settings.settings.followerPoint) {
-      if (curThumb.followerPoint !== undefined) {
-        curThumb.followerPoint.setValue(currPosInValWithStep);
+  setTipValue(curPointer: PointerView, curPosInValWithStep: number) {
+    if (this.model.getHasTip()) {
+      if (curPointer.tip !== undefined) {
+        curPointer.tip.setValue(curPosInValWithStep);
       } else {
-        curThumb.createFollowerPoint();
-        curThumb.followerPoint.setValue(currPosInValWithStep);
+        curPointer.createTip();
+        curPointer.tip.setValue(curPosInValWithStep);
       }
     } else {
-      curThumb.deleteFollowerPoint();
+      curPointer.deleteTip();
     }
   }
 
@@ -114,50 +114,26 @@ class Presenter {
     const ordersModule = {
       ORIENTATION: 'vertical',
     };
-    if (this.model.settings.settings.orientation === ordersModule.ORIENTATION) {
+    if (this.model.getOrientation() === ordersModule.ORIENTATION) {
       return true;
     }
     return false;
   }
 
   updateDataAttributes() {
-    this.view.setDataAttribute(
-      'minVal',
-      `${this.model.settings.settings.minVal}`,
-    );
-    this.view.setDataAttribute(
-      'maxVal',
-      `${this.model.settings.settings.maxVal}`,
-    );
-    this.view.setDataAttribute(
-      'followerPoint',
-      `${this.model.settings.settings.followerPoint}`,
-    );
-    this.view.setDataAttribute(
-      'orientation',
-      `${this.model.settings.settings.orientation}`,
-    );
-    this.view.setDataAttribute(
-      'range',
-      `${this.model.settings.settings.range}`,
-    );
-    this.view.setDataAttribute(
-      'stepVal',
-      `${this.model.settings.settings.stepVal}`,
-    );
+    this.view.setDataAttribute('min', `${this.model.getMin()}`);
+    this.view.setDataAttribute('max', `${this.model.getMax()}`);
+    this.view.setDataAttribute('hasTip', `${this.model.getHasTip()}`);
+    this.view.setDataAttribute('orientation', `${this.model.getOrientation()}`);
+    this.view.setDataAttribute('range', `${this.model.getRange()}`);
+    this.view.setDataAttribute('step', `${this.model.getStep()}`);
   }
 
   updateValuesDataAttributes() {
-    if (this.model.settings.settings.range) {
-      this.view.setDataAttribute(
-        'values',
-        `[${this.model.settings.settings.values}]`,
-      );
+    if (this.model.getRange()) {
+      this.view.setDataAttribute('values', `[${this.model.getValues()}]`);
     } else {
-      this.view.setDataAttribute(
-        'value',
-        `${this.model.settings.settings.value}`,
-      );
+      this.view.setDataAttribute('value', `${this.model.getValue()}`);
     }
   }
 }
