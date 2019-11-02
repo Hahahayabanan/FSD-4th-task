@@ -1,4 +1,5 @@
 import { TipView } from './TipView';
+import { EventObserver } from '../EventObserver/EventObserver';
 
 class PointerView {
   public pointerHTML: HTMLElement;
@@ -11,25 +12,52 @@ class PointerView {
 
   public tip: TipView;
 
+  public observer: EventObserver = new EventObserver();
+
   constructor(elemHTML: HTMLElement, isVertical?: boolean) {
     this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
+    this.bindEventListeners();
   }
 
-  setCurPosInPercents(newCurrPos: number) {
-    this.curPos = newCurrPos;
+  private handlePointerMouseDown = (event: any) => {
+    event.preventDefault();
 
-    this.pointerHTML.dispatchEvent(
-      new CustomEvent('changePointer', {
-        bubbles: true,
-        detail: this,
-      }),
-    );
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+    this.endPos = this.curPos;
+
+    const handleDocumentMouseMove = (event: any) => {
+      event.preventDefault();
+
+      const endPosInPixels = this.calcPercentsToPixels(this.endPos);
+
+      const newCurPos: number = this.isVertical
+        ? endPosInPixels - mouseY + event.clientY
+        : endPosInPixels - mouseX + event.clientX;
+
+      const newCurPosInPercents = this.calcPixelsToPercents(newCurPos);
+      this.dispatchPointerPosition(newCurPosInPercents);
+    };
+
+    const handleDocumentMouseUp = () => {
+      document.removeEventListener('mouseup', handleDocumentMouseUp);
+      document.removeEventListener('mousemove', handleDocumentMouseMove);
+    };
+
+    document.addEventListener('mousemove', handleDocumentMouseMove);
+    document.addEventListener('mouseup', handleDocumentMouseUp);
+  };
+
+  dispatchPointerPosition(newCurPos: number) {
+    const updateObject = this;
+    this.observer.broadcast({ newCurPos, updateObject });
   }
 
-  setCurPosInPixels(newCurrPos: number) {
-    this.curPos = this.calcPixelsToPercents(newCurrPos);
+  setPointerPosition(newCurPos: number) {
+    this.curPos = newCurPos;
 
+    this.renderCurrentPosInPercents(newCurPos);
     this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
@@ -42,12 +70,20 @@ class PointerView {
     return this.calcPercentsToPixels(this.curPos);
   }
 
+
+  bindEventListeners() {
+    this.pointerHTML.addEventListener('mousedown', this.handlePointerMouseDown);
+    this.pointerHTML.ondragstart = function onDragStart() {
+      return false;
+    };
+  }
+
   getPathLength() {
     const widthOrHeight: number = this.isVertical
-      ? this.pointerHTML.parentElement.getBoundingClientRect().height ||
-        parseInt(this.pointerHTML.parentElement.style.height, 10)
-      : this.pointerHTML.parentElement.getBoundingClientRect().width ||
-        parseInt(this.pointerHTML.parentElement.style.width, 10);
+      ? this.pointerHTML.parentElement.getBoundingClientRect().height
+        || parseInt(this.pointerHTML.parentElement.style.height, 10)
+      : this.pointerHTML.parentElement.getBoundingClientRect().width
+        || parseInt(this.pointerHTML.parentElement.style.width, 10);
     return widthOrHeight;
   }
 
@@ -88,6 +124,10 @@ class PointerView {
       const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
       sliderWrap.classList.remove('j-plugin-slider_with-point');
     }
+  }
+
+  updateTipValue(newValue: number) {
+    this.tip.setValue(newValue);
   }
 }
 export { PointerView };

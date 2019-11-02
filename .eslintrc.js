@@ -7,7 +7,6 @@ module.exports = {
   },
   extends: [
     'airbnb-typescript/base',
-    'plugin:prettier/recommended',
   ],
   rules: {
     'linebreak-style':'off',

@@ -32,9 +32,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   let values: number[] | RegExpMatchArray;
   if (htmlElem.dataset.values) {
     values = htmlElem.dataset.values.match(/(\d+)/g);
-    values = values.map((val: string) => {
-      return parseInt(val, 10);
-    });
+    values = values.map((val: string) => parseInt(val, 10));
   }
   return {
     min: checkDataset(htmlElem.dataset.min) as number,
@@ -65,7 +63,6 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
     if (typeof args[0] === 'string') {
       const [option, setting, value, oneOfTwoValues] = args;
-
       let returnValue: any;
       this.each((i: number, val: object) => {
         const htmlSlider = val;
@@ -84,4 +81,4 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       return returnValue;
     }
   };
-})(jQuery);
+}(jQuery));

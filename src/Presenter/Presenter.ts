@@ -1,113 +1,61 @@
 import { TemplateView } from '../View/TemplateView';
 import { Model } from '../Model/Model';
 import { ISliderSettings } from '../Model/ISliderSettings';
-import { PointerView } from '../View/PointerView';
+import { EventObserver } from '../EventObserver/EventObserver';
 
 class Presenter {
   public model: Model;
 
   public view: any;
 
+  public observer: EventObserver = new EventObserver();
+
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
     this.model = new Model(options);
-
-    this.createView(rootElement);
-
-    this.view.sliderHTML.addEventListener(
-      'changePointer',
-      this.onChangePointer.bind(this),
-    );
-    this.updateValue();
-  }
-
-  onChangePointer(event: any) {
-    const curPointer = event.detail;
-
-    const curPosInPercents: number = curPointer.curPos;
-    const curPosInVal: number = this.model.calculateFromPercentsToValue(
-      curPosInPercents,
-    );
-    const curPosInValWithStep = this.model.calcPointerPosition(curPosInVal);
-
-    const curPosInPercentsWithStep = this.model.calculateFromValueToPercents(
-      curPosInValWithStep,
-    );
-    this.render(curPointer, curPosInPercentsWithStep);
-    this.setTipValue(curPointer, curPosInValWithStep);
-
-    if (this.model.getRange()) {
-      this.view.calculateAndApplyRangeLine();
-
-      if (curPointer === this.view.pointer0) {
-        this.model.setValue(0, curPosInValWithStep);
-      }
-      if (curPointer === this.view.pointer1) {
-        this.model.setValue(1, curPosInValWithStep);
-      }
-    } else {
-      this.model.setValue(curPosInValWithStep);
-    }
-    this.updateValuesDataAttributes();
-  }
-
-  createView(rootElement: any) {
     this.view = new TemplateView({
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
       hasTip: this.model.getHasTip(),
       isRange: this.model.getRange(),
     });
-    return this.view;
+
+    this.init();
   }
 
-  updateValue() {
-    if (this.model.getRange()) {
-      const curPosInValues: number[] = this.model.getValues() as number[];
-      const curPosInValsWithStep: number[] = this.model.calcPointerPosition(
-        curPosInValues,
-      );
+  init() {
+    this.view.observer.subscribe(this.updateModelWithNewPointerPosition.bind(this));
+    this.model.settingsObserver.subscribe(this.updateViewWithNewSettings.bind(this));
+    this.model.valuesObserver.subscribe(this.updateViewWithNewPointerPosition.bind(this));
 
-      const curPosInPercentsWithStep: number[] = [0, 0];
-      curPosInPercentsWithStep[0] = this.model.calculateFromValueToPercents(
-        curPosInValsWithStep[0],
-      );
-      curPosInPercentsWithStep[1] = this.model.calculateFromValueToPercents(
-        curPosInValsWithStep[1],
-      );
-
-      this.view.pointer0.setCurPosInPercents(curPosInPercentsWithStep[0]);
-      this.view.pointer1.setCurPosInPercents(curPosInPercentsWithStep[1]);
-      this.updateDataAttributes();
-    } else {
-      const curPosInValue: number = this.model.getValue();
-      const curPosInValWithStep: number = this.model.calcPointerPosition(
-        curPosInValue,
-      );
-
-      const curPosInPercentsWithStep: number = this.model.calculateFromValueToPercents(
-        curPosInValWithStep,
-      );
-
-      this.view.pointer0.setCurPosInPercents(curPosInPercentsWithStep);
-      this.updateDataAttributes();
-    }
+    this.initStartValue();
   }
 
-  render(curPointer: PointerView, curPos: number) {
-    curPointer.renderCurrentPosInPercents(curPos);
+  initStartValue() {
+    this.model.calculateStartValues();
+
+    this.updateDataAttributes();
+    this.updateValueDataAttributes();
   }
 
-  setTipValue(curPointer: PointerView, curPosInValWithStep: number) {
-    if (this.model.getHasTip()) {
-      if (curPointer.tip !== undefined) {
-        curPointer.tip.setValue(curPosInValWithStep);
-      } else {
-        curPointer.createTip();
-        curPointer.tip.setValue(curPosInValWithStep);
-      }
-    } else {
-      curPointer.deleteTip();
-    }
+  updateViewWithNewPointerPosition(data: any) {
+    const { newValues } = data;
+    const newValuesInPercents = this.model.getRange()
+      ? newValues.map((val: number) => this.model.calculateFromValueToPercents(val))
+      : this.model.calculateFromValueToPercents(newValues);
+    this.view.setPointerPosition(newValuesInPercents);
+    this.view.setTipValue(newValues);
+    this.updateValueDataAttributes();
+  }
+
+  updateViewWithNewSettings(data: any) {
+    const { range, hasTip } = data;
+    this.view.update(range, this.checkOrientationIsVertical(), hasTip);
+    this.updateDataAttributes();
+    this.updateValueDataAttributes();
+  }
+
+  updateModelWithNewPointerPosition(data: any) {
+    this.model.calculateValue(data.newCurPos, data.updateObject);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -121,19 +69,23 @@ class Presenter {
   }
 
   updateDataAttributes() {
-    this.view.setDataAttribute('min', `${this.model.getMin()}`);
-    this.view.setDataAttribute('max', `${this.model.getMax()}`);
-    this.view.setDataAttribute('hasTip', `${this.model.getHasTip()}`);
-    this.view.setDataAttribute('orientation', `${this.model.getOrientation()}`);
-    this.view.setDataAttribute('range', `${this.model.getRange()}`);
-    this.view.setDataAttribute('step', `${this.model.getStep()}`);
+    this.view.setDataAttributes([
+      { name: 'min', value: `${this.model.getMin()}` },
+      { name: 'max', value: `${this.model.getMax()}` },
+      { name: 'hasTip', value: `${this.model.getHasTip()}` },
+      { name: 'orientation', value: `${this.model.getOrientation()}` },
+      { name: 'range', value: `${this.model.getRange()}` },
+      { name: 'step', value: `${this.model.getStep()}` },
+    ]);
   }
 
-  updateValuesDataAttributes() {
+  updateValueDataAttributes() {
     if (this.model.getRange()) {
       this.view.setDataAttribute('values', `[${this.model.getValues()}]`);
+      this.view.removeDataAttribute('value');
     } else {
       this.view.setDataAttribute('value', `${this.model.getValue()}`);
+      this.view.removeDataAttribute('values');
     }
   }
 }

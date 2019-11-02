@@ -6,7 +6,8 @@
 
   &__path {
     border-radius: 5px;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     height: 5px;
     background: rgb(240, 240, 240);
     position: relative;
@@ -17,9 +18,8 @@
     padding-bottom: 20px;
 
     & .j-plugin-slider__path {
-      height: 250px;
-      width: 5px;
-      min-width: 5px;
+      min-height: 250px;
+      max-width: 5px;
     }
 
     &.j-plugin-slider_with-point {
@@ -33,7 +33,7 @@
     }
 
     & .j-plugin-slider__range {
-      width: 5px;
+      width: 100%;
     }
 
     & .j-plugin-slider__follower-point {
@@ -64,6 +64,15 @@
 
     &_selected {
       z-index: 1;
+      background: rgb(212, 43, 13);
+
+      .j-plugin-slider__follower-point {
+        background: rgb(212, 43, 13);
+        
+        &::after {
+          background: rgb(212, 43, 13);
+        }
+      }
     }
   }
 

@@ -39,15 +39,13 @@ class SliderSettings {
   }
 
   checkValidSettings() {
-    const ordersModule = {
-      ORIENTATION_VERTICAL: 'vertical',
-      ORIENTATION_HORIZONTAL: 'horizontal',
+    const orientation = {
+      VERTICAL: 'vertical',
+      HORIZONTAL: 'horizontal',
     };
-    const isOrientationVertical =
-      this.settings.orientation !== ordersModule.ORIENTATION_VERTICAL;
-    const isOrientationHorizontal =
-      this.settings.orientation !== ordersModule.ORIENTATION_HORIZONTAL;
-    const isOrientationSet = isOrientationVertical && isOrientationHorizontal;
+    const isOrientationVertical = this.settings.orientation !== orientation.VERTICAL;
+    const isOrientationHorizontal = this.settings.orientation !== orientation.HORIZONTAL;
+    const isOrientationNotSet = isOrientationVertical && isOrientationHorizontal;
     const valueRange = this.settings.max - this.settings.min;
     const isStepSmallerNull = this.settings.step < 0;
     const isStepBiggerRange = this.settings.step < valueRange;
@@ -57,10 +55,7 @@ class SliderSettings {
     const isSecondValueBiggerMax = this.settings.values[1] > this.settings.max;
     const isFirstValueBiggerMax = this.settings.values[0] > this.settings.max;
     const isSecondValueSmallerMin = this.settings.values[1] < this.settings.min;
-    const isFirstValueBiggerSecond =
-      this.settings.values[0] > this.settings.values[1];
-    const isSecondValueSmallerFirst =
-      this.settings.values[1] < this.settings.values[0];
+    const isFirstValueBiggerSecond = this.settings.values[0] > this.settings.values[1];
 
     if (this.settings.min >= this.settings.max) {
       this.settings.max = this.defaultSettings.max;
@@ -88,35 +83,33 @@ class SliderSettings {
       this.settings.values[1] = this.settings.max;
     }
     if (isFirstValueBiggerMax && this.settings.range) {
-      this.settings.values[0] =
-        this.settings.max - this.settings.step < this.settings.max
-          ? this.settings.max - this.settings.step
-          : this.settings.max;
+      this.settings.values[0] = this.settings.max - this.settings.step < this.settings.max
+        ? this.settings.max - this.settings.step
+        : this.settings.max;
     }
     if (isSecondValueSmallerMin && this.settings.range) {
-      this.settings.values[1] =
-        this.settings.min + this.settings.step < this.settings.min
-          ? this.settings.min + this.settings.step
-          : this.settings.min;
+      this.settings.values[1] = this.settings.min + this.settings.step < this.settings.min
+        ? this.settings.min + this.settings.step
+        : this.settings.min;
     }
-    if (isFirstValueBiggerSecond && this.settings.range) {
-      const first = this.settings.values[1];
-      this.settings.values[0] = first;
-    }
-    if (isSecondValueSmallerFirst && this.settings.range) {
-      const first = this.settings.values[0];
-      this.settings.values[1] = first;
-    }
-    if (isOrientationSet) {
+    if (isOrientationNotSet) {
       this.settings.orientation = this.defaultSettings.orientation;
+    }
+    if (isFirstValueBiggerSecond) {
+      const second = this.settings.values[1];
+      this.settings.values[0] = second;
     }
   }
 
-  setValidValue() {
+  setValidValue(newValue?: number, currentValueNumber?: number) {
     const isFirstValueNull = this.settings.values[0] === null;
     const isSecondValueNull = this.settings.values[1] === null;
     const isValuesNull = this.settings.values === [null, null];
     const isValueNull = this.settings.value === null;
+
+    if (currentValueNumber === 0) {
+      if (newValue <= this.settings.values[1]) this.settings.values[0] = newValue;
+    } else if (newValue >= this.settings.values[0]) this.settings.values[1] = newValue;
 
     if (!isFirstValueNull && !this.settings.range) {
       const first = this.settings.values[0];
@@ -206,13 +199,12 @@ class SliderSettings {
     }
   }
 
-  setValue(tmp: number, newValue?: number) {
-    if (newValue) {
-      this.settings.values[tmp] = newValue;
+  setValue(newValue: number, currentValueNumber?: number) {
+    if (currentValueNumber !== undefined) {
+      this.setValidValue(newValue, currentValueNumber);
     } else {
-      this.settings.value = Number(tmp);
+      this.settings.value = newValue;
     }
-    this.setValidValue();
     this.checkValidSettings();
     return this.settings.value;
   }
