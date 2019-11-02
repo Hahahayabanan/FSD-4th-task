@@ -1,7 +1,6 @@
 import { PointerView } from './PointerView';
 
-document.body.innerHTML =
-  '<div class="slider"><div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__thumb"></div></div></div>';
+document.body.innerHTML = '<div class="slider"><div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__thumb"></div></div></div>';
 
 const shadowThumb = document.querySelector(
   '.j-slider-plugin__thumb',
@@ -21,18 +20,8 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Curpos should be set in percents', async () => {
-    await pointer.setCurPosInPercents(33);
+    await pointer.setPointerPosition(33);
     expect(Math.round(pointer.curPos)).toEqual(33);
-  });
-
-  it('Curpos should be set in pixels', async () => {
-    await pointer.setCurPosInPixels(100);
-    expect(Math.round(pointer.curPos)).toBeCloseTo(33);
-  });
-
-  it('Get curpos in pixels', async () => {
-    await pointer.setCurPosInPixels(55);
-    expect(Math.round(pointer.getCurPosInPixels())).toBeCloseTo(55);
   });
 
   it('Render in pixels', async () => {
@@ -54,7 +43,7 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(pointer.calcPercentsToPixels(60)).toBeCloseTo(180);
   });
 
-  it('Create and delete follower point', async () => {
+  it('Create and delete tip', async () => {
     await pointer.createTip();
     expect(pointer.tip).toBeDefined();
     expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');

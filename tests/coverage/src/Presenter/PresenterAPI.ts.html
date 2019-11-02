@@ -219,41 +219,7 @@
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a>
-<a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a>
-<a name='L177'></a><a href='#L177'>177</a>
-<a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a>
-<a name='L180'></a><a href='#L180'>180</a>
-<a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a>
-<a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a>
-<a name='L186'></a><a href='#L186'>186</a>
-<a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -438,9 +404,13 @@ class PresenterAPI {
     value?: string | number | number[] | boolean;
     oneOfTwoValues?: number;
   }) {
-    this.slider = options.slider;
+    const {
+      slider, option, setting, value, oneOfTwoValues
+    } = options;
+&nbsp;
+    this.slider = slider;
     try {
-      if (options.option !== 'option') {
+      if (option !== 'option') {
         const errorFirstParameterOption = "First parameter should be 'option'";
         throw errorFirstParameterOption;
       }
@@ -449,36 +419,36 @@ class PresenterAPI {
     }
 &nbsp;
     let currentReturn: string | number | number[] | boolean;
-    if (options.value !== undefined) {
-      switch (options.setting) {
+    if (value !== undefined) {
+      switch (setting) {
         case 'range':
-          this.setRange(&lt;boolean&gt;options.value);
+          this.setRange(&lt;boolean&gt;value);
           break;
         case 'min':
-          this.setMin(&lt;number&gt;options.value);
+          this.setMin(&lt;number&gt;value);
           break;
         case 'max':
-          this.setMax(&lt;number&gt;options.value);
+          this.setMax(&lt;number&gt;value);
           break;
         case 'step':
-          this.setStep(&lt;number&gt;options.value);
+          this.setStep(&lt;number&gt;value);
           break;
         case 'orientation':
-          this.setOrientation(&lt;string&gt;options.value);
+          this.setOrientation(&lt;string&gt;value);
           break;
         case 'value':
-          this.setValue(&lt;number&gt;options.value);
+          this.setValue(&lt;number&gt;value);
           break;
         case 'values':
-          this.checkValuesSetterType(options.oneOfTwoValues, options.value);
+          currentReturn = this.checkValuesSetterType(oneOfTwoValues, value);
           break;
         case 'hasTip':
-          this.setHasTip(&lt;boolean&gt;options.value);
+          this.setHasTip(&lt;boolean&gt;value);
           break;
         default:
       }
     } else {
-      switch (options.setting) {
+      switch (setting) {
         case 'range':
           currentReturn = this.getRange();
           break;
@@ -497,16 +467,12 @@ class PresenterAPI {
         case 'value':
           currentReturn = this.getValue();
           break;
-        case 'values':
-          currentReturn = this.getValues();
-          break;
         case 'hasTip':
           currentReturn = this.getHasTip();
           break;
         default:
       }
     }
-&nbsp;
     return currentReturn;
   }
 &nbsp;
@@ -516,7 +482,6 @@ class PresenterAPI {
 &nbsp;
   static setHasTip(newVal: boolean): void {
     this.slider.model.setHasTip(newVal);
-    this.slider.updateValue();
   }
 &nbsp;
   static getRange(): boolean {
@@ -525,10 +490,6 @@ class PresenterAPI {
 &nbsp;
   static setRange(newVal: boolean): void {
     this.slider.model.setRange(newVal);
-    const rootElement = this.slider.view.sliderHTML;
-    this.slider.view.destroy();
-    this.slider.createView(rootElement);
-    this.slider.updateValue();
   }
 &nbsp;
   static getMin(): number {
@@ -537,7 +498,6 @@ class PresenterAPI {
 &nbsp;
   static setMin(newVal: number) {
     this.slider.model.setMin(+newVal);
-    this.slider.updateValue();
   }
 &nbsp;
   static getMax(): number {
@@ -546,7 +506,6 @@ class PresenterAPI {
 &nbsp;
   static setMax(newVal: number) {
     this.slider.model.setMax(newVal);
-    this.slider.updateValue();
   }
 &nbsp;
   static getStep(): number {
@@ -555,7 +514,6 @@ class PresenterAPI {
 &nbsp;
   static setStep(newVal: number) {
     this.slider.model.setStep(newVal);
-    this.slider.updateValue();
   }
 &nbsp;
   static getValue(): number {
@@ -564,7 +522,6 @@ class PresenterAPI {
 &nbsp;
   static setValue(newVal: number) {
     this.slider.model.setValue(newVal);
-    this.slider.updateValue();
   }
 &nbsp;
   static getOrientation(): string {
@@ -573,29 +530,21 @@ class PresenterAPI {
 &nbsp;
   static setOrientation(newVal: string) {
     this.slider.model.setOrientation(newVal);
-    const rootElement = this.slider.view.sliderHTML;
-    this.slider.view.destroy();
-    this.slider.view = undefined;
-    this.slider.createView(rootElement);
-    this.slider.updateValue();
   }
 &nbsp;
   static getValues(numberCurrent?: number): number[] | number {
-    if (numberCurrent === undefined) return this.slider.model.getValues();
-    return this.slider.model.getValues(numberCurrent);
+    if (numberCurrent === undefined) { return this.slider.model.getValues() as number[]; }
+    return this.slider.model.getValues(numberCurrent) as number;
   }
 &nbsp;
   static setValues(newVal: number[] | number, numberCurrent?: number) {
     if (numberCurrent === undefined) {
       const newValue = this.slider.model.setValues(&lt;number[]&gt;newVal);
-      this.slider.updateValue();
       return newValue;
     }
     const tmp: number[] = this.slider.model.getValues() as number[];
     tmp[numberCurrent] = &lt;number&gt;newVal;
     this.slider.model.setValues(&lt;number[]&gt;tmp);
-&nbsp;
-    this.slider.updateValue();
   }
 &nbsp;
   static checkValuesSetterType(oneOfTwoValues: any, value: any) {
@@ -603,13 +552,13 @@ class PresenterAPI {
     const isOneOfValuesUndefined = oneOfTwoValues === undefined;
 &nbsp;
     if (isOneOfValuesUndefined &amp;&amp; !isValueNumber) {
-      return this.setValues(&lt;number[]&gt;value);
+      this.setValues(&lt;number[]&gt;value);
     }
     if (isOneOfValuesUndefined &amp;&amp; isValueNumber) {
       return this.getValues(value);
     }
     if (!isOneOfValuesUndefined &amp;&amp; isValueNumber) {
-      return this.setValues(oneOfTwoValues, &lt;number&gt;value);
+      this.slider.model.setValue(oneOfTwoValues, &lt;number&gt;value);
     }
   }
 }
@@ -622,7 +571,7 @@ export default PresenterAPI;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Oct 29 2019 15:23:40 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 02 2019 21:59:56 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

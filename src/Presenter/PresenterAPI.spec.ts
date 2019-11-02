@@ -383,7 +383,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
       setting: 'values',
       value: [99, 51],
     });
-    expect(slider.model.getValues()).toEqual([50, 50]);
+    expect(slider.model.getValues()).toEqual([51, 51]);
   });
 
   it('Should not set wrong first range value', () => {
@@ -400,7 +400,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
       value: 0,
       oneOfTwoValues: 999,
     });
-    expect(slider.model.getValues()).toEqual([100, 100]);
+    expect(slider.model.getValues()).toEqual([50, 100]);
   });
 
   it('Should not set wrong minVal', () => {

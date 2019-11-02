@@ -1,7 +1,6 @@
 import { TipView } from './TipView';
 
-document.body.innerHTML =
-  '<div id="test" class="j-slider-plugin__thumb"></div>';
+document.body.innerHTML = '<div id="test" class="j-slider-plugin__thumb"></div>';
 
 const shadowFollower = document.querySelector(
   '.j-slider-plugin__thumb',

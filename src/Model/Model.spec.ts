@@ -18,7 +18,7 @@ describe('Model / Slider / Test initialization', () => {
         min: 1,
         max: 10,
         step: 1,
-      }),
+      }).settings,
     );
   });
 
@@ -39,7 +39,7 @@ describe('Model / Slider / Test initialization', () => {
         min: 10,
         max: 150,
         step: 1,
-      }),
+      }).settings,
     );
   });
 
@@ -59,7 +59,7 @@ describe('Model / Slider / Test initialization', () => {
         max: 10,
         step: 1,
         values: [7, 8],
-      }),
+      }).settings,
     );
   });
 });
@@ -69,20 +69,19 @@ describe('Model / Slider / Test of setting other pointer values', () => {
     min: 20,
     max: 100,
     step: 2,
+    range: true,
+    values: [25, 55],
   });
 
   slider.setStep(5);
 
   it('Should change pointer position 60', () => {
-    expect(slider.calcPointerPosition(58)).toEqual(60);
+    slider.calculateValue(58, 'firstValue');
+    expect(slider.getValues(0)).toEqual(25);
   });
 
   it('Should change pointer position 90', () => {
-    expect(slider.calcPointerPosition(92)).toEqual(90);
-  });
-
-  it('Should change pointer position 20,35', () => {
-    expect(slider.calcPointerPosition([22, 37])).toEqual([20, 35]);
+    expect(slider.calculateValueWithStep(92)).toEqual(90);
   });
 
   describe('Model / Slider / Test of calculating value', () => {

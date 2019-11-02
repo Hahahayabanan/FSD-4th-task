@@ -301,35 +301,7 @@
 <a name='L253'></a><a href='#L253'>253</a>
 <a name='L254'></a><a href='#L254'>254</a>
 <a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a>
-<a name='L258'></a><a href='#L258'>258</a>
-<a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a>
-<a name='L261'></a><a href='#L261'>261</a>
-<a name='L262'></a><a href='#L262'>262</a>
-<a name='L263'></a><a href='#L263'>263</a>
-<a name='L264'></a><a href='#L264'>264</a>
-<a name='L265'></a><a href='#L265'>265</a>
-<a name='L266'></a><a href='#L266'>266</a>
-<a name='L267'></a><a href='#L267'>267</a>
-<a name='L268'></a><a href='#L268'>268</a>
-<a name='L269'></a><a href='#L269'>269</a>
-<a name='L270'></a><a href='#L270'>270</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L256'></a><a href='#L256'>256</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -585,6 +557,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PointerView } from './PointerView';
+import { EventObserver } from '../EventObserver/EventObserver';
 &nbsp;
 class TemplateView {
   public sliderHTML: HTMLElement;
@@ -601,9 +574,11 @@ class TemplateView {
 &nbsp;
   public isRange: boolean = false;
 &nbsp;
-  public range: HTMLElement;
+  public rangeHTML: HTMLElement;
 &nbsp;
   public lastPointerMoved: PointerView;
+&nbsp;
+  public observer: EventObserver = new EventObserver();
 &nbsp;
   public styleClasses = {
     SLIDER: 'j-plugin-slider',
@@ -621,7 +596,9 @@ class TemplateView {
     hasTip?: boolean;
     isRange?: boolean;
   }) {
-    const { rootElem, isVertical, hasTip, isRange } = options;
+    const {
+      rootElem, isVertical, hasTip, isRange
+    } = options;
     this.sliderHTML = rootElem;
     this.isVertical = isVertical;
     this.hasTip = hasTip;
@@ -629,14 +606,25 @@ class TemplateView {
 &nbsp;
     this.createTemplate();
     this.bindEventListeners();
+    this.addObservers();
   }
 &nbsp;
-  createTemplate() {
+  private createTemplate() {
+    this.createPath();
+    this.createPointers();
+    this.setOrientationClass();
+    this.createTip();
+    this.lastPointerMoved = this.pointer0;
+  }
+&nbsp;
+  private createPath() {
     this.pathHTML = document.createElement('div');
     this.sliderHTML.classList.add(this.styleClasses.SLIDER);
     this.pathHTML.classList.add(this.styleClasses.PATH);
     this.sliderHTML.append(this.pathHTML);
+  }
 &nbsp;
+  private createPointers() {
     let thumb = document.createElement('div');
     this.pathHTML.append(thumb);
     this.pointer0 = new PointerView(thumb, this.isVertical);
@@ -648,132 +636,31 @@ class TemplateView {
       this.pointer1 = new PointerView(thumb, this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
 &nbsp;
-      this.range = document.createElement('div');
-      this.range.classList.add(this.styleClasses.RANGE);
-      this.pathHTML.prepend(this.range);
+      this.rangeHTML = document.createElement('div');
+      this.rangeHTML.classList.add(this.styleClasses.RANGE);
+      this.pathHTML.prepend(this.rangeHTML);
     }
+  }
 &nbsp;
+  private setOrientationClass() {
     if (this.isVertical) {
       this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
+    } else {
+      this.sliderHTML.classList.remove(this.styleClasses.SLIDER_VERTICAL);
     }
-    if (this.hasTip) {
-      this.sliderHTML.classList.add(this.styleClasses.SLIDER_WITH_POINT);
-    }
-    this.lastPointerMoved = this.pointer0;
   }
 &nbsp;
-  bindEventListeners() {
+  private bindEventListeners() {
     this.pathHTML.addEventListener('mousedown', this.sliderOnClick);
-&nbsp;
-    this.bindPointerEventListeners();
   }
 &nbsp;
-  bindPointerEventListeners() {
-    this.pointer0.pointerHTML.addEventListener('mousedown', this.mouseDown);
-    this.pointer0.pointerHTML.ondragstart = function onDragStart() {
-      return false;
-    };
-    if (this.isRange) {
-      this.pointer1.pointerHTML.addEventListener('mousedown', this.mouseDown);
-      this.pointer1.pointerHTML.ondragstart = function onDragStart() {
-        return false;
-      };
-    }
-  }
-&nbsp;
-  private mouseDown = (event: any) =&gt; {
-    event.preventDefault();
-&nbsp;
-    const thisThumb: HTMLElement = event.currentTarget;
-    let currentPointer: PointerView;
-&nbsp;
-    if (this.isRange &amp;&amp; this.pointer0.curPos === this.pointer1.curPos) {
-      currentPointer = this.lastPointerMoved;
-    } else if (thisThumb === this.pointer0.pointerHTML) {
-      currentPointer = this.pointer0;
-    } else if (thisThumb === this.pointer1.pointerHTML) {
-      currentPointer = this.pointer1;
-    }
-&nbsp;
-    this.updateZIndex(currentPointer);
-&nbsp;
-    const { rightEdge, leftEdge, mouseX, mouseY } = this.calcMoveBorders(
-      event,
-      currentPointer,
-    );
-    currentPointer.endPos = currentPointer.curPos;
-&nbsp;
-    const mouseMove = () =&gt; {
-      event.preventDefault();
-      const endPosInPixels = currentPointer.calcPercentsToPixels(
-        currentPointer.endPos,
-      );
-&nbsp;
-      let newCurPos: number = this.isVertical
-        ? endPosInPixels - mouseY + event.clientY
-        : endPosInPixels - mouseX + event.clientX;
-&nbsp;
-      if (newCurPos &lt; leftEdge) {
-        newCurPos = leftEdge;
-      }
-      if (newCurPos &gt; rightEdge) {
-        newCurPos = rightEdge;
-      }
-&nbsp;
-      currentPointer.setCurPosInPercents(
-        currentPointer.calcPixelsToPercents(newCurPos),
-      );
-    };
-&nbsp;
-    const mouseUp = () =&gt; {
-      this.lastPointerMoved = currentPointer;
-&nbsp;
-      document.removeEventListener('mouseup', mouseUp);
-      document.removeEventListener('mousemove', mouseMove);
-    };
-&nbsp;
-    document.addEventListener('mousemove', mouseMove);
-    document.addEventListener('mouseup', mouseUp);
-  };
-&nbsp;
-  private calcMoveBorders(event: any, currentPointer: PointerView) {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
-&nbsp;
-    let leftEdge: number = 0;
-    let rightEdge: number = currentPointer.getPathLength();
-&nbsp;
-    if (this.isRange) {
-      if (
-        this.pointer0.curPos === this.pointer1.curPos &amp;&amp;
-        currentPointer !== this.lastPointerMoved
-      ) {
-        leftEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
-        rightEdge = currentPointer.calcPercentsToPixels(currentPointer.curPos);
-      } else if (currentPointer === this.pointer0) {
-        leftEdge = 0;
-        rightEdge = currentPointer.calcPercentsToPixels(this.pointer1.curPos);
-      } else if (currentPointer === this.pointer1) {
-        leftEdge = currentPointer.calcPercentsToPixels(this.pointer0.curPos);
-        rightEdge = this.pointer1.getPathLength();
-      }
-    }
-&nbsp;
-    return {
-      rightEdge,
-      leftEdge,
-      mouseX,
-      mouseY,
-    };
-  }
 &nbsp;
   private sliderOnClick = (event: any) =&gt; {
     event.preventDefault();
     const curTarget: HTMLElement = event.target;
 &nbsp;
-    const isValidClick =
-      curTarget.className === this.styleClasses.PATH ||
-      curTarget.className === this.styleClasses.RANGE;
+    const isValidClick = curTarget.className === this.styleClasses.PATH
+      || curTarget.className === this.styleClasses.RANGE;
     if (!isValidClick) return;
 &nbsp;
     const newLeft: number = this.isVertical
@@ -784,73 +671,144 @@ class TemplateView {
       const pointersRange = this.calculatePointersRange();
 &nbsp;
       if (newLeft &lt; pointersRange) {
-        this.pointer0.setCurPosInPixels(newLeft);
+        this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
       }
       if (newLeft &gt; pointersRange) {
-        this.pointer1.setCurPosInPixels(newLeft);
+        this.pointer1.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
       }
     } else {
-      this.pointer0.setCurPosInPixels(newLeft);
+      this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
     }
   };
 &nbsp;
-  calculateAndApplyRangeLine = () =&gt; {
-    if (this.isVertical) {
-      this.range.style.top = this.pointer0.pointerHTML.style.top;
-      const range =
-        parseInt(this.pointer1.pointerHTML.style.top, 10) -
-        parseInt(this.pointer0.pointerHTML.style.top, 10);
-      this.range.style.height = `${range}%`;
-    } else {
-      this.range.style.left = this.pointer0.pointerHTML.style.left;
-      const range =
-        parseInt(this.pointer1.pointerHTML.style.left, 10) -
-        parseInt(this.pointer0.pointerHTML.style.left, 10);
-      this.range.style.width = `${range}%`;
+  private calculateAndApplyRangeLine() {
+    if (this.isRange) {
+      if (this.isVertical) {
+        this.rangeHTML.style.top = this.pointer0.pointerHTML.style.top;
+        const range = parseInt(this.pointer1.pointerHTML.style.top, 10)
+          - parseInt(this.pointer0.pointerHTML.style.top, 10);
+        this.rangeHTML.style.height = `${range}%`;
+      } else {
+        this.rangeHTML.style.left = this.pointer0.pointerHTML.style.left;
+        const range = parseInt(this.pointer1.pointerHTML.style.left, 10)
+          - parseInt(this.pointer0.pointerHTML.style.left, 10);
+        this.rangeHTML.style.width = `${range}%`;
+      }
     }
-  };
+  }
 &nbsp;
-  calculatePointersRange() {
-    const res: number =
-      (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels()) /
-        2 +
-      this.pointer0.getCurPosInPixels();
+  private calculatePointersRange() {
+    const res: number = (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels())
+        / 2
+      + this.pointer0.getCurPosInPixels();
     return res;
+  }
+&nbsp;
+  private dispatchPointerPosition(data: any) {
+    const { newCurPos } = data;
+    let { updateObject } = data;
+    let updateValueType;
+    if (updateObject === this.pointer1) {
+      updateValueType = 'secondValue';
+    } else if (this.isRange) {
+      updateValueType = 'firstValue';
+    } else {
+      updateValueType = 'singleValue';
+    }
+    this.updateZIndex(updateObject);
+    updateObject = updateValueType;
+    this.observer.broadcast({ newCurPos, updateObject });
+  }
+&nbsp;
+  private addObservers() {
+    this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
+    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
+  }
+&nbsp;
+  setPointerPosition(newCurPos: number[] | number) {
+    if (this.isRange) {
+      this.pointer0.setPointerPosition(newCurPos[0]);
+      this.pointer1.setPointerPosition(newCurPos[1]);
+      this.calculateAndApplyRangeLine();
+    } else {
+      this.pointer0.setPointerPosition(&lt;number&gt;newCurPos);
+    }
+  }
+&nbsp;
+  update(isRange: boolean, isVertical: boolean, hasTip: boolean) {
+    this.isVertical = isVertical;
+    this.hasTip = hasTip;
+    this.isRange = isRange;
+&nbsp;
+    this.getClear();
+    this.createPointers();
+    this.setOrientationClass();
+    this.createTip();
+    this.bindEventListeners();
+    this.addObservers();
+  }
+&nbsp;
+  updateZIndex(curPointer: PointerView) {
+    if (this.isRange) {
+      if (curPointer === this.pointer0) {
+        this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+        this.pointer1.pointerHTML.classList.remove(
+          this.styleClasses.THUMB_SELECTED,
+        );
+      } else {
+        this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+        this.pointer0.pointerHTML.classList.remove(
+          this.styleClasses.THUMB_SELECTED,
+        );
+      }
+    }
+  }
+&nbsp;
+  createTip() {
+    if (this.hasTip) {
+      this.pointer0.createTip();
+      if (this.isRange) {
+        this.pointer1.createTip();
+      }
+    }
+  }
+&nbsp;
+  setTipValue(newValue: number | number[]) {
+    if (this.hasTip) {
+      if (this.isRange) {
+        this.pointer0.updateTipValue(newValue[0]);
+        this.pointer1.updateTipValue(newValue[1]);
+      } else {
+        this.pointer0.updateTipValue(newValue as number);
+      }
+    }
   }
 &nbsp;
   setDataAttribute(attr: string, value: string) {
     this.sliderHTML.dataset[attr] = value;
   }
 &nbsp;
-  updateZIndex(curThumb: PointerView) {
-    this.pointer0.pointerHTML.classList.remove(
-      this.styleClasses.THUMB_SELECTED,
-    );
-    if (this.isRange)
-      this.pointer1.pointerHTML.classList.remove(
-        this.styleClasses.THUMB_SELECTED,
-      );
-    curThumb.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+  removeDataAttribute(attr: string) {
+    delete this.sliderHTML.dataset[attr];
   }
 &nbsp;
-  destroy() {
-    this.pointer0.pointerHTML.remove();
-    this.pointer0 = undefined;
-    if (this.isRange) {
-      this.pointer1.pointerHTML.remove();
-      this.pointer1 = undefined;
-    }
-    this.pathHTML.remove();
-    this.pathHTML = undefined;
+  setDataAttributes(attributes: any) {
+    attributes.forEach((attribute: any) =&gt; {
+      this.setDataAttribute(attribute.name, attribute.value);
+    });
+  }
+&nbsp;
+  getClear() {
     this.sliderHTML.classList.remove(
-      this.styleClasses.SLIDER,
       this.styleClasses.SLIDER_VERTICAL,
       this.styleClasses.SLIDER_WITH_POINT,
     );
-    this.sliderHTML.remove();
-    this.sliderHTML = undefined;
+    this.pointer0 = undefined;
+    this.pointer1 = undefined;
+    this.pathHTML.innerHTML = '';
   }
 }
+&nbsp;
 export { TemplateView };
 export default TemplateView;
 &nbsp;</pre></td></tr>
@@ -859,7 +817,7 @@ export default TemplateView;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Oct 29 2019 15:23:40 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 02 2019 21:59:56 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

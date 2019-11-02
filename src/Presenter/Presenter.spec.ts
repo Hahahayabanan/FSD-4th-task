@@ -73,7 +73,7 @@ describe('Presenter / Presenter Range / Test initialization', () => {
   });
 
   it('Should coincide constructor set values on range line', () => {
-    expect(slider.view.range.style.left).toEqual(
+    expect(slider.view.rangeHTML.style.left).toEqual(
       slider.view.pointer0.pointerHTML.style.left,
     );
   });
@@ -81,7 +81,6 @@ describe('Presenter / Presenter Range / Test initialization', () => {
 
 describe('Presenter / Presenter Range / Test methods', () => {
   shadowSlider.style.cssText = 'width: 300px';
-
   const slider: Presenter = new Presenter(shadowSlider, {
     min: 10,
     step: 5,
@@ -90,15 +89,27 @@ describe('Presenter / Presenter Range / Test methods', () => {
     values: [25, 75],
   });
 
-  it('render', async () => {
-    await slider.render(slider.view.pointer1, 50);
-    expect(Math.round(slider.view.pointer1.curPos)).toEqual(72);
+  beforeEach(() => {
+    slider.model.setSettings({
+      min: 10,
+      step: 5,
+      max: 100,
+      range: true,
+      values: [25, 75],
+    });
   });
 
-  it('setHasTipValue', async () => {
-    slider.model.setHasTip(true);
-    await slider.setTipValue(slider.view.pointer1, 55);
-    expect(slider.view.pointer1.tip.tipHTML.innerHTML).toEqual('55');
+
+  it('updateViewWithNewPointerPosition', async () => {
+    await slider.updateViewWithNewPointerPosition({ newValues: [50, 72] });
+    expect(Math.round(slider.view.pointer1.curPos)).toEqual(69);
+  });
+
+  it('updateViewWithNewSettings', async () => {
+    await slider.updateViewWithNewSettings({ range: false, hasTip: true });
+    expect(slider.view.isRange).toBeFalsy();
+    expect(slider.view.pointer0.tip).toBeDefined();
+    expect(slider.view.pointer1).toBeUndefined();
   });
 
   it('checkOrientationIsVertical', async () => {
@@ -113,9 +124,9 @@ describe('Presenter / Presenter Range / Test methods', () => {
     expect(slider.view.sliderHTML.dataset.min).toEqual('0');
   });
 
-  it('updateValuesDataAttributes', async () => {
+  it('updateValueDataAttributes', async () => {
     await slider.model.setValues([35, 65]);
-    await slider.updateValuesDataAttributes();
+    await slider.updateValueDataAttributes();
     expect(slider.view.sliderHTML.dataset.values).toEqual('[35,65]');
   });
 });

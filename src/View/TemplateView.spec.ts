@@ -54,16 +54,12 @@ describe('View / Slider template / Test of calculations', () => {
     slider = new TemplateView({
       rootElem: shadowSlider,
       isRange: true,
+      hasTip: true,
     });
-    slider.pointer0.setCurPosInPercents(20);
-    slider.pointer1.setCurPosInPercents(50);
+    slider.pointer0.setPointerPosition(20);
+    slider.pointer1.setPointerPosition(50);
     slider.pointer0.renderCurrentPosInPercents(20);
     slider.pointer1.renderCurrentPosInPercents(50);
-  });
-
-  it('calculateAndApplyRangeLine', async () => {
-    await slider.calculateAndApplyRangeLine();
-    expect(slider.range.style.width).toEqual('30%');
   });
 
   it('setDataAttribute', async () => {
@@ -78,9 +74,14 @@ describe('View / Slider template / Test of calculations', () => {
     );
   });
 
-  it('destroy', async () => {
-    await slider.destroy();
+  it('setTipValue', async () => {
+    await slider.setTipValue([256, 128]);
+    expect(slider.pointer0.tip.tipHTML.textContent).toEqual('256');
+  });
+
+  it('getClear', async () => {
+    await slider.getClear();
+    expect(slider.pointer0).toBeUndefined();
     expect(slider.pointer1).toBeUndefined();
-    expect(slider.sliderHTML).toBeUndefined();
   });
 });
