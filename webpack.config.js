@@ -99,6 +99,15 @@ const config = {
           },
         }],
       },
+      {
+        loader: 'webpack-px-to-rem',
+        query: {
+          // 1rem=npx default 10
+          basePx: 16,
+          min: 1,
+          floatWidth: 3,
+        },
+      },
     ].filter(Boolean),
   },
   resolve: {

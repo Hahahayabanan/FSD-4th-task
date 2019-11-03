@@ -1,0 +1,35 @@
+import { EventObserver } from '../EventObserver/EventObserver';
+declare class Model {
+    private settings;
+    valuesObserver: EventObserver;
+    settingsObserver: EventObserver;
+    constructor(sett?: object);
+    setSettings(sett: object): void;
+    getSettings(): import("./ISliderSettings").ISliderSettings;
+    calculateValueWithStep(pos: number[]): number[];
+    calculateValueWithStep(pos: number): number;
+    calculateFromPercentsToValue(curPosInPercents: number): number;
+    calculateFromValueToPercents(curPosInValue: number): number;
+    calculateValue(curPosInPercents: number, updateObject: string): number;
+    calculateStartValues(): void;
+    dispatchValue(): void;
+    dispatchSettings(): void;
+    setRange(tmp: boolean): void;
+    setMin(tmp: number): void;
+    setMax(tmp: number): void;
+    setStep(tmp: number): void;
+    setValue(tmp: number, currentValueNumber?: number): void;
+    setValues(tmp: number[]): void;
+    setOrientation(tmp: string): void;
+    setHasTip(tmp: boolean): void;
+    getRange(): boolean;
+    getMin(): number;
+    getMax(): number;
+    getStep(): number;
+    getValue(): number;
+    getValues(number?: number): number[] | number;
+    getOrientation(): string;
+    getHasTip(): boolean;
+}
+export { Model };
+export default Model;

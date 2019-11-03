@@ -4,7 +4,7 @@ declare class ExampleParameters {
     $slider: JQuery<Object>;
     constructor(exampleContainer: HTMLElement);
     createContainer(): void;
-    initFollowerPointCheckboxes(): void;
+    initTipCheckboxes(): void;
     initRange(): void;
     initOrientation(): void;
     initMinMax(): void;
@@ -15,4 +15,4 @@ declare const _default: {
     ExampleParameters: typeof ExampleParameters;
 };
 export default _default;
-export { ExampleParameters, };
+export { ExampleParameters };
