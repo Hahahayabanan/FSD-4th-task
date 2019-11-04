@@ -28,114 +28,61 @@ class PresenterAPI {
     if (value !== undefined) {
       switch (setting) {
         case 'range':
-          this.setRange(<boolean>value);
+          this.slider.model.setRange(<boolean>value);
           break;
         case 'min':
-          this.setMin(<number>value);
+          this.slider.model.setMin(<number>value);
           break;
         case 'max':
-          this.setMax(<number>value);
+          this.slider.model.setMax(<number>value);
           break;
         case 'step':
-          this.setStep(<number>value);
+          this.slider.model.setStep(<number>value);
           break;
         case 'orientation':
-          this.setOrientation(<string>value);
+          this.slider.model.setOrientation(<string>value);
           break;
         case 'value':
-          this.setValue(<number>value);
+          this.slider.model.setValue(<number>value);
           break;
         case 'values':
           currentReturn = this.checkValuesSetterType(oneOfTwoValues, value);
           break;
         case 'hasTip':
-          this.setHasTip(<boolean>value);
+          this.slider.model.setHasTip(<boolean>value);
           break;
         default:
       }
     } else {
       switch (setting) {
         case 'range':
-          currentReturn = this.getRange();
+          currentReturn = this.slider.model.getRange();
           break;
         case 'min':
-          currentReturn = this.getMin();
+          currentReturn = this.slider.model.getMin();
           break;
         case 'max':
-          currentReturn = this.getMax();
+          currentReturn = this.slider.model.getMax();
           break;
         case 'step':
-          currentReturn = this.getStep();
+          currentReturn = this.slider.model.getStep();
           break;
         case 'orientation':
-          currentReturn = this.getOrientation();
+          currentReturn = this.slider.model.getOrientation();
           break;
         case 'value':
-          currentReturn = this.getValue();
+          currentReturn = this.slider.model.getValue();
+          break;
+        case 'values':
+          currentReturn = this.getValues();
           break;
         case 'hasTip':
-          currentReturn = this.getHasTip();
+          currentReturn = this.slider.model.getHasTip();
           break;
         default:
       }
     }
     return currentReturn;
-  }
-
-  static getHasTip(): boolean {
-    return this.slider.model.getHasTip();
-  }
-
-  static setHasTip(newVal: boolean): void {
-    this.slider.model.setHasTip(newVal);
-  }
-
-  static getRange(): boolean {
-    return this.slider.model.getRange();
-  }
-
-  static setRange(newVal: boolean): void {
-    this.slider.model.setRange(newVal);
-  }
-
-  static getMin(): number {
-    return this.slider.model.getMin();
-  }
-
-  static setMin(newVal: number) {
-    this.slider.model.setMin(+newVal);
-  }
-
-  static getMax(): number {
-    return this.slider.model.getMax();
-  }
-
-  static setMax(newVal: number) {
-    this.slider.model.setMax(newVal);
-  }
-
-  static getStep(): number {
-    return this.slider.model.getStep();
-  }
-
-  static setStep(newVal: number) {
-    this.slider.model.setStep(newVal);
-  }
-
-  static getValue(): number {
-    return this.slider.model.getValue();
-  }
-
-  static setValue(newVal: number) {
-    this.slider.model.setValue(newVal);
-  }
-
-  static getOrientation(): string {
-    return this.slider.model.getOrientation();
-  }
-
-  static setOrientation(newVal: string) {
-    this.slider.model.setOrientation(newVal);
   }
 
   static getValues(numberCurrent?: number): number[] | number {

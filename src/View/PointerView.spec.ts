@@ -12,7 +12,7 @@ const pointer = new PointerView(shadowThumb);
 
 describe('View / Slider Pointer / Test of setting', () => {
   beforeEach(() => {
-    shadowPath.style.width = '300px';
+    shadowPath.style.width = '300Px';
   });
 
   it('Slider pointer should be set', () => {
