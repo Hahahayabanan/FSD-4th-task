@@ -89,7 +89,7 @@ class Model {
         break;
       case 'secondValue': currentValueNumber = 1;
         break;
-      case 'singleValue': currentValueNumber = undefined;
+      case 'singleValue': currentValueNumber = null;
         break;
       default: return NaN;
     }

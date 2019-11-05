@@ -6,9 +6,9 @@ class TemplateView {
 
   public pathHTML: HTMLElement;
 
-  public pointer0: PointerView = undefined;
+  public pointer0: PointerView = null;
 
-  public pointer1: PointerView = undefined;
+  public pointer1: PointerView = null;
 
   public isVertical: boolean = false;
 
@@ -245,8 +245,8 @@ class TemplateView {
       this.styleClasses.SLIDER_VERTICAL,
       this.styleClasses.SLIDER_WITH_POINT,
     );
-    this.pointer0 = undefined;
-    this.pointer1 = undefined;
+    this.pointer0 = null;
+    this.pointer1 = null;
     this.pathHTML.innerHTML = '';
   }
 }

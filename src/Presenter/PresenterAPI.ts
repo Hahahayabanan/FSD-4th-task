@@ -25,7 +25,7 @@ class PresenterAPI {
     }
 
     let currentReturn: string | number | number[] | boolean;
-    if (value !== undefined) {
+    if (value !== undefined || value !== null) {
       switch (setting) {
         case 'range':
           this.slider.model.setRange(<boolean>value);

@@ -81,16 +81,10 @@ describe('Presenter / Presenter Range / Test initialization', () => {
 
 describe('Presenter / Presenter Range / Test methods', () => {
   shadowSlider.style.cssText = 'width: 300px';
-  const slider: Presenter = new Presenter(shadowSlider, {
-    min: 10,
-    step: 5,
-    max: 100,
-    range: true,
-    values: [25, 75],
-  });
+  let slider: Presenter;
 
   beforeEach(() => {
-    slider.model.setSettings({
+    slider = new Presenter(shadowSlider, {
       min: 10,
       step: 5,
       max: 100,
@@ -109,7 +103,7 @@ describe('Presenter / Presenter Range / Test methods', () => {
     await slider.updateViewWithNewSettings({ range: false, hasTip: true });
     expect(slider.view.isRange).toBeFalsy();
     expect(slider.view.pointer0.tip).toBeDefined();
-    expect(slider.view.pointer1).toBeUndefined();
+    expect(slider.view.pointer1).toBeNull();
   });
 
   it('checkOrientationIsVertical', async () => {

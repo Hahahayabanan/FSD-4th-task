@@ -118,9 +118,9 @@ class PointerView {
   }
 
   deleteTip() {
-    if (this.tip !== undefined) {
+    if (this.tip) {
       this.tip.destroy();
-      this.tip = undefined;
+      this.tip = null;
       const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
       sliderWrap.classList.remove('j-plugin-slider_with-point');
     }

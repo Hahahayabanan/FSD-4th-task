@@ -10,11 +10,11 @@ declare global {
   interface JQuery {
     slider: (
       ...args: any
-    ) => JQuery<Element> | string | number | number[] | boolean | undefined;
+    ) => JQuery<Element> | string | number | number[] | boolean | null;
   }
 }
 
-function checkDataset(dataset: string): number | boolean | undefined {
+function checkDataset(dataset: string): number | boolean | null {
   if (dataset === 'true') {
     return true;
   }
@@ -25,7 +25,7 @@ function checkDataset(dataset: string): number | boolean | undefined {
   if (!isNaN(number)) {
     return number;
   }
-  return undefined;
+  return null;
 }
 
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
@@ -51,9 +51,10 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
   $.fn.slider = function getStart(
     ...args: any
-  ): JQuery<Element> | string | number | number[] | boolean | undefined {
-    if (typeof args[0] === 'object' || args[0] === undefined) {
-      let settings: ISliderSettings = args[0];
+  ): JQuery<Element> | string | number | number[] | boolean | null {
+    const [receivedParameter] = args;
+    if (typeof receivedParameter === 'object' || receivedParameter === undefined) {
+      let settings: ISliderSettings = receivedParameter;
       return this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
@@ -61,7 +62,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       });
     }
 
-    if (typeof args[0] === 'string') {
+    if (typeof receivedParameter === 'string') {
       const [option, setting, value, oneOfTwoValues] = args;
       let returnValue: any;
       this.each((i: number, val: object) => {

@@ -81,7 +81,7 @@ describe('View / Slider template / Test of calculations', () => {
 
   it('getClear', async () => {
     await slider.getClear();
-    expect(slider.pointer0).toBeUndefined();
-    expect(slider.pointer1).toBeUndefined();
+    expect(slider.pointer0).toBeNull();
+    expect(slider.pointer1).toBeNull();
   });
 });
