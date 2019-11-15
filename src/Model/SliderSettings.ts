@@ -200,7 +200,7 @@ class SliderSettings {
   }
 
   setValue(newValue: number, currentValueNumber?: number) {
-    if (currentValueNumber !== undefined) {
+    if (currentValueNumber !== undefined && currentValueNumber !== null) {
       this.setValidValue(newValue, currentValueNumber);
     } else {
       this.settings.value = newValue;

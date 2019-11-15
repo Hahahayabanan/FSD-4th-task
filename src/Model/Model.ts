@@ -89,7 +89,7 @@ class Model {
         break;
       case 'secondValue': currentValueNumber = 1;
         break;
-      case 'singleValue': currentValueNumber = undefined;
+      case 'singleValue': currentValueNumber = null;
         break;
       default: return NaN;
     }
@@ -183,7 +183,7 @@ class Model {
   }
 
   getValues(number?: number): number[] | number {
-    if (number !== undefined) {
+    if (number !== undefined && number != null) {
       return this.settings.settings.values[number];
     }
     return this.settings.settings.values;

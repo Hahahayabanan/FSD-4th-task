@@ -48,6 +48,6 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(pointer.tip).toBeDefined();
     expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');
     pointer.deleteTip();
-    expect(pointer.tip).toBeUndefined();
+    expect(pointer.tip).toBeNull();
   });
 });

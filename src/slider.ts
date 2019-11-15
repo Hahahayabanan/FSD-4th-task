@@ -10,11 +10,11 @@ declare global {
   interface JQuery {
     slider: (
       ...args: any
-    ) => JQuery<Element> | string | number | number[] | boolean | undefined;
+    ) => JQuery<Element> | string | number | number[] | boolean;
   }
 }
 
-function checkDataset(dataset: string): number | boolean | undefined {
+function checkDataset(dataset: string): number | boolean {
   if (dataset === 'true') {
     return true;
   }
@@ -25,7 +25,6 @@ function checkDataset(dataset: string): number | boolean | undefined {
   if (!isNaN(number)) {
     return number;
   }
-  return undefined;
 }
 
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
@@ -51,7 +50,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
   $.fn.slider = function getStart(
     ...args: any
-  ): JQuery<Element> | string | number | number[] | boolean | undefined {
+  ): JQuery<Element> | string | number | number[] | boolean {
     if (typeof args[0] === 'object' || args[0] === undefined) {
       let settings: ISliderSettings = args[0];
       return this.each((i: number, val: HTMLElement) => {
