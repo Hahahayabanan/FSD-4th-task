@@ -50,9 +50,10 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
   $.fn.slider = function getStart(
     ...args: any
-  ): JQuery<Element> | string | number | number[] | boolean {
-    if (typeof args[0] === 'object' || args[0] === undefined) {
-      let settings: ISliderSettings = args[0];
+  ): JQuery<Element> | string | number | number[] | boolean | null {
+    const [receivedParameter] = args;
+    if (typeof receivedParameter === 'object' || receivedParameter === undefined) {
+      let settings: ISliderSettings = receivedParameter;
       return this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
@@ -60,7 +61,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       });
     }
 
-    if (typeof args[0] === 'string') {
+    if (typeof receivedParameter === 'string') {
       const [option, setting, value, oneOfTwoValues] = args;
       let returnValue: any;
       this.each((i: number, val: object) => {

@@ -150,7 +150,6 @@ class SliderSettings {
     this.settings.range = Boolean(tmp);
     this.setValidValue();
     this.checkValidSettings();
-    return this.settings.range;
   }
 
   setMin(tmp: number) {
@@ -160,10 +159,8 @@ class SliderSettings {
       }
       this.settings.min = Number(tmp);
       this.checkValidSettings();
-      return this.settings.min;
     } catch (err) {
       console.error(err);
-      return this.settings.min;
     }
   }
 
@@ -174,10 +171,8 @@ class SliderSettings {
       }
       this.settings.max = Number(tmp);
       this.checkValidSettings();
-      return this.settings.max;
     } catch (err) {
       console.error(err);
-      return this.settings.max;
     }
   }
 
@@ -189,13 +184,11 @@ class SliderSettings {
       if (stepBiggerNull && stepSmallerRange) {
         this.settings.step = Number(tmp);
         this.checkValidSettings();
-        return this.settings.step;
       }
       this.settings.step = this.defaultSettings.step;
       throw this.errors.stepBiggerMaxMin;
     } catch (err) {
       console.error(err);
-      return this.settings.step;
     }
   }
 
@@ -206,25 +199,21 @@ class SliderSettings {
       this.settings.value = newValue;
     }
     this.checkValidSettings();
-    return this.settings.value;
   }
 
   setValues(tmp: number[]) {
     this.settings.values = tmp;
     this.setValidValue();
     this.checkValidSettings();
-    return this.settings.values;
   }
 
   setOrientation(tmp: string) {
     this.settings.orientation = tmp;
     this.checkValidSettings();
-    return this.settings.orientation;
   }
 
   setHasTip(tmp: boolean) {
     this.settings.hasTip = Boolean(tmp);
-    return this.settings.hasTip;
   }
 }
 
