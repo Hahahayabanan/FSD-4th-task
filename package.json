@@ -94,12 +94,15 @@
     "server:prod": "cross-env NODE_ENV=production webpack-dev-server  --mode production --config ./webpack.config.js --port 3000 --host 0.0.0.0 --hot --inline --progress  --watch --open --content-base dist/",
     "start": "npm run server:dev",
     "test": "karma start",
-    "eslint-fix": "eslint --fix  \"./\"  --ext .js"
+    "eslint-fix": "eslint --fix  \"./\"  --ext .js",
+    "deploy": "gh-pages -d dist"
   },
   "version": "0.0.1",
   "dependencies": {
     "@types/jsdom": "^12.2.4",
+    "autoprefixer": "^9.7.1",
     "eslint-utils": "^1.4.2",
+    "gh-pages": "^2.1.1",
     "q": "^1.5.1",
     "webpack-px-to-rem": "^0.1.1"
   }

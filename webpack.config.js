@@ -3,11 +3,15 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Autoprefixer = require('autoprefixer');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProd = nodeEnv === 'production';
+const publicDir = isProd ? 'https://hahahayabanan.github.io/FSD-4th-task/' : '/';
 
 const plugins = [
+  Autoprefixer,
+
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(nodeEnv),
@@ -45,6 +49,7 @@ const config = {
   output: {
     path: path.resolve('./dist'),
     filename: '[name].bundle.js',
+    publicPath: publicDir,
   },
   module: {
     rules: [
