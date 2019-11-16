@@ -18,14 +18,14 @@ declare class SliderSettings {
     constructor(setts: ISliderSettings);
     checkValidSettings(): void;
     setValidValue(newValue?: number, currentValueNumber?: number): void;
-    setRange(tmp: boolean): boolean;
-    setMin(tmp: number): number;
-    setMax(tmp: number): number;
-    setStep(tmp: number): number;
-    setValue(newValue: number, currentValueNumber?: number): number;
-    setValues(tmp: number[]): number[];
-    setOrientation(tmp: string): string;
-    setHasTip(tmp: boolean): boolean;
+    setRange(tmp: boolean): void;
+    setMin(tmp: number): void;
+    setMax(tmp: number): void;
+    setStep(tmp: number): void;
+    setValue(newValue: number, currentValueNumber?: number): void;
+    setValues(tmp: number[]): void;
+    setOrientation(tmp: string): void;
+    setHasTip(tmp: boolean): void;
 }
 export { SliderSettings };
 export default SliderSettings;

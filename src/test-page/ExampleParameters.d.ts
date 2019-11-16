@@ -1,14 +1,13 @@
 declare class ExampleParameters {
-    exampleContainer: HTMLElement;
-    $container: JQuery<Object>;
-    $slider: JQuery<Object>;
-    constructor(exampleContainer: HTMLElement);
+    $exampleContainer: HTMLElement;
+    $controlPanel: any;
+    $slider: any;
+    constructor($exampleContainer: any, $slider: any);
+    init(): void;
     createContainer(): void;
-    initTipCheckboxes(): void;
-    initRange(): void;
+    createCheckbox(labelText: string, property: string): void;
     initOrientation(): void;
-    initMinMax(): void;
-    initStep(): void;
+    createInputText(labelText: string, property: string): void;
     initValueInputs(): void;
 }
 declare const _default: {

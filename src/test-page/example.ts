@@ -33,6 +33,9 @@ $(() => {
   $('.slider6').slider();
 
   $('.slider').each((i, val) => {
-    new ExampleParameters(val);
+    const $val = $(val);
+    const $slider = $(val).children().first();
+
+    new ExampleParameters($val, $slider);
   });
 });

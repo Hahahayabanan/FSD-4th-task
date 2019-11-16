@@ -1,93 +1,64 @@
 class ExampleParameters {
-  public exampleContainer: HTMLElement;
+  public $exampleContainer: HTMLElement;
 
-  public $container: JQuery<Object>;
+  public $controlPanel: any;
 
-  public $slider: JQuery<Object>;
+  public $slider: any;
 
-  constructor(exampleContainer: HTMLElement) {
-    this.exampleContainer = exampleContainer;
+  constructor($exampleContainer: any, $slider: any) {
+    this.$exampleContainer = $exampleContainer;
+    this.$slider = $slider;
 
+    this.init();
+  }
+
+  init() {
     this.createContainer();
-    this.$slider = $(this.exampleContainer.firstElementChild);
 
-    this.initTipCheckboxes();
-    this.initRange();
+    this.createCheckbox('Has tip', 'hasTip');
+    this.createCheckbox('Is range', 'range');
     this.initOrientation();
 
-    this.initMinMax();
-    this.initStep();
+    this.createInputText('Min', 'min');
+    this.createInputText('Max', 'max');
+    this.createInputText('Step', 'step');
+
     this.initValueInputs();
   }
 
   createContainer() {
-    const container = document.createElement('div');
-    container.classList.add('control');
-    $(this.exampleContainer).append(container);
-    this.$container = $(container);
+    this.$controlPanel = $('<div>', { class: 'control' }).appendTo(this.$exampleContainer);
   }
 
-  initTipCheckboxes() {
-    const label = document.createElement('label');
-    label.innerHTML = 'Follower point';
-    this.$container.append(label);
+  createCheckbox(labelText:string, property:string) {
+    const $label = $('<label>', { text: `${labelText}` }).appendTo(this.$controlPanel);
+    const $checkbox = $('<input>', { type: 'checkbox' }).appendTo($label);
 
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    $(label).append(checkbox);
-
-    if (this.$slider.slider('option', 'hasTip')) {
-      checkbox.checked = true;
+    if (this.$slider.slider('option', `${property}`)) {
+      $checkbox.prop('checked', true);
     }
 
-    $(checkbox).change(() => {
-      if (checkbox.checked) {
-        this.$slider.slider('option', 'hasTip', true);
-      } else {
-        this.$slider.slider('option', 'hasTip', false);
-      }
-    });
-  }
-
-  initRange() {
-    const label = document.createElement('label');
-    label.innerHTML = 'Is range';
-    this.$container.append(label);
-
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    $(label).append(checkbox);
-
-    if (this.$slider.slider('option', 'range')) {
-      checkbox.checked = true;
-    }
-
-    $(checkbox).change(() => {
-      if (checkbox.checked) {
-        this.$slider.slider('option', 'range', true);
+    $checkbox.on('change', () => {
+      if ($checkbox.prop('checked')) {
+        this.$slider.slider('option', `${property}`, true);
         this.initValueInputs();
       } else {
-        this.$slider.slider('option', 'range', false);
+        this.$slider.slider('option', `${property}`, false);
         this.initValueInputs();
       }
     });
   }
 
   initOrientation() {
-    const label = document.createElement('label');
-    label.innerHTML = 'Is vertical';
-    this.$container.append(label);
-
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    $(label).append(checkbox);
+    const $label = $('<label>', { text: 'Is vertical' }).appendTo(this.$controlPanel);
+    const $checkbox = $('<input>', { type: 'checkbox' }).appendTo($label);
 
     if (this.$slider.slider('option', 'orientation') === 'vertical') {
-      checkbox.checked = true;
+      $checkbox.prop('checked', true);
     }
 
-    $(checkbox).change(() => {
-      if (checkbox.checked) {
+    $checkbox.on('change', () => {
+      if ($checkbox.prop('checked')) {
         this.$slider.slider('option', 'orientation', 'vertical');
       } else {
         this.$slider.slider('option', 'orientation', 'horizontal');
@@ -95,94 +66,53 @@ class ExampleParameters {
     });
   }
 
-  initMinMax() {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'Max';
-    this.$container.append(ilabel1);
+  createInputText(labelText:string, property:string) {
+    const $label = $('<label>', { text: `${labelText}` }).appendTo(this.$controlPanel);
+    const $inputText = $('<input>', { type: 'text' }).appendTo($label);
 
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'text');
-    $(ilabel1).append(newInput1);
+    $inputText.val(this.$slider.slider('option', `${property}`) as number);
 
-    const ilabel2 = document.createElement('label');
-    ilabel2.innerHTML = 'Min';
-    this.$container.append(ilabel2);
-
-    const newInput2 = document.createElement('input');
-    newInput2.setAttribute('type', 'text');
-    $(ilabel2).append(newInput2);
-
-    $(newInput1).val(this.$slider.slider('option', 'max') as number);
-    $(newInput2).val(this.$slider.slider('option', 'min') as number);
-    $(newInput1).on('change', () => {
-      this.$slider.slider('option', 'max', $(newInput1).val());
-    });
-    $(newInput2).on('change', () => {
-      this.$slider.slider('option', 'min', $(newInput2).val());
-    });
-  }
-
-  initStep() {
-    const ilabel1 = document.createElement('label');
-    ilabel1.innerHTML = 'Step';
-    this.$container.append(ilabel1);
-
-    const newInput1 = document.createElement('input');
-    newInput1.setAttribute('type', 'text');
-    $(ilabel1).append(newInput1);
-
-    $(newInput1).val(this.$slider.slider('option', 'step') as number);
-    $(newInput1).on('change', () => {
-      this.$slider.slider('option', 'step', $(newInput1).val());
+    $inputText.on('change', () => {
+      this.$slider.slider('option', `${property}`, $inputText.val());
     });
   }
 
   initValueInputs() {
-    const label = this.$container.find('.value');
+    const label = this.$controlPanel.find('.value');
     label.remove();
 
-    const ilabel = document.createElement('label');
-    this.$container.append(ilabel);
-    ilabel.innerText = 'Value';
-    ilabel.classList.add('value');
-
-    const newInput = document.createElement('input');
-    newInput.setAttribute('type', 'text');
-    $(ilabel).append(newInput);
+    const $label = $('<label>', { text: 'Value', class: 'value' }).appendTo(this.$controlPanel);
+    const $inputText = $('<input>', { type: 'Text' }).appendTo($label);
 
     if (this.$slider.slider('option', 'range')) {
-      ilabel.childNodes[0].nodeValue = 'First pointer value';
-      const ilabel2 = document.createElement('label');
-      ilabel2.classList.add('value');
-      ilabel2.innerText = 'Second pointer value';
-      this.$container.append(ilabel2);
+      $label.get(0).childNodes[0].nodeValue = 'First pointer value';
 
-      const newInput2 = document.createElement('input');
-      newInput2.setAttribute('type', 'text');
-      $(ilabel2).append(newInput2);
+      const $label2 = $('<label>', { text: 'Second pointer value', class: 'value' }).appendTo(this.$controlPanel);
+      const $inputText2 = $('<input>', { type: 'Text' }).appendTo($label2);
 
-      $(newInput).val(this.$slider.slider('option', 'values', 0) as number);
-      $(newInput2).val(this.$slider.slider('option', 'values', 1) as number);
+      $inputText.val(this.$slider.slider('option', 'values', 0) as number);
+      $inputText2.val(this.$slider.slider('option', 'values', 1) as number);
 
-      $(newInput).on('change', () => {
-        this.$slider.slider('option', 'values', 0, $(newInput).val());
+      $inputText.on('change', () => {
+        this.$slider.slider('option', 'values', 0, $inputText.val());
       });
-      $(newInput2).on('change', () => {
-        this.$slider.slider('option', 'values', 1, $(newInput2).val());
+      $inputText2.on('change', () => {
+        this.$slider.slider('option', 'values', 1, $inputText2.val());
       });
-
       this.$slider.on('changePointer', () => {
-        $(newInput).val(this.$slider.slider('option', 'values', 0) as number);
-        $(newInput2).val(this.$slider.slider('option', 'values', 1) as number);
+        $inputText.val(this.$slider.slider('option', 'values', 0) as number);
+        $inputText2.val(this.$slider.slider('option', 'values', 1) as number);
       });
     } else {
-      ilabel.childNodes[0].nodeValue = 'Value';
-      $(newInput).val(this.$slider.slider('option', 'value') as number);
-      $(newInput).on('change', () => {
-        this.$slider.slider('option', 'value', $(newInput).val());
+      $label.get(0).childNodes[0].nodeValue = 'Value';
+
+      $inputText.val(this.$slider.slider('option', 'value') as number);
+
+      $inputText.on('change', () => {
+        this.$slider.slider('option', 'value', $inputText.val());
       });
       this.$slider.on('changePointer', () => {
-        $(newInput).val(this.$slider.slider('option', 'value') as number);
+        $inputText.val(this.$slider.slider('option', 'value') as number);
       });
     }
   }
