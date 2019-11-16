@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">67.12% </span>
+        <span class="strong">71.23% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>49/73</span>
+        <span class='fraction'>52/73</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>26/40</span>
+        <span class='fraction'>28/40</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">83.33% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>5/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.22% </span>
+        <span class="strong">69.57% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>45/69</span>
+        <span class='fraction'>48/69</span>
       </div>
     </div>
     <p class="quiet">
@@ -185,7 +185,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">45x</span>
-<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-yes">21x</span>
@@ -202,8 +202,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
@@ -214,7 +214,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -231,8 +231,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -304,7 +304,7 @@ class PresenterAPI {
 <span class="cstat-no" title="statement not covered" ></span>
     this.slider = slider;
     try {
-      if<span class="missing-if-branch" title="else path not taken" >E</span> (option !== 'option') {
+      if (option !== 'option') {
         const errorFirstParameterOption = "First parameter should be 'option'";
         throw errorFirstParameterOption;
       }
@@ -313,7 +313,7 @@ class PresenterAPI {
     }
 &nbsp;
     let currentReturn: string | number | number[] | boolean;
-    if (value !== undefined || value !== null) {
+    if (value !== undefined &amp;&amp; value !== null) {
       switch (setting) {
         case 'range':
           this.slider.model.setRange(&lt;boolean&gt;value);
@@ -334,32 +334,32 @@ class PresenterAPI {
           this.slider.model.setValue(&lt;number&gt;value);
           break;
         case 'values':
-          cu<span class="cstat-no" title="statement not covered" >rrentReturn = this.checkValuesSetterType(oneOfTwoValues, value);</span>
-          break;
+          currentReturn = this.checkValuesSetterType(oneOfTwoValues, value);
+          break;<span class="branch-0 cbranch-no" title="branch not covered" ></span>
         case 'hasTip<span class="cstat-no" title="statement not covered" >':</span>
           this.slide<span class="cstat-no" title="statement not covered" >r.model</span>.setHasTip(&lt;boolean&gt;value);
-          break;
+          break;<span class="branch-1 cbranch-no" title="branch not covered" ></span>
         default:<span class="cstat-no" title="statement not covered" ></span>
       }<span class="cstat-no" title="statement not covered" ></span>
-    } else {
+    } else {<span class="branch-2 cbranch-no" title="branch not covered" ></span>
       switch (settin<span class="cstat-no" title="statement not covered" >g) {</span>
         case 'range'<span class="cstat-no" title="statement not covered" >:</span>
-          currentReturn = this.slider.model.getRange();
+          curren<span class="branch-3 cbranch-no" title="branch not covered" >tReturn = this.slider.model.getRange();</span>
           break;<span class="cstat-no" title="statement not covered" ></span>
         case 'min':<span class="cstat-no" title="statement not covered" ></span>
-          currentReturn = this.slider.model.getMin();
+          curren<span class="branch-4 cbranch-no" title="branch not covered" >tReturn = this.slider.model.getMin();</span>
           break;<span class="cstat-no" title="statement not covered" ></span>
         case 'max':<span class="cstat-no" title="statement not covered" ></span>
           currentReturn = this.slider.model.getMax();
-          break;<span class="cstat-no" title="statement not covered" ></span>
-        case 'step':<span class="cstat-no" title="statement not covered" ></span>
-          currentReturn = this.slider.model.getStep();
+          break;
+        case 'step':
+          curren<span class="branch-6 cbranch-no" title="branch not covered" >tReturn = this.slider.model.getStep();</span>
           break;<span class="cstat-no" title="statement not covered" ></span>
         case 'orient<span class="cstat-no" title="statement not covered" >ation':</span>
-          currentReturn = this.slider.model.getOrientation();
+          curren<span class="branch-7 cbranch-no" title="branch not covered" >tReturn = this.slider.model.getOrientation();</span>
           break;<span class="cstat-no" title="statement not covered" ></span>
         case 'value'<span class="cstat-no" title="statement not covered" >:</span>
-          currentReturn = this.slider.model.getValue();
+          curren<span class="branch-8 cbranch-no" title="branch not covered" >tReturn =</span> this.slider.model.getValue();
           break;
         case 'values':
           currentReturn = this.getValues();
@@ -412,7 +412,7 @@ export default PresenterAPI;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Nov 05 2019 09:51:05 GMT+0400 (GMT+04:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Nov 16 2019 16:58:53 GMT+0400 (GMT+04:00)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
