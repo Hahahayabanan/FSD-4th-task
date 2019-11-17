@@ -286,7 +286,7 @@ $( ".selector" ).slider( "option", "values", 1, 25 );
 
 
 
-## isRange
+## hasTip
 >**Type:** ***boolean***
 
 >**Default:** ***false***
