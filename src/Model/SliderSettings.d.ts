@@ -15,10 +15,10 @@ declare class SliderSettings {
         rangeValuesInSingle: string;
         notValidOrientation: string;
     };
-    constructor(setts: ISliderSettings);
+    constructor(settings: ISliderSettings);
     checkValidSettings(): void;
     setValidValue(newValue?: number, currentValueNumber?: number): void;
-    setRange(tmp: boolean): void;
+    setIsRange(tmp: boolean): void;
     setMin(tmp: number): void;
     setMax(tmp: number): void;
     setStep(tmp: number): void;

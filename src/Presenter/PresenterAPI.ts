@@ -27,8 +27,8 @@ class PresenterAPI {
     let currentReturn: string | number | number[] | boolean;
     if (value !== undefined && value !== null) {
       switch (setting) {
-        case 'range':
-          this.slider.model.setRange(<boolean>value);
+        case 'isRange':
+          this.slider.model.setIsRange(<boolean>value);
           break;
         case 'min':
           this.slider.model.setMin(<number>value);
@@ -55,8 +55,8 @@ class PresenterAPI {
       }
     } else {
       switch (setting) {
-        case 'range':
-          currentReturn = this.slider.model.getRange();
+        case 'isRange':
+          currentReturn = this.slider.model.getIsRange();
           break;
         case 'min':
           currentReturn = this.slider.model.getMin();

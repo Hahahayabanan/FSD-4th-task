@@ -6,7 +6,7 @@ describe('Model / Slider / Test initialization', () => {
 
   it('Should initialize model object', () => {
     slider.setSettings({
-      range: false,
+      isRange: false,
       min: 1,
       max: 10,
       step: 1,
@@ -14,7 +14,7 @@ describe('Model / Slider / Test initialization', () => {
 
     expect(slider.getSettings()).toEqual(
       new SliderSettings({
-        range: false,
+        isRange: false,
         min: 1,
         max: 10,
         step: 1,
@@ -24,7 +24,7 @@ describe('Model / Slider / Test initialization', () => {
 
   it('Should change slider settings', () => {
     slider.setSettings({
-      range: false,
+      isRange: false,
       min: 1,
       max: 10,
       step: 1,
@@ -35,7 +35,7 @@ describe('Model / Slider / Test initialization', () => {
 
     expect(slider.getSettings()).toEqual(
       new SliderSettings({
-        range: false,
+        isRange: false,
         min: 10,
         max: 150,
         step: 1,
@@ -45,7 +45,7 @@ describe('Model / Slider / Test initialization', () => {
 
   it('Should initialize RANGE slider object', () => {
     slider.setSettings({
-      range: true,
+      isRange: true,
       min: 1,
       max: 10,
       step: 1,
@@ -54,7 +54,7 @@ describe('Model / Slider / Test initialization', () => {
 
     expect(slider.getSettings()).toEqual(
       new SliderSettings({
-        range: true,
+        isRange: true,
         min: 1,
         max: 10,
         step: 1,
@@ -69,14 +69,14 @@ describe('Model / Slider / Test of setting other pointer values', () => {
     min: 20,
     max: 100,
     step: 2,
-    range: true,
+    isRange: true,
     values: [25, 55],
   });
 
   slider.setStep(5);
 
   it('Should change pointer position 60', () => {
-    slider.calculateValue(58, 'firstValue');
+    slider.setCalculatedValue(58, 'firstValue');
     expect(slider.getValues(0)).toEqual(25);
   });
 

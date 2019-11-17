@@ -63,22 +63,22 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
     expect(slider.model.getMin()).toEqual(10);
   });
 
-  it("Should coincide API set values 'range'", () => {
+  it("Should coincide API set values 'isRange'", () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
-    expect(slider.model.getRange()).toEqual(true);
+    expect(slider.model.getIsRange()).toEqual(true);
     expect(slider.model.getValues()).toEqual([-100, 100]);
   });
 
-  it("Should coincide API set values 'range' on view", () => {
+  it("Should coincide API set values 'isRange' on view", () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     expect(slider.view.pointer0.curPos).toEqual(0);
@@ -95,14 +95,14 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
     expect(slider.model.getHasTip()).toEqual(false);
   });
 
-  it("Should coincide API set values 'range'", () => {
+  it("Should coincide API set values 'isRange'", () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
-    expect(slider.model.getRange()).toEqual(true);
+    expect(slider.model.getIsRange()).toEqual(true);
     expect(slider.model.getValues()).toEqual([-100, 100]);
   });
 
@@ -120,7 +120,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     PresenterAPI.enterPoint({
@@ -155,7 +155,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     PresenterAPI.enterPoint({
@@ -180,7 +180,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     PresenterAPI.enterPoint({
@@ -229,8 +229,8 @@ describe('Presenter / PresenterAPI / Test creating slider', () => {
     expect(slider.model.getOrientation()).toEqual('horizontal');
   });
 
-  it('Should init default range', () => {
-    expect(slider.model.getRange()).toEqual(false);
+  it('Should init default isRange', () => {
+    expect(slider.model.getIsRange()).toEqual(false);
   });
 
   it('Should init default minVal', () => {
@@ -258,7 +258,7 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
   });
@@ -267,8 +267,8 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
     expect(slider.model.getOrientation()).toEqual('horizontal');
   });
 
-  it('Should init default range', () => {
-    expect(slider.model.getRange()).toEqual(true);
+  it('Should init default isRange', () => {
+    expect(slider.model.getIsRange()).toEqual(true);
   });
 
   it('Should init default minVal', () => {
@@ -284,7 +284,7 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
       PresenterAPI.enterPoint({
         slider,
         option: 'option',
-        setting: 'range',
+        setting: 'isRange',
         value: true,
       });
     });
@@ -303,12 +303,12 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode false', () => {
 
   beforeEach(() => {
     slider = new Presenter(shadowSlider, {
-      range: true,
+      isRange: true,
     });
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: false,
     });
   });
@@ -317,8 +317,8 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode false', () => {
     expect(slider.model.getOrientation()).toEqual('horizontal');
   });
 
-  it('Should init default range', () => {
-    expect(slider.model.getRange()).toEqual(false);
+  it('Should init default isRange', () => {
+    expect(slider.model.getIsRange()).toEqual(false);
   });
 
   it('Should init default minVal', () => {
@@ -374,7 +374,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     PresenterAPI.enterPoint({
@@ -390,7 +390,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
-      setting: 'range',
+      setting: 'isRange',
       value: true,
     });
     PresenterAPI.enterPoint({

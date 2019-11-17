@@ -21,13 +21,13 @@ $(() => {
     min: 10,
     max: 20,
     step: 1,
-    range: true,
+    isRange: true,
     values: [12, 15],
     hasTip: true,
     orientation: 'vertical',
   });
   $('.slider4').slider({
-    range: true,
+    isRange: true,
   });
   $('.slider5').slider();
   $('.slider6').slider();

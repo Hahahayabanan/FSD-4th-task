@@ -16,7 +16,7 @@ class Presenter {
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
       hasTip: this.model.getHasTip(),
-      isRange: this.model.getRange(),
+      isRange: this.model.getIsRange(),
     });
 
     this.init();
@@ -31,7 +31,7 @@ class Presenter {
   }
 
   initStartValue() {
-    this.model.calculateStartValues();
+    this.model.setCalculatedStartValues();
 
     this.updateDataAttributes();
     this.updateValueDataAttributes();
@@ -39,7 +39,7 @@ class Presenter {
 
   updateViewWithNewPointerPosition(data: any) {
     const { newValues } = data;
-    const newValuesInPercents = this.model.getRange()
+    const newValuesInPercents = this.model.getIsRange()
       ? newValues.map((val: number) => this.model.calculateFromValueToPercents(val))
       : this.model.calculateFromValueToPercents(newValues);
     this.view.setPointerPosition(newValuesInPercents);
@@ -48,14 +48,14 @@ class Presenter {
   }
 
   updateViewWithNewSettings(data: any) {
-    const { range, hasTip } = data;
-    this.view.update(range, this.checkOrientationIsVertical(), hasTip);
+    const { isRange, hasTip } = data;
+    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip);
     this.updateDataAttributes();
     this.updateValueDataAttributes();
   }
 
   updateModelWithNewPointerPosition(data: any) {
-    this.model.calculateValue(data.newCurPos, data.updateObject);
+    this.model.setCalculatedValue(data.newCurPos, data.updateObject);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -74,13 +74,13 @@ class Presenter {
       { name: 'max', value: `${this.model.getMax()}` },
       { name: 'hasTip', value: `${this.model.getHasTip()}` },
       { name: 'orientation', value: `${this.model.getOrientation()}` },
-      { name: 'range', value: `${this.model.getRange()}` },
+      { name: 'range', value: `${this.model.getIsRange()}` },
       { name: 'step', value: `${this.model.getStep()}` },
     ]);
   }
 
   updateValueDataAttributes() {
-    if (this.model.getRange()) {
+    if (this.model.getIsRange()) {
       this.view.setDataAttribute('values', `[${this.model.getValues()}]`);
       this.view.removeDataAttribute('value');
     } else {

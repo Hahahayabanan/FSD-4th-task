@@ -1,6 +1,7 @@
 import { isArray } from 'util';
 import { SliderSettings } from './SliderSettings';
 import { EventObserver } from '../EventObserver/EventObserver';
+import ISliderSettings from './ISliderSettings';
 
 class Model {
   private settings: SliderSettings;
@@ -9,15 +10,15 @@ class Model {
 
   public settingsObserver: EventObserver = new EventObserver();
 
-  constructor(sett?: object) {
-    this.settings = new SliderSettings(sett);
+  constructor(settings?: object) {
+    this.settings = new SliderSettings(settings);
   }
 
-  setSettings(sett: object) {
-    this.settings = new SliderSettings(sett);
+  setSettings(settings: object) {
+    this.settings = new SliderSettings(settings);
   }
 
-  getSettings() {
+  getSettings(): ISliderSettings {
     return this.settings.settings;
   }
 
@@ -78,7 +79,7 @@ class Model {
     return currPosInPercents;
   }
 
-  calculateValue(curPosInPercents: number, updateObject: string) {
+  setCalculatedValue(curPosInPercents: number, updateObject: string) {
     const curPosInValue: number = this.calculateFromPercentsToValue(curPosInPercents);
     const curPosInValueWithStep: number = this.calculateValueWithStep(
       curPosInValue,
@@ -97,8 +98,8 @@ class Model {
     this.dispatchValue();
   }
 
-  calculateStartValues() {
-    if (this.getRange()) {
+  setCalculatedStartValues() {
+    if (this.getIsRange()) {
       const values: number[] = this.getValues() as number[];
       const valuesWithStep: number[] = values.map(val => this.calculateValueWithStep(val));
       this.setValues(valuesWithStep);
@@ -113,18 +114,18 @@ class Model {
   }
 
   dispatchValue() {
-    const newValues = this.getRange() ? this.getValues() : this.getValue();
+    const newValues = this.getIsRange() ? this.getValues() : this.getValue();
     this.valuesObserver.broadcast({ newValues });
   }
 
   dispatchSettings() {
-    const { range, orientation, hasTip } = this.getSettings();
-    this.settingsObserver.broadcast({ range, orientation, hasTip });
+    const { isRange, orientation, hasTip } = this.getSettings();
+    this.settingsObserver.broadcast({ isRange, orientation, hasTip });
     this.dispatchValue();
   }
 
-  setRange(tmp: boolean) {
-    this.settings.setRange(tmp);
+  setIsRange(tmp: boolean) {
+    this.settings.setIsRange(tmp);
     this.dispatchSettings();
   }
 
@@ -162,8 +163,8 @@ class Model {
     this.dispatchSettings();
   }
 
-  getRange(): boolean {
-    return this.settings.settings.range;
+  getIsRange(): boolean {
+    return this.settings.settings.isRange;
   }
 
   getMin(): number {

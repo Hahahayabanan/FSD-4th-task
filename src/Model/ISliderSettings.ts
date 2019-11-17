@@ -1,5 +1,5 @@
 interface ISliderSettings {
-  range?: boolean;
+  isRange?: boolean;
   min?: number;
   max?: number;
   step?: number;

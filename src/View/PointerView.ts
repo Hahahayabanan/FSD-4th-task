@@ -99,11 +99,6 @@ class PointerView {
     return valueInPixels;
   }
 
-  renderCurrentPosInPixels(newPos: number) {
-    const newPosition = this.calcPixelsToPercents(newPos);
-    return this.renderCurrentPosInPercents(newPosition);
-  }
-
   renderCurrentPosInPercents(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
       ? (this.pointerHTML.style.top = `${newPos}%`)

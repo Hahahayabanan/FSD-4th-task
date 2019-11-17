@@ -11,13 +11,13 @@ describe('Presenter / Presenter / Test initialization', () => {
     min: 10,
     step: 5,
     max: 100,
-    range: false,
+    isRange: false,
     hasTip: true,
   });
 
   it("Should coincide constructor set values 'value'", () => {
     slider = new Presenter(shadowSlider, {
-      range: false,
+      isRange: false,
       min: 10,
       step: 5,
       max: 100,
@@ -38,7 +38,7 @@ describe('Presenter / Presenter / Test initialization', () => {
       min: 10,
 
       max: 100,
-      range: false,
+      isRange: false,
     });
     expect(slider.model.getValue()).toEqual(10);
   });
@@ -60,12 +60,12 @@ describe('Presenter / Presenter Range / Test initialization', () => {
     min: 10,
     step: 5,
     max: 100,
-    range: true,
+    isRange: true,
     values: [25, 35],
   });
 
   it("Should coincide constructor set values 'range'", () => {
-    expect(slider.model.getRange()).toEqual(true);
+    expect(slider.model.getIsRange()).toEqual(true);
   });
 
   it("Should coincide constructor set values 'values'", () => {
@@ -88,7 +88,7 @@ describe('Presenter / Presenter Range / Test methods', () => {
       min: 10,
       step: 5,
       max: 100,
-      range: true,
+      isRange: true,
       values: [25, 75],
     });
   });
@@ -100,7 +100,7 @@ describe('Presenter / Presenter Range / Test methods', () => {
   });
 
   it('updateViewWithNewSettings', async () => {
-    await slider.updateViewWithNewSettings({ range: false, hasTip: true });
+    await slider.updateViewWithNewSettings({ isRange: false, hasTip: true });
     expect(slider.view.isRange).toBeFalsy();
     expect(slider.view.pointer0.tip).toBeDefined();
     expect(slider.view.pointer1).toBeNull();

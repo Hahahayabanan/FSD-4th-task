@@ -37,7 +37,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     min: checkDataset(htmlElem.dataset.min) as number,
     max: checkDataset(htmlElem.dataset.max) as number,
     step: checkDataset(htmlElem.dataset.step) as number,
-    range: checkDataset(htmlElem.dataset.range) as boolean,
+    isRange: checkDataset(htmlElem.dataset.isRange) as boolean,
     orientation: htmlElem.dataset.orientation,
     values: values as number[],
     value: checkDataset(htmlElem.dataset.value) as number,

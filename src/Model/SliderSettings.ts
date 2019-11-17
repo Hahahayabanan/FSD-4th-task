@@ -3,7 +3,7 @@ import { ISliderSettings } from './ISliderSettings';
 
 class SliderSettings {
   protected defaultSettings: ISliderSettings = {
-    range: false,
+    isRange: false,
     min: 0,
     max: 100,
     step: 1,
@@ -31,8 +31,8 @@ class SliderSettings {
       'Orientation of slider has only two values "horizontal" or "vertical"',
   };
 
-  constructor(setts: ISliderSettings) {
-    this.settings = $.extend(this.defaultSettings, setts);
+  constructor(settings: ISliderSettings) {
+    this.settings = $.extend(this.defaultSettings, settings);
 
     this.setValidValue();
     this.checkValidSettings();
@@ -70,24 +70,24 @@ class SliderSettings {
     if (valueRange % this.settings.step !== 0) {
       this.settings.step = this.defaultSettings.step;
     }
-    if (isValueBiggerMax && !this.settings.range) {
+    if (isValueBiggerMax && !this.settings.isRange) {
       this.settings.value = this.settings.max;
     }
-    if (isValueSmallerMin && !this.settings.range) {
+    if (isValueSmallerMin && !this.settings.isRange) {
       this.settings.value = this.settings.min;
     }
-    if (isFirstValueSmallerMin && this.settings.range) {
+    if (isFirstValueSmallerMin && this.settings.isRange) {
       this.settings.values[0] = this.settings.min;
     }
-    if (isSecondValueBiggerMax && this.settings.range) {
+    if (isSecondValueBiggerMax && this.settings.isRange) {
       this.settings.values[1] = this.settings.max;
     }
-    if (isFirstValueBiggerMax && this.settings.range) {
+    if (isFirstValueBiggerMax && this.settings.isRange) {
       this.settings.values[0] = this.settings.max - this.settings.step < this.settings.max
         ? this.settings.max - this.settings.step
         : this.settings.max;
     }
-    if (isSecondValueSmallerMin && this.settings.range) {
+    if (isSecondValueSmallerMin && this.settings.isRange) {
       this.settings.values[1] = this.settings.min + this.settings.step < this.settings.min
         ? this.settings.min + this.settings.step
         : this.settings.min;
@@ -111,15 +111,15 @@ class SliderSettings {
       if (newValue <= this.settings.values[1]) this.settings.values[0] = newValue;
     } else if (newValue >= this.settings.values[0]) this.settings.values[1] = newValue;
 
-    if (!isFirstValueNull && !this.settings.range) {
+    if (!isFirstValueNull && !this.settings.isRange) {
       const first = this.settings.values[0];
       this.settings.value = first;
       this.settings.values = [null, null];
     }
-    if (isValueNull && !this.settings.range) {
+    if (isValueNull && !this.settings.isRange) {
       this.settings.value = this.settings.min;
     }
-    if (isValuesNull && this.settings.range) {
+    if (isValuesNull && this.settings.isRange) {
       if (!isValueNull) {
         this.settings.values = [this.settings.value, this.settings.max];
       } else {
@@ -127,7 +127,7 @@ class SliderSettings {
       }
       this.settings.value = null;
     }
-    if (isFirstValueNull && this.settings.range) {
+    if (isFirstValueNull && this.settings.isRange) {
       if (!isValueNull) {
         this.settings.values[0] = this.settings.value;
         this.settings.value = null;
@@ -135,19 +135,19 @@ class SliderSettings {
         this.settings.values[0] = this.settings.min;
       }
     }
-    if (isSecondValueNull && this.settings.range) {
+    if (isSecondValueNull && this.settings.isRange) {
       this.settings.values[1] = this.settings.max;
     }
-    if (!isValueNull && this.settings.range) {
+    if (!isValueNull && this.settings.isRange) {
       this.settings.value = null;
     }
-    if (!isValuesNull && !this.settings.range) {
+    if (!isValuesNull && !this.settings.isRange) {
       this.settings.values = [null, null];
     }
   }
 
-  setRange(tmp: boolean) {
-    this.settings.range = Boolean(tmp);
+  setIsRange(tmp: boolean) {
+    this.settings.isRange = Boolean(tmp);
     this.setValidValue();
     this.checkValidSettings();
   }

@@ -16,7 +16,7 @@ class ExampleParameters {
     this.createContainer();
 
     this.createCheckbox('Has tip', 'hasTip');
-    this.createCheckbox('Is range', 'range');
+    this.createCheckbox('Is range', 'isRange');
     this.initOrientation();
 
     this.createInputText('Min', 'min');
@@ -84,7 +84,7 @@ class ExampleParameters {
     const $label = $('<label>', { text: 'Value', class: 'value' }).appendTo(this.$controlPanel);
     const $inputText = $('<input>', { type: 'Text' }).appendTo($label);
 
-    if (this.$slider.slider('option', 'range')) {
+    if (this.$slider.slider('option', 'isRange')) {
       $label.get(0).childNodes[0].nodeValue = 'First pointer value';
 
       const $label2 = $('<label>', { text: 'Second pointer value', class: 'value' }).appendTo(this.$controlPanel);

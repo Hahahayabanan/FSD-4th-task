@@ -16,7 +16,6 @@ declare class PointerView {
     getPathLength(): number;
     calcPixelsToPercents(valueInPixels: number): number;
     calcPercentsToPixels(valueInPercents: number): number;
-    renderCurrentPosInPixels(newPos: number): string;
     renderCurrentPosInPercents(newPos: number): string;
     createTip(): void;
     deleteTip(): void;

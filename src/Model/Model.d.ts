@@ -1,20 +1,21 @@
 import { EventObserver } from '../EventObserver/EventObserver';
+import ISliderSettings from './ISliderSettings';
 declare class Model {
     private settings;
     valuesObserver: EventObserver;
     settingsObserver: EventObserver;
-    constructor(sett?: object);
-    setSettings(sett: object): void;
-    getSettings(): import("./ISliderSettings").ISliderSettings;
+    constructor(settings?: object);
+    setSettings(settings: object): void;
+    getSettings(): ISliderSettings;
     calculateValueWithStep(pos: number[]): number[];
     calculateValueWithStep(pos: number): number;
     calculateFromPercentsToValue(curPosInPercents: number): number;
     calculateFromValueToPercents(curPosInValue: number): number;
-    calculateValue(curPosInPercents: number, updateObject: string): number;
-    calculateStartValues(): void;
+    setCalculatedValue(curPosInPercents: number, updateObject: string): number;
+    setCalculatedStartValues(): void;
     dispatchValue(): void;
     dispatchSettings(): void;
-    setRange(tmp: boolean): void;
+    setIsRange(tmp: boolean): void;
     setMin(tmp: number): void;
     setMax(tmp: number): void;
     setStep(tmp: number): void;
@@ -22,7 +23,7 @@ declare class Model {
     setValues(tmp: number[]): void;
     setOrientation(tmp: string): void;
     setHasTip(tmp: boolean): void;
-    getRange(): boolean;
+    getIsRange(): boolean;
     getMin(): number;
     getMax(): number;
     getStep(): number;
