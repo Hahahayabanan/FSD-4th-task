@@ -29,36 +29,39 @@
 
 Имя класса      | Описание
 ----------------|----------------------
+EventObserver   | Реализует паттерн "наблюдатель"
 MODEL           | 
 ISliderSettings | Интерфейс, содержит свойства настроек слайдера
 SliderSettings  | Реализует свойства и методы настроек слайдера, логику их инициализации, проверки на валидность, сеттеры, геттеры
-Slider          | Содержит объект настроек слайдера, методы расчета текущей позиции с учетом минимального, максимального значений и шага
+Model           | Содержит объект настроек слайдера, методы расчета текущей позиции с учетом минимального, максимального значений и шага
 VIEW            | 
-FollowerPoint   | Реализует структуру элемента над бегунком, который показывает значение и который ползает за мышкой
-SliderPointer   | Реализует структуру бегунка, отслеживает положение мыши, создает событие при изменении положения элемента, содержит объект FollowerPoint
-SliderTemplate  | Реализует шаблон слайдера, содержит объект слайдера, объект бегунка слайдера
+TipView         | Реализует структуру элемента над бегунком, который показывает значение и который ползает за мышкой
+PointerView     | Реализует структуру бегунка, отслеживает положение мыши, создает событие при изменении положения элемента, содержит объект FollowerPoint
+TemplateView    | Реализует шаблон слайдера, содержит объект слайдера, объект бегунка слайдера
 PRESENTER       | 
-SliderPresenter | Реализует логику работы слайдера, содержит объект модели, объект отображения
-SliderPresenterAPI | Статический класс, реализует методы, для получения, внесения данных в плагин
+Presenter       | Реализует логику работы слайдера, содержит объект модели, объект отображения
+PresenterAPI    | Статический класс, реализует методы, для получения, внесения данных в плагин
 
-## UML диаграмма (outdated)
 
-![Diagram](https://github.com/Hahahayabanan/JQueryCustomSlider3/blob/master/uml.png)
+
+## UML диаграмма
+
+![Diagram](https://github.com/Hahahayabanan/FSD-4th-task/blob/master/uml.png)
 
 ## Пример инициализации
 
 ```JavaScript
 $( ".selector" ).slider({
-      minVal: 200, 
-      maxVal: 500, 
-      stepVal: 100,
+      min: 200, 
+      max: 500, 
+      step: 100,
       value: 300,
       followerPoint: true
 })
 ```
 ## Пример инициализации с помощью data-атрибутов
 ```html
-<div class='slider' data-min-val=99 data-max-val=199 data-step-val=1 data-range='true' data-orientation='vertical' data-values='[105, 125]' data-follower-point='true'></div>
+<div class='slider' data-min=99 data-max=199 data-step=1 data-is-range='true' data-orientation='vertical' data-values='[105, 125]' data-follower-point='true'></div>
 
 <script>
   $(() => {
@@ -71,7 +74,7 @@ $( ".selector" ).slider({
 
 # API настройки
 
-## maxVal
+## max
 >**Type:** ***number***
 
 >**Default:** ***100***
@@ -80,27 +83,27 @@ $( ".selector" ).slider({
 
 #### Примеры использования в коде:
 
-Инициализация слайдера со значением ```maxVal```:
+Инициализация слайдера со значением ```max```:
 
 ```JavaScript
 $( ".selector" ).slider({
-      maxVal: 500
+      max: 500
 })
 ```
-Получить или установить значение ```maxVal``` после инициализации слайдера
+Получить или установить значение ```max``` после инициализации слайдера
 ```JavaScript
 // Getter
-let max = $( ".selector" ).slider( "option", "maxVal" );
+let max = $( ".selector" ).slider( "option", "max" );
  
 // Setter
-$( ".selector" ).slider( "option", "maxVal", 50 );
+$( ".selector" ).slider( "option", "max", 50 );
 ```
 ---
 
 
 
 
-## minVal
+## min
 >**Type:** ***number***
 
 >**Default:** ***0***
@@ -109,20 +112,20 @@ $( ".selector" ).slider( "option", "maxVal", 50 );
 
 #### Примеры использования в коде:
 
-Инициализация слайдера со значением ```minVal```:
+Инициализация слайдера со значением ```min```:
 
 ```JavaScript
 $( ".selector" ).slider({
-      minVal: 100
+      min: 100
 })
 ```
-Получить или установить значение ```minVal``` после инициализации слайдера
+Получить или установить значение ```min``` после инициализации слайдера
 ```JavaScript
 // Getter
-let max = $( ".selector" ).slider( "option", "minVal" );
+let max = $( ".selector" ).slider( "option", "min" );
  
 // Setter
-$( ".selector" ).slider( "option", "minVal", 10 );
+$( ".selector" ).slider( "option", "min", 10 );
 ```
 ---
 
@@ -145,7 +148,7 @@ $( ".selector" ).slider({
       orientation: "vertical"
 });
 ```
-Получить или установить значение ```minVal``` после инициализации слайдера
+Получить или установить значение ```min``` после инициализации слайдера
 ```JavaScript
 // Getter
 let orientation = $( ".selector" ).slider( "option", "orientation" );
@@ -157,7 +160,7 @@ $( ".selector" ).slider( "option", "orientation", "vertical" );
 
 
 
-## range
+## isRange
 >**Type:** ***boolean***
 
 >**Default:** ***false***
@@ -166,20 +169,20 @@ $( ".selector" ).slider( "option", "orientation", "vertical" );
 
 #### Примеры использования в коде:
 
-Инициализация слайдера со значением ```range```:
+Инициализация слайдера со значением ```isRange```:
 
 ```JavaScript
 $( ".selector" ).slider({
-  range: true
+  isRange: true
 });
 ```
-Получить или установить значение ```range``` после инициализации слайдера
+Получить или установить значение ```isRange``` после инициализации слайдера
 ```JavaScript
 // Getter
-let range = $( ".selector" ).slider( "option", "range" );
+let isRange = $( ".selector" ).slider( "option", "isRange" );
  
 // Setter
-$( ".selector" ).slider( "option", "range", true );
+$( ".selector" ).slider( "option", "isRange", true );
 ```
 ---
 
@@ -188,7 +191,7 @@ $( ".selector" ).slider( "option", "range", true );
 
 
 
-## stepVal
+## step
 >**Type:** ***number***
 
 >**Default:** ***1***
@@ -197,20 +200,20 @@ $( ".selector" ).slider( "option", "range", true );
 
 #### Примеры использования в коде:
 
-Инициализация слайдера со значением ```stepVal```:
+Инициализация слайдера со значением ```step```:
 
 ```JavaScript
 $( ".selector" ).slider({
-  stepVal: 10
+  step: 10
 });
 ```
-Получить или установить значение ```stepVal``` после инициализации слайдера
+Получить или установить значение ```step``` после инициализации слайдера
 ```JavaScript
 // Getter
-let step = $( ".selector" ).slider( "option", "stepVal" );
+let step = $( ".selector" ).slider( "option", "step" );
  
 // Setter
-$( ".selector" ).slider( "option", "stepVal", 5 );
+$( ".selector" ).slider( "option", "step", 5 );
 ```
 ---
 
@@ -222,7 +225,7 @@ $( ".selector" ).slider( "option", "stepVal", 5 );
 
 >**Default:** ***null***
 
-Определяет текущее значение ползунка (и его положение) при ```range: false```. Если значение не указано, определяется как минимальное.
+Определяет текущее значение ползунка (и его положение) при ```isRange: false```. Если значение не указано, определяется как минимальное.
 
 #### Примеры использования в коде:
 
@@ -252,7 +255,7 @@ $( ".selector" ).slider( "option", "value", 10 );
 
 >**Default:** ***null***
 
-Определяет текущее значение интервала ползунков (и их положение) при ```range: true```. Если не указано, первый ползунок определяется как минимальное, второй как максимальное.
+Определяет текущее значение интервала ползунков (и их положение) при ```isRange: true```. Если не указано, первый ползунок определяется как минимальное, второй как максимальное.
 
 #### Примеры использования в коде:
 
@@ -289,7 +292,7 @@ $( ".selector" ).slider( "option", "values", 1, 25 );
 
 Срабатывает после перемещения ползунка мышью или изменении значения программно, методами ```value```, ```values```.
 
-Свойство ```event.detail``` содержит объект класса SliderPointer, значение которого было изменено
+Свойство ```event.detail``` содержит объект класса PointerView, значение которого было изменено
 
 #### Пример использования в коде:
 ```JavaScript
