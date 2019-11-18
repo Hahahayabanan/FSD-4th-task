@@ -93,11 +93,11 @@ class TemplateView {
   }
 
   private bindEventListeners() {
-    this.pathHTML.addEventListener('mousedown', this.sliderOnClick);
+    this.pathHTML.addEventListener('mousedown', this.handlePathHTMLMouseDown);
   }
 
 
-  private sliderOnClick = (event: any) => {
+  private handlePathHTMLMouseDown = (event: any) => {
     event.preventDefault();
     const curTarget: HTMLElement = event.target;
 
@@ -110,12 +110,12 @@ class TemplateView {
       : event.clientX - this.pathHTML.getBoundingClientRect().left;
 
     if (this.isRange) {
-      const pointersRange = this.calculatePointersRange();
+      const midpointBetweenPoints = this.calculateMidpointBetweenPoints();
 
-      if (newLeft < pointersRange) {
+      if (newLeft < midpointBetweenPoints) {
         this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
       }
-      if (newLeft > pointersRange) {
+      if (newLeft > midpointBetweenPoints) {
         this.pointer1.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
       }
     } else {
@@ -139,7 +139,7 @@ class TemplateView {
     }
   }
 
-  private calculatePointersRange() {
+  private calculateMidpointBetweenPoints() {
     const res: number = (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels())
         / 2
       + this.pointer0.getCurPosInPixels();
