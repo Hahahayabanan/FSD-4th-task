@@ -1,4 +1,5 @@
-import { TemplateView } from '../View/TemplateView';
+import { isArray } from 'util';
+import { MainView } from '../View/MainView';
 import { Model } from '../Model/Model';
 import { ISliderSettings } from '../Model/ISliderSettings';
 import { EventObserver } from '../EventObserver/EventObserver';
@@ -12,11 +13,11 @@ class Presenter {
 
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
     this.model = new Model(options);
-    this.view = new TemplateView({
+    this.view = new MainView({
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
-      hasTip: this.model.getHasTip(),
-      isRange: this.model.getIsRange(),
+      hasTip: this.model.getSetting('hasTip'),
+      isRange: this.model.getSetting('isRange'),
     });
 
     this.init();
@@ -39,7 +40,7 @@ class Presenter {
 
   updateViewWithNewPointerPosition(data: any) {
     const { newValues } = data;
-    const newValuesInPercents = this.model.getIsRange()
+    const newValuesInPercents = isArray(newValues)
       ? newValues.map((val: number) => this.model.calculateFromValueToPercents(val))
       : this.model.calculateFromValueToPercents(newValues);
     this.view.setPointerPosition(newValuesInPercents);
@@ -62,7 +63,7 @@ class Presenter {
     const ordersModule = {
       ORIENTATION: 'vertical',
     };
-    if (this.model.getOrientation() === ordersModule.ORIENTATION) {
+    if (this.model.getSetting('orientation') === ordersModule.ORIENTATION) {
       return true;
     }
     return false;
@@ -70,21 +71,21 @@ class Presenter {
 
   updateDataAttributes() {
     this.view.setDataAttributes([
-      { name: 'min', value: `${this.model.getMin()}` },
-      { name: 'max', value: `${this.model.getMax()}` },
-      { name: 'hasTip', value: `${this.model.getHasTip()}` },
-      { name: 'orientation', value: `${this.model.getOrientation()}` },
-      { name: 'range', value: `${this.model.getIsRange()}` },
-      { name: 'step', value: `${this.model.getStep()}` },
+      { name: 'min', value: `${this.model.getSetting('min')}` },
+      { name: 'max', value: `${this.model.getSetting('max')}` },
+      { name: 'hasTip', value: `${this.model.getSetting('hasTip')}` },
+      { name: 'orientation', value: `${this.model.getSetting('orientation')}` },
+      { name: 'isRange', value: `${this.model.getSetting('isRange')}` },
+      { name: 'step', value: `${this.model.getSetting('step')}` },
     ]);
   }
 
   updateValueDataAttributes() {
-    if (this.model.getIsRange()) {
-      this.view.setDataAttribute('values', `[${this.model.getValues()}]`);
+    if (this.model.getSetting('isRange')) {
+      this.view.setDataAttribute('values', `[${this.model.getSetting('values')}]`);
       this.view.removeDataAttribute('value');
     } else {
-      this.view.setDataAttribute('value', `${this.model.getValue()}`);
+      this.view.setDataAttribute('value', `${this.model.getSetting('value')}`);
       this.view.removeDataAttribute('values');
     }
   }

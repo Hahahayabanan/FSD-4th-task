@@ -1,4 +1,4 @@
-import { TemplateView } from './TemplateView';
+import { MainView } from './MainView';
 import { PointerView } from './PointerView';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
@@ -6,10 +6,10 @@ document.body.innerHTML = '<div id="test" class="slider"></div>';
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
 describe('View / Slider template / Test of initialization parameters', () => {
-  let slider: TemplateView;
+  let slider: MainView;
 
   beforeEach(() => {
-    slider = new TemplateView({
+    slider = new MainView({
       rootElem: shadowSlider,
       isVertical: true,
       hasTip: true,
@@ -36,7 +36,7 @@ describe('View / Slider template / Test of initialization parameters', () => {
 });
 
 describe('View / Slider template / Test of initialization pointers', () => {
-  const slider = new TemplateView({
+  const slider = new MainView({
     rootElem: shadowSlider,
     isRange: true,
   });
@@ -48,10 +48,10 @@ describe('View / Slider template / Test of initialization pointers', () => {
 });
 
 describe('View / Slider template / Test of calculations', () => {
-  let slider: TemplateView;
+  let slider: MainView;
 
   beforeEach(() => {
-    slider = new TemplateView({
+    slider = new MainView({
       rootElem: shadowSlider,
       isRange: true,
       hasTip: true,

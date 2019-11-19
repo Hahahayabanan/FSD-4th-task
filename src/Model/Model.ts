@@ -14,10 +14,6 @@ class Model {
     this.settings = new SliderSettings(settings);
   }
 
-  setSettings(settings: object) {
-    this.settings = new SliderSettings(settings);
-  }
-
   getSettings(): ISliderSettings {
     return this.settings.settings;
   }
@@ -84,37 +80,38 @@ class Model {
     const curPosInValueWithStep: number = this.calculateValueWithStep(
       curPosInValue,
     );
-    let currentValueNumber: number;
     switch (updateObject) {
-      case 'firstValue': currentValueNumber = 0;
+      case 'firstValue':
+        this.settings.setSetting('values', curPosInValueWithStep, 0);
         break;
-      case 'secondValue': currentValueNumber = 1;
+      case 'secondValue':
+        this.settings.setSetting('values', curPosInValueWithStep, 1);
         break;
-      case 'singleValue': currentValueNumber = null;
+      case 'singleValue':
+        this.settings.setSetting('value', curPosInValueWithStep);
         break;
-      default: return NaN;
+      default:
     }
-    this.setValue(curPosInValueWithStep, currentValueNumber);
     this.dispatchValue();
   }
 
   setCalculatedStartValues() {
-    if (this.getIsRange()) {
-      const values: number[] = this.getValues() as number[];
+    if (this.getSetting('isRange')) {
+      const values: number[] = this.getSetting('values') as number[];
       const valuesWithStep: number[] = values.map(val => this.calculateValueWithStep(val));
-      this.setValues(valuesWithStep);
+      this.settings.setSetting('values', valuesWithStep);
     } else {
-      const curPosInValue: number = this.getValue();
+      const curPosInValue: number = this.getSetting('value');
       const curPosInValueWithStep: number = this.calculateValueWithStep(
         curPosInValue,
       );
-      this.setValue(curPosInValueWithStep);
+      this.settings.setSetting('value', curPosInValueWithStep);
     }
     this.dispatchValue();
   }
 
   dispatchValue() {
-    const newValues = this.getIsRange() ? this.getValues() : this.getValue();
+    const newValues = this.getSetting('isRange') ? this.getSetting('values') : this.getSetting('value');
     this.valuesObserver.broadcast({ newValues });
   }
 
@@ -124,78 +121,15 @@ class Model {
     this.dispatchValue();
   }
 
-  setIsRange(tmp: boolean) {
-    this.settings.setIsRange(tmp);
+  setSetting(setting:string,
+    newValue: number | number[] | string | boolean,
+    currentValueNumber?: number) {
+    this.settings.setSetting(setting, newValue, currentValueNumber);
     this.dispatchSettings();
   }
 
-  setMin(tmp: number) {
-    this.settings.setMin(tmp);
-    this.dispatchSettings();
-  }
-
-  setMax(tmp: number) {
-    this.settings.setMax(tmp);
-    this.dispatchSettings();
-  }
-
-  setStep(tmp: number) {
-    this.settings.setStep(tmp);
-    this.dispatchSettings();
-  }
-
-  setValue(tmp: number, currentValueNumber?: number) {
-    this.settings.setValue(tmp, currentValueNumber);
-    this.dispatchValue();
-  }
-
-  setValues(tmp: number[]) {
-    this.settings.setValues(tmp);
-  }
-
-  setOrientation(tmp: string) {
-    this.settings.setOrientation(tmp);
-    this.dispatchSettings();
-  }
-
-  setHasTip(tmp: boolean) {
-    this.settings.setHasTip(tmp);
-    this.dispatchSettings();
-  }
-
-  getIsRange(): boolean {
-    return this.settings.settings.isRange;
-  }
-
-  getMin(): number {
-    return this.settings.settings.min;
-  }
-
-  getMax(): number {
-    return this.settings.settings.max;
-  }
-
-  getStep(): number {
-    return this.settings.settings.step;
-  }
-
-  getValue(): number {
-    return this.settings.settings.value;
-  }
-
-  getValues(number?: number): number[] | number {
-    if (number !== undefined && number != null) {
-      return this.settings.settings.values[number];
-    }
-    return this.settings.settings.values;
-  }
-
-  getOrientation(): string {
-    return this.settings.settings.orientation;
-  }
-
-  getHasTip(): boolean {
-    return this.settings.settings.hasTip;
+  getSetting(setting: string) {
+    return this.settings.getSetting(setting);
   }
 }
 

@@ -1,7 +1,7 @@
 import { PointerView } from './PointerView';
 import { EventObserver } from '../EventObserver/EventObserver';
 
-class TemplateView {
+class MainView {
   public sliderHTML: HTMLElement;
 
   public pathHTML: HTMLElement;
@@ -69,13 +69,13 @@ class TemplateView {
   private createPointers() {
     let thumb = document.createElement('div');
     this.pathHTML.append(thumb);
-    this.pointer0 = new PointerView(thumb, this.isVertical);
+    this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
     this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
     if (this.isRange) {
       thumb = document.createElement('div');
       this.pathHTML.append(thumb);
-      this.pointer1 = new PointerView(thumb, this.isVertical);
+      this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
 
       this.rangeHTML = document.createElement('div');
@@ -251,5 +251,5 @@ class TemplateView {
   }
 }
 
-export { TemplateView };
-export default TemplateView;
+export { MainView };
+export default MainView;

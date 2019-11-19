@@ -23,31 +23,30 @@ describe('Presenter / Presenter / Test initialization', () => {
       max: 100,
       value: 53,
     });
-    expect(slider.model.getValue()).toEqual(55);
+    expect(slider.model.getSetting('value')).toEqual(55);
   });
 
   it("Should coincide constructor values 'step'", () => {
     slider = new Presenter(shadowSlider, {
       step: 5,
     });
-    expect(slider.model.getStep()).toEqual(5);
+    expect(slider.model.getSetting('step')).toEqual(5);
   });
 
   it("Should coincide constructor values default 'value'", () => {
     slider = new Presenter(shadowSlider, {
       min: 10,
-
       max: 100,
       isRange: false,
     });
-    expect(slider.model.getValue()).toEqual(10);
+    expect(slider.model.getSetting('value')).toEqual(10);
   });
 
   it('Should coincide follower pointer value', () => {
     slider = new Presenter(shadowSlider, {
       hasTip: true,
     });
-    expect(slider.model.getValue()).toEqual(
+    expect(slider.model.getSetting('value')).toEqual(
       parseInt(slider.view.pointer0.tip.tipHTML.innerHTML, 10),
     );
   });
@@ -65,11 +64,11 @@ describe('Presenter / Presenter Range / Test initialization', () => {
   });
 
   it("Should coincide constructor set values 'range'", () => {
-    expect(slider.model.getIsRange()).toEqual(true);
+    expect(slider.model.getSetting('isRange')).toEqual(true);
   });
 
   it("Should coincide constructor set values 'values'", () => {
-    expect(slider.model.getValues()).toEqual([25, 35]);
+    expect(slider.model.getSetting('values')).toEqual([25, 35]);
   });
 
   it('Should coincide constructor set values on range line', () => {
@@ -108,18 +107,18 @@ describe('Presenter / Presenter Range / Test methods', () => {
 
   it('checkOrientationIsVertical', async () => {
     expect(slider.checkOrientationIsVertical()).toEqual(
-      slider.model.getOrientation() === 'vertical',
+      slider.model.getSetting('orientation') === 'vertical',
     );
   });
 
   it('updateDataAttributes', async () => {
-    await slider.model.setMin(0);
+    await slider.model.setSetting('min', 0);
     await slider.updateDataAttributes();
     expect(slider.view.sliderHTML.dataset.min).toEqual('0');
   });
 
   it('updateValueDataAttributes', async () => {
-    await slider.model.setValues([35, 65]);
+    await slider.model.setSetting('values', [35, 65]);
     await slider.updateValueDataAttributes();
     expect(slider.view.sliderHTML.dataset.values).toEqual('[35,65]');
   });

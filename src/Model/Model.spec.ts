@@ -2,36 +2,16 @@ import { Model } from './Model';
 import { SliderSettings } from './SliderSettings';
 
 describe('Model / Slider / Test initialization', () => {
-  const slider = new Model();
-
-  it('Should initialize model object', () => {
-    slider.setSettings({
-      isRange: false,
-      min: 1,
-      max: 10,
-      step: 1,
-    });
-
-    expect(slider.getSettings()).toEqual(
-      new SliderSettings({
-        isRange: false,
-        min: 1,
-        max: 10,
-        step: 1,
-      }).settings,
-    );
-  });
-
   it('Should change slider settings', () => {
-    slider.setSettings({
+    const slider = new Model({
       isRange: false,
       min: 1,
       max: 10,
       step: 1,
     });
 
-    slider.setMax(150);
-    slider.setMin(10);
+    slider.setSetting('max', 150);
+    slider.setSetting('min', 10);
 
     expect(slider.getSettings()).toEqual(
       new SliderSettings({
@@ -44,7 +24,7 @@ describe('Model / Slider / Test initialization', () => {
   });
 
   it('Should initialize RANGE slider object', () => {
-    slider.setSettings({
+    const slider = new Model({
       isRange: true,
       min: 1,
       max: 10,
@@ -73,11 +53,11 @@ describe('Model / Slider / Test of setting other pointer values', () => {
     values: [25, 55],
   });
 
-  slider.setStep(5);
+  slider.setSetting('step', 5);
 
   it('Should change pointer position 60', () => {
     slider.setCalculatedValue(58, 'firstValue');
-    expect(slider.getValues(0)).toEqual(25);
+    expect(slider.getSetting('values')[0]).toEqual(20);
   });
 
   it('Should change pointer position 90', () => {

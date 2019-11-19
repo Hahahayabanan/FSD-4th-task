@@ -4,6 +4,8 @@ import { EventObserver } from '../EventObserver/EventObserver';
 class PointerView {
   public pointerHTML: HTMLElement;
 
+  public parentHTML: HTMLElement;
+
   public curPos: number;
 
   public endPos: number;
@@ -14,10 +16,12 @@ class PointerView {
 
   public observer: EventObserver = new EventObserver();
 
-  constructor(elemHTML: HTMLElement, isVertical?: boolean) {
+  constructor(elemHTML: HTMLElement, parentHTML?: HTMLElement, isVertical?: boolean) {
     this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
+    this.parentHTML = parentHTML;
     this.bindEventListeners();
+    // console.log(this);
   }
 
   private handlePointerMouseDown = (event: any) => {

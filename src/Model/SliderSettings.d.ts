@@ -16,16 +16,16 @@ declare class SliderSettings {
         notValidOrientation: string;
     };
     constructor(settings: ISliderSettings);
-    checkValidSettings(): void;
-    setValidValue(newValue?: number, currentValueNumber?: number): void;
-    setIsRange(tmp: boolean): void;
-    setMin(tmp: number): void;
-    setMax(tmp: number): void;
+    setSettings(settings: ISliderSettings): void;
+    setDefaultSettings(): void;
+    setSetting(setting: string, newValue: number | number[] | string | boolean, currentValueNumber?: number): void;
+    getSetting(setting: string): any;
+    setMin(newMin: number): void;
+    setMax(newMax: number): void;
     setStep(tmp: number): void;
-    setValue(newValue: number, currentValueNumber?: number): void;
-    setValues(tmp: number[]): void;
-    setOrientation(tmp: string): void;
-    setHasTip(tmp: boolean): void;
+    setValue(newValue: number): void;
+    setValues(newValue: number[] | number, currentValueNumber?: number): void;
+    setOrientation(newOrientation: string): void;
 }
 export { SliderSettings };
 export default SliderSettings;
