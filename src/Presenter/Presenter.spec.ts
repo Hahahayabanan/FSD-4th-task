@@ -113,13 +113,11 @@ describe('Presenter / Presenter Range / Test methods', () => {
 
   it('updateDataAttributes', async () => {
     await slider.model.setSetting('min', 0);
-    await slider.updateDataAttributes();
     expect(slider.view.sliderHTML.dataset.min).toEqual('0');
   });
 
   it('updateValueDataAttributes', async () => {
     await slider.model.setSetting('values', [35, 65]);
-    await slider.updateValueDataAttributes();
     expect(slider.view.sliderHTML.dataset.values).toEqual('[35,65]');
   });
 });

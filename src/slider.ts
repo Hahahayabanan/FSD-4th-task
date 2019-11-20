@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { ISliderSettings } from './Model/ISliderSettings';
+import { ISliderSettings } from './helpers/interfaces';
 import { Presenter } from './Presenter/Presenter';
 import { PresenterAPI } from './Presenter/PresenterAPI';
 

@@ -1,7 +1,7 @@
 import { isArray } from 'util';
 import { SliderSettings } from './SliderSettings';
 import { EventObserver } from '../EventObserver/EventObserver';
-import ISliderSettings from './ISliderSettings';
+import { ISliderSettings } from '../helpers/interfaces';
 
 class Model {
   private settings: SliderSettings;

@@ -1,5 +1,6 @@
 import { PointerView } from './PointerView';
 import { EventObserver } from '../EventObserver/EventObserver';
+import { Attribute } from '../helpers/interfaces';
 
 class MainView {
   public sliderHTML: HTMLElement;
@@ -97,9 +98,9 @@ class MainView {
   }
 
 
-  private handlePathHTMLMouseDown = (event: any) => {
+  private handlePathHTMLMouseDown = (event: MouseEvent) => {
     event.preventDefault();
-    const curTarget: HTMLElement = event.target;
+    const curTarget: HTMLElement = event.target as HTMLElement;
 
     const isValidClick = curTarget.className === this.styleClasses.PATH
       || curTarget.className === this.styleClasses.RANGE;
@@ -167,7 +168,7 @@ class MainView {
     if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
   }
 
-  setPointerPosition(newCurPos: number[] | number) {
+  setPointerPosition(newCurPos: number[] | number, newTipValue: number, newAttribute: Attribute) {
     if (this.isRange) {
       this.pointer0.setPointerPosition(newCurPos[0]);
       this.pointer1.setPointerPosition(newCurPos[1]);
@@ -175,9 +176,11 @@ class MainView {
     } else {
       this.pointer0.setPointerPosition(<number>newCurPos);
     }
+    this.setTipValue(newTipValue);
+    this.updateDataAttribute(newAttribute.name, newAttribute.value);
   }
 
-  update(isRange: boolean, isVertical: boolean, hasTip: boolean) {
+  update(isRange: boolean, isVertical: boolean, hasTip: boolean, attributes: Attribute[]) {
     this.isVertical = isVertical;
     this.hasTip = hasTip;
     this.isRange = isRange;
@@ -188,6 +191,10 @@ class MainView {
     this.createTip();
     this.bindEventListeners();
     this.addObservers();
+    attributes.forEach((attr: Attribute) => {
+      const { name, value } = attr;
+      this.updateDataAttribute(name, value);
+    });
   }
 
   updateZIndex(curPointer: PointerView) {
@@ -226,6 +233,11 @@ class MainView {
     }
   }
 
+  updateDataAttribute(attr: string, value: string) {
+    this.removeDataAttribute(attr);
+    this.setDataAttribute(attr, value);
+  }
+
   setDataAttribute(attr: string, value: string) {
     this.sliderHTML.dataset[attr] = value;
   }
@@ -234,9 +246,10 @@ class MainView {
     delete this.sliderHTML.dataset[attr];
   }
 
-  setDataAttributes(attributes: any) {
-    attributes.forEach((attribute: any) => {
-      this.setDataAttribute(attribute.name, attribute.value);
+  setDataAttributes(attributes: Attribute[]) {
+    attributes.forEach((attribute: Attribute) => {
+      const { name, value } = attribute;
+      this.setDataAttribute(name, value);
     });
   }
 

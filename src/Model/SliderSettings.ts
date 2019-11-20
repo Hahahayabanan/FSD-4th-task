@@ -1,4 +1,4 @@
-import { ISliderSettings } from './ISliderSettings';
+import { ISliderSettings } from '../helpers/interfaces';
 
 class SliderSettings {
   protected defaultSettings: ISliderSettings = {
@@ -120,9 +120,10 @@ class SliderSettings {
       const stepSmallerRange = Number(tmp) < valueRange;
       if (stepBiggerNull && stepSmallerRange) {
         this.settings.step = Number(tmp);
+      } else {
+        this.settings.step = this.defaultSettings.step;
+        throw this.errors.stepBiggerMaxMin;
       }
-      this.settings.step = this.defaultSettings.step;
-      throw this.errors.stepBiggerMaxMin;
     } catch (err) {
       console.error(err);
     }

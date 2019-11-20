@@ -57,7 +57,7 @@ describe('Model / Slider / Test of setting other pointer values', () => {
 
   it('Should change pointer position 60', () => {
     slider.setCalculatedValue(58, 'firstValue');
-    expect(slider.getSetting('values')[0]).toEqual(20);
+    expect(slider.getSetting('values')[0]).toEqual(25);
   });
 
   it('Should change pointer position 90', () => {

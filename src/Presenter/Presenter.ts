@@ -1,7 +1,9 @@
 import { isArray } from 'util';
 import { MainView } from '../View/MainView';
 import { Model } from '../Model/Model';
-import { ISliderSettings } from '../Model/ISliderSettings';
+import {
+  ISliderSettings, PointerPositionData, Attribute, CalculatedSettings,
+} from '../helpers/interfaces';
 import { EventObserver } from '../EventObserver/EventObserver';
 
 class Presenter {
@@ -28,34 +30,31 @@ class Presenter {
     this.model.settingsObserver.subscribe(this.updateViewWithNewSettings.bind(this));
     this.model.valuesObserver.subscribe(this.updateViewWithNewPointerPosition.bind(this));
 
-    this.initStartValue();
+    this.initStartValues();
   }
 
-  initStartValue() {
+  initStartValues() {
     this.model.setCalculatedStartValues();
-
-    this.updateDataAttributes();
-    this.updateValueDataAttributes();
+    this.view.setDataAttributes(this.getDataAttributes());
   }
 
-  updateViewWithNewPointerPosition(data: any) {
+  updateViewWithNewPointerPosition(data: CalculatedSettings) {
     const { newValues } = data;
     const newValuesInPercents = isArray(newValues)
       ? newValues.map((val: number) => this.model.calculateFromValueToPercents(val))
       : this.model.calculateFromValueToPercents(newValues);
-    this.view.setPointerPosition(newValuesInPercents);
-    this.view.setTipValue(newValues);
-    this.updateValueDataAttributes();
+    this.view.setPointerPosition(newValuesInPercents, newValues, this.getValueDataAttributes());
   }
 
-  updateViewWithNewSettings(data: any) {
+  updateViewWithNewSettings(data: ISliderSettings) {
     const { isRange, hasTip } = data;
-    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip);
-    this.updateDataAttributes();
-    this.updateValueDataAttributes();
+    const dataAttributes: Attribute[] = this.getDataAttributes();
+    dataAttributes.push(this.getValueDataAttributes());
+
+    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip, dataAttributes);
   }
 
-  updateModelWithNewPointerPosition(data: any) {
+  updateModelWithNewPointerPosition(data: PointerPositionData) {
     this.model.setCalculatedValue(data.newCurPos, data.updateObject);
   }
 
@@ -69,25 +68,22 @@ class Presenter {
     return false;
   }
 
-  updateDataAttributes() {
-    this.view.setDataAttributes([
+  getDataAttributes(): Attribute[] {
+    return [
       { name: 'min', value: `${this.model.getSetting('min')}` },
       { name: 'max', value: `${this.model.getSetting('max')}` },
       { name: 'hasTip', value: `${this.model.getSetting('hasTip')}` },
       { name: 'orientation', value: `${this.model.getSetting('orientation')}` },
       { name: 'isRange', value: `${this.model.getSetting('isRange')}` },
       { name: 'step', value: `${this.model.getSetting('step')}` },
-    ]);
+    ];
   }
 
-  updateValueDataAttributes() {
+  getValueDataAttributes(): Attribute {
     if (this.model.getSetting('isRange')) {
-      this.view.setDataAttribute('values', `[${this.model.getSetting('values')}]`);
-      this.view.removeDataAttribute('value');
-    } else {
-      this.view.setDataAttribute('value', `${this.model.getSetting('value')}`);
-      this.view.removeDataAttribute('values');
+      return { name: 'values', value: `[${this.model.getSetting('values')}]` };
     }
+    return { name: 'value', value: `${this.model.getSetting('value')}` };
   }
 }
 
