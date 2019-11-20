@@ -52,7 +52,7 @@ class SliderSettings {
       switch (setting) {
         case 'isRange':
           this.settings.isRange = Boolean(newValue);
-          if (this.settings.isRange) this.setValues(this.settings.value, 0);
+          if (this.settings.isRange) this.setValues([this.settings.value, this.settings.max]);
           else this.setValue(this.settings.values[0]);
           break;
         case 'min':
@@ -166,7 +166,7 @@ class SliderSettings {
     const isSecondValueBiggerMax = newValues[1] > this.settings.max;
     const isFirstValueBiggerMax = newValues[0] > this.settings.max;
     const isSecondValueSmallerMin = newValues[1] < this.settings.min;
-    const isFirstValueBiggerSecond = newValues[0] > newValues[1];
+    const isFirstValueBiggerSecond = newValues[0] >= newValues[1];
 
     if (isFirstValueSmallerMin || isFirstValueNull) {
       newValues[0] = this.settings.min;
