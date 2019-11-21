@@ -52,7 +52,13 @@ class Presenter {
     const dataAttributes: Attribute[] = this.getDataAttributes();
     dataAttributes.push(this.getValueDataAttributes());
 
-    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip, hasLine, dataAttributes);
+    this.view.update({
+      isRange,
+      hasTip,
+      hasLine,
+      isVertical: this.checkOrientationIsVertical(),
+      attributes: dataAttributes,
+    });
   }
 
   updateModelWithNewPointerPosition(data: PointerPositionData) {

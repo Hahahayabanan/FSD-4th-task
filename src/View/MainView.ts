@@ -190,7 +190,16 @@ class MainView {
     this.updateDataAttribute(newAttribute.name, newAttribute.value);
   }
 
-  update(isRange: boolean, isVertical: boolean, hasTip: boolean, hasLine: boolean, attributes: Attribute[]) {
+  update(options: {
+    isRange: boolean,
+    isVertical: boolean,
+    hasTip: boolean,
+    hasLine: boolean,
+    attributes: Attribute[]
+  }) {
+    const {
+      isVertical, hasTip, hasLine, isRange, attributes,
+    } = options;
     this.isVertical = isVertical;
     this.hasTip = hasTip;
     this.hasLine = hasLine;

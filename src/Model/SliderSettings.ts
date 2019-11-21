@@ -101,6 +101,10 @@ class SliderSettings {
     if (Number(newMin) > this.settings.values[0]) {
       this.settings.values[0] = newMin;
     }
+    if (Number(newMin) >= this.settings.values[1]) {
+      this.settings.values[0] = newMin;
+      this.settings.values[1] = Number(newMin) + this.settings.step;
+    }
     this.settings.min = Number(newMin);
   }
 
@@ -113,6 +117,10 @@ class SliderSettings {
     }
     if (Number(newMax) < this.settings.values[1]) {
       this.settings.values[1] = newMax;
+    }
+    if (Number(newMax) <= this.settings.values[1]) {
+      this.settings.values[1] = newMax;
+      this.settings.values[0] = newMax - this.settings.step;
     }
     this.settings.max = Number(newMax);
   }
