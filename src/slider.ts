@@ -9,7 +9,10 @@ declare global {
   }
   interface JQuery {
     slider: (
-      ...args: any
+      option?: ISliderSettings | string,
+      setting?: string,
+      value?: string | number | number[] | boolean,
+      oneOfTwoValues?: number,
     ) => JQuery<Element> | string | number | number[] | boolean;
   }
 }
@@ -50,30 +53,35 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   const sliders: Presenter[] = [];
 
   $.fn.slider = function getStart(
-    ...args: any
-  ): JQuery<Element> | string | number | number[] | boolean | null {
-    const [receivedParameter] = args;
-    if (typeof receivedParameter === 'object' || receivedParameter === undefined) {
-      let settings: ISliderSettings = receivedParameter;
-      return this.each((i: number, val: HTMLElement) => {
+    option?: ISliderSettings | string,
+    setting?: string,
+    value?: string | number | number[] | boolean,
+    oneOfTwoValues?: number,
+  ): JQuery<Element> | string | number | number[] | boolean {
+    const isThatSliderInitializationParameters = typeof option === 'object' || option === undefined;
+    const isThatSliderOptionCall = typeof option === 'string';
+
+    if (isThatSliderInitializationParameters) {
+      let settings: ISliderSettings = option as ISliderSettings;
+      this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
-        return sliders.push(new Presenter(htmlElem, settings));
+        sliders.push(new Presenter(htmlElem, settings));
       });
+      return this;
     }
 
-    if (typeof receivedParameter === 'string') {
-      const [option, setting, value, oneOfTwoValues] = args;
-      let returnValue: any;
+    if (isThatSliderOptionCall) {
+      let returnValue: string | number | number[] | boolean;
       this.each((i: number, val: object) => {
         const htmlSlider = val;
         sliders.forEach(presenter => {
           if (presenter.view.sliderHTML === htmlSlider) {
             returnValue = PresenterAPI.enterPoint({
-              oneOfTwoValues,
-              value,
-              option,
+              option: String(option),
               setting,
+              value,
+              oneOfTwoValues,
               slider: presenter,
             });
           }
