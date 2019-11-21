@@ -74,6 +74,7 @@ class ExampleParameters {
 
     $inputText.on('change', () => {
       this.$slider.slider('option', `${property}`, $inputText.val());
+      $inputText.val(this.$slider.slider('option', `${property}`) as number);
     });
   }
 
@@ -95,9 +96,11 @@ class ExampleParameters {
 
       $inputText.on('change', () => {
         this.$slider.slider('option', 'values', 0, $inputText.val());
+        $inputText.val(this.$slider.slider('option', 'values', 0) as number);
       });
       $inputText2.on('change', () => {
         this.$slider.slider('option', 'values', 1, $inputText2.val());
+        $inputText2.val(this.$slider.slider('option', 'values', 1) as number);
       });
       this.$slider.on('changePointer', () => {
         $inputText.val(this.$slider.slider('option', 'values', 0) as number);
@@ -110,6 +113,7 @@ class ExampleParameters {
 
       $inputText.on('change', () => {
         this.$slider.slider('option', 'value', $inputText.val());
+        $inputText.val(this.$slider.slider('option', 'value') as number);
       });
       this.$slider.on('changePointer', () => {
         $inputText.val(this.$slider.slider('option', 'value') as number);
