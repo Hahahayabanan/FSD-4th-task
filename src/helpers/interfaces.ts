@@ -7,6 +7,7 @@ interface ISliderSettings {
   value?: number;
   values?: Array<number>;
   hasTip?: boolean;
+  hasLine?: boolean;
 }
 
 interface MouseSettings {

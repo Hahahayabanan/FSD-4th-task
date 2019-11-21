@@ -42,6 +42,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     values: values as number[],
     value: checkDataset(htmlElem.dataset.value) as number,
     hasTip: checkDataset(htmlElem.dataset.hasTip) as boolean,
+    hasLine: checkDataset(htmlElem.dataset.hasLine) as boolean,
   };
 }
 

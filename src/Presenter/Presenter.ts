@@ -19,6 +19,7 @@ class Presenter {
       rootElem: rootElement,
       isVertical: this.checkOrientationIsVertical(),
       hasTip: this.model.getSetting('hasTip'),
+      hasLine: this.model.getSetting('hasLine'),
       isRange: this.model.getSetting('isRange'),
     });
 
@@ -47,11 +48,11 @@ class Presenter {
   }
 
   updateViewWithNewSettings(data: ISliderSettings) {
-    const { isRange, hasTip } = data;
+    const { isRange, hasTip, hasLine } = data;
     const dataAttributes: Attribute[] = this.getDataAttributes();
     dataAttributes.push(this.getValueDataAttributes());
 
-    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip, dataAttributes);
+    this.view.update(isRange, this.checkOrientationIsVertical(), hasTip, hasLine, dataAttributes);
   }
 
   updateModelWithNewPointerPosition(data: PointerPositionData) {
@@ -73,6 +74,7 @@ class Presenter {
       { name: 'min', value: `${this.model.getSetting('min')}` },
       { name: 'max', value: `${this.model.getSetting('max')}` },
       { name: 'hasTip', value: `${this.model.getSetting('hasTip')}` },
+      { name: 'hasLine', value: `${this.model.getSetting('hasLine')}` },
       { name: 'orientation', value: `${this.model.getSetting('orientation')}` },
       { name: 'isRange', value: `${this.model.getSetting('isRange')}` },
       { name: 'step', value: `${this.model.getSetting('step')}` },

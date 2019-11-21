@@ -10,6 +10,7 @@ class SliderSettings {
     value: null,
     values: [null, null],
     hasTip: false,
+    hasLine: true,
   };
 
   public settings: ISliderSettings;
@@ -75,6 +76,9 @@ class SliderSettings {
           break;
         case 'hasTip':
           this.settings.hasTip = Boolean(newValue);
+          break;
+        case 'hasLine':
+          this.settings.hasLine = Boolean(newValue);
           break;
         default:
       }

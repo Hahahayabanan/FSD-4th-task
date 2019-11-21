@@ -16,6 +16,7 @@ class ExampleParameters {
     this.createContainer();
 
     this.createCheckbox('Has tip', 'hasTip');
+    this.createCheckbox('Has line', 'hasLine');
     this.createCheckbox('Is range', 'isRange');
     this.initOrientation();
 

@@ -116,8 +116,12 @@ class Model {
   }
 
   dispatchSettings() {
-    const { isRange, orientation, hasTip } = this.getSettings();
-    this.settingsObserver.broadcast({ isRange, orientation, hasTip });
+    const {
+      isRange, orientation, hasTip, hasLine,
+    } = this.getSettings();
+    this.settingsObserver.broadcast({
+      isRange, orientation, hasTip, hasLine,
+    });
     this.dispatchValue();
   }
 

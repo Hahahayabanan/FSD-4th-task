@@ -15,9 +15,11 @@ class MainView {
 
   public hasTip: boolean = false;
 
+  public hasLine: boolean = true;
+
   public isRange: boolean = false;
 
-  public rangeHTML: HTMLElement;
+  public lineHTML: HTMLElement;
 
   public lastPointerMoved: PointerView;
 
@@ -28,7 +30,7 @@ class MainView {
     PATH: 'j-plugin-slider__path',
     THUMB: 'j-plugin-slider__thumb',
     THUMB_SELECTED: 'j-plugin-slider__thumb_selected',
-    RANGE: 'j-plugin-slider__range',
+    LINE: 'j-plugin-slider__path-line',
     SLIDER_VERTICAL: 'j-plugin-slider_vertical',
     SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
   };
@@ -38,13 +40,15 @@ class MainView {
     isVertical?: boolean;
     hasTip?: boolean;
     isRange?: boolean;
+    hasLine?: boolean;
   }) {
     const {
-      rootElem, isVertical, hasTip, isRange
+      rootElem, isVertical, hasTip, isRange, hasLine,
     } = options;
     this.sliderHTML = rootElem;
     this.isVertical = isVertical;
     this.hasTip = hasTip;
+    this.hasLine = hasLine;
     this.isRange = isRange;
 
     this.createTemplate();
@@ -73,15 +77,16 @@ class MainView {
     this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
     this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
+    if (this.hasLine) {
+      this.lineHTML = document.createElement('div');
+      this.lineHTML.classList.add(this.styleClasses.LINE);
+      this.pathHTML.prepend(this.lineHTML);
+    }
     if (this.isRange) {
       thumb = document.createElement('div');
       this.pathHTML.append(thumb);
       this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
-
-      this.rangeHTML = document.createElement('div');
-      this.rangeHTML.classList.add(this.styleClasses.RANGE);
-      this.pathHTML.prepend(this.rangeHTML);
     }
   }
 
@@ -97,13 +102,12 @@ class MainView {
     this.pathHTML.addEventListener('mousedown', this.handlePathHTMLMouseDown);
   }
 
-
   private handlePathHTMLMouseDown = (event: MouseEvent) => {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
     const isValidClick = curTarget.className === this.styleClasses.PATH
-      || curTarget.className === this.styleClasses.RANGE;
+      || curTarget.className === this.styleClasses.LINE;
     if (!isValidClick) return;
 
     const newLeft: number = this.isVertical
@@ -124,19 +128,25 @@ class MainView {
     }
   };
 
-  private calculateAndApplyRangeLine() {
+  private calculateAndApplyLine() {
     if (this.isRange) {
       if (this.isVertical) {
-        this.rangeHTML.style.top = this.pointer0.pointerHTML.style.top;
+        this.lineHTML.style.top = this.pointer0.pointerHTML.style.top;
         const range = parseInt(this.pointer1.pointerHTML.style.top, 10)
           - parseInt(this.pointer0.pointerHTML.style.top, 10);
-        this.rangeHTML.style.height = `${range}%`;
+        this.lineHTML.style.height = `${range}%`;
       } else {
-        this.rangeHTML.style.left = this.pointer0.pointerHTML.style.left;
+        this.lineHTML.style.left = this.pointer0.pointerHTML.style.left;
         const range = parseInt(this.pointer1.pointerHTML.style.left, 10)
           - parseInt(this.pointer0.pointerHTML.style.left, 10);
-        this.rangeHTML.style.width = `${range}%`;
+        this.lineHTML.style.width = `${range}%`;
       }
+    } else if (this.isVertical) {
+      this.lineHTML.style.top = '0px';
+      this.lineHTML.style.height = `${parseInt(this.pointer0.pointerHTML.style.top, 10)}%`;
+    } else {
+      this.lineHTML.style.left = '0px';
+      this.lineHTML.style.width = `${parseInt(this.pointer0.pointerHTML.style.left, 10)}%`;
     }
   }
 
@@ -172,17 +182,18 @@ class MainView {
     if (this.isRange) {
       this.pointer0.setPointerPosition(newCurPos[0]);
       this.pointer1.setPointerPosition(newCurPos[1]);
-      this.calculateAndApplyRangeLine();
     } else {
       this.pointer0.setPointerPosition(<number>newCurPos);
     }
+    if (this.hasLine) this.calculateAndApplyLine();
     this.setTipValue(newTipValue);
     this.updateDataAttribute(newAttribute.name, newAttribute.value);
   }
 
-  update(isRange: boolean, isVertical: boolean, hasTip: boolean, attributes: Attribute[]) {
+  update(isRange: boolean, isVertical: boolean, hasTip: boolean, hasLine: boolean, attributes: Attribute[]) {
     this.isVertical = isVertical;
     this.hasTip = hasTip;
+    this.hasLine = hasLine;
     this.isRange = isRange;
 
     this.getClear();

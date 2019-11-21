@@ -34,7 +34,7 @@
       transform: translateY(-50%) translateX(-35%);
     }
 
-    & .j-plugin-slider__range {
+    & .j-plugin-slider__path-line {
       width: 100%;
     }
 
@@ -84,7 +84,7 @@
     }
   }
 
-  &__range {
+  &__path-line {
     height: 5px;
     position: absolute;
     background: rgb(255, 211, 201);
