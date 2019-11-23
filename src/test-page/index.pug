@@ -20,11 +20,23 @@ html(lang='en')
     meta(name="theme-color" content="#ffffff")
   body
     block content
-      each val in [1, 2, 3, 4, 5]
-        .slider
-          div(class = `slider${val}`)
+      include ./blocks/example/example.pug
 
-      .slider
-        .slider6(data-min=99 data-max=199 data-step=1 data-is-range='true' data-orientation='vertical' data-values=[105, 125] data-has-tip='true')
+      main.sliders
+        .sliders__element
+          +example({ parameters: {
+            min: 0, max: 199, step: 15, isRange: 'false', value: 59, hasTip: 'true',
+          } })
+        .sliders__element
+          +example({ parameters: {
+            min: 99, max: 199, step: 5, isRange: 'true', orientation: 'vertical', values: [102, 159], hasTip: 'true',
+          } })
+        .sliders__element
+          +example()
+        .sliders__element
+          +example({ parameters: {
+            min: -99999.99999, max: 19999999.99999, step: 241565.88888, isRange: 'true', values: [8999999, 9999999], hasTip: 'true', hasLine: 'false',
+          } })
+
     
     

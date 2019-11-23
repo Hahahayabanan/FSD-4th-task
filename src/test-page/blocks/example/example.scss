@@ -1,0 +1,11 @@
+.example {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 700px;
+  min-height: 300px;
+  border: 1px solid #000;
+  margin: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+}

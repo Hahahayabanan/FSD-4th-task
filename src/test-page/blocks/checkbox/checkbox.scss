@@ -1,0 +1,12 @@
+.checkbox {
+  min-height: 20px;
+  height: min-content;
+  min-width: 100px;
+  width: min-content;
+
+  &__label {
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+  }
+}
