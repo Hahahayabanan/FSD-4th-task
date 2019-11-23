@@ -27,7 +27,8 @@ interface PointerPositionData {
 }
 
 interface CalculatedSettings {
-  newValues: number | number[];
+  newValue: number;
+  newValues: number[];
 }
 
 export {

@@ -74,10 +74,10 @@ describe('View / Slider template / Test of calculations', () => {
     );
   });
 
-  it('setTipValue', async () => {
-    await slider.setTipValue([256, 128]);
-    expect(slider.pointer0.tip.tipHTML.textContent).toEqual('256');
-  });
+  // it('setTipValue', async () => {
+  //   await slider.setTipValue([256, 128]);
+  //   expect(slider.pointer0.tip.tipHTML.textContent).toEqual('256');
+  // });
 
   it('getClear', async () => {
     await slider.getClear();

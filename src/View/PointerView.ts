@@ -78,8 +78,8 @@ class PointerView {
   }
 
   dispatchPointerPosition(newCurPos: number) {
-    const updateObject = this;
-    this.observer.broadcast({ newCurPos, updateObject });
+    const pointerToUpdate: PointerView = this;
+    this.observer.broadcast({ newCurPos, pointerToUpdate });
   }
 
   setPointerPosition(newCurPos: number) {
@@ -133,7 +133,7 @@ class PointerView {
   }
 
   updateTipValue(newValue: number) {
-    this.tip.setValue(newValue);
+    if (this.tip) this.tip.setValue(newValue);
   }
 }
 export { PointerView };

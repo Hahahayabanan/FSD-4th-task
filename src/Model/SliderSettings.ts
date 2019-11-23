@@ -38,7 +38,8 @@ class SliderSettings {
   setSettings(settings: ISliderSettings) {
     this.setDefaultSettings();
     Object.keys(settings).forEach(val => {
-      this.setSetting(val, settings[val]);
+      if (val === 'isRange') this.settings.isRange = settings[val];
+      else this.setSetting(val, settings[val]);
     });
   }
 
@@ -50,37 +51,52 @@ class SliderSettings {
     newValue: number | number[] | string | boolean,
     currentValueNumber?: number) {
     try {
-      switch (setting) {
-        case 'isRange':
-          this.settings.isRange = Boolean(newValue);
-          if (this.settings.isRange) this.setValues([this.settings.value, this.settings.max]);
-          else this.setValue(this.settings.values[0]);
-          break;
-        case 'min':
-          this.setMin(newValue as number);
-          break;
-        case 'max':
-          this.setMax(newValue as number);
-          break;
-        case 'step':
-          this.setStep(newValue as number);
-          break;
-        case 'orientation':
-          this.setOrientation(newValue as string);
-          break;
-        case 'value':
-          this.setValue(newValue as number);
-          break;
-        case 'values':
-          this.setValues(newValue as number[], currentValueNumber);
-          break;
-        case 'hasTip':
-          this.settings.hasTip = Boolean(newValue);
-          break;
-        case 'hasLine':
-          this.settings.hasLine = Boolean(newValue);
-          break;
-        default:
+      if (typeof newValue === 'boolean') {
+        switch (setting) {
+          case 'isRange':
+            this.settings.isRange = newValue;
+            if (this.settings.value) {
+              this.setSingleValueInRange(this.settings.value, 0);
+              this.setSingleValueInRange(this.settings.max, 1);
+            } else if (this.settings.values[0]) this.setValue(this.settings.values[0]);
+            break;
+          case 'hasTip':
+            this.settings.hasTip = newValue;
+            break;
+          case 'hasLine':
+            this.settings.hasLine = newValue;
+            break;
+          default:
+        }
+      }
+
+      if (typeof newValue === 'number') {
+        switch (setting) {
+          case 'min':
+            this.setMin(newValue);
+            break;
+          case 'max':
+            this.setMax(newValue);
+            break;
+          case 'step':
+            this.setStep(newValue);
+            break;
+          case 'value':
+            this.setValue(newValue);
+            break;
+          case 'values':
+            this.setSingleValueInRange(newValue, currentValueNumber);
+            break;
+          default:
+        }
+      }
+
+      if (typeof newValue === 'string') {
+        this.setOrientation(newValue);
+      }
+
+      if (newValue instanceof Array) {
+        this.setValues(newValue);
       }
     } catch (err) {
       console.error(err);
@@ -154,24 +170,9 @@ class SliderSettings {
     }
   }
 
-  setValues(newValue: number[] | number, currentValueNumber?: number) {
+  setValues(newValue: number[]) {
     let newValues: number[] = [null, null];
-
-    if (currentValueNumber === 0) {
-      if (newValue <= this.settings.values[1]) {
-        newValues[0] = newValue as number;
-        const second = this.settings.values[1];
-        newValues[1] = second;
-      }
-    } else if (currentValueNumber === 1) {
-      if (newValue >= this.settings.values[0]) {
-        newValues[1] = newValue as number;
-        const first = this.settings.values[0];
-        newValues[0] = first;
-      }
-    } else {
-      newValues = newValue as number[];
-    }
+    newValues = newValue;
 
     const isFirstValueNull = this.settings.values[0] === null;
     const isSecondValueNull = this.settings.values[1] === null;
@@ -200,6 +201,24 @@ class SliderSettings {
     if (!isFirstValueBiggerSecond) {
       this.settings.values = newValues;
     }
+  }
+
+  setSingleValueInRange(newValue: number, currentValueNumber?: number) {
+    const newValues: number[] = [null, null];
+    if (currentValueNumber === 0) {
+      if (newValue <= this.settings.values[1]) {
+        newValues[0] = newValue;
+        const second = this.settings.values[1];
+        newValues[1] = second;
+      }
+    } else if (currentValueNumber === 1) {
+      if (newValue >= this.settings.values[0]) {
+        newValues[1] = newValue;
+        const first = this.settings.values[0];
+        newValues[0] = first;
+      }
+    }
+    this.setValues(newValues);
   }
 
   setOrientation(newOrientation: string) {

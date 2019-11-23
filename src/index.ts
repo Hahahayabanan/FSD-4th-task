@@ -1,4 +1,4 @@
-import './test-page/example';
+import './test-page/index';
 
 function importAll(resolve: any) {
   resolve.keys().forEach(resolve);

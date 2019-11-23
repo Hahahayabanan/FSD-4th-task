@@ -8,10 +8,10 @@ class PresenterAPI {
     option: string;
     setting: string;
     value?: string | number | number[] | boolean;
-    oneOfTwoValues?: number;
+    numberOfOneOfTheValues?: number;
   }) {
     const {
-      slider, option, setting, value, oneOfTwoValues
+      slider, option, setting, value, numberOfOneOfTheValues
     } = options;
 
     this.slider = slider;
@@ -28,16 +28,17 @@ class PresenterAPI {
     if (value !== undefined && value !== null) {
       if (setting === 'values') {
         const isValueNumber = typeof value === 'number';
-        const isOneOfValuesUndefined = oneOfTwoValues === undefined;
+        const isOneOfValuesUndefined = numberOfOneOfTheValues === undefined;
 
         if (isOneOfValuesUndefined && !isValueNumber) {
-          this.slider.model.setSetting('values', <number[]>value);
+          this.slider.model.setSetting('values', value);
         }
         if (isOneOfValuesUndefined && isValueNumber) {
           currentReturn = this.slider.model.getSetting('values')[value];
         }
-        if (!isOneOfValuesUndefined && isValueNumber) {
-          this.slider.model.setSetting('values', oneOfTwoValues, <number>value);
+        if (!isOneOfValuesUndefined && typeof value === 'number') {
+          const currentValueNumber: number = value;
+          this.slider.model.setSetting('values', numberOfOneOfTheValues, currentValueNumber);
         }
       } else {
         this.slider.model.setSetting(setting, value);
@@ -45,6 +46,8 @@ class PresenterAPI {
     } else {
       currentReturn = this.slider.model.getSetting(setting);
     }
+
+
     return currentReturn;
   }
 }

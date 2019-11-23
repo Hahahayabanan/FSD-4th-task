@@ -2,6 +2,7 @@ import { PointerView } from './PointerView';
 import { EventObserver } from '../EventObserver/EventObserver';
 import { Attribute } from '../helpers/interfaces';
 
+
 class MainView {
   public sliderHTML: HTMLElement;
 
@@ -21,7 +22,7 @@ class MainView {
 
   public lineHTML: HTMLElement;
 
-  public lastPointerMoved: PointerView;
+  public lastPointerMoved: PointerView = null;
 
   public observer: EventObserver = new EventObserver();
 
@@ -106,7 +107,7 @@ class MainView {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
-    const isValidClick = curTarget.className === this.styleClasses.PATH
+    const isValidClick: boolean = curTarget.className === this.styleClasses.PATH
       || curTarget.className === this.styleClasses.LINE;
     if (!isValidClick) return;
 
@@ -132,21 +133,21 @@ class MainView {
     if (this.isRange) {
       if (this.isVertical) {
         this.lineHTML.style.top = this.pointer0.pointerHTML.style.top;
-        const range = parseInt(this.pointer1.pointerHTML.style.top, 10)
-          - parseInt(this.pointer0.pointerHTML.style.top, 10);
+        const range = parseFloat(this.pointer1.pointerHTML.style.top)
+          - parseFloat(this.pointer0.pointerHTML.style.top);
         this.lineHTML.style.height = `${range}%`;
       } else {
         this.lineHTML.style.left = this.pointer0.pointerHTML.style.left;
-        const range = parseInt(this.pointer1.pointerHTML.style.left, 10)
-          - parseInt(this.pointer0.pointerHTML.style.left, 10);
+        const range = parseFloat(this.pointer1.pointerHTML.style.left)
+          - parseFloat(this.pointer0.pointerHTML.style.left);
         this.lineHTML.style.width = `${range}%`;
       }
     } else if (this.isVertical) {
       this.lineHTML.style.top = '0px';
-      this.lineHTML.style.height = `${parseInt(this.pointer0.pointerHTML.style.top, 10)}%`;
+      this.lineHTML.style.height = `${parseFloat(this.pointer0.pointerHTML.style.top)}%`;
     } else {
       this.lineHTML.style.left = '0px';
-      this.lineHTML.style.width = `${parseInt(this.pointer0.pointerHTML.style.left, 10)}%`;
+      this.lineHTML.style.width = `${parseFloat(this.pointer0.pointerHTML.style.left)}%`;
     }
   }
 
@@ -157,19 +158,17 @@ class MainView {
     return res;
   }
 
-  private dispatchPointerPosition(data: any) {
-    const { newCurPos } = data;
-    let { updateObject } = data;
-    let updateValueType;
-    if (updateObject === this.pointer1) {
-      updateValueType = 'secondValue';
+  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: PointerView }) {
+    const { newCurPos, pointerToUpdate } = data;
+    let updateObject: string;
+    if (pointerToUpdate === this.pointer1) {
+      updateObject = 'secondValue';
     } else if (this.isRange) {
-      updateValueType = 'firstValue';
+      updateObject = 'firstValue';
     } else {
-      updateValueType = 'singleValue';
+      updateObject = 'singleValue';
     }
-    this.updateZIndex(updateObject);
-    updateObject = updateValueType;
+    this.updateZIndex(pointerToUpdate);
     this.observer.broadcast({ newCurPos, updateObject });
   }
 
@@ -178,15 +177,26 @@ class MainView {
     if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
   }
 
-  setPointerPosition(newCurPos: number[] | number, newTipValue: number, newAttribute: Attribute) {
+  setPointerPosition(options: {
+    newPosition: number,
+    newPositions: number[],
+    newTipValue: number,
+    newTipValues: number[],
+    newAttribute: Attribute,
+  }) {
+    const {
+      newPosition, newPositions, newTipValue, newTipValues, newAttribute,
+    } = options;
     if (this.isRange) {
-      this.pointer0.setPointerPosition(newCurPos[0]);
-      this.pointer1.setPointerPosition(newCurPos[1]);
+      this.pointer0.setPointerPosition(newPositions[0]);
+      this.pointer1.setPointerPosition(newPositions[1]);
+      this.pointer0.updateTipValue(newTipValues[0]);
+      this.pointer1.updateTipValue(newTipValues[1]);
     } else {
-      this.pointer0.setPointerPosition(<number>newCurPos);
+      this.pointer0.setPointerPosition(newPosition);
+      this.pointer0.updateTipValue(newTipValue);
     }
     if (this.hasLine) this.calculateAndApplyLine();
-    this.setTipValue(newTipValue);
     this.updateDataAttribute(newAttribute.name, newAttribute.value);
   }
 
@@ -238,17 +248,6 @@ class MainView {
       this.pointer0.createTip();
       if (this.isRange) {
         this.pointer1.createTip();
-      }
-    }
-  }
-
-  setTipValue(newValue: number | number[]) {
-    if (this.hasTip) {
-      if (this.isRange) {
-        this.pointer0.updateTipValue(newValue[0]);
-        this.pointer1.updateTipValue(newValue[1]);
-      } else {
-        this.pointer0.updateTipValue(newValue as number);
       }
     }
   }

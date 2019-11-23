@@ -19,7 +19,7 @@ declare global {
 
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   const {
-    min, max, step, value, values = '', isRange, hasTip, hasLine, orientation,
+    min, max, step, value, values = '', isRange, hasTip, hasLine = 'true', orientation,
   } = htmlElem.dataset;
 
   const valuesArray = values.match(/(\d+)/g);

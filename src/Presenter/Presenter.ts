@@ -9,7 +9,7 @@ import { EventObserver } from '../EventObserver/EventObserver';
 class Presenter {
   public model: Model;
 
-  public view: any;
+  public view: MainView;
 
   public observer: EventObserver = new EventObserver();
 
@@ -40,11 +40,20 @@ class Presenter {
   }
 
   updateViewWithNewPointerPosition(data: CalculatedSettings) {
-    const { newValues } = data;
-    const newValuesInPercents = isArray(newValues)
-      ? newValues.map((val: number) => this.model.calculateFromValueToPercents(val))
-      : this.model.calculateFromValueToPercents(newValues);
-    this.view.setPointerPosition(newValuesInPercents, newValues, this.getValueDataAttributes());
+    const { newValue, newValues } = data;
+    const newValuesInPercents: number[] = newValues ? newValues.map(
+      (val: number) => this.model.calculateFromValueToPercents(val)
+    ) : null;
+    const newValueInPercents: number = this.model.calculateFromValueToPercents(newValue);
+    const newAttribute = this.getValueDataAttributes();
+
+    this.view.setPointerPosition({
+      newAttribute,
+      newPosition: newValueInPercents,
+      newPositions: newValuesInPercents,
+      newTipValue: newValue,
+      newTipValues: newValues,
+    });
   }
 
   updateViewWithNewSettings(data: ISliderSettings) {

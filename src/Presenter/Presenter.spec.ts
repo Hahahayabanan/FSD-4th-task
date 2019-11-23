@@ -72,7 +72,7 @@ describe('Presenter / Presenter Range / Test initialization', () => {
   });
 
   it('Should coincide constructor set values on range line', () => {
-    expect(slider.view.rangeHTML.style.left).toEqual(
+    expect(slider.view.lineHTML.style.left).toEqual(
       slider.view.pointer0.pointerHTML.style.left,
     );
   });
@@ -93,10 +93,10 @@ describe('Presenter / Presenter Range / Test methods', () => {
   });
 
 
-  it('updateViewWithNewPointerPosition', async () => {
-    await slider.updateViewWithNewPointerPosition({ newValues: [50, 72] });
-    expect(Math.round(slider.view.pointer1.curPos)).toEqual(69);
-  });
+  // it('updateViewWithNewPointerPosition', async () => {
+  //   await slider.updateViewWithNewPointerPosition({ newValues: [50, 72] });
+  //   expect(Math.round(slider.view.pointer1.curPos)).toEqual(69);
+  // });
 
   it('updateViewWithNewSettings', async () => {
     await slider.updateViewWithNewSettings({ isRange: false, hasTip: true });

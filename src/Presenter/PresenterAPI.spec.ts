@@ -144,7 +144,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
       option: 'option',
       setting: 'values',
       value: 1,
-      oneOfTwoValues: 55,
+      numberOfOneOfTheValues: 55,
     });
     expect(slider.model.getSetting('values')).toEqual([-100, 55]);
     PresenterAPI.enterPoint({
@@ -152,7 +152,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
       option: 'option',
       setting: 'values',
       value: 0,
-      oneOfTwoValues: 35,
+      numberOfOneOfTheValues: 35,
     });
     expect(slider.model.getSetting('values')).toEqual([35, 55]);
   });
@@ -169,14 +169,14 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
       option: 'option',
       setting: 'values',
       value: 0,
-      oneOfTwoValues: -10,
+      numberOfOneOfTheValues: -10,
     });
     PresenterAPI.enterPoint({
       slider,
       option: 'option',
       setting: 'values',
       value: 1,
-      oneOfTwoValues: 75,
+      numberOfOneOfTheValues: 75,
     });
     expect(
       PresenterAPI.enterPoint({
@@ -377,7 +377,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
       option: 'option',
       setting: 'values',
       value: 0,
-      oneOfTwoValues: 999,
+      numberOfOneOfTheValues: 999,
     });
     expect(slider.model.getSetting('values')).toEqual([50, 100]);
   });
