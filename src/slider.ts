@@ -12,7 +12,7 @@ declare global {
       option?: ISliderSettings | string,
       setting?: string,
       value?: string | number | number[] | boolean,
-      oneOfTwoValues?: number,
+      numberOfOneOfTheValues?: number,
     ) => JQuery<Element> | string | number | number[] | boolean;
   }
 }
@@ -24,7 +24,7 @@ function checkDataset(dataset: string): number | boolean {
   if (dataset === 'false') {
     return false;
   }
-  const number = parseInt(dataset, 10);
+  const number = parseFloat(dataset);
   if (!isNaN(number)) {
     return number;
   }
@@ -34,7 +34,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   let values: number[] | RegExpMatchArray;
   if (htmlElem.dataset.values) {
     values = htmlElem.dataset.values.match(/(\d+)/g);
-    values = values.map((val: string) => parseInt(val, 10));
+    values = values.map((val: string) => parseFloat(val));
   }
   return {
     min: checkDataset(htmlElem.dataset.min) as number,
@@ -50,13 +50,11 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 }
 
 (function initialization($: JQueryStatic) {
-  const sliders: Presenter[] = [];
-
   $.fn.slider = function getStart(
     option?: ISliderSettings | string,
     setting?: string,
     value?: string | number | number[] | boolean,
-    oneOfTwoValues?: number,
+    numberOfOneOfTheValues?: number,
   ): JQuery<Element> | string | number | number[] | boolean {
     const isThatSliderInitializationParameters = typeof option === 'object' || option === undefined;
     const isThatSliderOptionCall = typeof option === 'string';
@@ -66,26 +64,25 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
-        sliders.push(new Presenter(htmlElem, settings));
+        const presenter = new Presenter(htmlElem, settings);
+        this.data('presenter', presenter);
+        return this;
       });
-      return this;
     }
 
     if (isThatSliderOptionCall) {
       let returnValue: string | number | number[] | boolean;
-      this.each((i: number, val: object) => {
-        const htmlSlider = val;
-        sliders.forEach(presenter => {
-          if (presenter.view.sliderHTML === htmlSlider) {
-            returnValue = PresenterAPI.enterPoint({
-              option: String(option),
-              setting,
-              value,
-              oneOfTwoValues,
-              slider: presenter,
-            });
-          }
-        });
+      this.each(() => {
+        const presenter = this.data('presenter');
+        if (presenter) {
+          returnValue = PresenterAPI.enterPoint({
+            setting,
+            value,
+            numberOfOneOfTheValues,
+            option: option as string,
+            slider: presenter,
+          });
+        }
       });
       return returnValue;
     }
