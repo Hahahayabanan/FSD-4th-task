@@ -17,35 +17,25 @@ declare global {
   }
 }
 
-function checkDataset(dataset: string): number | boolean {
-  if (dataset === 'true') {
-    return true;
-  }
-  if (dataset === 'false') {
-    return false;
-  }
-  const number = parseFloat(dataset);
-  if (!isNaN(number)) {
-    return number;
-  }
-}
-
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
-  let values: number[] | RegExpMatchArray;
-  if (htmlElem.dataset.values) {
-    values = htmlElem.dataset.values.match(/(\d+)/g);
-    values = values.map((val: string) => parseFloat(val));
-  }
+  const {
+    min, max, step, value, values = '', isRange, hasTip, hasLine, orientation,
+  } = htmlElem.dataset;
+
+  const valuesArray = values.match(/(\d+)/g);
+  let valuesAsNumber: number[];
+  if (valuesArray) valuesAsNumber = valuesArray.map((val: string) => parseFloat(val));
+
   return {
-    min: checkDataset(htmlElem.dataset.min) as number,
-    max: checkDataset(htmlElem.dataset.max) as number,
-    step: checkDataset(htmlElem.dataset.step) as number,
-    isRange: checkDataset(htmlElem.dataset.isRange) as boolean,
-    orientation: htmlElem.dataset.orientation,
-    values: values as number[],
-    value: checkDataset(htmlElem.dataset.value) as number,
-    hasTip: checkDataset(htmlElem.dataset.hasTip) as boolean,
-    hasLine: checkDataset(htmlElem.dataset.hasLine) as boolean,
+    orientation,
+    min: isNaN(parseFloat(min)) ? null : parseFloat(min),
+    max: isNaN(parseFloat(max)) ? null : parseFloat(max),
+    step: isNaN(parseFloat(step)) ? null : parseFloat(step),
+    value: isNaN(parseFloat(value)) ? null : parseFloat(value),
+    values: valuesAsNumber,
+    isRange: isRange === 'true',
+    hasTip: hasTip === 'true',
+    hasLine: hasLine === 'true',
   };
 }
 
