@@ -131,8 +131,9 @@ class ControlPanel {
     const newPropertyValue: number = parseFloat(`${field.getValue()}`);
 
     if (property === 'values') {
-      this.slider.setPropertyValue(property, newPropertyValue, field.responsiblePropertyVariant);
-      const trueValue = `${this.slider.getPropertyValue('values', field.responsiblePropertyVariant)}`;
+      const { responsiblePropertyVariant } = field;
+      this.slider.setPropertyValue(property, responsiblePropertyVariant, newPropertyValue);
+      const trueValue = `${this.slider.getPropertyValue('values', responsiblePropertyVariant)}`;
       field.setValue(trueValue);
     } else {
       this.slider.setPropertyValue(property, newPropertyValue);

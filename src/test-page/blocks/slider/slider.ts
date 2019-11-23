@@ -40,7 +40,7 @@ class Slider {
     value: string | boolean | number | number[],
     numberOfOneOfTheValues?: number
   ) {
-    this.$slider.slider('option', property, numberOfOneOfTheValues, Number(value));
+    this.$slider.slider('option', property, value, numberOfOneOfTheValues);
   }
 }
 
