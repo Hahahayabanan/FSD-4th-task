@@ -18,15 +18,6 @@ class SliderSettings {
   public errors = {
     minBiggerMax: 'Min slider range value cant be bigger than max value',
     stepBiggerMaxMin: 'Step cant be bigger than min and max range',
-    stepInteger:
-      "Step should be an integer, commonly a dividend of the slider's maximum value",
-    valueBiggerMax: 'Value cant be bigger than max value',
-    valueSmallerMin: 'Value cant be smaller than min value',
-    firstValueSmallerMin: 'First value cant be smaller than min value',
-    secondValueBiggerMax: 'Second value cant be bigger than max value',
-    firstValueBiggerSecond: 'First value cant be bigger than second value',
-    secondValueBiggerFirst: 'Second value cant be bigger than first value',
-    rangeValuesInSingle: 'Slider has range values but it is not range',
     notValidOrientation:
       'Orientation of slider has only two values "horizontal" or "vertical"',
   };
@@ -55,10 +46,12 @@ class SliderSettings {
         switch (setting) {
           case 'isRange':
             this.settings.isRange = newValue;
-            if (this.settings.value) {
+            if (this.settings.isRange) {
+              if (this.settings.values[1] < this.settings.value) this.setSingleValueInRange(this.settings.max, 1);
               this.setSingleValueInRange(this.settings.value, 0);
-              this.setSingleValueInRange(this.settings.max, 1);
-            } else if (this.settings.values[0]) this.setValue(this.settings.values[0]);
+            } else {
+              this.setValue(this.settings.values[0]);
+            }
             break;
           case 'hasTip':
             this.settings.hasTip = newValue;
@@ -108,46 +101,54 @@ class SliderSettings {
   }
 
   setMin(newMin: number) {
-    if (Number(newMin) >= this.settings.max) {
-      throw this.errors.minBiggerMax;
+    try {
+      if (newMin >= this.settings.max) {
+        throw this.errors.minBiggerMax;
+      }
+      if (newMin > this.settings.value) {
+        this.settings.value = newMin;
+      }
+      if (newMin > this.settings.values[0]) {
+        this.settings.values[0] = newMin;
+      }
+      if (newMin >= this.settings.values[1]) {
+        this.settings.values[0] = newMin;
+        this.settings.values[1] = Number(newMin) + this.settings.step;
+      }
+      this.settings.min = newMin;
+    } catch (err) {
+      console.error(err);
     }
-    if (Number(newMin) > this.settings.value) {
-      this.settings.value = newMin;
-    }
-    if (Number(newMin) > this.settings.values[0]) {
-      this.settings.values[0] = newMin;
-    }
-    if (Number(newMin) >= this.settings.values[1]) {
-      this.settings.values[0] = newMin;
-      this.settings.values[1] = Number(newMin) + this.settings.step;
-    }
-    this.settings.min = Number(newMin);
   }
 
   setMax(newMax: number) {
-    if (Number(newMax) <= this.settings.min) {
-      throw this.errors.minBiggerMax;
+    try {
+      if (newMax <= this.settings.min) {
+        throw this.errors.minBiggerMax;
+      }
+      if (newMax < this.settings.value) {
+        this.settings.value = newMax;
+      }
+      if (newMax < this.settings.values[1]) {
+        this.settings.values[1] = newMax;
+      }
+      if (newMax <= this.settings.values[1]) {
+        this.settings.values[1] = newMax;
+        this.settings.values[0] = newMax - this.settings.step;
+      }
+      this.settings.max = newMax;
+    } catch (err) {
+      console.error(err);
     }
-    if (Number(newMax) < this.settings.value) {
-      this.settings.value = newMax;
-    }
-    if (Number(newMax) < this.settings.values[1]) {
-      this.settings.values[1] = newMax;
-    }
-    if (Number(newMax) <= this.settings.values[1]) {
-      this.settings.values[1] = newMax;
-      this.settings.values[0] = newMax - this.settings.step;
-    }
-    this.settings.max = Number(newMax);
   }
 
   setStep(tmp: number) {
     try {
       const valueRange = this.settings.max - this.settings.min;
-      const stepBiggerNull = Number(tmp) > 0;
-      const stepSmallerRange = Number(tmp) < valueRange;
+      const stepBiggerNull = tmp > 0;
+      const stepSmallerRange = tmp < valueRange;
       if (stepBiggerNull && stepSmallerRange) {
-        this.settings.step = Number(tmp);
+        this.settings.step = tmp;
       } else {
         this.settings.step = this.defaultSettings.step;
         throw this.errors.stepBiggerMaxMin;
@@ -229,11 +230,15 @@ class SliderSettings {
     const isOrientationVertical = newOrientation !== orientation.VERTICAL;
     const isOrientationHorizontal = newOrientation !== orientation.HORIZONTAL;
     const isOrientationNotSet = isOrientationVertical && isOrientationHorizontal;
-
-    if (isOrientationNotSet) {
-      this.settings.orientation = this.defaultSettings.orientation;
-    } else {
-      this.settings.orientation = newOrientation;
+    try {
+      if (isOrientationNotSet) {
+        this.settings.orientation = this.defaultSettings.orientation;
+        throw this.errors.notValidOrientation;
+      } else {
+        this.settings.orientation = newOrientation;
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 }

@@ -43,11 +43,9 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(pointer.calcPercentsToPixels(60)).toBeCloseTo(180);
   });
 
-  it('Create and delete tip', async () => {
+  it('Create tip', async () => {
     await pointer.createTip();
     expect(pointer.tip).toBeDefined();
     expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');
-    pointer.deleteTip();
-    expect(pointer.tip).toBeNull();
   });
 });

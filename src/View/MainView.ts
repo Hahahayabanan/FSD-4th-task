@@ -246,6 +246,7 @@ class MainView {
   createTip() {
     if (this.hasTip) {
       this.pointer0.createTip();
+      this.sliderHTML.classList.add('j-plugin-slider_with-point');
       if (this.isRange) {
         this.pointer1.createTip();
       }

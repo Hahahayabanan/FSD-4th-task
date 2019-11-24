@@ -119,17 +119,6 @@ class PointerView {
 
   createTip() {
     this.tip = new TipView(this.pointerHTML);
-    const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
-    sliderWrap.classList.add('j-plugin-slider_with-point');
-  }
-
-  deleteTip() {
-    if (this.tip !== undefined && this.tip !== null) {
-      this.tip.destroy();
-      this.tip = null;
-      const sliderWrap = this.pointerHTML.parentNode.parentNode as HTMLElement;
-      sliderWrap.classList.remove('j-plugin-slider_with-point');
-    }
   }
 
   updateTipValue(newValue: number) {

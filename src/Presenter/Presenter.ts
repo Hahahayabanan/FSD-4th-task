@@ -1,4 +1,3 @@
-import { isArray } from 'util';
 import { MainView } from '../View/MainView';
 import { Model } from '../Model/Model';
 import {
