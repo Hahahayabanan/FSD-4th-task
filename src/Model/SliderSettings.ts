@@ -22,7 +22,7 @@ class SliderSettings {
       'Orientation of slider has only two values "horizontal" or "vertical"',
   };
 
-  constructor(settings: ISliderSettings) {
+  constructor(settings?: ISliderSettings) {
     this.setSettings(settings);
   }
 
