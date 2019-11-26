@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ISliderSettings } from './helpers/interfaces';
 import { Presenter } from './Presenter/Presenter';
-import { PresenterAPI } from './Presenter/PresenterAPI';
 
 declare global {
   interface Window {
@@ -15,6 +14,42 @@ declare global {
       numberOfOneOfTheValues?: number,
     ) => JQuery<Element> | string | number | number[] | boolean;
   }
+}
+
+function getOrSetSingleSliderOption(options: {
+  slider: Presenter;
+  setting: string;
+  value?: string | number | number[] | boolean;
+  numberOfOneOfTheValues?: number;
+}) {
+  const {
+    slider, setting, value, numberOfOneOfTheValues
+  } = options;
+
+  let currentReturn: string | number | number[] | boolean;
+  if (value !== undefined && value !== null) {
+    if (setting === 'values') {
+      const isValueNumber = typeof value === 'number';
+      const isOneOfValuesUndefined = numberOfOneOfTheValues === undefined;
+
+      if (isOneOfValuesUndefined && !isValueNumber) {
+        slider.model.setSetting('values', value);
+      }
+      if (isOneOfValuesUndefined && isValueNumber) {
+        currentReturn = slider.model.getSetting('values')[value];
+      }
+      if (!isOneOfValuesUndefined && typeof value === 'number') {
+        const currentValueNumber: number = value;
+        slider.model.setSetting('values', numberOfOneOfTheValues, currentValueNumber);
+      }
+    } else {
+      slider.model.setSetting(setting, value);
+    }
+  } else {
+    currentReturn = slider.model.getSetting(setting);
+  }
+
+  return currentReturn;
 }
 
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
@@ -62,17 +97,16 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
           this.each(() => {
             const presenter = this.data('presenter');
             if (presenter) {
-              returnValue = PresenterAPI.getOrSetSingleSliderOption({
+              returnValue = getOrSetSingleSliderOption({
                 setting,
                 value,
                 numberOfOneOfTheValues,
-                option: option as string,
                 slider: presenter,
               });
             }
           });
           return returnValue;
-        default:
+        default: console.error('Wrong option');
       }
     }
   };
