@@ -18,7 +18,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'step'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'step',
@@ -28,7 +28,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'value'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'value',
@@ -38,7 +38,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'max'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'max',
@@ -48,13 +48,13 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'min'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'min',
       value: 10,
     });
-    const val = PresenterAPI.enterPoint({
+    const val = PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'value',
@@ -64,7 +64,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'isRange'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
@@ -75,7 +75,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'isRange' on view", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
@@ -86,7 +86,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'hasTip'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'hasTip',
@@ -96,7 +96,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'isRange'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
@@ -107,7 +107,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API cant set values 'values'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -117,13 +117,13 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'values'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
       value: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -133,13 +133,13 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'set only one of values'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
       value: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -147,7 +147,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
       numberOfOneOfTheValues: 55,
     });
     expect(slider.model.getSetting('values')).toEqual([-100, 55]);
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -158,20 +158,20 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'get only one of values'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
       value: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
       value: 0,
       numberOfOneOfTheValues: -10,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -179,7 +179,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
       numberOfOneOfTheValues: 75,
     });
     expect(
-      PresenterAPI.enterPoint({
+      PresenterAPI.getOrSetSingleSliderOption({
         slider,
         option: 'option',
         setting: 'values',
@@ -189,7 +189,7 @@ describe('Presenter / PresenterAPI / Test initialization', () => {
   });
 
   it("Should coincide API set values 'orientation'", () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'orientation',
@@ -236,7 +236,7 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
 
   beforeEach(() => {
     slider = new Presenter(shadowSlider, {});
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
@@ -262,7 +262,7 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode true', () => {
 
   it('Should init default value', () => {
     const promise = new Promise(() => {
-      PresenterAPI.enterPoint({
+      PresenterAPI.getOrSetSingleSliderOption({
         slider,
         option: 'option',
         setting: 'isRange',
@@ -286,7 +286,7 @@ describe('Presenter / PresenterAPI / Test dynamic set range mode false', () => {
     slider = new Presenter(shadowSlider, {
       isRange: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
@@ -329,7 +329,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
 
   it('Should not set wrong value', () => {
     const oldValue = slider.model.getSetting('value');
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'value',
@@ -340,7 +340,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
 
   it('Should not set wrong value', () => {
     const oldValue = slider.model.getSetting('value');
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'value',
@@ -350,13 +350,13 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong range values', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
       value: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -366,13 +366,13 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong first range value', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'isRange',
       value: true,
     });
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'values',
@@ -383,7 +383,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong minVal', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'min',
@@ -393,7 +393,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong maxVal', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'max',
@@ -403,7 +403,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong step', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'step',
@@ -413,7 +413,7 @@ describe('Presenter / PresenterAPI / Test wrong values', () => {
   });
 
   it('Should not set wrong step', () => {
-    PresenterAPI.enterPoint({
+    PresenterAPI.getOrSetSingleSliderOption({
       slider,
       option: 'option',
       setting: 'step',

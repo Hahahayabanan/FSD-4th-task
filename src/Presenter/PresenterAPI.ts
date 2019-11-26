@@ -3,7 +3,7 @@ import { Presenter } from './Presenter';
 class PresenterAPI {
   static slider: Presenter;
 
-  static enterPoint(options: {
+  static getOrSetSingleSliderOption(options: {
     slider: Presenter;
     option: string;
     setting: string;
@@ -46,7 +46,6 @@ class PresenterAPI {
     } else {
       currentReturn = this.slider.model.getSetting(setting);
     }
-
 
     return currentReturn;
   }

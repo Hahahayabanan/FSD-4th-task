@@ -3,14 +3,11 @@ import { Model } from '../Model/Model';
 import {
   ISliderSettings, PointerPositionData, Attribute, CalculatedSettings,
 } from '../helpers/interfaces';
-import { EventObserver } from '../EventObserver/EventObserver';
 
 class Presenter {
   public model: Model;
 
   public view: MainView;
-
-  public observer: EventObserver = new EventObserver();
 
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
     this.model = new Model(options);

@@ -40,12 +40,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 }
 
 (function initialization($: JQueryStatic) {
-  $.fn.slider = function getStart(
-    option?: ISliderSettings | string,
-    setting?: string,
-    value?: string | number | number[] | boolean,
-    numberOfOneOfTheValues?: number,
-  ): JQuery<Element> | string | number | number[] | boolean {
+  $.fn.slider = function getStart(option?, setting?, value?, numberOfOneOfTheValues?,) {
     const isThatSliderInitializationParameters = typeof option === 'object' || option === undefined;
     const isThatSliderOptionCall = typeof option === 'string';
 
@@ -62,19 +57,23 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
     if (isThatSliderOptionCall) {
       let returnValue: string | number | number[] | boolean;
-      this.each(() => {
-        const presenter = this.data('presenter');
-        if (presenter) {
-          returnValue = PresenterAPI.enterPoint({
-            setting,
-            value,
-            numberOfOneOfTheValues,
-            option: option as string,
-            slider: presenter,
+      switch (option) {
+        case 'option':
+          this.each(() => {
+            const presenter = this.data('presenter');
+            if (presenter) {
+              returnValue = PresenterAPI.getOrSetSingleSliderOption({
+                setting,
+                value,
+                numberOfOneOfTheValues,
+                option: option as string,
+                slider: presenter,
+              });
+            }
           });
-        }
-      });
-      return returnValue;
+          return returnValue;
+        default:
+      }
     }
   };
 }(jQuery));
