@@ -23,8 +23,8 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   } = htmlElem.dataset;
 
   const valuesArray = values.match(/(\d+)/g);
-  let valuesAsNumber: number[];
-  if (valuesArray) valuesAsNumber = valuesArray.map((val: string) => parseFloat(val));
+  let valuesAsNumbers: number[];
+  if (valuesArray) valuesAsNumbers = valuesArray.map((val: string) => parseFloat(val));
 
   return {
     orientation,
@@ -32,7 +32,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     max: isNaN(parseFloat(max)) ? null : parseFloat(max),
     step: isNaN(parseFloat(step)) ? null : parseFloat(step),
     value: isNaN(parseFloat(value)) ? null : parseFloat(value),
-    values: valuesAsNumber,
+    values: valuesAsNumbers,
     isRange: isRange === 'true',
     hasTip: hasTip === 'true',
     hasLine: hasLine === 'true',
@@ -51,7 +51,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 
     if (isThatSliderInitializationParameters) {
       let settings: ISliderSettings = option as ISliderSettings;
-      this.each((i: number, val: HTMLElement) => {
+      return this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
         settings = $.extend(settings, getDataAttrSettings(htmlElem));
         const presenter = new Presenter(htmlElem, settings);

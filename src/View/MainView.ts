@@ -52,6 +52,8 @@ class MainView {
     this.hasLine = hasLine;
     this.isRange = isRange;
 
+    this.handlePathHTMLMouseDown = this.handlePathHTMLMouseDown.bind(this);
+
     this.createTemplate();
     this.bindEventListeners();
     this.addObservers();
@@ -103,7 +105,7 @@ class MainView {
     this.pathHTML.addEventListener('mousedown', this.handlePathHTMLMouseDown);
   }
 
-  private handlePathHTMLMouseDown = (event: MouseEvent) => {
+  private handlePathHTMLMouseDown(event: MouseEvent) {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
@@ -127,7 +129,7 @@ class MainView {
     } else {
       this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
     }
-  };
+  }
 
   private calculateAndApplyLine() {
     if (this.isRange) {

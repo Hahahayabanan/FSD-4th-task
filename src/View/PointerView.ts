@@ -23,10 +23,15 @@ class PointerView {
     this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
     this.parentHTML = parentHTML;
+
+    this.handlePointerHTMLMouseDown = this.handlePointerHTMLMouseDown.bind(this);
+    this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
+    this.handleDocumentMouseUp = this.handleDocumentMouseUp.bind(this);
+
     this.bindEventListeners();
   }
 
-  private handlePointerMouseDown(event: MouseEvent) {
+  private handlePointerHTMLMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.endPos = this.curPos;
 
@@ -58,14 +63,13 @@ class PointerView {
     document.removeEventListener('mousemove', this.handleDocumentMouseMove);
   }
 
+  private handlePointerHTMLDragStart() {
+    return false;
+  }
+
   private bindEventListeners() {
-    this.handlePointerMouseDown = this.handlePointerMouseDown.bind(this);
-    this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
-    this.handleDocumentMouseUp = this.handleDocumentMouseUp.bind(this);
-    this.pointerHTML.addEventListener('mousedown', this.handlePointerMouseDown);
-    this.pointerHTML.ondragstart = function onDragStart() {
-      return false;
-    };
+    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
+    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
   }
 
   getPathLength() {

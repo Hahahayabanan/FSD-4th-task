@@ -42,12 +42,16 @@ class SliderSettings {
     newValue: number | number[] | string | boolean,
     currentValueNumber?: number) {
     try {
+      const isSecondValueNull = this.settings.values[1] === null;
+      const isSecondValueSmallerValue = this.settings.values[1] < this.settings.value;
       if (typeof newValue === 'boolean') {
         switch (setting) {
           case 'isRange':
             this.settings.isRange = newValue;
             if (this.settings.isRange) {
-              if (this.settings.values[1] < this.settings.value) this.setSingleValueInRange(this.settings.max, 1);
+              if (isSecondValueSmallerValue || isSecondValueNull) {
+                this.setSingleValueInRange(this.settings.max, 1);
+              }
               this.setSingleValueInRange(this.settings.value, 0);
             } else {
               this.setValue(this.settings.values[0]);
@@ -145,9 +149,9 @@ class SliderSettings {
   setStep(tmp: number) {
     try {
       const valueRange = this.settings.max - this.settings.min;
-      const stepBiggerNull = tmp > 0;
+      const stepBiggerZero = tmp > 0;
       const stepSmallerRange = tmp < valueRange;
-      if (stepBiggerNull && stepSmallerRange) {
+      if (stepBiggerZero && stepSmallerRange) {
         this.settings.step = tmp;
       } else {
         this.settings.step = this.defaultSettings.step;
@@ -173,20 +177,16 @@ class SliderSettings {
 
   setValues(newValue: number[]) {
     let newValues: number[] = [null, null];
-    newValues = newValue;
-
-    const isFirstValueNull = this.settings.values[0] === null;
-    const isSecondValueNull = this.settings.values[1] === null;
+    newValues = newValue.slice();
     const isFirstValueSmallerMin = newValues[0] < this.settings.min;
     const isSecondValueBiggerMax = newValues[1] > this.settings.max;
     const isFirstValueBiggerMax = newValues[0] > this.settings.max;
     const isSecondValueSmallerMin = newValues[1] < this.settings.min;
     const isFirstValueBiggerSecond = newValues[0] >= newValues[1];
-
-    if (isFirstValueSmallerMin || isFirstValueNull) {
+    if (isFirstValueSmallerMin) {
       newValues[0] = this.settings.min;
     }
-    if (isSecondValueBiggerMax || isSecondValueNull) {
+    if (isSecondValueBiggerMax) {
       newValues[1] = this.settings.max;
     }
     if (isFirstValueBiggerMax) {
@@ -202,9 +202,17 @@ class SliderSettings {
     if (!isFirstValueBiggerSecond) {
       this.settings.values = newValues;
     }
+    const isFirstValueNull = this.settings.values[0] === null;
+    const isSecondValueNull = this.settings.values[1] === null;
+    if (isFirstValueNull) {
+      newValues[0] = this.settings.min;
+    }
+    if (isSecondValueNull) {
+      newValues[1] = this.settings.max;
+    }
   }
 
-  setSingleValueInRange(newValue: number, currentValueNumber?: number) {
+  setSingleValueInRange(newValue: number, currentValueNumber: number) {
     const newValues: number[] = [null, null];
     if (currentValueNumber === 0) {
       if (newValue <= this.settings.values[1]) {

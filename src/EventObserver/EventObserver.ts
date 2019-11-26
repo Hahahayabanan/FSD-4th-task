@@ -10,13 +10,11 @@ class EventObserver {
   }
 
   unsubscribe(fn: Function) {
-    this.observers = this.observers.filter((subscriber: any) => {
-      return subscriber !== fn;
-    });
+    this.observers = this.observers.filter((subscriber: Function) => subscriber !== fn);
   }
 
   broadcast(data: any) {
-    this.observers.forEach((subscriber: any) => {
+    this.observers.forEach((subscriber: Function) => {
       subscriber(data);
     });
   }
