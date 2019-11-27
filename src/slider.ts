@@ -16,42 +16,6 @@ declare global {
   }
 }
 
-function getOrSetSingleSliderOption(options: {
-  slider: Presenter;
-  setting: string;
-  value?: string | number | number[] | boolean;
-  numberOfOneOfTheValues?: number;
-}) {
-  const {
-    slider, setting, value, numberOfOneOfTheValues
-  } = options;
-
-  let currentReturn: string | number | number[] | boolean;
-  if (value !== undefined && value !== null) {
-    if (setting === 'values') {
-      const isValueNumber = typeof value === 'number';
-      const isOneOfValuesUndefined = numberOfOneOfTheValues === undefined;
-
-      if (isOneOfValuesUndefined && !isValueNumber) {
-        slider.model.setSetting('values', value);
-      }
-      if (isOneOfValuesUndefined && isValueNumber) {
-        currentReturn = slider.model.getSetting('values')[value];
-      }
-      if (!isOneOfValuesUndefined && typeof value === 'number') {
-        const currentValueNumber: number = value;
-        slider.model.setSetting('values', numberOfOneOfTheValues, currentValueNumber);
-      }
-    } else {
-      slider.model.setSetting(setting, value);
-    }
-  } else {
-    currentReturn = slider.model.getSetting(setting);
-  }
-
-  return currentReturn;
-}
-
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   const {
     min, max, step, value, values = '', isRange, hasTip, hasLine = 'true', orientation,
@@ -97,11 +61,10 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
           this.each(() => {
             const presenter = this.data('presenter');
             if (presenter) {
-              returnValue = getOrSetSingleSliderOption({
+              returnValue = presenter.getOrSetOption({
                 setting,
                 value,
                 numberOfOneOfTheValues,
-                slider: presenter,
               });
             }
           });
