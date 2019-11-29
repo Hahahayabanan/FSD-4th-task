@@ -8,7 +8,7 @@ const shadowThumb = document.querySelector(
 const shadowPath = document.querySelector(
   '.j-slider-plugin__path',
 ) as HTMLElement;
-const pointer = new PointerView(shadowThumb);
+const pointer = new PointerView(shadowThumb, shadowPath);
 
 describe('View / Slider Pointer / Test of setting', () => {
   beforeEach(() => {
@@ -25,7 +25,7 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Render in pixels', async () => {
-    await pointer.renderCurrentPosInPercents(29);
+    await pointer.renderInPercents(29);
     expect(
       Math.round(parseInt(pointer.pointerHTML.style.left, 10)),
     ).toBeCloseTo(29);
@@ -36,11 +36,11 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Calc pixels to percents', () => {
-    expect(Math.round(pointer.calcPixelsToPercents(150))).toBeCloseTo(50);
+    expect(Math.round(pointer.calculatePixelsToPercents(150))).toBeCloseTo(50);
   });
 
   it('Calc percents to pixels', async () => {
-    expect(pointer.calcPercentsToPixels(60)).toBeCloseTo(180);
+    expect(pointer.calculatePercentsToPixels(60)).toBeCloseTo(180);
   });
 
   it('Create tip', async () => {

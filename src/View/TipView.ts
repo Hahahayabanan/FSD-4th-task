@@ -1,10 +1,10 @@
 class TipView {
   public tipHTML: HTMLElement;
 
-  public parentHTML: HTMLElement;
+  public pointerHTML: HTMLElement;
 
-  constructor(parentHTML: HTMLElement) {
-    this.parentHTML = parentHTML;
+  constructor(pointerHTML: HTMLElement) {
+    this.pointerHTML = pointerHTML;
 
     this.createTemplate();
   }
@@ -12,7 +12,7 @@ class TipView {
   createTemplate() {
     this.tipHTML = document.createElement('div');
     this.tipHTML.classList.add('j-plugin-slider__follower-point');
-    this.parentHTML.appendChild(this.tipHTML);
+    this.pointerHTML.appendChild(this.tipHTML);
   }
 
   setValue(value: number) {

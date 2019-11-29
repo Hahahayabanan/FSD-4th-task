@@ -118,16 +118,16 @@ class MainView {
       : event.clientX - this.pathHTML.getBoundingClientRect().left;
 
     if (this.isRange) {
-      const midpointBetweenPoints = this.calculateMidpointBetweenPoints();
+      const midpointBetweenPoints = this.calculateMidpointBetweenPointers();
 
       if (newLeft < midpointBetweenPoints) {
-        this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
+        this.pointer0.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
       }
       if (newLeft > midpointBetweenPoints) {
-        this.pointer1.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
+        this.pointer1.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
       }
     } else {
-      this.pointer0.dispatchPointerPosition(this.pointer0.calcPixelsToPercents(newLeft));
+      this.pointer0.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
     }
   }
 
@@ -153,7 +153,7 @@ class MainView {
     }
   }
 
-  private calculateMidpointBetweenPoints() {
+  private calculateMidpointBetweenPointers() {
     const res: number = (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels())
         / 2
       + this.pointer0.getCurPosInPixels();
@@ -177,6 +177,22 @@ class MainView {
   private addObservers() {
     this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
     if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
+  }
+
+  private updateZIndex(curPointer: PointerView) {
+    if (this.isRange) {
+      if (curPointer === this.pointer0) {
+        this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+        this.pointer1.pointerHTML.classList.remove(
+          this.styleClasses.THUMB_SELECTED,
+        );
+      } else {
+        this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+        this.pointer0.pointerHTML.classList.remove(
+          this.styleClasses.THUMB_SELECTED,
+        );
+      }
+    }
   }
 
   setPointerPosition(options: {
@@ -227,22 +243,6 @@ class MainView {
       const { name, value } = attr;
       this.updateDataAttribute(name, value);
     });
-  }
-
-  updateZIndex(curPointer: PointerView) {
-    if (this.isRange) {
-      if (curPointer === this.pointer0) {
-        this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
-        this.pointer1.pointerHTML.classList.remove(
-          this.styleClasses.THUMB_SELECTED,
-        );
-      } else {
-        this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
-        this.pointer0.pointerHTML.classList.remove(
-          this.styleClasses.THUMB_SELECTED,
-        );
-      }
-    }
   }
 
   createTip() {

@@ -65,12 +65,12 @@ describe('Model / Slider / Test of setting other pointer values', () => {
   });
 
   describe('Model / Slider / Test of calculating value', () => {
-    it('calculateFromPercentsToValue', () => {
-      expect(slider.calculateFromPercentsToValue(58)).toEqual(66.4);
+    it('calculatePercentsToValue', () => {
+      expect(slider.calculatePercentsToValue(58)).toEqual(66.4);
     });
 
-    it('calculateFromValueToPercents', () => {
-      expect(slider.calculateFromValueToPercents(58)).toEqual(47.5);
+    it('calculateValueToPercents', () => {
+      expect(slider.calculateValueToPercents(58)).toEqual(47.5);
     });
   });
 });

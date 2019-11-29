@@ -58,26 +58,14 @@ describe('View / Slider template / Test of calculations', () => {
     });
     slider.pointer0.setPointerPosition(20);
     slider.pointer1.setPointerPosition(50);
-    slider.pointer0.renderCurrentPosInPercents(20);
-    slider.pointer1.renderCurrentPosInPercents(50);
+    slider.pointer0.renderInPercents(20);
+    slider.pointer1.renderInPercents(50);
   });
 
   it('setDataAttribute', async () => {
     await slider.setDataAttribute('value', '99');
     expect(slider.sliderHTML.dataset.value).toEqual('99');
   });
-
-  it('Update z-index', async () => {
-    await slider.updateZIndex(slider.pointer1);
-    expect(slider.pointer1.pointerHTML).toHaveClass(
-      slider.styleClasses.THUMB_SELECTED,
-    );
-  });
-
-  // it('setTipValue', async () => {
-  //   await slider.setTipValue([256, 128]);
-  //   expect(slider.pointer0.tip.tipHTML.textContent).toEqual('256');
-  // });
 
   it('getClear', async () => {
     await slider.getClear();

@@ -27,7 +27,7 @@ class Model {
     return currentValueWithStep;
   }
 
-  calculateFromPercentsToValue(curPosInPercents: number): number {
+  calculatePercentsToValue(curPosInPercents: number): number {
     const { min, max } = this.settings.settings;
     const rangeVal: number = max - min;
     const curPosInValue: number = (rangeVal * curPosInPercents) / 100;
@@ -35,7 +35,7 @@ class Model {
     return curPosInValue + min;
   }
 
-  calculateFromValueToPercents(curPosInValue: number): number {
+  calculateValueToPercents(curPosInValue: number): number {
     const { min, max } = this.settings.settings;
     const rangeVal: number = max - min;
     const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
@@ -44,7 +44,7 @@ class Model {
   }
 
   setCalculatedValue(curPosInPercents: number, updateObject: string) {
-    const newValue: number = this.calculateFromPercentsToValue(curPosInPercents);
+    const newValue: number = this.calculatePercentsToValue(curPosInPercents);
     const newValueWithStep: number = this.calculateValueWithStep(newValue);
     switch (updateObject) {
       case 'firstValue':

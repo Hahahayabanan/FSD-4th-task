@@ -7,7 +7,7 @@ const shadowSlider = document.querySelector('#test') as HTMLElement;
 describe('Presenter / Presenter / Test initialization', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  let slider: Presenter = new Presenter(shadowSlider, {
+  let presenter: Presenter = new Presenter(shadowSlider, {
     min: 10,
     step: 5,
     max: 100,
@@ -16,46 +16,46 @@ describe('Presenter / Presenter / Test initialization', () => {
   });
 
   it("Should coincide constructor set values 'value'", () => {
-    slider = new Presenter(shadowSlider, {
+    presenter = new Presenter(shadowSlider, {
       isRange: false,
       min: 10,
       step: 5,
       max: 100,
       value: 53,
     });
-    expect(slider.model.getSetting('value')).toEqual(55);
+    expect(presenter.model.getSetting('value')).toEqual(55);
   });
 
   it("Should coincide constructor values 'step'", () => {
-    slider = new Presenter(shadowSlider, {
+    presenter = new Presenter(shadowSlider, {
       step: 5,
     });
-    expect(slider.model.getSetting('step')).toEqual(5);
+    expect(presenter.model.getSetting('step')).toEqual(5);
   });
 
   it("Should coincide constructor values default 'value'", () => {
-    slider = new Presenter(shadowSlider, {
+    presenter = new Presenter(shadowSlider, {
       min: 10,
       max: 100,
       isRange: false,
     });
-    expect(slider.model.getSetting('value')).toEqual(10);
+    expect(presenter.model.getSetting('value')).toEqual(10);
   });
 
   it('Should coincide follower pointer value', () => {
-    slider = new Presenter(shadowSlider, {
+    presenter = new Presenter(shadowSlider, {
       hasTip: true,
     });
-    expect(slider.model.getSetting('value')).toEqual(
-      parseInt(slider.view.pointer0.tip.tipHTML.innerHTML, 10),
+    expect(presenter.model.getSetting('value')).toEqual(
+      parseInt(presenter.view.pointer0.tip.tipHTML.innerHTML, 10),
     );
   });
 });
 
-describe('Presenter / Presenter Range / Test initialization', () => {
+describe('Presenter / Presenter / Test initialization', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  const slider: Presenter = new Presenter(shadowSlider, {
+  const presenter: Presenter = new Presenter(shadowSlider, {
     min: 10,
     step: 5,
     max: 100,
@@ -64,26 +64,26 @@ describe('Presenter / Presenter Range / Test initialization', () => {
   });
 
   it("Should coincide constructor set values 'range'", () => {
-    expect(slider.model.getSetting('isRange')).toEqual(true);
+    expect(presenter.model.getSetting('isRange')).toEqual(true);
   });
 
   it("Should coincide constructor set values 'values'", () => {
-    expect(slider.model.getSetting('values')).toEqual([25, 35]);
+    expect(presenter.model.getSetting('values')).toEqual([25, 35]);
   });
 
   it('Should coincide constructor set values on range line', () => {
-    expect(slider.view.lineHTML.style.left).toEqual(
-      slider.view.pointer0.pointerHTML.style.left,
+    expect(presenter.view.lineHTML.style.left).toEqual(
+      presenter.view.pointer0.pointerHTML.style.left,
     );
   });
 });
 
-describe('Presenter / Presenter Range / Test methods', () => {
+describe('Presenter / Presenter / Test methods', () => {
   shadowSlider.style.cssText = 'width: 300px';
-  let slider: Presenter;
+  let presenter: Presenter;
 
   beforeEach(() => {
-    slider = new Presenter(shadowSlider, {
+    presenter = new Presenter(shadowSlider, {
       min: 10,
       step: 5,
       max: 100,
@@ -92,32 +92,36 @@ describe('Presenter / Presenter Range / Test methods', () => {
     });
   });
 
-
-  // it('updateViewWithNewPointerPosition', async () => {
-  //   await slider.updateViewWithNewPointerPosition({ newValues: [50, 72] });
-  //   expect(Math.round(slider.view.pointer1.curPos)).toEqual(69);
-  // });
-
   it('updateViewWithNewSettings', async () => {
-    await slider.updateViewWithNewSettings({ isRange: false, hasTip: true });
-    expect(slider.view.isRange).toBeFalsy();
-    expect(slider.view.pointer0.tip).toBeDefined();
-    expect(slider.view.pointer1).toBeNull();
+    await presenter.updateViewWithNewSettings({ isRange: false, hasTip: true });
+    expect(presenter.view.isRange).toBeFalsy();
+    expect(presenter.view.pointer0.tip).toBeDefined();
+    expect(presenter.view.pointer1).toBeNull();
   });
 
   it('checkOrientationIsVertical', async () => {
-    expect(slider.checkOrientationIsVertical()).toEqual(
-      slider.model.getSetting('orientation') === 'vertical',
+    expect(presenter.checkOrientationIsVertical()).toEqual(
+      presenter.model.getSetting('orientation') === 'vertical',
     );
   });
 
   it('updateDataAttributes', async () => {
-    await slider.model.setSetting('min', 0);
-    expect(slider.view.sliderHTML.dataset.min).toEqual('0');
+    await presenter.model.setSetting('min', 0);
+    expect(presenter.view.sliderHTML.dataset.min).toEqual('0');
   });
 
   it('updateValueDataAttributes', async () => {
-    await slider.model.setSetting('values', [35, 65]);
-    expect(slider.view.sliderHTML.dataset.values).toEqual('[35,65]');
+    await presenter.model.setSetting('values', [35, 65]);
+    expect(presenter.view.sliderHTML.dataset.values).toEqual('[35,65]');
+  });
+
+  it('getOrSetOption', async () => {
+    await presenter.getOrSetOption({ setting: 'values', value: [35, 65] });
+    expect(presenter.model.getSetting('values')).toEqual([35, 65]);
+  });
+
+  it('getOrSetOption', async () => {
+    await presenter.getOrSetOption({ setting: 'isRange', value: false });
+    expect(presenter.model.getSetting('isRange')).toEqual(false);
   });
 });

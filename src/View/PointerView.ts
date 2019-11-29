@@ -7,7 +7,7 @@ class PointerView {
 
   public pointerHTML: HTMLElement;
 
-  public parentHTML: HTMLElement;
+  public pathHTML: HTMLElement;
 
   public curPos: number;
 
@@ -19,10 +19,10 @@ class PointerView {
 
   public observer: EventObserver = new EventObserver();
 
-  constructor(elemHTML: HTMLElement, parentHTML?: HTMLElement, isVertical?: boolean) {
+  constructor(elemHTML: HTMLElement, pathHTML: HTMLElement, isVertical?: boolean) {
     this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
-    this.parentHTML = parentHTML;
+    this.pathHTML = pathHTML;
 
     this.handlePointerHTMLMouseDown = this.handlePointerHTMLMouseDown.bind(this);
     this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
@@ -48,13 +48,13 @@ class PointerView {
     event.preventDefault();
     const { mouseX, mouseY } = this.moveSettings;
 
-    const endPosInPixels = this.calcPercentsToPixels(this.endPos);
+    const endPosInPixels = this.calculatePercentsToPixels(this.endPos);
 
     const newCurPos: number = this.isVertical
       ? endPosInPixels - mouseY + event.clientY
       : endPosInPixels - mouseX + event.clientX;
 
-    const newCurPosInPercents = this.calcPixelsToPercents(newCurPos);
+    const newCurPosInPercents = this.calculatePixelsToPercents(newCurPos);
     this.dispatchPointerPosition(newCurPosInPercents);
   }
 
@@ -74,10 +74,10 @@ class PointerView {
 
   getPathLength() {
     const widthOrHeight: number = this.isVertical
-      ? this.pointerHTML.parentElement.getBoundingClientRect().height
-        || parseInt(this.pointerHTML.parentElement.style.height, 10)
-      : this.pointerHTML.parentElement.getBoundingClientRect().width
-        || parseInt(this.pointerHTML.parentElement.style.width, 10);
+      ? this.pathHTML.getBoundingClientRect().height
+        || parseInt(this.pathHTML.style.height, 10)
+      : this.pathHTML.getBoundingClientRect().width
+        || parseInt(this.pathHTML.style.width, 10);
     return widthOrHeight;
   }
 
@@ -89,7 +89,7 @@ class PointerView {
   setPointerPosition(newCurPos: number) {
     this.curPos = newCurPos;
 
-    this.renderCurrentPosInPercents(newCurPos);
+    this.renderInPercents(newCurPos);
     this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
@@ -99,22 +99,22 @@ class PointerView {
   }
 
   getCurPosInPixels() {
-    return this.calcPercentsToPixels(this.curPos);
+    return this.calculatePercentsToPixels(this.curPos);
   }
 
-  calcPixelsToPercents(valueInPixels: number) {
+  calculatePixelsToPercents(valueInPixels: number) {
     const lengthInPixels = this.getPathLength();
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
     return valueInPercents;
   }
 
-  calcPercentsToPixels(valueInPercents: number) {
+  calculatePercentsToPixels(valueInPercents: number) {
     const lengthInPixels = this.getPathLength();
     const valueInPixels = (valueInPercents / 100) * lengthInPixels;
     return valueInPixels;
   }
 
-  renderCurrentPosInPercents(newPos: number) {
+  renderInPercents(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
       ? (this.pointerHTML.style.top = `${newPos}%`)
       : (this.pointerHTML.style.left = `${newPos}%`);

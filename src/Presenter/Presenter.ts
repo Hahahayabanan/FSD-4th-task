@@ -38,9 +38,9 @@ class Presenter {
   updateViewWithNewPointerPosition(data: CalculatedSettings) {
     const { newValue, newValues } = data;
     const newValuesInPercents: number[] = newValues ? newValues.map(
-      (val: number) => this.model.calculateFromValueToPercents(val)
+      (val: number) => this.model.calculateValueToPercents(val)
     ) : null;
-    const newValueInPercents: number = this.model.calculateFromValueToPercents(newValue);
+    const newValueInPercents: number = this.model.calculateValueToPercents(newValue);
     const newAttribute = this.getValueDataAttributes();
 
     this.view.setPointerPosition({
