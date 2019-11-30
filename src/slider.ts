@@ -54,10 +54,11 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     }
 
     if (isThatSliderOptionCall) {
+      let returnArray;
       switch (option) {
         case 'option':
-          return this.map(() => {
-            const presenter = this.data('presenter');
+          returnArray = this.map((i: number, currentSlider: HTMLElement) => {
+            const presenter = $(currentSlider).data('presenter');
             if (presenter) {
               return presenter.getOrSetOption({
                 setting,
@@ -66,6 +67,8 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
               });
             }
           }).toArray();
+          if (returnArray.length <= 1) return returnArray[0];
+          return returnArray;
         default: console.error('Wrong option');
       }
     }
