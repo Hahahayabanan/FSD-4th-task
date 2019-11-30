@@ -108,7 +108,6 @@ class Presenter {
       setting, value, numberOfOneOfTheValues
     } = options;
 
-    let currentReturn: string | number | number[] | boolean;
     if (value !== undefined && value !== null) {
       if (setting === 'values') {
         const isValueNumber = typeof value === 'number';
@@ -118,7 +117,7 @@ class Presenter {
           this.model.setSetting('values', value);
         }
         if (isOneOfValuesUndefined && isValueNumber) {
-          currentReturn = this.model.getSetting('values')[value];
+          return this.model.getSetting('values')[value];
         }
         if (!isOneOfValuesUndefined && typeof value === 'number') {
           const currentValueNumber: number = value;
@@ -128,10 +127,8 @@ class Presenter {
         this.model.setSetting(setting, value);
       }
     } else {
-      currentReturn = this.model.getSetting(setting);
+      return this.model.getSetting(setting);
     }
-
-    return currentReturn;
   }
 }
 

@@ -3,8 +3,12 @@ const webpackConf = require('./webpack.config.js');
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine'],
-    files: [{ pattern: './tests/unit/spec-bundle.js', watched: false }],
+    plugins: ['@metahub/karma-jasmine-jquery', 'karma-*'],
+    frameworks: ['jasmine', 'jasmine-jquery'],
+    files: [
+      { pattern: './tests/unit/spec-bundle.js', watched: false },
+      './node_modules/jquery/dist/jquery.js',
+    ],
     preprocessors: { './tests/unit/spec-bundle.js': ['webpack', 'sourcemap'] },
     karmaTypescriptConfig: {
       compilerOptions: {

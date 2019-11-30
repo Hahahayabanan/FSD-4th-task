@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { ISliderSettings } from './helpers/interfaces';
 import { Presenter } from './Presenter/Presenter';
 
@@ -47,7 +46,7 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
       let settings: ISliderSettings = option as ISliderSettings;
       return this.each((i: number, val: HTMLElement) => {
         const htmlElem = val;
-        settings = $.extend(settings, getDataAttrSettings(htmlElem));
+        settings = $.extend(getDataAttrSettings(htmlElem), settings);
         const presenter = new Presenter(htmlElem, settings);
         this.data('presenter', presenter);
         return this;
@@ -55,20 +54,18 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
     }
 
     if (isThatSliderOptionCall) {
-      let returnValue: string | number | number[] | boolean;
       switch (option) {
         case 'option':
-          this.each(() => {
+          return this.map(() => {
             const presenter = this.data('presenter');
             if (presenter) {
-              returnValue = presenter.getOrSetOption({
+              return presenter.getOrSetOption({
                 setting,
                 value,
                 numberOfOneOfTheValues,
               });
             }
-          });
-          return returnValue;
+          }).toArray();
         default: console.error('Wrong option');
       }
     }

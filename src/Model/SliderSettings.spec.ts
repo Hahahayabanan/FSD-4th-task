@@ -29,7 +29,7 @@ describe('Model / SliderSettings / Test getters and setters', () => {
 
   it("Should coincide set values 'isRange'", () => {
     sliderSettings.setSetting('isRange', true);
-    expect(sliderSettings.getSetting('isRange')).toEqual(true);
+    expect(sliderSettings.getSetting('isRange')).toBeTruthy();
     expect(sliderSettings.getSetting('values')).toEqual([-100, 100]);
   });
 
@@ -70,7 +70,7 @@ describe('Model / SliderSettings / Test default values setting', () => {
   });
 
   it('Should init default isRange', () => {
-    expect(sliderSettings.getSetting('isRange')).toEqual(false);
+    expect(sliderSettings.getSetting('isRange')).toBeFalsy();
   });
 
   it('Should init default minVal', () => {

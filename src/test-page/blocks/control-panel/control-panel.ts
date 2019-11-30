@@ -50,11 +50,11 @@ class ControlPanel {
     this.hasTipCheckbox = new Checkbox($hasTipCheckbox, 'hasTip');
     this.hasLineCheckbox = new Checkbox($hasLineCheckbox, 'hasLine');
 
-    let value: boolean = this.slider.getPropertyValue('isRange') as boolean;
+    let value: boolean = this.slider.getPropertyValue('isRange')[0] as boolean;
     this.isRangeCheckbox.toggleChecked(value);
-    value = this.slider.getPropertyValue('hasTip') as boolean;
+    value = this.slider.getPropertyValue('hasTip')[0] as boolean;
     this.hasTipCheckbox.toggleChecked(value);
-    value = this.slider.getPropertyValue('hasLine') as boolean;
+    value = this.slider.getPropertyValue('hasLine')[0] as boolean;
     this.hasLineCheckbox.toggleChecked(value);
 
     const orientationProperty: string = this.slider.getPropertyValue('orientation') as string;

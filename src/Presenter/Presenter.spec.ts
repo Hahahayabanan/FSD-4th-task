@@ -64,7 +64,7 @@ describe('Presenter / Presenter / Test initialization', () => {
   });
 
   it("Should coincide constructor set values 'range'", () => {
-    expect(presenter.model.getSetting('isRange')).toEqual(true);
+    expect(presenter.model.getSetting('isRange')).toBeTruthy();
   });
 
   it("Should coincide constructor set values 'values'", () => {
@@ -122,6 +122,6 @@ describe('Presenter / Presenter / Test methods', () => {
 
   it('getOrSetOption', async () => {
     await presenter.getOrSetOption({ setting: 'isRange', value: false });
-    expect(presenter.model.getSetting('isRange')).toEqual(false);
+    expect(presenter.model.getSetting('isRange')).toBeFalsy();
   });
 });
