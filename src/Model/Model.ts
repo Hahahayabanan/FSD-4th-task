@@ -77,10 +77,12 @@ class Model {
   dispatchValue() {
     if (this.getSetting('isRange')) {
       const newValues: number[] = this.getSetting('values');
-      this.valuesObserver.broadcast({ newValues });
+      const newValuesInPercents: number[] = newValues.map(val => this.calculateValueToPercents(val));
+      this.valuesObserver.broadcast({ newValues, newValuesInPercents });
     } else {
       const newValue: number = this.getSetting('value');
-      this.valuesObserver.broadcast({ newValue });
+      const newValueInPercents: number = this.calculateValueToPercents(newValue);
+      this.valuesObserver.broadcast({ newValue, newValueInPercents });
     }
   }
 

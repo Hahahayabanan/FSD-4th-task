@@ -93,7 +93,7 @@ describe('Presenter / Presenter / Test methods', () => {
   });
 
   it('updateViewWithNewSettings', async () => {
-    await presenter.updateViewWithNewSettings({ isRange: false, hasTip: true });
+    await presenter.updateViewSettings({ isRange: false, hasTip: true });
     expect(presenter.view.isRange).toBeFalsy();
     expect(presenter.view.pointer0.tip).toBeDefined();
     expect(presenter.view.pointer1).toBeNull();

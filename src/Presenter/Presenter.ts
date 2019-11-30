@@ -23,9 +23,9 @@ class Presenter {
   }
 
   init() {
-    this.view.observer.subscribe(this.updateModelWithNewPointerPosition.bind(this));
-    this.model.settingsObserver.subscribe(this.updateViewWithNewSettings.bind(this));
-    this.model.valuesObserver.subscribe(this.updateViewWithNewPointerPosition.bind(this));
+    this.view.observer.subscribe(this.updateViewSettings.bind(this));
+    this.model.settingsObserver.subscribe(this.updateModelValue.bind(this));
+    this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
 
     this.initStartValues();
   }
@@ -35,12 +35,13 @@ class Presenter {
     this.view.setDataAttributes(this.getDataAttributes());
   }
 
-  updateViewWithNewPointerPosition(data: CalculatedSettings) {
-    const { newValue, newValues } = data;
-    const newValuesInPercents: number[] = newValues ? newValues.map(
-      (val: number) => this.model.calculateValueToPercents(val)
-    ) : null;
-    const newValueInPercents: number = this.model.calculateValueToPercents(newValue);
+  updateViewPointer(data: CalculatedSettings) {
+    const {
+      newValue,
+      newValues,
+      newValueInPercents,
+      newValuesInPercents
+    } = data;
     const newAttribute = this.getValueDataAttributes();
 
     this.view.setPointerPosition({
@@ -52,7 +53,7 @@ class Presenter {
     });
   }
 
-  updateViewWithNewSettings(data: ISliderSettings) {
+  updateViewSettings(data: ISliderSettings) {
     const { isRange, hasTip, hasLine } = data;
     const dataAttributes: Attribute[] = this.getDataAttributes();
     dataAttributes.push(this.getValueDataAttributes());
@@ -66,8 +67,9 @@ class Presenter {
     });
   }
 
-  updateModelWithNewPointerPosition(data: PointerPositionData) {
-    this.model.setCalculatedValue(data.newCurPos, data.updateObject);
+  updateModelValue(data: PointerPositionData) {
+    const { newCurPos, updateObject } = data;
+    this.model.setCalculatedValue(newCurPos, updateObject);
   }
 
   checkOrientationIsVertical(): boolean {

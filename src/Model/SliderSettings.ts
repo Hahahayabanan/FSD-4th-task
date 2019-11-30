@@ -170,6 +170,8 @@ class SliderSettings {
     if (!isValueBiggerMax && !isValueSmallerMin) {
       this.settings.value = newValue;
     }
+    if (isValueBiggerMax) this.settings.value = this.settings.max;
+    if (isValueSmallerMin) this.settings.value = this.settings.min;
     if (isValueNull) {
       this.settings.value = this.settings.min;
     }
