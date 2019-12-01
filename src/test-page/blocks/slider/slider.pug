@@ -1,12 +1,12 @@
-mixin slider({ min, max, step, isRange, orientation, value, values, hasTip, hasLine } = {})
+mixin slider({ min, max, step, isRange, orientation, from, to, hasTip, hasLine } = {})
   .slider.js-slider(
-    data-min=min 
+    data-min=min
     data-max=max 
     data-step=step
     data-is-range=isRange 
     data-orientation=orientation 
-    data-value=value 
-    data-values=values 
+    data-from=from 
+    data-to=to 
     data-has-tip=hasTip 
     data-has-line=hasLine
   )

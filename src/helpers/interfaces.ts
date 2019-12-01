@@ -4,8 +4,8 @@ interface ISliderSettings {
   max?: number;
   step?: number;
   orientation?: string;
-  value?: number;
-  values?: Array<number>;
+  from?: number;
+  to?: number;
   hasTip?: boolean;
   hasLine?: boolean;
 }
@@ -22,15 +22,15 @@ interface Attribute {
 
 interface PointerPositionData {
   newCurPos: number;
-  updateObject: string;
+  pointerThatChanged: string;
   updateAttributes: Attribute[];
 }
 
 interface CalculatedSettings {
-  newValue: number;
-  newValues: number[];
-  newValueInPercents: number;
-  newValuesInPercents: number[];
+  newFrom: number;
+  newTo: number;
+  newFromInPercents: number;
+  newToInPercents: number;
 }
 
 export {

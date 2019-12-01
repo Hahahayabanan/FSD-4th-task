@@ -25,18 +25,18 @@ html(lang='en')
       main.sliders
         .sliders__element
           +example({ parameters: {
-            min: 3, max: 199, step: 15, isRange: 'false', value: 59, hasTip: 'true',
+            min: 3, max: 199, step: 15, isRange: 'false', from: 59, hasTip: 'true',
           } })
         .sliders__element
           +example({ parameters: {
-            min: 99, max: 199, step: 5, isRange: 'true', orientation: 'vertical', values: [102, 159], hasTip: 'true',
+            min: 99, max: 199, step: 5, isRange: 'true', orientation: 'vertical', from: 102, to: 159, hasTip: 'true',
           } })
         .sliders__element
           +example()
         .sliders__element
           +example({ 
             parameters: {
-              min: -10000, max: 100000, step: 10, isRange: 'true', values: [-19, 63999], hasTip: 'true', hasLine: 'false',
+              min: -10000, max: 100000, step: 10, isRange: 'true', from: -19, to: 63999, hasTip: 'true', hasLine: 'false',
             } 
           })
 

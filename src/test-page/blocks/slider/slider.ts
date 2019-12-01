@@ -19,28 +19,26 @@ class Slider {
     max?: number;
     step?: number;
     orientation?: string;
-    value?: number;
-    values?: Array<number>;
+    from?: number;
+    to?: number;
     hasTip?: boolean;
     hasLine?: boolean;
   }) {
-    this.$slider.slider(settings);
+    this.$slider.HYBSlider(settings);
   }
 
   getElement() {
     return this.$slider;
   }
 
-  getPropertyValue(property: string, numberOfOneOfTheValues?: number) {
-    return this.$slider.slider('option', property, numberOfOneOfTheValues);
+  getPropertyValue(property: string) {
+    return this.$slider.HYBGetOption(property).get(0);
   }
 
-  setPropertyValue(
-    property: string,
-    value: string | boolean | number | number[],
-    numberOfOneOfTheValues?: number
-  ) {
-    this.$slider.slider('option', property, value, numberOfOneOfTheValues);
+  setPropertyValue(setting: string, value: string | number | boolean) {
+    const settings: ISliderSettings = {};
+    settings[setting] = value;
+    this.$slider.HYBUpdate(settings);
   }
 }
 

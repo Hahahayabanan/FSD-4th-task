@@ -1,7 +1,7 @@
 import { Model } from './Model';
 import { SliderSettings } from './SliderSettings';
 
-describe('Model / Slider / Test initialization', () => {
+describe('Model / Test initialization', () => {
   it('Should change slider settings', () => {
     const slider = new Model({
       isRange: false,
@@ -29,7 +29,8 @@ describe('Model / Slider / Test initialization', () => {
       min: 1,
       max: 10,
       step: 1,
-      values: [7, 8],
+      from: 7,
+      to: 8,
     });
 
     expect(slider.getSettings()).toEqual(
@@ -38,33 +39,35 @@ describe('Model / Slider / Test initialization', () => {
         min: 1,
         max: 10,
         step: 1,
-        values: [7, 8],
+        from: 7,
+        to: 8,
       }).settings,
     );
   });
 });
 
-describe('Model / Slider / Test of setting other pointer values', () => {
+describe('Model / Test of setting other pointer values', () => {
   const slider = new Model({
     min: 20,
     max: 100,
     step: 2,
     isRange: true,
-    values: [25, 55],
+    from: 25,
+    to: 55,
   });
 
   slider.setSetting('step', 5);
 
   it('Should change pointer position 60', () => {
-    slider.setCalculatedValue(58, 'firstValue');
-    expect(slider.getSetting('values')[0]).toEqual(25);
+    slider.setCalculatedValue(58, 'second');
+    expect(slider.getSetting('to')).toEqual(65);
   });
 
   it('Should change pointer position 90', () => {
     expect(slider.calculateValueWithStep(92)).toEqual(90);
   });
 
-  describe('Model / Slider / Test of calculating value', () => {
+  describe('Model / Test of calculating value', () => {
     it('calculatePercentsToValue', () => {
       expect(slider.calculatePercentsToValue(58)).toEqual(66.4);
     });

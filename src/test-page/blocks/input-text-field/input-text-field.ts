@@ -5,8 +5,6 @@ class InputTextField {
 
   public responsibleProperty: string;
 
-  public responsiblePropertyVariant: number;
-
   constructor($container: JQuery<Object>, responsibleProperty?: string) {
     this.initInputField($container);
     this.responsibleProperty = responsibleProperty;

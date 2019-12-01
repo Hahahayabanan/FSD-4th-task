@@ -23,8 +23,8 @@ class Presenter {
   }
 
   init() {
-    this.view.observer.subscribe(this.updateViewSettings.bind(this));
-    this.model.settingsObserver.subscribe(this.updateModelValue.bind(this));
+    this.view.observer.subscribe(this.updateModelValue.bind(this));
+    this.model.settingsObserver.subscribe(this.updateViewSettings.bind(this));
     this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
 
     this.initStartValues();
@@ -37,19 +37,19 @@ class Presenter {
 
   updateViewPointer(data: CalculatedSettings) {
     const {
-      newValue,
-      newValues,
-      newValueInPercents,
-      newValuesInPercents
+      newFrom,
+      newTo,
+      newFromInPercents,
+      newToInPercents,
     } = data;
     const newAttribute = this.getValueDataAttributes();
 
     this.view.setPointerPosition({
       newAttribute,
-      newPosition: newValueInPercents,
-      newPositions: newValuesInPercents,
-      newTipValue: newValue,
-      newTipValues: newValues,
+      newFirst: newFromInPercents,
+      newSecond: newToInPercents,
+      newFirstTipValue: newFrom,
+      newSecondTipValue: newTo,
     });
   }
 
@@ -68,8 +68,8 @@ class Presenter {
   }
 
   updateModelValue(data: PointerPositionData) {
-    const { newCurPos, updateObject } = data;
-    this.model.setCalculatedValue(newCurPos, updateObject);
+    const { newCurPos, pointerThatChanged } = data;
+    this.model.setCalculatedValue(newCurPos, pointerThatChanged);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -96,41 +96,17 @@ class Presenter {
 
   getValueDataAttributes(): Attribute {
     if (this.model.getSetting('isRange')) {
-      return { name: 'values', value: `[${this.model.getSetting('values')}]` };
+      return { name: 'to', value: `${this.model.getSetting('to')}` };
     }
-    return { name: 'value', value: `${this.model.getSetting('value')}` };
+    return { name: 'from', value: `${this.model.getSetting('from')}` };
   }
 
-  getOrSetOption(options: {
-    setting: string;
-    value?: string | number | number[] | boolean;
-    numberOfOneOfTheValues?: number;
-  }) {
-    const {
-      setting, value, numberOfOneOfTheValues
-    } = options;
+  getSetting(setting: string) {
+    return this.model.getSetting(setting);
+  }
 
-    if (value !== undefined && value !== null) {
-      if (setting === 'values') {
-        const isValueNumber = typeof value === 'number';
-        const isOneOfValuesUndefined = numberOfOneOfTheValues === undefined;
-
-        if (isOneOfValuesUndefined && !isValueNumber) {
-          this.model.setSetting('values', value);
-        }
-        if (isOneOfValuesUndefined && isValueNumber) {
-          return this.model.getSetting('values')[value];
-        }
-        if (!isOneOfValuesUndefined && typeof value === 'number') {
-          const currentValueNumber: number = value;
-          this.model.setSetting('values', numberOfOneOfTheValues, currentValueNumber);
-        }
-      } else {
-        this.model.setSetting(setting, value);
-      }
-    } else {
-      return this.model.getSetting(setting);
-    }
+  update(settings: ISliderSettings) {
+    this.model.setSettings(settings);
   }
 }
 

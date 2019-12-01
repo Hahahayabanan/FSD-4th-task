@@ -1,42 +1,43 @@
 import './slider';
 
-describe('Presenter / Presenter / Test initialization', () => {
+describe('Slider / Test initialization', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
   const shadowSlider = document.querySelector('#test') as HTMLElement;
   shadowSlider.style.cssText = 'width: 300px';
   const $slider = $(shadowSlider);
 
-  $slider.slider({
+  $slider.HYBSlider({
     min: 20,
     max: 150,
     isRange: true,
-    values: [59, 120],
+    from: 59,
+    to: 120,
   });
 
   it('Should coincide constructor set', () => {
-    expect($slider.slider('option', 'isRange')).toBeTruthy();
-    expect($slider.slider('option', 'min')).toEqual([20]);
-    expect($slider.slider('option', 'max')).toEqual([150]);
-    expect($slider.slider('option', 'values')).toEqual([59, 120]);
-    expect($slider.slider('option', 'orientation') as string).toEqual(['horizontal']);
+    expect($slider.HYBGetOption('isRange').get(0)).toBeTruthy();
+    expect($slider.HYBGetOption('min').get(0)).toEqual(20);
+    expect($slider.HYBGetOption('max').get(0)).toEqual(150);
+    expect($slider.HYBGetOption('orientation').get(0)).toEqual('horizontal');
   });
 });
 
-describe('Presenter / Presenter / Test dynamic set', () => {
+describe('Slider / Test dynamic set', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
   const shadowSlider = document.querySelector('#test') as HTMLElement;
   shadowSlider.style.cssText = 'width: 300px';
   const $slider = $(shadowSlider);
 
-  $slider.slider({
+  $slider.HYBSlider({
     min: 20,
     max: 150,
     isRange: true,
-    values: [59, 120],
+    from: 59,
+    to: 120,
   });
 
   it('Should coincide manual set', () => {
-    $slider.slider('option', 'min', 50);
-    expect($slider.slider('option', 'min')).toEqual([50]);
+    $slider.HYBUpdate({ min: 50 });
+    expect($slider.HYBGetOption('min').get(0)).toEqual(50);
   });
 });

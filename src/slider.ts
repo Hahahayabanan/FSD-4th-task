@@ -6,31 +6,30 @@ declare global {
     $: JQuery;
   }
   interface JQuery {
-    slider: (
-      option?: ISliderSettings | string,
-      setting?: string,
-      value?: string | number | number[] | boolean,
-      numberOfOneOfTheValues?: number,
-    ) => JQuery<Element> | string | number | number[] | boolean;
+    HYBSlider: (
+      options?: ISliderSettings,
+    ) => JQuery<Element> | JQuery<Object>;
+    HYBUpdate: (
+      options: ISliderSettings,
+    ) => JQuery<Element>;
+    HYBGetOption: (
+      option: string,
+    ) => JQuery<Object>;
   }
 }
 
 function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
   const {
-    min, max, step, value, values = '', isRange, hasTip, hasLine = 'true', orientation,
+    min, max, step, from, to, isRange, hasTip, hasLine = 'true', orientation,
   } = htmlElem.dataset;
-
-  const valuesArray = values.match(/(\d+)/g);
-  let valuesAsNumbers: number[];
-  if (valuesArray) valuesAsNumbers = valuesArray.map((val: string) => parseFloat(val));
 
   return {
     orientation,
     min: isNaN(parseFloat(min)) ? null : parseFloat(min),
     max: isNaN(parseFloat(max)) ? null : parseFloat(max),
     step: isNaN(parseFloat(step)) ? null : parseFloat(step),
-    value: isNaN(parseFloat(value)) ? null : parseFloat(value),
-    values: valuesAsNumbers,
+    from: isNaN(parseFloat(from)) ? null : parseFloat(from),
+    to: isNaN(parseFloat(to)) ? null : parseFloat(to),
     isRange: isRange === 'true',
     hasTip: hasTip === 'true',
     hasLine: hasLine === 'true',
@@ -38,39 +37,36 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 }
 
 (function initialization($: JQueryStatic) {
-  $.fn.slider = function getStart(option?, setting?, value?, numberOfOneOfTheValues?,) {
-    const isThatSliderInitializationParameters = typeof option === 'object' || option === undefined;
-    const isThatSliderOptionCall = typeof option === 'string';
-
-    if (isThatSliderInitializationParameters) {
-      let settings: ISliderSettings = option as ISliderSettings;
-      return this.each((i: number, val: HTMLElement) => {
-        const htmlElem = val;
-        settings = $.extend(getDataAttrSettings(htmlElem), settings);
-        const presenter = new Presenter(htmlElem, settings);
-        this.data('presenter', presenter);
-        return this;
-      });
-    }
-
-    if (isThatSliderOptionCall) {
-      let returnArray;
-      switch (option) {
-        case 'option':
-          returnArray = this.map((i: number, currentSlider: HTMLElement) => {
-            const presenter = $(currentSlider).data('presenter');
-            if (presenter) {
-              return presenter.getOrSetOption({
-                setting,
-                value,
-                numberOfOneOfTheValues,
-              });
-            }
-          }).toArray();
-          if (returnArray.length <= 1) return returnArray[0];
-          return returnArray;
-        default: console.error('Wrong option');
+  $.fn.HYBSlider = function getStart(options?) {
+    let settings: ISliderSettings = options;
+    return this.each((i: number, htmlElem: HTMLElement) => {
+      settings = $.extend(getDataAttrSettings(htmlElem), settings);
+      const presenter = new Presenter(htmlElem, settings);
+      this.data('presenter', presenter);
+      return this;
+    });
+  };
+  $.fn.HYBUpdate = function update(options) {
+    const settings: ISliderSettings = options;
+    return this.each((i: number, htmlElem: HTMLElement) => {
+      const presenter = this.data('presenter');
+      if (presenter) {
+        presenter.update(settings);
+      } else {
+        const newPresenter = new Presenter(htmlElem, settings);
+        this.data('presenter', newPresenter);
       }
-    }
+      return this;
+    });
+  };
+  $.fn.HYBGetOption = function getOption(option) {
+    const setting: string = option;
+    return this.map(() => {
+      const presenter = this.data('presenter');
+      if (presenter) {
+        return presenter.getSetting(setting);
+      }
+      console.error('To get setting Slider should be initialized');
+    });
   };
 }(jQuery));

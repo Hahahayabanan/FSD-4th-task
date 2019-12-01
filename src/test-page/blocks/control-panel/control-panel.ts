@@ -21,8 +21,6 @@ class ControlPanel {
 
   public stepField: InputTextField;
 
-  public valueField: InputTextField;
-
   public firstValueField: InputTextField;
 
   public secondValueField: InputTextField;
@@ -66,16 +64,14 @@ class ControlPanel {
     const $minValueField = this.$controlPanel.find('.js-control-panel__min-value-field');
     const $maxValueField = this.$controlPanel.find('.js-control-panel__max-value-field');
     const $stepField = this.$controlPanel.find('.js-control-panel__step-field');
-    const $valueField = this.$controlPanel.find('.js-control-panel__value-field');
     const $firstValueField = this.$controlPanel.find('.js-control-panel__first-value-field');
     const $secondValueField = this.$controlPanel.find('.js-control-panel__second-value-field');
 
     this.minValueField = new InputTextField($minValueField, 'min');
     this.maxValueField = new InputTextField($maxValueField, 'max');
     this.stepField = new InputTextField($stepField, 'step');
-    this.valueField = new InputTextField($valueField, 'value');
-    this.firstValueField = new InputTextField($firstValueField, 'values');
-    this.secondValueField = new InputTextField($secondValueField, 'values');
+    this.firstValueField = new InputTextField($firstValueField, 'from');
+    this.secondValueField = new InputTextField($secondValueField, 'to');
 
     let value: string = `${this.slider.getPropertyValue('min')}`;
     this.minValueField.setValue(value);
@@ -83,13 +79,9 @@ class ControlPanel {
     this.maxValueField.setValue(value);
     value = `${this.slider.getPropertyValue('step')}`;
     this.stepField.setValue(value);
-    value = `${this.slider.getPropertyValue('value')}`;
-    this.valueField.setValue(value);
-    value = `${this.slider.getPropertyValue('values', 0)}`;
-    this.firstValueField.responsiblePropertyVariant = 0;
+    value = `${this.slider.getPropertyValue('from')}`;
     this.firstValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('values', 1)}`;
-    this.secondValueField.responsiblePropertyVariant = 1;
+    value = `${this.slider.getPropertyValue('to')}`;
     this.secondValueField.setValue(value);
 
     this.toggleValueFields();
@@ -104,7 +96,6 @@ class ControlPanel {
     this.minValueField.getElement().on('change', this.handleFieldChange.bind(this, this.minValueField));
     this.maxValueField.getElement().on('change', this.handleFieldChange.bind(this, this.maxValueField));
     this.stepField.getElement().on('change', this.handleFieldChange.bind(this, this.stepField));
-    this.valueField.getElement().on('change', this.handleFieldChange.bind(this, this.valueField));
     this.firstValueField.getElement().on('change', this.handleFieldChange.bind(this, this.firstValueField));
     this.secondValueField.getElement().on('change', this.handleFieldChange.bind(this, this.secondValueField));
 
@@ -120,45 +111,28 @@ class ControlPanel {
       newPropertyValue = !!checkbox.isChecked();
     }
     this.slider.setPropertyValue(property, newPropertyValue);
-
-    if (property === 'isRange') {
-      this.toggleValueFields();
-    }
+    this.toggleValueFields();
   }
 
   handleFieldChange(field: InputTextField) {
     const property: string = field.getProperty();
     const newPropertyValue: number = parseFloat(`${field.getValue()}`);
-
-    if (property === 'values') {
-      const { responsiblePropertyVariant } = field;
-      this.slider.setPropertyValue(property, responsiblePropertyVariant, newPropertyValue);
-      const trueValue = `${this.slider.getPropertyValue('values', responsiblePropertyVariant)}`;
-      field.setValue(trueValue);
-    } else {
-      this.slider.setPropertyValue(property, newPropertyValue);
-      const trueValue = `${this.slider.getPropertyValue(property)}`;
-      field.setValue(trueValue);
-    }
+    this.slider.setPropertyValue(property, newPropertyValue);
+    const trueValue = `${this.slider.getPropertyValue(property)}`;
+    field.setValue(trueValue);
   }
 
   handleSliderChangePointer() {
-    let value = `${this.slider.getPropertyValue('values', 0)}`;
+    let value = `${this.slider.getPropertyValue('from')}`;
     this.firstValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('values', 1)}`;
+    value = `${this.slider.getPropertyValue('to')}`;
     this.secondValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('value')}`;
-    this.valueField.setValue(value);
   }
 
   toggleValueFields() {
     if (this.slider.getPropertyValue('isRange')) {
-      this.valueField.toggleInvisible(true);
-      this.firstValueField.toggleInvisible(false);
       this.secondValueField.toggleInvisible(false);
     } else {
-      this.valueField.toggleInvisible(false);
-      this.firstValueField.toggleInvisible(true);
       this.secondValueField.toggleInvisible(true);
     }
   }

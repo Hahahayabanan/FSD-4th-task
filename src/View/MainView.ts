@@ -162,16 +162,12 @@ class MainView {
 
   private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: PointerView }) {
     const { newCurPos, pointerToUpdate } = data;
-    let updateObject: string;
-    if (pointerToUpdate === this.pointer1) {
-      updateObject = 'secondValue';
-    } else if (this.isRange) {
-      updateObject = 'firstValue';
-    } else {
-      updateObject = 'singleValue';
-    }
+    let pointerThatChanged: string;
+    if (pointerToUpdate === this.pointer0) pointerThatChanged = 'first';
+    if (pointerToUpdate === this.pointer1) pointerThatChanged = 'second';
+
     this.updateZIndex(pointerToUpdate);
-    this.observer.broadcast({ newCurPos, updateObject });
+    this.observer.broadcast({ newCurPos, pointerThatChanged });
   }
 
   private addObservers() {
@@ -196,23 +192,21 @@ class MainView {
   }
 
   setPointerPosition(options: {
-    newPosition: number,
-    newPositions: number[],
-    newTipValue: number,
-    newTipValues: number[],
+    newFirst: number,
+    newSecond: number,
+    newFirstTipValue: number,
+    newSecondTipValue: number,
     newAttribute: Attribute,
   }) {
     const {
-      newPosition, newPositions, newTipValue, newTipValues, newAttribute,
+      newFirst, newSecond, newFirstTipValue, newSecondTipValue, newAttribute,
     } = options;
+    this.pointer0.setPointerPosition(newFirst);
+    this.pointer0.updateTipValue(newFirstTipValue);
+
     if (this.isRange) {
-      this.pointer0.setPointerPosition(newPositions[0]);
-      this.pointer1.setPointerPosition(newPositions[1]);
-      this.pointer0.updateTipValue(newTipValues[0]);
-      this.pointer1.updateTipValue(newTipValues[1]);
-    } else {
-      this.pointer0.setPointerPosition(newPosition);
-      this.pointer0.updateTipValue(newTipValue);
+      this.pointer1.setPointerPosition(newSecond);
+      this.pointer1.updateTipValue(newSecondTipValue);
     }
     if (this.hasLine) this.calculateAndApplyLine();
     this.updateDataAttribute(newAttribute.name, newAttribute.value);

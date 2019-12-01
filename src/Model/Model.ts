@@ -13,6 +13,11 @@ class Model {
     this.settings = new SliderSettings(settings);
   }
 
+  setSettings(settings: ISliderSettings) {
+    this.settings.setSettings(settings);
+    this.dispatchSettings();
+  }
+
   getSettings(): ISliderSettings {
     return this.settings.settings;
   }
@@ -43,18 +48,15 @@ class Model {
     return currPosInPercents;
   }
 
-  setCalculatedValue(curPosInPercents: number, updateObject: string) {
+  setCalculatedValue(curPosInPercents: number, updateValue: string) {
     const newValue: number = this.calculatePercentsToValue(curPosInPercents);
     const newValueWithStep: number = this.calculateValueWithStep(newValue);
-    switch (updateObject) {
-      case 'firstValue':
-        this.settings.setSetting('values', newValueWithStep, 0);
+    switch (updateValue) {
+      case 'first':
+        this.settings.setSetting('from', newValueWithStep);
         break;
-      case 'secondValue':
-        this.settings.setSetting('values', newValueWithStep, 1);
-        break;
-      case 'singleValue':
-        this.settings.setSetting('value', newValueWithStep);
+      case 'second':
+        this.settings.setSetting('to', newValueWithStep);
         break;
       default:
     }
@@ -62,28 +64,25 @@ class Model {
   }
 
   setCalculatedStartValues() {
+    const from: number = this.getSetting('from');
+    const fromWithStep = this.calculateValueWithStep(from);
+    this.settings.setSetting('from', fromWithStep);
     if (this.getSetting('isRange')) {
-      const values: number[] = this.getSetting('values');
-      const valuesWithStep: number[] = values.map(val => this.calculateValueWithStep(val));
-      this.settings.setSetting('values', valuesWithStep);
-    } else {
-      const value: number = this.getSetting('value');
-      const valueWithStep: number = this.calculateValueWithStep(value);
-      this.settings.setSetting('value', valueWithStep);
+      const to: number = this.getSetting('to');
+      const toWithStep = this.calculateValueWithStep(to);
+      this.settings.setSetting('to', toWithStep);
     }
     this.dispatchValue();
   }
 
   dispatchValue() {
-    if (this.getSetting('isRange')) {
-      const newValues: number[] = this.getSetting('values');
-      const newValuesInPercents: number[] = newValues.map(val => this.calculateValueToPercents(val));
-      this.valuesObserver.broadcast({ newValues, newValuesInPercents });
-    } else {
-      const newValue: number = this.getSetting('value');
-      const newValueInPercents: number = this.calculateValueToPercents(newValue);
-      this.valuesObserver.broadcast({ newValue, newValueInPercents });
-    }
+    const newFrom: number = this.getSetting('from');
+    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
+    const newTo: number = this.getSetting('to');
+    const newToInPercents: number = this.calculateValueToPercents(newTo);
+    this.valuesObserver.broadcast({
+      newFrom, newTo, newFromInPercents, newToInPercents,
+    });
   }
 
   dispatchSettings() {
@@ -97,9 +96,8 @@ class Model {
   }
 
   setSetting(setting:string,
-    newValue: number | number[] | string | boolean,
-    currentValueNumber?: number) {
-    this.settings.setSetting(setting, newValue, currentValueNumber);
+    newValue: number | string | boolean) {
+    this.settings.setSetting(setting, newValue);
     this.dispatchSettings();
   }
 
