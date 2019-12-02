@@ -13,26 +13,6 @@ class Model {
     this.settings = new SliderSettings(settings);
   }
 
-  private dispatchValue() {
-    const newFrom: number = this.getSetting('from');
-    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
-    const newTo: number = this.getSetting('to');
-    const newToInPercents: number = this.calculateValueToPercents(newTo);
-    this.valuesObserver.broadcast({
-      newFrom, newTo, newFromInPercents, newToInPercents,
-    });
-  }
-
-  private dispatchSettings() {
-    const {
-      isRange, orientation, hasTip, hasLine,
-    } = this.getSettings();
-    this.settingsObserver.broadcast({
-      isRange, orientation, hasTip, hasLine,
-    });
-    this.dispatchValue();
-  }
-
   applyValue(curPosInPercents: number, updateValue: string) {
     const newValue: number = this.calculatePercentsToValue(curPosInPercents);
     const newValueWithStep: number = this.calculateValueWithStep(newValue);
@@ -103,6 +83,26 @@ class Model {
     const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
 
     return currPosInPercents;
+  }
+
+  private dispatchValue() {
+    const newFrom: number = this.getSetting('from');
+    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
+    const newTo: number = this.getSetting('to');
+    const newToInPercents: number = this.calculateValueToPercents(newTo);
+    this.valuesObserver.broadcast({
+      newFrom, newTo, newFromInPercents, newToInPercents,
+    });
+  }
+
+  private dispatchSettings() {
+    const {
+      isRange, orientation, hasTip, hasLine,
+    } = this.getSettings();
+    this.settingsObserver.broadcast({
+      isRange, orientation, hasTip, hasLine,
+    });
+    this.dispatchValue();
   }
 }
 

@@ -27,6 +27,10 @@ class SliderSettings {
     this.setSettings(settings);
   }
 
+  getSetting(setting: string) {
+    return this.settings[setting];
+  }
+
   setSettings(settings: ISliderSettings) {
     Object.keys(settings).forEach(val => {
       this.setSetting(val, settings[val]);
@@ -87,11 +91,7 @@ class SliderSettings {
     }
   }
 
-  getSetting(setting: string) {
-    return this.settings[setting];
-  }
-
-  setMin(newMin: number) {
+  private setMin(newMin: number) {
     try {
       if (newMin >= (this.settings.max + this.settings.step)) {
         throw this.errors.minBiggerMax;
@@ -109,7 +109,7 @@ class SliderSettings {
     }
   }
 
-  setMax(newMax: number) {
+  private setMax(newMax: number) {
     try {
       if (newMax <= (this.settings.min - this.settings.step)) {
         throw this.errors.minBiggerMax;
@@ -127,7 +127,7 @@ class SliderSettings {
     }
   }
 
-  setStep(tmp: number) {
+  private setStep(tmp: number) {
     try {
       const valueRange = this.settings.max - this.settings.min;
       const stepBiggerZero = tmp > 0;
@@ -143,7 +143,7 @@ class SliderSettings {
     }
   }
 
-  setFrom(newValue: number) {
+  private setFrom(newValue: number) {
     const isValueSmallerMin = newValue < this.settings.min;
     const isValueNull = newValue === null;
     const isValueBiggerMax = newValue > this.settings.max;
@@ -162,7 +162,7 @@ class SliderSettings {
     }
   }
 
-  setTo(newValue: number) {
+  private setTo(newValue: number) {
     const isValueSmallerMin = newValue < this.settings.min;
     const isValueNull = newValue === null;
     const isValueBiggerMax = newValue > this.settings.max;
@@ -182,7 +182,7 @@ class SliderSettings {
     }
   }
 
-  setOrientation(newOrientation: string) {
+  private setOrientation(newOrientation: string) {
     const orientation = {
       VERTICAL: 'vertical',
       HORIZONTAL: 'horizontal',

@@ -59,6 +59,95 @@ class MainView {
     this.addObservers();
   }
 
+  createTip() {
+    if (this.hasTip) {
+      this.pointer0.createTip();
+      this.sliderHTML.classList.add('j-plugin-slider_with-point');
+      if (this.isRange) {
+        this.pointer1.createTip();
+      }
+    }
+  }
+
+  setPointerPosition(options: {
+    newFirst: number,
+    newSecond: number,
+    newFirstTipValue: number,
+    newSecondTipValue: number,
+    newAttribute: Attribute[],
+  }) {
+    const {
+      newFirst, newSecond, newFirstTipValue, newSecondTipValue, newAttribute,
+    } = options;
+    this.pointer0.setPointerPosition(newFirst);
+    this.pointer0.updateTipValue(newFirstTipValue);
+
+    if (this.isRange) {
+      this.pointer1.setPointerPosition(newSecond);
+      this.pointer1.updateTipValue(newSecondTipValue);
+    }
+    if (this.hasLine) this.calculateAndApplyLine();
+
+    this.setDataAttributes(newAttribute);
+  }
+
+  setDataAttribute(attr: string, value: string) {
+    this.sliderHTML.dataset[attr] = value;
+  }
+
+  setDataAttributes(attributes: Attribute[]) {
+    attributes.forEach((attribute: Attribute) => {
+      const { name, value } = attribute;
+      this.setDataAttribute(name, value);
+    });
+  }
+
+  update(options: {
+    isRange: boolean,
+    isVertical: boolean,
+    hasTip: boolean,
+    hasLine: boolean,
+    attributes: Attribute[]
+  }) {
+    const {
+      isVertical, hasTip, hasLine, isRange, attributes,
+    } = options;
+    this.isVertical = isVertical;
+    this.hasTip = hasTip;
+    this.hasLine = hasLine;
+    this.isRange = isRange;
+
+    this.getClear();
+    this.createPointers();
+    this.setOrientationClass();
+    this.createTip();
+    this.bindEventListeners();
+    this.addObservers();
+    attributes.forEach((attr: Attribute) => {
+      const { name, value } = attr;
+      this.updateDataAttribute(name, value);
+    });
+  }
+
+  updateDataAttribute(attr: string, value: string) {
+    this.removeDataAttribute(attr);
+    this.setDataAttribute(attr, value);
+  }
+
+  removeDataAttribute(attr: string) {
+    delete this.sliderHTML.dataset[attr];
+  }
+
+  getClear() {
+    this.sliderHTML.classList.remove(
+      this.styleClasses.SLIDER_VERTICAL,
+      this.styleClasses.SLIDER_WITH_POINT,
+    );
+    this.pointer0 = null;
+    this.pointer1 = null;
+    this.pathHTML.innerHTML = '';
+  }
+
   private addObservers() {
     this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
     if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
@@ -189,95 +278,6 @@ class MainView {
         );
       }
     }
-  }
-
-  createTip() {
-    if (this.hasTip) {
-      this.pointer0.createTip();
-      this.sliderHTML.classList.add('j-plugin-slider_with-point');
-      if (this.isRange) {
-        this.pointer1.createTip();
-      }
-    }
-  }
-
-  setPointerPosition(options: {
-    newFirst: number,
-    newSecond: number,
-    newFirstTipValue: number,
-    newSecondTipValue: number,
-    newAttribute: Attribute[],
-  }) {
-    const {
-      newFirst, newSecond, newFirstTipValue, newSecondTipValue, newAttribute,
-    } = options;
-    this.pointer0.setPointerPosition(newFirst);
-    this.pointer0.updateTipValue(newFirstTipValue);
-
-    if (this.isRange) {
-      this.pointer1.setPointerPosition(newSecond);
-      this.pointer1.updateTipValue(newSecondTipValue);
-    }
-    if (this.hasLine) this.calculateAndApplyLine();
-
-    this.setDataAttributes(newAttribute);
-  }
-
-  setDataAttribute(attr: string, value: string) {
-    this.sliderHTML.dataset[attr] = value;
-  }
-
-  setDataAttributes(attributes: Attribute[]) {
-    attributes.forEach((attribute: Attribute) => {
-      const { name, value } = attribute;
-      this.setDataAttribute(name, value);
-    });
-  }
-
-  update(options: {
-    isRange: boolean,
-    isVertical: boolean,
-    hasTip: boolean,
-    hasLine: boolean,
-    attributes: Attribute[]
-  }) {
-    const {
-      isVertical, hasTip, hasLine, isRange, attributes,
-    } = options;
-    this.isVertical = isVertical;
-    this.hasTip = hasTip;
-    this.hasLine = hasLine;
-    this.isRange = isRange;
-
-    this.getClear();
-    this.createPointers();
-    this.setOrientationClass();
-    this.createTip();
-    this.bindEventListeners();
-    this.addObservers();
-    attributes.forEach((attr: Attribute) => {
-      const { name, value } = attr;
-      this.updateDataAttribute(name, value);
-    });
-  }
-
-  updateDataAttribute(attr: string, value: string) {
-    this.removeDataAttribute(attr);
-    this.setDataAttribute(attr, value);
-  }
-
-  removeDataAttribute(attr: string) {
-    delete this.sliderHTML.dataset[attr];
-  }
-
-  getClear() {
-    this.sliderHTML.classList.remove(
-      this.styleClasses.SLIDER_VERTICAL,
-      this.styleClasses.SLIDER_WITH_POINT,
-    );
-    this.pointer0 = null;
-    this.pointer1 = null;
-    this.pathHTML.innerHTML = '';
   }
 }
 

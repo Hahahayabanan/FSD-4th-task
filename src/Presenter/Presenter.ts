@@ -19,43 +19,8 @@ class Presenter {
       isRange: this.model.getSetting('isRange'),
     });
 
-    this.init();
-  }
-
-  private init() {
-    this.view.observer.subscribe(this.updateModelValue.bind(this));
-    this.model.settingsObserver.subscribe(this.updateViewSettings.bind(this));
-    this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
-
+    this.addObservers();
     this.applyStartValues();
-  }
-
-  private applyStartValues() {
-    this.model.applyStartValues();
-    this.view.setDataAttributes(this.getDataAttributes());
-  }
-
-  private updateViewPointer(data: CalculatedSettings) {
-    const {
-      newFrom,
-      newTo,
-      newFromInPercents,
-      newToInPercents,
-    } = data;
-    const newAttribute = this.getValueDataAttributes();
-
-    this.view.setPointerPosition({
-      newAttribute,
-      newFirst: newFromInPercents,
-      newSecond: newToInPercents,
-      newFirstTipValue: newFrom,
-      newSecondTipValue: newTo,
-    });
-  }
-
-  private updateModelValue(data: PointerPositionData) {
-    const { newCurPos, pointerThatChanged } = data;
-    this.model.applyValue(newCurPos, pointerThatChanged);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -107,6 +72,40 @@ class Presenter {
       isVertical: this.checkOrientationIsVertical(),
       attributes: dataAttributes,
     });
+  }
+
+  private addObservers() {
+    this.view.observer.subscribe(this.updateModelValue.bind(this));
+    this.model.settingsObserver.subscribe(this.updateViewSettings.bind(this));
+    this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
+  }
+
+  private applyStartValues() {
+    this.model.applyStartValues();
+    this.view.setDataAttributes(this.getDataAttributes());
+  }
+
+  private updateViewPointer(data: CalculatedSettings) {
+    const {
+      newFrom,
+      newTo,
+      newFromInPercents,
+      newToInPercents,
+    } = data;
+    const newAttribute = this.getValueDataAttributes();
+
+    this.view.setPointerPosition({
+      newAttribute,
+      newFirst: newFromInPercents,
+      newSecond: newToInPercents,
+      newFirstTipValue: newFrom,
+      newSecondTipValue: newTo,
+    });
+  }
+
+  private updateModelValue(data: PointerPositionData) {
+    const { newCurPos, pointerThatChanged } = data;
+    this.model.applyValue(newCurPos, pointerThatChanged);
   }
 }
 

@@ -31,47 +31,6 @@ class PointerView {
     this.bindEventListeners();
   }
 
-  private bindEventListeners() {
-    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
-    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
-  }
-
-  private handlePointerHTMLMouseDown(event: MouseEvent) {
-    event.preventDefault();
-    this.endPos = this.curPos;
-
-    this.moveSettings = {
-      mouseX: event.clientX,
-      mouseY: event.clientY,
-    };
-
-    document.addEventListener('mousemove', this.handleDocumentMouseMove);
-    document.addEventListener('mouseup', this.handleDocumentMouseUp);
-  }
-
-  private handleDocumentMouseMove(event: MouseEvent) {
-    event.preventDefault();
-    const { mouseX, mouseY } = this.moveSettings;
-
-    const endPosInPixels = this.calculatePercentsToPixels(this.endPos);
-
-    const newCurPos: number = this.isVertical
-      ? endPosInPixels - mouseY + event.clientY
-      : endPosInPixels - mouseX + event.clientX;
-
-    const newCurPosInPercents = this.calculatePixelsToPercents(newCurPos);
-    this.dispatchPointerPosition(newCurPosInPercents);
-  }
-
-  private handleDocumentMouseUp() {
-    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
-    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
-  }
-
-  private handlePointerHTMLDragStart() {
-    return false;
-  }
-
   createTip() {
     this.tip = new TipView(this.pointerHTML);
   }
@@ -127,6 +86,47 @@ class PointerView {
 
   updateTipValue(newValue: number) {
     if (this.tip) this.tip.setValue(newValue);
+  }
+
+  private bindEventListeners() {
+    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
+    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
+  }
+
+  private handlePointerHTMLMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    this.endPos = this.curPos;
+
+    this.moveSettings = {
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+    };
+
+    document.addEventListener('mousemove', this.handleDocumentMouseMove);
+    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+  }
+
+  private handleDocumentMouseMove(event: MouseEvent) {
+    event.preventDefault();
+    const { mouseX, mouseY } = this.moveSettings;
+
+    const endPosInPixels = this.calculatePercentsToPixels(this.endPos);
+
+    const newCurPos: number = this.isVertical
+      ? endPosInPixels - mouseY + event.clientY
+      : endPosInPixels - mouseX + event.clientX;
+
+    const newCurPosInPercents = this.calculatePixelsToPercents(newCurPos);
+    this.dispatchPointerPosition(newCurPosInPercents);
+  }
+
+  private handleDocumentMouseUp() {
+    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
+    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
+  }
+
+  private handlePointerHTMLDragStart() {
+    return false;
   }
 }
 export { PointerView };
