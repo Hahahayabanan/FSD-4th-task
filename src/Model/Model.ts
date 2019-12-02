@@ -13,6 +13,53 @@ class Model {
     this.settings = new SliderSettings(settings);
   }
 
+  private dispatchValue() {
+    const newFrom: number = this.getSetting('from');
+    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
+    const newTo: number = this.getSetting('to');
+    const newToInPercents: number = this.calculateValueToPercents(newTo);
+    this.valuesObserver.broadcast({
+      newFrom, newTo, newFromInPercents, newToInPercents,
+    });
+  }
+
+  private dispatchSettings() {
+    const {
+      isRange, orientation, hasTip, hasLine,
+    } = this.getSettings();
+    this.settingsObserver.broadcast({
+      isRange, orientation, hasTip, hasLine,
+    });
+    this.dispatchValue();
+  }
+
+  applyValue(curPosInPercents: number, updateValue: string) {
+    const newValue: number = this.calculatePercentsToValue(curPosInPercents);
+    const newValueWithStep: number = this.calculateValueWithStep(newValue);
+    switch (updateValue) {
+      case 'first':
+        this.settings.setSetting('from', newValueWithStep);
+        break;
+      case 'second':
+        this.settings.setSetting('to', newValueWithStep);
+        break;
+      default:
+    }
+    this.dispatchValue();
+  }
+
+  applyStartValues() {
+    const from: number = this.getSetting('from');
+    const fromWithStep = this.calculateValueWithStep(from);
+    this.settings.setSetting('from', fromWithStep);
+    if (this.getSetting('isRange')) {
+      const to: number = this.getSetting('to');
+      const toWithStep = this.calculateValueWithStep(to);
+      this.settings.setSetting('to', toWithStep);
+    }
+    this.dispatchValue();
+  }
+
   setSettings(settings: ISliderSettings) {
     this.settings.setSettings(settings);
     this.dispatchSettings();
@@ -20,6 +67,16 @@ class Model {
 
   getSettings(): ISliderSettings {
     return this.settings.settings;
+  }
+
+  setSetting(setting:string,
+    newValue: number | string | boolean) {
+    this.settings.setSetting(setting, newValue);
+    this.dispatchSettings();
+  }
+
+  getSetting(setting: string) {
+    return this.settings.getSetting(setting);
   }
 
   calculateValueWithStep(newValue: number) {
@@ -46,63 +103,6 @@ class Model {
     const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
 
     return currPosInPercents;
-  }
-
-  setCalculatedValue(curPosInPercents: number, updateValue: string) {
-    const newValue: number = this.calculatePercentsToValue(curPosInPercents);
-    const newValueWithStep: number = this.calculateValueWithStep(newValue);
-    switch (updateValue) {
-      case 'first':
-        this.settings.setSetting('from', newValueWithStep);
-        break;
-      case 'second':
-        this.settings.setSetting('to', newValueWithStep);
-        break;
-      default:
-    }
-    this.dispatchValue();
-  }
-
-  setCalculatedStartValues() {
-    const from: number = this.getSetting('from');
-    const fromWithStep = this.calculateValueWithStep(from);
-    this.settings.setSetting('from', fromWithStep);
-    if (this.getSetting('isRange')) {
-      const to: number = this.getSetting('to');
-      const toWithStep = this.calculateValueWithStep(to);
-      this.settings.setSetting('to', toWithStep);
-    }
-    this.dispatchValue();
-  }
-
-  dispatchValue() {
-    const newFrom: number = this.getSetting('from');
-    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
-    const newTo: number = this.getSetting('to');
-    const newToInPercents: number = this.calculateValueToPercents(newTo);
-    this.valuesObserver.broadcast({
-      newFrom, newTo, newFromInPercents, newToInPercents,
-    });
-  }
-
-  dispatchSettings() {
-    const {
-      isRange, orientation, hasTip, hasLine,
-    } = this.getSettings();
-    this.settingsObserver.broadcast({
-      isRange, orientation, hasTip, hasLine,
-    });
-    this.dispatchValue();
-  }
-
-  setSetting(setting:string,
-    newValue: number | string | boolean) {
-    this.settings.setSetting(setting, newValue);
-    this.dispatchSettings();
-  }
-
-  getSetting(setting: string) {
-    return this.settings.getSetting(setting);
   }
 }
 

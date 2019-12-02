@@ -22,20 +22,20 @@ class Presenter {
     this.init();
   }
 
-  init() {
+  private init() {
     this.view.observer.subscribe(this.updateModelValue.bind(this));
     this.model.settingsObserver.subscribe(this.updateViewSettings.bind(this));
     this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
 
-    this.initStartValues();
+    this.applyStartValues();
   }
 
-  initStartValues() {
-    this.model.setCalculatedStartValues();
+  private applyStartValues() {
+    this.model.applyStartValues();
     this.view.setDataAttributes(this.getDataAttributes());
   }
 
-  updateViewPointer(data: CalculatedSettings) {
+  private updateViewPointer(data: CalculatedSettings) {
     const {
       newFrom,
       newTo,
@@ -53,23 +53,9 @@ class Presenter {
     });
   }
 
-  updateViewSettings(data: ISliderSettings) {
-    const { isRange, hasTip, hasLine } = data;
-    const dataAttributes: Attribute[] = this.getDataAttributes();
-    dataAttributes.push(this.getValueDataAttributes());
-
-    this.view.update({
-      isRange,
-      hasTip,
-      hasLine,
-      isVertical: this.checkOrientationIsVertical(),
-      attributes: dataAttributes,
-    });
-  }
-
-  updateModelValue(data: PointerPositionData) {
+  private updateModelValue(data: PointerPositionData) {
     const { newCurPos, pointerThatChanged } = data;
-    this.model.setCalculatedValue(newCurPos, pointerThatChanged);
+    this.model.applyValue(newCurPos, pointerThatChanged);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -94,11 +80,11 @@ class Presenter {
     ];
   }
 
-  getValueDataAttributes(): Attribute {
-    if (this.model.getSetting('isRange')) {
-      return { name: 'to', value: `${this.model.getSetting('to')}` };
-    }
-    return { name: 'from', value: `${this.model.getSetting('from')}` };
+  getValueDataAttributes(): Attribute[] {
+    return [
+      { name: 'from', value: `${this.model.getSetting('from')}` },
+      { name: 'to', value: `${this.model.getSetting('to')}` },
+    ];
   }
 
   getSetting(setting: string) {
@@ -107,6 +93,20 @@ class Presenter {
 
   update(settings: ISliderSettings) {
     this.model.setSettings(settings);
+  }
+
+  updateViewSettings(data: ISliderSettings) {
+    const { isRange, hasTip, hasLine } = data;
+    const dataAttributes: Attribute[] = this.getDataAttributes();
+    dataAttributes.concat(this.getValueDataAttributes());
+
+    this.view.update({
+      isRange,
+      hasTip,
+      hasLine,
+      isVertical: this.checkOrientationIsVertical(),
+      attributes: dataAttributes,
+    });
   }
 }
 

@@ -40,4 +40,10 @@ describe('Slider / Test dynamic set', () => {
     $slider.HYBUpdate({ min: 50 });
     expect($slider.HYBGetOption('min').get(0)).toEqual(50);
   });
+  it('Should coincide manual multiple set', () => {
+    $slider.HYBUpdate({ max: 200, orientation: 'vertical', hasLine: false });
+    expect($slider.HYBGetOption('max').get(0)).toEqual(200);
+    expect($slider.HYBGetOption('orientation').get(0)).toEqual('vertical');
+    expect($slider.HYBGetOption('hasLine').get(0)).toEqual(false);
+  });
 });

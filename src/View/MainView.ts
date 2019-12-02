@@ -59,6 +59,11 @@ class MainView {
     this.addObservers();
   }
 
+  private addObservers() {
+    this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
+    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
+  }
+
   private createTemplate() {
     this.createPath();
     this.createPointers();
@@ -90,14 +95,6 @@ class MainView {
       this.pathHTML.append(thumb);
       this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
-    }
-  }
-
-  private setOrientationClass() {
-    if (this.isVertical) {
-      this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
-    } else {
-      this.sliderHTML.classList.remove(this.styleClasses.SLIDER_VERTICAL);
     }
   }
 
@@ -170,9 +167,12 @@ class MainView {
     this.observer.broadcast({ newCurPos, pointerThatChanged });
   }
 
-  private addObservers() {
-    this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
-    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
+  private setOrientationClass() {
+    if (this.isVertical) {
+      this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
+    } else {
+      this.sliderHTML.classList.remove(this.styleClasses.SLIDER_VERTICAL);
+    }
   }
 
   private updateZIndex(curPointer: PointerView) {
@@ -191,12 +191,22 @@ class MainView {
     }
   }
 
+  createTip() {
+    if (this.hasTip) {
+      this.pointer0.createTip();
+      this.sliderHTML.classList.add('j-plugin-slider_with-point');
+      if (this.isRange) {
+        this.pointer1.createTip();
+      }
+    }
+  }
+
   setPointerPosition(options: {
     newFirst: number,
     newSecond: number,
     newFirstTipValue: number,
     newSecondTipValue: number,
-    newAttribute: Attribute,
+    newAttribute: Attribute[],
   }) {
     const {
       newFirst, newSecond, newFirstTipValue, newSecondTipValue, newAttribute,
@@ -209,7 +219,19 @@ class MainView {
       this.pointer1.updateTipValue(newSecondTipValue);
     }
     if (this.hasLine) this.calculateAndApplyLine();
-    this.updateDataAttribute(newAttribute.name, newAttribute.value);
+
+    this.setDataAttributes(newAttribute);
+  }
+
+  setDataAttribute(attr: string, value: string) {
+    this.sliderHTML.dataset[attr] = value;
+  }
+
+  setDataAttributes(attributes: Attribute[]) {
+    attributes.forEach((attribute: Attribute) => {
+      const { name, value } = attribute;
+      this.setDataAttribute(name, value);
+    });
   }
 
   update(options: {
@@ -239,34 +261,13 @@ class MainView {
     });
   }
 
-  createTip() {
-    if (this.hasTip) {
-      this.pointer0.createTip();
-      this.sliderHTML.classList.add('j-plugin-slider_with-point');
-      if (this.isRange) {
-        this.pointer1.createTip();
-      }
-    }
-  }
-
   updateDataAttribute(attr: string, value: string) {
     this.removeDataAttribute(attr);
     this.setDataAttribute(attr, value);
   }
 
-  setDataAttribute(attr: string, value: string) {
-    this.sliderHTML.dataset[attr] = value;
-  }
-
   removeDataAttribute(attr: string) {
     delete this.sliderHTML.dataset[attr];
-  }
-
-  setDataAttributes(attributes: Attribute[]) {
-    attributes.forEach((attribute: Attribute) => {
-      const { name, value } = attribute;
-      this.setDataAttribute(name, value);
-    });
   }
 
   getClear() {

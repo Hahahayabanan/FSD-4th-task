@@ -110,14 +110,4 @@ describe('Presenter / Test methods', () => {
       presenter.model.getSetting('orientation') === 'vertical',
     );
   });
-
-  // it('getOrSetOption', async () => {
-  //   await presenter.getOrSetOption({ setting: 'values', value: [35, 65] });
-  //   expect(presenter.model.getSetting('values')).toEqual([35, 65]);
-  // });
-
-  // it('getOrSetOption', async () => {
-  //   await presenter.getOrSetOption({ setting: 'isRange', value: false });
-  //   expect(presenter.model.getSetting('isRange')).toBeFalsy();
-  // });
 });

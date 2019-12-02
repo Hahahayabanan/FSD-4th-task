@@ -40,11 +40,13 @@ class SliderSettings {
   setSetting(setting: string,
     newValue: number | string | boolean) {
     try {
+      const isSecondSmallerFirst = this.settings.to === null
+        || this.settings.to <= this.settings.from;
       if (typeof newValue === 'boolean') {
         switch (setting) {
           case 'isRange':
             this.settings.isRange = newValue;
-            if (this.settings.to === null || this.settings.to < this.settings.from) this.setTo(this.settings.max);
+            if (isSecondSmallerFirst) this.setTo(this.settings.max);
             break;
           case 'hasTip':
             this.settings.hasTip = newValue;
@@ -97,7 +99,7 @@ class SliderSettings {
       if (newMin > this.settings.from) {
         this.settings.from = newMin;
       }
-      if (newMin >= this.settings.to) {
+      if (this.settings.isRange && newMin >= this.settings.to) {
         this.settings.from = newMin;
         this.settings.to = Number(newMin) + this.settings.step;
       }
@@ -115,7 +117,7 @@ class SliderSettings {
       if (newMax < this.settings.from) {
         this.settings.from = newMax;
       }
-      if (newMax <= this.settings.to) {
+      if (this.settings.isRange && newMax <= this.settings.to) {
         this.settings.to = newMax;
         this.settings.from = newMax - this.settings.step;
       }

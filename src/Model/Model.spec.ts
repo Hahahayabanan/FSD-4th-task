@@ -59,7 +59,7 @@ describe('Model / Test of setting other pointer values', () => {
   slider.setSetting('step', 5);
 
   it('Should change pointer position 60', () => {
-    slider.setCalculatedValue(58, 'second');
+    slider.applyValue(58, 'second');
     expect(slider.getSetting('to')).toEqual(65);
   });
 

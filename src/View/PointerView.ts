@@ -31,6 +31,11 @@ class PointerView {
     this.bindEventListeners();
   }
 
+  private bindEventListeners() {
+    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
+    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
+  }
+
   private handlePointerHTMLMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.endPos = this.curPos;
@@ -67,9 +72,8 @@ class PointerView {
     return false;
   }
 
-  private bindEventListeners() {
-    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
-    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
+  createTip() {
+    this.tip = new TipView(this.pointerHTML);
   }
 
   getPathLength() {
@@ -79,6 +83,10 @@ class PointerView {
       : this.pathHTML.getBoundingClientRect().width
         || parseInt(this.pathHTML.style.width, 10);
     return widthOrHeight;
+  }
+
+  getCurPosInPixels() {
+    return this.calculatePercentsToPixels(this.curPos);
   }
 
   dispatchPointerPosition(newCurPos: number) {
@@ -98,10 +106,6 @@ class PointerView {
     );
   }
 
-  getCurPosInPixels() {
-    return this.calculatePercentsToPixels(this.curPos);
-  }
-
   calculatePixelsToPercents(valueInPixels: number) {
     const lengthInPixels = this.getPathLength();
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
@@ -119,10 +123,6 @@ class PointerView {
       ? (this.pointerHTML.style.top = `${newPos}%`)
       : (this.pointerHTML.style.left = `${newPos}%`);
     return newCssLeftOrTop;
-  }
-
-  createTip() {
-    this.tip = new TipView(this.pointerHTML);
   }
 
   updateTipValue(newValue: number) {

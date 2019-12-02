@@ -38,13 +38,13 @@ describe('Model / SliderSettings / Test getters and setters', () => {
     expect(sliderSettings.getSetting('hasTip')).toEqual(false);
   });
 
-  it("Should coincide set values 'values'", () => {
+  it("Should coincide set values 'to'", () => {
     sliderSettings.setSetting('isRange', true);
     sliderSettings.setSetting('to', 35);
     expect(sliderSettings.getSetting('to')).toEqual(35);
   });
 
-  it("Should coincide set values 'set only one of values'", () => {
+  it('Should coincide set values \'from and to\'', () => {
     sliderSettings.setSetting('isRange', true);
     sliderSettings.setSetting('from', 35);
     expect(sliderSettings.getSetting('from')).toEqual(35);
