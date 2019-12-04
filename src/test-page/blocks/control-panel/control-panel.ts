@@ -48,14 +48,15 @@ class ControlPanel {
     this.hasTipCheckbox = new Checkbox($hasTipCheckbox, 'hasTip');
     this.hasLineCheckbox = new Checkbox($hasLineCheckbox, 'hasLine');
 
-    let value: boolean = this.slider.getPropertyValue('isRange') as boolean;
-    this.isRangeCheckbox.toggleChecked(value);
-    value = this.slider.getPropertyValue('hasTip') as boolean;
-    this.hasTipCheckbox.toggleChecked(value);
-    value = this.slider.getPropertyValue('hasLine') as boolean;
-    this.hasLineCheckbox.toggleChecked(value);
+    const {
+      isRange, hasTip, hasLine,
+    } = this.slider.getProperties();
 
-    const orientationProperty: string = this.slider.getPropertyValue('orientation') as string;
+    this.isRangeCheckbox.toggleChecked(isRange);
+    this.hasTipCheckbox.toggleChecked(hasTip);
+    this.hasLineCheckbox.toggleChecked(hasLine);
+
+    const orientationProperty: string = this.slider.getProperties().orientation;
     if (orientationProperty === 'vertical') this.orientationCheckbox.toggleChecked(true);
     else this.orientationCheckbox.toggleChecked(false);
   }
@@ -73,16 +74,15 @@ class ControlPanel {
     this.firstValueField = new InputTextField($firstValueField, 'from');
     this.secondValueField = new InputTextField($secondValueField, 'to');
 
-    let value: string = `${this.slider.getPropertyValue('min')}`;
-    this.minValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('max')}`;
-    this.maxValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('step')}`;
-    this.stepField.setValue(value);
-    value = `${this.slider.getPropertyValue('from')}`;
-    this.firstValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('to')}`;
-    this.secondValueField.setValue(value);
+    const {
+      min, max, step, from, to,
+    } = this.slider.getProperties();
+
+    this.minValueField.setValue(`${min}`);
+    this.maxValueField.setValue(`${max}`);
+    this.stepField.setValue(`${step}`);
+    this.firstValueField.setValue(`${from}`);
+    this.secondValueField.setValue(`${to}`);
 
     this.toggleValueFields();
   }
@@ -118,19 +118,20 @@ class ControlPanel {
     const property: string = field.getProperty();
     const newPropertyValue: number = parseFloat(`${field.getValue()}`);
     this.slider.setPropertyValue(property, newPropertyValue);
-    const trueValue = `${this.slider.getPropertyValue(property)}`;
+    const trueValue = `${this.slider.getProperties()[property]}`;
     field.setValue(trueValue);
   }
 
   handleSliderChangePointer() {
-    let value = `${this.slider.getPropertyValue('from')}`;
+    const { from, to } = this.slider.getProperties();
+    let value = `${from}`;
     this.firstValueField.setValue(value);
-    value = `${this.slider.getPropertyValue('to')}`;
+    value = `${to}`;
     this.secondValueField.setValue(value);
   }
 
   toggleValueFields() {
-    if (this.slider.getPropertyValue('isRange')) {
+    if (this.slider.getProperties().isRange) {
       this.secondValueField.toggleInvisible(false);
     } else {
       this.secondValueField.toggleInvisible(true);

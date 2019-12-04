@@ -1,4 +1,5 @@
 import './slider';
+import { ISliderSettings } from './helpers/interfaces';
 
 describe('Slider / Test initialization', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
@@ -15,10 +16,14 @@ describe('Slider / Test initialization', () => {
   });
 
   it('Should coincide constructor set', () => {
-    expect($slider.HYBSlider('getSetting', 'isRange').get(0)).toBeTruthy();
-    expect($slider.HYBSlider('getSetting', 'min').get(0)).toEqual(20);
-    expect($slider.HYBSlider('getSetting', 'max').get(0)).toEqual(150);
-    expect($slider.HYBSlider('getSetting', 'orientation').get(0)).toEqual('horizontal');
+    const {
+      max, min, isRange, orientation,
+    } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
+
+    expect(isRange).toBeFalsy();
+    expect(min).toEqual(0);
+    expect(max).toEqual(100);
+    expect(orientation).toEqual('horizontal');
   });
 });
 
@@ -31,10 +36,14 @@ describe('Slider / Test empty initialization', () => {
   $slider.HYBSlider();
 
   it('Should coincide constructor set', () => {
-    expect($slider.HYBSlider('getSetting', 'isRange').get(0)).toBeFalsy();
-    expect($slider.HYBSlider('getSetting', 'min').get(0)).toEqual(0);
-    expect($slider.HYBSlider('getSetting', 'max').get(0)).toEqual(100);
-    expect($slider.HYBSlider('getSetting', 'orientation').get(0)).toEqual('horizontal');
+    const {
+      max, min, isRange, orientation,
+    } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
+
+    expect(isRange).toBeFalsy();
+    expect(min).toEqual(0);
+    expect(max).toEqual(100);
+    expect(orientation).toEqual('horizontal');
   });
 });
 
@@ -54,12 +63,13 @@ describe('Slider / Test dynamic set', () => {
 
   it('Should coincide manual set', () => {
     $slider.HYBSlider('update', { min: 50 });
-    expect($slider.HYBSlider('getSetting', 'min').get(0)).toEqual(50);
+    expect($slider.HYBSlider('getSettings').get(0)).toEqual(50);
   });
   it('Should coincide manual multiple set', () => {
     $slider.HYBSlider('update', { max: 200, orientation: 'vertical', hasLine: false });
-    expect($slider.HYBSlider('getSetting', 'max').get(0)).toEqual(200);
-    expect($slider.HYBSlider('getSetting', 'orientation').get(0)).toEqual('vertical');
-    expect($slider.HYBSlider('getSetting', 'hasLine').get(0)).toEqual(false);
+    const { max, orientation, hasLine } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
+    expect(max).toEqual(200);
+    expect(orientation).toEqual('vertical');
+    expect(hasLine).toEqual(false);
   });
 });

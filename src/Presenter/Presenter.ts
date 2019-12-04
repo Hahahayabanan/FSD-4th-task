@@ -21,7 +21,7 @@ class Presenter {
 
     this.addObservers();
     this.applyStartValues();
-    this.getSetting = this.getSetting.bind(this);
+    this.getSettings = this.getSettings.bind(this);
     this.update = this.update.bind(this);
   }
 
@@ -54,8 +54,8 @@ class Presenter {
     ];
   }
 
-  getSetting(options: string) {
-    return this.model.getSetting(options);
+  getSettings() {
+    return this.model.getSettings();
   }
 
   update(options: ISliderSettings) {

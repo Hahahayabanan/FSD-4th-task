@@ -29,7 +29,7 @@
 
 Имя класса      | Описание
 ----------------|----------------------
-EventObserver   | Реализует паттерн "наблюдатель"
+EventObserver   | Реализует паттерн 'наблюдатель'
 MODEL           | 
 ISliderSettings | Интерфейс, содержит свойства настроек слайдера
 SliderSettings  | Реализует свойства и методы настроек слайдера, логику их инициализации, проверки на валидность, сеттеры, геттеры
@@ -50,7 +50,7 @@ Presenter       | Реализует логику работы слайдера,
 ## Пример инициализации
 
 ```JavaScript
-$( ".selector" ).HYBSlider({
+$( '.selector' ).HYBSlider({
       min: 200, 
       max: 500, 
       step: 100,
@@ -64,11 +64,11 @@ $( ".selector" ).HYBSlider({
 
 <script>
   $(() => {
-    $( ".slider" ).HYBSlider()
+    $( '.slider' ).HYBSlider()
   })
 
   $(() => {
-    $( ".slider" ).HYBSlider('initialize', { min: 20, max: 150, step: 30, isRange: true, from: 25, to: 50 })
+    $( '.slider' ).HYBSlider({ min: 20, max: 150, step: 30, isRange: true, from: 25, to: 50 })
   })
 </script>
 ```
@@ -82,11 +82,13 @@ $( ".selector" ).HYBSlider({
 Принимает параметры и позволяет обновить слайдер
 Возвращает объект
 ```JavaScript
-$( ".slider" ).HYBSlider('update', { min: 20 })
+$( '.slider' ).HYBSlider('update', { min: 20 })
 ```
-Принимает название параметра, возвращает jQuery объект, содержащий значение указанного параметра
+Возвращает jQuery объект, содержащий объект текущих параметров слайдера
 ```JavaScript
-$( ".slider" ).HYBSlider('getSetting', 'min')
+const $parameters = $( '.slider' ).HYBSlider('getSettings');
+const parametersForFirstSliderMatch = $parameters.get(0);
+const { min, max, step } = parametersForFirstSlider;
 
 ```
 
@@ -111,9 +113,9 @@ $( ".slider" ).HYBSlider('getSetting', 'min')
 ## orientation
 >**Type:** ***string***
 
->**Default:** ***"horizontal"***
+>**Default:** ***'horizontal'***
 
-Определяет положение слайдера горизонтально (min слева, max справа) или вертикально (min сверху, max снизу). Доступные значения ```"horizontal"``` либо ```"vertical"```.
+Определяет положение слайдера горизонтально (min слева, max справа) или вертикально (min сверху, max снизу). Доступные значения ```'horizontal'``` либо ```'vertical'```.
 
 
 
@@ -171,7 +173,7 @@ $( ".slider" ).HYBSlider('getSetting', 'min')
 
 #### Пример использования в коде:
 ```JavaScript
-$( ".selector" ).on( "changePointer", function( event ) {} );
+$( '.selector' ).on( 'changePointer', function( event ) {} );
 ```
 
 ---

@@ -23,14 +23,14 @@ describe('Presenter / Test initialization default options', () => {
       max: 100,
       from: 53,
     });
-    expect(presenter.getSetting('from')).toEqual(55);
+    expect(presenter.getSettings().from).toEqual(55);
   });
 
   it("Should coincide constructor values 'step'", () => {
     presenter = new Presenter(shadowSlider, {
       step: 5,
     });
-    expect(presenter.getSetting('step')).toEqual(5);
+    expect(presenter.getSettings().step).toEqual(5);
   });
 
   it("Should coincide constructor values default 'from'", () => {
@@ -39,7 +39,7 @@ describe('Presenter / Test initialization default options', () => {
       max: 100,
       isRange: false,
     });
-    expect(presenter.getSetting('from')).toEqual(10);
+    expect(presenter.getSettings().from).toEqual(10);
   });
 
   it('Should coincide follower pointer value', () => {
@@ -65,15 +65,15 @@ describe('Presenter / Test initialization options', () => {
   });
 
   it("Should coincide constructor set values 'range'", () => {
-    expect(presenter.getSetting('isRange')).toBeTruthy();
+    expect(presenter.getSettings().isRange).toBeTruthy();
   });
 
   it("Should coincide constructor set values 'from'", () => {
-    expect(presenter.getSetting('from')).toEqual(50);
+    expect(presenter.getSettings().from).toEqual(50);
   });
 
   it("Should coincide constructor set values 'to'", () => {
-    expect(presenter.getSetting('to')).toEqual(75);
+    expect(presenter.getSettings().to).toEqual(75);
   });
 
   it('Should coincide constructor set values on range line', () => {

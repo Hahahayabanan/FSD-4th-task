@@ -31,8 +31,8 @@ class Slider {
     return this.$slider;
   }
 
-  getPropertyValue(property: string) {
-    return this.$slider.HYBSlider('getSetting', property).get(0);
+  getProperties() {
+    return this.$slider.HYBSlider('getSettings').get(0) as ISliderSettings;
   }
 
   setPropertyValue(setting: string, value: string | number | boolean) {

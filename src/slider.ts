@@ -7,8 +7,8 @@ declare global {
   }
   interface JQuery {
     HYBSlider: (
-      method?: ISliderSettings | string,
       options?: ISliderSettings | string,
+      otherOptions?: ISliderSettings,
     ) => JQuery<Element> | JQuery<Object>;
   }
 }
