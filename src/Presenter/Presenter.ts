@@ -21,6 +21,8 @@ class Presenter {
 
     this.addObservers();
     this.applyStartValues();
+    this.getSetting = this.getSetting.bind(this);
+    this.update = this.update.bind(this);
   }
 
   checkOrientationIsVertical(): boolean {
@@ -52,12 +54,12 @@ class Presenter {
     ];
   }
 
-  getSetting(setting: string) {
-    return this.model.getSetting(setting);
+  getSetting(options: string) {
+    return this.model.getSetting(options);
   }
 
-  update(settings: ISliderSettings) {
-    this.model.setSettings(settings);
+  update(options: ISliderSettings) {
+    this.model.setSettings(options);
   }
 
   updateViewSettings(data: ISliderSettings) {

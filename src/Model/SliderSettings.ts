@@ -20,6 +20,7 @@ class SliderSettings {
     stepBiggerMaxMin: 'Step cant be bigger than min and max range',
     notValidOrientation:
       'Orientation of slider has only two values "horizontal" or "vertical"',
+    notValidSetting: 'Slider don\'t have this setting',
   };
 
   constructor(settings?: ISliderSettings) {
@@ -28,10 +29,14 @@ class SliderSettings {
   }
 
   getSetting(setting: string) {
-    return this.settings[setting];
+    if (this.settings[setting] !== undefined) {
+      return this.settings[setting];
+    }
+    console.error(`Slider doesn't have '${setting}' setting`);
+    return null;
   }
 
-  setSettings(settings: ISliderSettings) {
+  setSettings(settings: ISliderSettings = {}) {
     Object.keys(settings).forEach(val => {
       this.setSetting(val, settings[val]);
     });
@@ -42,7 +47,7 @@ class SliderSettings {
   }
 
   setSetting(setting: string,
-    newValue: number | string | boolean) {
+    newValue: ISliderSettings[keyof ISliderSettings]) {
     try {
       const isSecondSmallerFirst = this.settings.to === null
         || this.settings.to <= this.settings.from;
@@ -58,7 +63,7 @@ class SliderSettings {
           case 'hasLine':
             this.settings.hasLine = newValue;
             break;
-          default:
+          default: throw this.errors.notValidSetting;
         }
       }
 
@@ -79,12 +84,17 @@ class SliderSettings {
           case 'to':
             this.setTo(newValue);
             break;
-          default:
+          default: throw this.errors.notValidSetting;
         }
       }
 
       if (typeof newValue === 'string') {
-        this.setOrientation(newValue);
+        switch (setting) {
+          case 'orientation':
+            this.setOrientation(newValue);
+            break;
+          default: throw this.errors.notValidSetting;
+        }
       }
     } catch (err) {
       console.error(err);

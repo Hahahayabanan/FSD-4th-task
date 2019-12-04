@@ -7,14 +7,9 @@ declare global {
   }
   interface JQuery {
     HYBSlider: (
-      options?: ISliderSettings,
+      method?: ISliderSettings | string,
+      options?: ISliderSettings | string,
     ) => JQuery<Element> | JQuery<Object>;
-    HYBUpdate: (
-      options: ISliderSettings,
-    ) => JQuery<Element>;
-    HYBGetOption: (
-      option: string,
-    ) => JQuery<Object>;
   }
 }
 
@@ -37,36 +32,27 @@ function getDataAttrSettings(htmlElem: HTMLElement): ISliderSettings {
 }
 
 (function initialization($: JQueryStatic) {
-  $.fn.HYBSlider = function getStart(options?) {
-    let settings: ISliderSettings = options;
-    return this.each((i: number, htmlElem: HTMLElement) => {
-      settings = $.extend(getDataAttrSettings(htmlElem), settings);
-      const presenter = new Presenter(htmlElem, settings);
-      this.data('presenter', presenter);
-      return this;
-    });
-  };
-  $.fn.HYBUpdate = function update(options) {
-    const settings: ISliderSettings = options;
-    return this.each((i: number, htmlElem: HTMLElement) => {
-      const presenter = this.data('presenter');
-      if (presenter) {
-        presenter.update(settings);
+  $.fn.HYBSlider = function getStart(options?, otherOptions?) {
+    return this.map((i: number, htmlElem: HTMLElement) => {
+      if (typeof options === 'object' || !options) {
+        const settings: ISliderSettings = $.extend(getDataAttrSettings(htmlElem), options);
+        const presenter: Presenter = new Presenter(htmlElem, settings);
+        this.data('presenter', presenter);
+        return this;
+      }
+
+      const presenter: Presenter = this.data('presenter');
+
+      if (typeof options === 'string' && presenter) {
+        if (presenter[options]) {
+          return presenter[options].call(presenter, otherOptions);
+        }
+        console.error(`Method ${options} doesn't found`);
       } else {
-        const newPresenter = new Presenter(htmlElem, settings);
-        this.data('presenter', newPresenter);
+        console.error('To get setting Slider should be initialized');
       }
-      return this;
-    });
-  };
-  $.fn.HYBGetOption = function getOption(option) {
-    const setting: string = option;
-    return this.map(() => {
-      const presenter = this.data('presenter');
-      if (presenter) {
-        return presenter.getSetting(setting);
-      }
-      console.error('To get setting Slider should be initialized');
+
+      console.error('Wrong parameters');
     });
   };
 }(jQuery));

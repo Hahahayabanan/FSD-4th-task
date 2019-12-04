@@ -24,7 +24,7 @@ class Slider {
     hasTip?: boolean;
     hasLine?: boolean;
   }) {
-    this.$slider.HYBSlider(settings);
+    this.$slider.HYBSlider('initialize', settings);
   }
 
   getElement() {
@@ -32,13 +32,13 @@ class Slider {
   }
 
   getPropertyValue(property: string) {
-    return this.$slider.HYBGetOption(property).get(0);
+    return this.$slider.HYBSlider('getSetting', property).get(0);
   }
 
   setPropertyValue(setting: string, value: string | number | boolean) {
     const settings: ISliderSettings = {};
     settings[setting] = value;
-    this.$slider.HYBUpdate(settings);
+    this.$slider.HYBSlider('update', settings);
   }
 }
 

@@ -50,7 +50,7 @@ class Model {
   }
 
   setSetting(setting:string,
-    newValue: number | string | boolean) {
+    newValue: ISliderSettings[keyof ISliderSettings]) {
     this.settings.setSetting(setting, newValue);
     this.dispatchSettings();
   }

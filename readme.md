@@ -66,6 +66,10 @@ $( ".selector" ).HYBSlider({
   $(() => {
     $( ".slider" ).HYBSlider()
   })
+
+  $(() => {
+    $( ".slider" ).HYBSlider('initialize', { min: 20, max: 150, step: 30, isRange: true, from: 25, to: 50 })
+  })
 </script>
 ```
 
@@ -73,16 +77,16 @@ $( ".selector" ).HYBSlider({
 
 # API
 
-## методы
+## Методы
 
 Принимает параметры и позволяет обновить слайдер
 Возвращает объект
 ```JavaScript
-$( ".slider" ).HYBUpdate({ min: 20 })
+$( ".slider" ).HYBSlider('update', { min: 20 })
 ```
 Принимает название параметра, возвращает jQuery объект, содержащий значение указанного параметра
 ```JavaScript
-$( ".slider" ).HYBGetOption('min')
+$( ".slider" ).HYBSlider('getSetting', 'min')
 
 ```
 
