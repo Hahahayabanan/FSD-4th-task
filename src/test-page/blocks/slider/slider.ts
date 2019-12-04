@@ -24,7 +24,7 @@ class Slider {
     hasTip?: boolean;
     hasLine?: boolean;
   }) {
-    this.$slider.HYBSlider('initialize', settings);
+    this.$slider.HYBSlider(settings);
   }
 
   getElement() {

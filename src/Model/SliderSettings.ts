@@ -67,7 +67,7 @@ class SliderSettings {
         }
       }
 
-      if (typeof newValue === 'number') {
+      if (typeof newValue === 'number' && !isNaN(newValue)) {
         switch (setting) {
           case 'min':
             this.setMin(newValue);
@@ -103,7 +103,7 @@ class SliderSettings {
 
   private setMin(newMin: number) {
     try {
-      if (newMin >= (this.settings.max + this.settings.step)) {
+      if (newMin >= this.settings.max) {
         throw this.errors.minBiggerMax;
       }
       if (newMin > this.settings.from) {
@@ -121,7 +121,7 @@ class SliderSettings {
 
   private setMax(newMax: number) {
     try {
-      if (newMax <= (this.settings.min - this.settings.step)) {
+      if (newMax <= this.settings.min) {
         throw this.errors.minBiggerMax;
       }
       if (newMax < this.settings.from) {
