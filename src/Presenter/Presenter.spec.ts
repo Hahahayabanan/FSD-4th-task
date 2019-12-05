@@ -46,7 +46,7 @@ describe('Presenter / Test initialization default options', () => {
     presenter = new Presenter(shadowSlider, {
       hasTip: true,
     });
-    expect(presenter.model.getSetting('from')).toEqual(
+    expect(presenter.model.getSettings().from).toEqual(
       parseInt(presenter.view.pointer0.tip.tipHTML.innerHTML, 10),
     );
   });
@@ -99,15 +99,9 @@ describe('Presenter / Test methods', () => {
   });
 
   it('updateViewWithNewSettings', async () => {
-    await presenter.updateViewSettings({ isRange: false, hasTip: true });
+    await presenter.setSettings({ isRange: false, hasTip: true });
     expect(presenter.view.isRange).toBeFalsy();
     expect(presenter.view.pointer0.tip).toBeDefined();
     expect(presenter.view.pointer1).toBeNull();
-  });
-
-  it('checkOrientationIsVertical', async () => {
-    expect(presenter.checkOrientationIsVertical()).toEqual(
-      presenter.model.getSetting('orientation') === 'vertical',
-    );
   });
 });

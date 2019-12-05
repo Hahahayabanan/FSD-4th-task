@@ -17,13 +17,13 @@ describe('Slider / Test initialization', () => {
 
   it('Should coincide constructor set', () => {
     const {
-      max, min, isRange, orientation,
+      max, min, isRange, isVertical,
     } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
 
-    expect(isRange).toBeFalsy();
-    expect(min).toEqual(0);
-    expect(max).toEqual(100);
-    expect(orientation).toEqual('horizontal');
+    expect(isRange).toBeTruthy();
+    expect(min).toEqual(20);
+    expect(max).toEqual(150);
+    expect(isVertical).toBeFalsy();
   });
 });
 
@@ -37,13 +37,13 @@ describe('Slider / Test empty initialization', () => {
 
   it('Should coincide constructor set', () => {
     const {
-      max, min, isRange, orientation,
+      max, min, isRange, isVertical,
     } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
 
     expect(isRange).toBeFalsy();
     expect(min).toEqual(0);
     expect(max).toEqual(100);
-    expect(orientation).toEqual('horizontal');
+    expect(isVertical).toBeFalsy();
   });
 });
 
@@ -62,14 +62,15 @@ describe('Slider / Test dynamic set', () => {
   });
 
   it('Should coincide manual set', () => {
-    $slider.HYBSlider('update', { min: 50 });
-    expect($slider.HYBSlider('getSettings').get(0)).toEqual(50);
+    $slider.HYBSlider('setSettings', { min: 50 });
+    const { min } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
+    expect(min).toEqual(50);
   });
   it('Should coincide manual multiple set', () => {
-    $slider.HYBSlider('update', { max: 200, orientation: 'vertical', hasLine: false });
-    const { max, orientation, hasLine } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
+    $slider.HYBSlider('setSettings', { max: 200, isVertical: true, hasLine: false });
+    const { max, isVertical, hasLine } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
     expect(max).toEqual(200);
-    expect(orientation).toEqual('vertical');
-    expect(hasLine).toEqual(false);
+    expect(isVertical).toBeTruthy();
+    expect(hasLine).toBeFalsy();
   });
 });

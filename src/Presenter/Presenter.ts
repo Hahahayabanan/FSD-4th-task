@@ -11,46 +11,46 @@ class Presenter {
 
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
     this.model = new Model(options);
+    const {
+      hasLine, hasTip, isRange, isVertical,
+    } = this.model.getSettings();
     this.view = new MainView({
+      isVertical,
+      hasTip,
+      hasLine,
+      isRange,
       rootElem: rootElement,
-      isVertical: this.checkOrientationIsVertical(),
-      hasTip: this.model.getSetting('hasTip'),
-      hasLine: this.model.getSetting('hasLine'),
-      isRange: this.model.getSetting('isRange'),
     });
 
     this.addObservers();
     this.applyStartValues();
     this.getSettings = this.getSettings.bind(this);
-    this.update = this.update.bind(this);
-  }
-
-  checkOrientationIsVertical(): boolean {
-    const ordersModule = {
-      ORIENTATION: 'vertical',
-    };
-    if (this.model.getSetting('orientation') === ordersModule.ORIENTATION) {
-      return true;
-    }
-    return false;
+    this.setSettings = this.setSettings.bind(this);
+    this.updateModelValue = this.updateModelValue.bind(this);
+    this.updateViewSettings = this.updateViewSettings.bind(this);
+    this.updateViewPointer = this.updateViewPointer.bind(this);
   }
 
   getDataAttributes(): Attribute[] {
+    const {
+      min, max, step, hasLine, hasTip, isRange, isVertical,
+    } = this.model.getSettings();
     return [
-      { name: 'min', value: `${this.model.getSetting('min')}` },
-      { name: 'max', value: `${this.model.getSetting('max')}` },
-      { name: 'hasTip', value: `${this.model.getSetting('hasTip')}` },
-      { name: 'hasLine', value: `${this.model.getSetting('hasLine')}` },
-      { name: 'orientation', value: `${this.model.getSetting('orientation')}` },
-      { name: 'isRange', value: `${this.model.getSetting('isRange')}` },
-      { name: 'step', value: `${this.model.getSetting('step')}` },
+      { name: 'min', value: `${min}` },
+      { name: 'max', value: `${max}` },
+      { name: 'hasTip', value: `${hasTip}` },
+      { name: 'hasLine', value: `${hasLine}` },
+      { name: 'isVertical', value: `${isVertical}` },
+      { name: 'isRange', value: `${isRange}` },
+      { name: 'step', value: `${step}` },
     ];
   }
 
   getValueDataAttributes(): Attribute[] {
+    const { from, to } = this.model.getSettings();
     return [
-      { name: 'from', value: `${this.model.getSetting('from')}` },
-      { name: 'to', value: `${this.model.getSetting('to')}` },
+      { name: 'from', value: `${from}` },
+      { name: 'to', value: `${to}` },
     ];
   }
 
@@ -58,22 +58,8 @@ class Presenter {
     return this.model.getSettings();
   }
 
-  update(options: ISliderSettings) {
+  setSettings(options: ISliderSettings) {
     this.model.setSettings(options);
-  }
-
-  updateViewSettings(data: ISliderSettings) {
-    const { isRange, hasTip, hasLine } = data;
-    const dataAttributes: Attribute[] = this.getDataAttributes();
-    dataAttributes.concat(this.getValueDataAttributes());
-
-    this.view.update({
-      isRange,
-      hasTip,
-      hasLine,
-      isVertical: this.checkOrientationIsVertical(),
-      attributes: dataAttributes,
-    });
   }
 
   private addObservers() {
@@ -84,7 +70,6 @@ class Presenter {
 
   private applyStartValues() {
     this.model.applyStartValues();
-    this.view.setDataAttributes(this.getDataAttributes());
   }
 
   private updateViewPointer(data: CalculatedSettings) {
@@ -102,6 +87,22 @@ class Presenter {
       newSecond: newToInPercents,
       newFirstTipValue: newFrom,
       newSecondTipValue: newTo,
+    });
+  }
+
+  private updateViewSettings(data: ISliderSettings) {
+    const {
+      isRange, hasTip, hasLine, isVertical,
+    } = data;
+    const dataAttributes: Attribute[] = this.getDataAttributes();
+    dataAttributes.concat(this.getValueDataAttributes());
+
+    this.view.update({
+      isRange,
+      hasTip,
+      hasLine,
+      isVertical,
+      attributes: dataAttributes,
     });
   }
 

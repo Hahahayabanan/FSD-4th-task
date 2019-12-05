@@ -3,7 +3,7 @@ interface ISliderSettings {
   min?: number;
   max?: number;
   step?: number;
-  orientation?: string;
+  isVertical?: boolean;
   from?: number;
   to?: number;
   hasTip?: boolean;

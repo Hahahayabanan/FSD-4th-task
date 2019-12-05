@@ -9,7 +9,7 @@ class ControlPanel {
 
   public isRangeCheckbox: Checkbox;
 
-  public orientationCheckbox: Checkbox;
+  public isVerticalCheckbox: Checkbox;
 
   public hasTipCheckbox: Checkbox;
 
@@ -44,21 +44,18 @@ class ControlPanel {
     const $hasLineCheckbox = this.$controlPanel.find('.js-control-panel__has-line-checkbox');
 
     this.isRangeCheckbox = new Checkbox($isRangeCheckbox, 'isRange');
-    this.orientationCheckbox = new Checkbox($isVerticalCheckbox, 'orientation');
+    this.isVerticalCheckbox = new Checkbox($isVerticalCheckbox, 'isVertical');
     this.hasTipCheckbox = new Checkbox($hasTipCheckbox, 'hasTip');
     this.hasLineCheckbox = new Checkbox($hasLineCheckbox, 'hasLine');
 
     const {
-      isRange, hasTip, hasLine,
+      isRange, hasTip, hasLine, isVertical,
     } = this.slider.getProperties();
 
     this.isRangeCheckbox.toggleChecked(isRange);
     this.hasTipCheckbox.toggleChecked(hasTip);
     this.hasLineCheckbox.toggleChecked(hasLine);
-
-    const orientationProperty: string = this.slider.getProperties().orientation;
-    if (orientationProperty === 'vertical') this.orientationCheckbox.toggleChecked(true);
-    else this.orientationCheckbox.toggleChecked(false);
+    this.isVerticalCheckbox.toggleChecked(isVertical);
   }
 
   initInputFields() {
@@ -91,7 +88,7 @@ class ControlPanel {
     this.hasTipCheckbox.getElement().on('change', this.handleCheckboxChange.bind(this, this.hasTipCheckbox));
     this.isRangeCheckbox.getElement().on('change', this.handleCheckboxChange.bind(this, this.isRangeCheckbox));
     this.hasLineCheckbox.getElement().on('change', this.handleCheckboxChange.bind(this, this.hasLineCheckbox));
-    this.orientationCheckbox.getElement().on('change', this.handleCheckboxChange.bind(this, this.orientationCheckbox));
+    this.isVerticalCheckbox.getElement().on('change', this.handleCheckboxChange.bind(this, this.isVerticalCheckbox));
 
     this.minValueField.getElement().on('change', this.handleFieldChange.bind(this, this.minValueField));
     this.maxValueField.getElement().on('change', this.handleFieldChange.bind(this, this.maxValueField));
@@ -104,12 +101,8 @@ class ControlPanel {
 
   handleCheckboxChange(checkbox: Checkbox) {
     const property: string = checkbox.getProperty();
-    let newPropertyValue: boolean | string;
-    if (property === 'orientation') {
-      newPropertyValue = checkbox.isChecked() ? 'vertical' : 'horizontal';
-    } else {
-      newPropertyValue = !!checkbox.isChecked();
-    }
+    const newPropertyValue: boolean = checkbox.isChecked();
+
     this.slider.setPropertyValue(property, newPropertyValue);
     this.toggleValueFields();
   }
@@ -124,10 +117,8 @@ class ControlPanel {
 
   handleSliderChangePointer() {
     const { from, to } = this.slider.getProperties();
-    let value = `${from}`;
-    this.firstValueField.setValue(value);
-    value = `${to}`;
-    this.secondValueField.setValue(value);
+    this.firstValueField.setValue(`${from}`);
+    this.secondValueField.setValue(`${to}`);
   }
 
   toggleValueFields() {

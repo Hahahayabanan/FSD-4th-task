@@ -53,6 +53,8 @@ class MainView {
     this.isRange = isRange;
 
     this.handlePathHTMLMouseDown = this.handlePathHTMLMouseDown.bind(this);
+    this.setPointerPosition = this.setPointerPosition.bind(this);
+    this.dispatchPointerPosition = this.dispatchPointerPosition.bind(this);
 
     this.createTemplate();
     this.bindEventListeners();
@@ -149,8 +151,8 @@ class MainView {
   }
 
   private addObservers() {
-    this.pointer0.observer.subscribe(this.dispatchPointerPosition.bind(this));
-    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition.bind(this));
+    this.pointer0.observer.subscribe(this.dispatchPointerPosition);
+    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition);
   }
 
   private createTemplate() {
@@ -171,7 +173,7 @@ class MainView {
   private createPointers() {
     let thumb = document.createElement('div');
     this.pathHTML.append(thumb);
-    this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
+    this.pointer0 = new PointerView(thumb, this.pathHTML, 'first', this.isVertical);
     this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
     if (this.hasLine) {
@@ -182,7 +184,7 @@ class MainView {
     if (this.isRange) {
       thumb = document.createElement('div');
       this.pathHTML.append(thumb);
-      this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
+      this.pointer1 = new PointerView(thumb, this.pathHTML, 'second', this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
     }
   }
@@ -246,11 +248,9 @@ class MainView {
     return res;
   }
 
-  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: PointerView }) {
+  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: string }) {
     const { newCurPos, pointerToUpdate } = data;
-    let pointerThatChanged: string;
-    if (pointerToUpdate === this.pointer0) pointerThatChanged = 'first';
-    if (pointerToUpdate === this.pointer1) pointerThatChanged = 'second';
+    const pointerThatChanged: string = pointerToUpdate;
 
     this.updateZIndex(pointerToUpdate);
     this.observer.broadcast({ newCurPos, pointerThatChanged });
@@ -264,9 +264,9 @@ class MainView {
     }
   }
 
-  private updateZIndex(curPointer: PointerView) {
+  private updateZIndex(curPointer: string) {
     if (this.isRange) {
-      if (curPointer === this.pointer0) {
+      if (curPointer === 'first') {
         this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
         this.pointer1.pointerHTML.classList.remove(
           this.styleClasses.THUMB_SELECTED,

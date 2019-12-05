@@ -38,7 +38,7 @@ class Slider {
   setPropertyValue(setting: string, value: string | number | boolean) {
     const settings: ISliderSettings = {};
     settings[setting] = value;
-    this.$slider.HYBSlider('update', settings);
+    this.$slider.HYBSlider('setSettings', settings);
   }
 }
 

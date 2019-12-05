@@ -1,27 +1,101 @@
-import { SliderSettings } from './SliderSettings';
 import { EventObserver } from '../EventObserver/EventObserver';
 import { ISliderSettings } from '../helpers/interfaces';
+import defaultSettings from '../helpers/defaultSettings';
 
 class Model {
-  private settings: SliderSettings;
+  private settings: ISliderSettings;
 
   public valuesObserver: EventObserver = new EventObserver();
 
   public settingsObserver: EventObserver = new EventObserver();
 
   constructor(settings?: object) {
-    this.settings = new SliderSettings(settings);
+    this.settings = { ...defaultSettings };
+    this.setSettings(settings);
+  }
+
+  getSettings() {
+    return this.settings;
+  }
+
+  validateSettings(settings: ISliderSettings = {}) {
+    const {
+      min, max, step, hasLine, hasTip, isRange, from, to, isVertical,
+    } = settings;
+
+    const setMin = () => {
+      const isMinBiggerMax = min >= (max || this.settings.max);
+      if (isMinBiggerMax) console.error('Min value cant be bigger than max value');
+      else {
+        this.settings.min = min;
+        this.setSettings({ from: this.settings.from, to: this.settings.to });
+      }
+    };
+
+    const setMax = () => {
+      const isMaxSmallerMin = max <= (min || this.settings.min);
+      if (isMaxSmallerMin) console.error('Max value cant be bigger than min value');
+      else {
+        this.settings.max = max;
+        this.setSettings({ from: this.settings.from, to: this.settings.to });
+      }
+    };
+
+    const setFrom = () => {
+      const isValueBiggerSecond = from >= this.settings.to - this.settings.step;
+      this.settings.from = this.calculateValueWithStep(from);
+      if (this.settings.isRange && isValueBiggerSecond) {
+        const valueMinusStep = this.settings.to - this.settings.step;
+        this.settings.from = valueMinusStep > this.settings.min
+          ? valueMinusStep : this.settings.min;
+      }
+    };
+
+    const setTo = () => {
+      const valuePlusStep = this.settings.from + this.settings.step;
+      const isValueSmallerFirst = to <= valuePlusStep;
+      this.settings.to = this.calculateValueWithStep(to);
+      if (isValueSmallerFirst) {
+        this.settings.to = valuePlusStep < this.settings.max ? valuePlusStep : this.settings.max;
+        this.setSettings({ from: this.settings.from });
+      }
+    };
+
+    const setStep = () => {
+      const isStepValid = step < 0 && step > this.settings.max - this.settings.min;
+      if (isStepValid) console.error('Step cant be bigger than min and max range');
+      else {
+        this.settings.step = step;
+        this.setSettings({ from: this.settings.from, to: this.settings.to });
+      }
+    };
+
+    const setIsRange = () => {
+      const isSecondSmallerFirst = this.settings.to === null
+        || (this.settings.to <= this.settings.from);
+      this.settings.isRange = isRange;
+      if (isSecondSmallerFirst) this.setSettings({ from: this.settings.max });
+    };
+
+    if (hasTip !== undefined) this.settings.hasTip = hasTip;
+    if (hasLine !== undefined) this.settings.hasLine = hasLine;
+    if (isVertical !== undefined) this.settings.isVertical = isVertical;
+    if (min !== undefined) setMin();
+    if (max !== undefined) setMax();
+    if (step !== undefined) setStep();
+    if (from !== undefined) setFrom();
+    if (to !== undefined) setTo();
+    if (isRange !== undefined) setIsRange();
   }
 
   applyValue(curPosInPercents: number, updateValue: string) {
     const newValue: number = this.calculatePercentsToValue(curPosInPercents);
-    const newValueWithStep: number = this.calculateValueWithStep(newValue);
     switch (updateValue) {
       case 'first':
-        this.settings.setSetting('from', newValueWithStep);
+        this.setSettings({ from: newValue });
         break;
       case 'second':
-        this.settings.setSetting('to', newValueWithStep);
+        this.setSettings({ to: newValue });
         break;
       default:
     }
@@ -29,48 +103,27 @@ class Model {
   }
 
   applyStartValues() {
-    const from: number = this.getSetting('from');
-    const fromWithStep = this.calculateValueWithStep(from);
-    this.settings.setSetting('from', fromWithStep);
-    if (this.getSetting('isRange')) {
-      const to: number = this.getSetting('to');
-      const toWithStep = this.calculateValueWithStep(to);
-      this.settings.setSetting('to', toWithStep);
-    }
     this.dispatchValue();
   }
 
   setSettings(settings: ISliderSettings) {
-    this.settings.setSettings(settings);
+    this.validateSettings(settings);
     this.dispatchSettings();
-  }
-
-  getSettings(): ISliderSettings {
-    return this.settings.settings;
-  }
-
-  setSetting(setting:string,
-    newValue: ISliderSettings[keyof ISliderSettings]) {
-    this.settings.setSetting(setting, newValue);
-    this.dispatchSettings();
-  }
-
-  getSetting(setting: string) {
-    return this.settings.getSetting(setting);
   }
 
   calculateValueWithStep(newValue: number) {
-    const { min, max, step } = this.settings.settings;
+    const { min, max, step } = this.getSettings();
     const currentValue: number = newValue - min;
     const currentValueWithoutStep: number = Math.round(currentValue / step);
     let currentValueWithStep: number = currentValueWithoutStep * step + min;
     if (currentValueWithStep > max) currentValueWithStep = max;
+    if (currentValueWithStep < min) currentValueWithStep = min;
 
     return currentValueWithStep;
   }
 
   calculatePercentsToValue(curPosInPercents: number): number {
-    const { min, max } = this.settings.settings;
+    const { min, max } = this.getSettings();
     const rangeVal: number = max - min;
     const curPosInValue: number = (rangeVal * curPosInPercents) / 100;
 
@@ -78,7 +131,7 @@ class Model {
   }
 
   calculateValueToPercents(curPosInValue: number): number {
-    const { min, max } = this.settings.settings;
+    const { min, max } = this.getSettings();
     const rangeVal: number = max - min;
     const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
 
@@ -86,9 +139,10 @@ class Model {
   }
 
   private dispatchValue() {
-    const newFrom: number = this.getSetting('from');
+    const { from, to } = this.getSettings();
+    const newFrom: number = from;
+    const newTo: number = to;
     const newFromInPercents: number = this.calculateValueToPercents(newFrom);
-    const newTo: number = this.getSetting('to');
     const newToInPercents: number = this.calculateValueToPercents(newTo);
     this.valuesObserver.broadcast({
       newFrom, newTo, newFromInPercents, newToInPercents,
@@ -97,10 +151,10 @@ class Model {
 
   private dispatchSettings() {
     const {
-      isRange, orientation, hasTip, hasLine,
+      isRange, isVertical, hasTip, hasLine,
     } = this.getSettings();
     this.settingsObserver.broadcast({
-      isRange, orientation, hasTip, hasLine,
+      isRange, isVertical, hasTip, hasLine,
     });
     this.dispatchValue();
   }
