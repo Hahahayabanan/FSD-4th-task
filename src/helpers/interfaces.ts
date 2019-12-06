@@ -33,6 +33,12 @@ interface CalculatedSettings {
   newToInPercents: number;
 }
 
+interface ErrorType {
+  MIN?: string;
+  MAX?: string;
+  STEP?: string;
+}
+
 export {
-  ISliderSettings, MouseSettings, Attribute, PointerPositionData, CalculatedSettings
+  ISliderSettings, MouseSettings, Attribute, PointerPositionData, CalculatedSettings, ErrorType,
 };

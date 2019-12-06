@@ -6,8 +6,8 @@ const defaultSettings: ISliderSettings = {
   max: 100,
   step: 1,
   isVertical: false,
-  from: 0,
-  to: 100,
+  from: null,
+  to: null,
   hasTip: false,
   hasLine: true,
 };

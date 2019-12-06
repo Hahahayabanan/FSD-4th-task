@@ -1,6 +1,7 @@
 import { EventObserver } from '../EventObserver/EventObserver';
 import { ISliderSettings } from '../helpers/interfaces';
 import defaultSettings from '../helpers/defaultSettings';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 class Model {
   private settings: ISliderSettings;
@@ -18,14 +19,14 @@ class Model {
     return this.settings;
   }
 
-  validateSettings(settings: ISliderSettings = {}) {
+  setSettings(settings: ISliderSettings = {}) {
     const {
       min, max, step, hasLine, hasTip, isRange, from, to, isVertical,
     } = settings;
 
     const setMin = () => {
       const isMinBiggerMax = min >= (max || this.settings.max);
-      if (isMinBiggerMax) console.error('Min value cant be bigger than max value');
+      if (isMinBiggerMax) new ErrorMessage('MAX', 'min');
       else {
         this.settings.min = min;
         this.setSettings({ from: this.settings.from, to: this.settings.to });
@@ -34,7 +35,7 @@ class Model {
 
     const setMax = () => {
       const isMaxSmallerMin = max <= (min || this.settings.min);
-      if (isMaxSmallerMin) console.error('Max value cant be bigger than min value');
+      if (isMaxSmallerMin) new ErrorMessage('MIN', 'max');
       else {
         this.settings.max = max;
         this.setSettings({ from: this.settings.from, to: this.settings.to });
@@ -63,7 +64,7 @@ class Model {
 
     const setStep = () => {
       const isStepValid = step < 0 && step > this.settings.max - this.settings.min;
-      if (isStepValid) console.error('Step cant be bigger than min and max range');
+      if (isStepValid) new ErrorMessage('STEP', 'step');
       else {
         this.settings.step = step;
         this.setSettings({ from: this.settings.from, to: this.settings.to });
@@ -74,8 +75,10 @@ class Model {
       const isSecondSmallerFirst = this.settings.to === null
         || (this.settings.to <= this.settings.from);
       this.settings.isRange = isRange;
-      if (isSecondSmallerFirst) this.setSettings({ from: this.settings.max });
+      if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
     };
+
+    if (this.settings.from === null) this.settings.from = this.settings.min;
 
     if (hasTip !== undefined) this.settings.hasTip = hasTip;
     if (hasLine !== undefined) this.settings.hasLine = hasLine;
@@ -86,6 +89,8 @@ class Model {
     if (from !== undefined) setFrom();
     if (to !== undefined) setTo();
     if (isRange !== undefined) setIsRange();
+
+    this.dispatchSettings();
   }
 
   applyValue(curPosInPercents: number, updateValue: string) {
@@ -104,11 +109,6 @@ class Model {
 
   applyStartValues() {
     this.dispatchValue();
-  }
-
-  setSettings(settings: ISliderSettings) {
-    this.validateSettings(settings);
-    this.dispatchSettings();
   }
 
   calculateValueWithStep(newValue: number) {
