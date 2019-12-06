@@ -1,4 +1,4 @@
-import { ISliderSettings } from './helpers/interfaces';
+import ISliderSettings from './Model/ISliderSettings';
 import { Presenter } from './Presenter/Presenter';
 
 declare global {

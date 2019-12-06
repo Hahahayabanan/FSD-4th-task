@@ -1,4 +1,5 @@
-import { ISliderSettings, ErrorType } from '../helpers/interfaces';
+import { ErrorType } from '../helpers/interfaces';
+import ISliderSettings from '../Model/ISliderSettings';
 
 const ErrorMessages: ErrorType = {
   MIN: 'smaller than min',
@@ -7,7 +8,7 @@ const ErrorMessages: ErrorType = {
 };
 
 class ErrorMessage {
-  public message: string;
+  private message: string;
 
   constructor(type: keyof ErrorType, property: keyof ISliderSettings) {
     this.message = `Your entering value '${property}' is ${ErrorMessages[type]}`;

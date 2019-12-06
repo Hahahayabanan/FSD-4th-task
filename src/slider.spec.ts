@@ -1,5 +1,5 @@
 import './slider';
-import { ISliderSettings } from './helpers/interfaces';
+import ISliderSettings from './Model/ISliderSettings';
 
 describe('Slider / Test initialization', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';

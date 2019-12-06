@@ -1,6 +1,6 @@
 import { EventObserver } from '../EventObserver/EventObserver';
-import { ISliderSettings } from '../helpers/interfaces';
-import defaultSettings from '../helpers/defaultSettings';
+import ISliderSettings from './ISliderSettings';
+import defaultSettings from './defaultSettings';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 class Model {

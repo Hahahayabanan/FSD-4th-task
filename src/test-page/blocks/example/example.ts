@@ -1,6 +1,6 @@
 import Slider from '../slider/slider';
 import ControlPanel from '../control-panel/control-panel';
-import { ISliderSettings } from '../../../helpers/interfaces';
+import ISliderSettings from '../../../Model/ISliderSettings';
 
 class Example {
   public $example: JQuery<Object>;

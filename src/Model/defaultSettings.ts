@@ -1,4 +1,4 @@
-import { ISliderSettings } from './interfaces';
+import ISliderSettings from './ISliderSettings';
 
 const defaultSettings: ISliderSettings = {
   isRange: false,

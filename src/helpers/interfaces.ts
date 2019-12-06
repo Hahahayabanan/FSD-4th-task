@@ -1,15 +1,3 @@
-interface ISliderSettings {
-  isRange?: boolean;
-  min?: number;
-  max?: number;
-  step?: number;
-  isVertical?: boolean;
-  from?: number;
-  to?: number;
-  hasTip?: boolean;
-  hasLine?: boolean;
-}
-
 interface MouseSettings {
   mouseX: number;
   mouseY: number;
@@ -40,5 +28,5 @@ interface ErrorType {
 }
 
 export {
-  ISliderSettings, MouseSettings, Attribute, PointerPositionData, CalculatedSettings, ErrorType,
+  MouseSettings, Attribute, PointerPositionData, CalculatedSettings, ErrorType,
 };

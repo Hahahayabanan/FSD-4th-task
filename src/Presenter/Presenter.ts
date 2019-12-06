@@ -1,7 +1,8 @@
 import { MainView } from '../View/MainView';
 import { Model } from '../Model/Model';
+import ISliderSettings from '../Model/ISliderSettings';
 import {
-  ISliderSettings, PointerPositionData, Attribute, CalculatedSettings,
+  PointerPositionData, Attribute, CalculatedSettings,
 } from '../helpers/interfaces';
 
 class Presenter {
@@ -22,11 +23,15 @@ class Presenter {
       rootElem: rootElement,
     });
 
-    this.addObservers();
-    this.applyStartValues();
     this.getSettings = this.getSettings.bind(this);
     this.setSettings = this.setSettings.bind(this);
     this.callbackOnUpdate = this.callbackOnUpdate.bind(this);
+    this.updateModelValue = this.updateModelValue.bind(this);
+    this.updateViewSettings = this.updateViewSettings.bind(this);
+    this.updateViewPointer = this.updateViewPointer.bind(this);
+
+    this.addObservers();
+    this.applyStartValues();
   }
 
   getDataAttributes(): Attribute[] {
@@ -65,9 +70,9 @@ class Presenter {
   }
 
   private addObservers() {
-    this.view.observer.subscribe(this.updateModelValue.bind(this));
-    this.model.settingsObserver.subscribe(this.updateViewSettings.bind(this));
-    this.model.valuesObserver.subscribe(this.updateViewPointer.bind(this));
+    this.view.observer.subscribe(this.updateModelValue);
+    this.model.settingsObserver.subscribe(this.updateViewSettings);
+    this.model.valuesObserver.subscribe(this.updateViewPointer);
   }
 
   private applyStartValues() {
