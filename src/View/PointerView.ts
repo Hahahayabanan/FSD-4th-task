@@ -19,13 +19,10 @@ class PointerView {
 
   public observer: EventObserver = new EventObserver();
 
-  public index: string;
-
-  constructor(elemHTML: HTMLElement, pathHTML: HTMLElement, index?: string, isVertical?: boolean) {
+  constructor(elemHTML: HTMLElement, pathHTML: HTMLElement, isVertical?: boolean) {
     this.pointerHTML = elemHTML;
     this.isVertical = isVertical;
     this.pathHTML = pathHTML;
-    this.index = index;
 
     this.handlePointerHTMLMouseDown = this.handlePointerHTMLMouseDown.bind(this);
     this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
@@ -52,7 +49,7 @@ class PointerView {
   }
 
   dispatchPointerPosition(newCurPos: number) {
-    const pointerToUpdate: string = this.index;
+    const pointerToUpdate: PointerView = this;
     this.observer.broadcast({ newCurPos, pointerToUpdate });
   }
 

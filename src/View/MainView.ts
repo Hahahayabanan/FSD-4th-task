@@ -173,7 +173,7 @@ class MainView {
   private createPointers() {
     let thumb = document.createElement('div');
     this.pathHTML.append(thumb);
-    this.pointer0 = new PointerView(thumb, this.pathHTML, 'first', this.isVertical);
+    this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
     this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
     if (this.hasLine) {
@@ -184,7 +184,7 @@ class MainView {
     if (this.isRange) {
       thumb = document.createElement('div');
       this.pathHTML.append(thumb);
-      this.pointer1 = new PointerView(thumb, this.pathHTML, 'second', this.isVertical);
+      this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
       this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
     }
   }
@@ -248,11 +248,13 @@ class MainView {
     return res;
   }
 
-  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: string }) {
+  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: PointerView }) {
     const { newCurPos, pointerToUpdate } = data;
-    const pointerThatChanged: string = pointerToUpdate;
+    let pointerThatChanged: string;
+    if (pointerToUpdate === this.pointer0) pointerThatChanged = 'first';
+    if (pointerToUpdate === this.pointer1) pointerThatChanged = 'second';
 
-    this.updateZIndex(pointerToUpdate);
+    this.updateZIndex(pointerThatChanged);
     this.observer.broadcast({ newCurPos, pointerThatChanged });
   }
 
