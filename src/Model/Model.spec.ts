@@ -32,7 +32,7 @@ describe('Model / Test of setting other pointer values', () => {
   });
 });
 
-describe('Model / model / Test getters and setters', () => {
+describe('Model / Test getters and setters', () => {
   let model: Model;
 
   beforeEach(() => {
@@ -62,7 +62,6 @@ describe('Model / model / Test getters and setters', () => {
   it("Should coincide set values 'isRange'", () => {
     model.setSettings({ isRange: true });
     expect(model.getSettings().isRange).toBeTruthy();
-    expect(model.getSettings().to).toEqual(100);
   });
 
   it("Should coincide set values 'hasTip'", () => {
@@ -77,8 +76,7 @@ describe('Model / model / Test getters and setters', () => {
   });
 
   it('Should coincide set values \'from and to\'', () => {
-    model.setSettings({ isRange: true });
-    model.setSettings({ from: 35 });
+    model.setSettings({ isRange: true, from: 35 });
     expect(model.getSettings().from).toEqual(35);
     model.setSettings({ to: 55 });
     expect(model.getSettings().to).toEqual(55);
@@ -118,6 +116,6 @@ describe('Model / Test default values setting', () => {
   });
 
   it('Should init default values', () => {
-    expect(model.getSettings().to).toEqual(100);
+    expect(model.getSettings().to).toEqual(null);
   });
 });

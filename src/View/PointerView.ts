@@ -9,9 +9,9 @@ class PointerView {
 
   public pathHTML: HTMLElement;
 
-  public curPos: number;
+  public curPos: number = null;
 
-  public endPos: number;
+  public endPos: number = null;
 
   public isVertical: boolean = false;
 

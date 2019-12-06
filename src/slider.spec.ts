@@ -73,4 +73,10 @@ describe('Slider / Test dynamic set', () => {
     expect(isVertical).toBeTruthy();
     expect(hasLine).toBeFalsy();
   });
+  it('Should coincide callback return', () => {
+    $slider.HYBSlider('callbackOnUpdate', (options: ISliderSettings) => {
+      expect(options.from).toEqual(82);
+    });
+    $slider.HYBSlider('setSettings', { from: 82 });
+  });
 });

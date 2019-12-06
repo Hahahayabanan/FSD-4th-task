@@ -7,8 +7,8 @@ declare global {
   }
   interface JQuery {
     HYBSlider: (
-      options?: ISliderSettings | 'setSettings' | 'getSettings',
-      otherOptions?: ISliderSettings,
+      options?: ISliderSettings | 'setSettings' | 'getSettings' | 'callbackOnUpdate',
+      otherOptions?: ISliderSettings | Function,
     ) => JQuery<Element> | JQuery<Object>;
   }
 }
@@ -32,7 +32,7 @@ declare global {
         }
         $.error(`Method ${options} doesn't found`);
       } else {
-        $.error('To call methods slider should be initialized');
+        $.error('To call methods the slider should be initialized');
       }
     });
   };

@@ -89,7 +89,10 @@ class Model {
     if (from !== undefined) setFrom();
     if (to !== undefined) setTo();
     if (isRange !== undefined) setIsRange();
+  }
 
+  applySettings(settings: ISliderSettings) {
+    this.setSettings(settings);
     this.dispatchSettings();
   }
 

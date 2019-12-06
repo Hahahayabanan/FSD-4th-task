@@ -26,9 +26,7 @@ class Presenter {
     this.applyStartValues();
     this.getSettings = this.getSettings.bind(this);
     this.setSettings = this.setSettings.bind(this);
-    this.updateModelValue = this.updateModelValue.bind(this);
-    this.updateViewSettings = this.updateViewSettings.bind(this);
-    this.updateViewPointer = this.updateViewPointer.bind(this);
+    this.callbackOnUpdate = this.callbackOnUpdate.bind(this);
   }
 
   getDataAttributes(): Attribute[] {
@@ -59,7 +57,11 @@ class Presenter {
   }
 
   setSettings(options: ISliderSettings) {
-    this.model.setSettings(options);
+    this.model.applySettings(options);
+  }
+
+  callbackOnUpdate(fn: Function) {
+    this.model.settingsObserver.subscribe(() => fn(this.model.getSettings()));
   }
 
   private addObservers() {

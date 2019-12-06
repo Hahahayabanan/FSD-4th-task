@@ -89,6 +89,16 @@ $( '.slider' ).HYBSlider('update', { min: 20 })
 const $parameters = $( '.slider' ).HYBSlider('getSettings');
 const parametersForFirstSliderMatch = $parameters.get(0);
 const { min, max, step } = parametersForFirstSlider;
+```
+
+Коллбэк, вызывающийся при изменении параметров слайдера
+```JavaScript
+$( '.slider' ).HYBSlider('callbackOnUpdate', (options: ISliderSettings) => {
+  /*
+    какие-либо действия
+  */
+});
+
 
 ```
 
@@ -137,21 +147,20 @@ const { min, max, step } = parametersForFirstSlider;
 
 
 
-## value
+## from
+>**Type:** ***number***
+
+>**Default:** ***0***
+
+Определяет текущее значение ползунка и его положение. При ```isRange: true``` определяет значение первого ползунка.
+
+
+## to
 >**Type:** ***number***
 
 >**Default:** ***null***
 
-Определяет текущее значение ползунка (и его положение) при ```isRange: false```. Если значение не указано, определяется как минимальное.
-
-
-
-## values
->**Type:** ***Array***
-
->**Default:** ***null***
-
-Определяет текущее значение интервала ползунков (и их положение) при ```isRange: true```. Если не указано, первый ползунок определяется как минимальное, второй как максимальное.
+Определяет текущее значение второго ползунка и его положение при ```isRange: true```. Если значение не указано, определяется как максимальное.
 
 
 
@@ -161,6 +170,15 @@ const { min, max, step } = parametersForFirstSlider;
 >**Default:** ***false***
 
 Определяет будет отображаться значение ползунка. При значении ```true``` над бегунком отображается значение.
+
+
+
+## hasLine
+>**Type:** ***boolean***
+
+>**Default:** ***true***
+
+Определяет будет отображаться линия до ползунка, либо между двумя ползунками в режиме ```isRange: true```. При значении ```true``` линия отображается.
 
 
 
