@@ -16,7 +16,7 @@ class Model {
   }
 
   getSettings() {
-    return this.settings;
+    return { ...this.settings };
   }
 
   setSettings(settings: ISliderSettings = {}) {
