@@ -1,4 +1,4 @@
-mixin checkbox({ text = 'checkbox', isChecked = false } = {})
+mixin checkbox({ text = 'checkbox', isChecked = false, name = '' } = {})
   .checkbox
     label.checkbox__label=text
-      input(type='checkbox' class=`checkbox__input js-checkbox__input` checked=isChecked)
+      input(type='checkbox' class=`checkbox__input js-checkbox__input` name=name checked=isChecked)

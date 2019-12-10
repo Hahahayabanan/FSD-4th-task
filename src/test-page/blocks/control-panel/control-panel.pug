@@ -3,21 +3,21 @@ include ../input-text-field/input-text-field.pug
 
 mixin control-panel()
   .control-panel.js-control-panel
-    .control-panel__has-tip-checkbox.js-control-panel__has-tip-checkbox
-      +checkbox({ text: 'has tip' })
-    .control-panel__has-tip-checkbox.js-control-panel__has-line-checkbox
-      +checkbox({ text: 'has line' })
-    .control-panel__is-range-checkbox.js-control-panel__is-range-checkbox
-      +checkbox({ text: 'is range' })
-    .control-panel__is-vertical-checkbox.js-control-panel__is-vertical-checkbox
-      +checkbox({ text: 'is vertical' })
-    .control-panel__min-value-field.js-control-panel__min-value-field
-      +input-text-field({ text: 'min' })
-    .control-panel__max-value-field.js-control-panel__max-value-field
-      +input-text-field({ text: 'max' })
-    .control-panel__step-field.js-control-panel__step-field
-      +input-text-field({ text: 'step' })
-    .control-panel__first-value-field.js-control-panel__first-value-field
-      +input-text-field({ text: 'first value' })
-    .control-panel__second-value-field.js-control-panel__second-value-field
-      +input-text-field({ text: 'second value' })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'has tip', name: 'hasTip' })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'has line', name: 'hasLine' })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'is range', name: 'isRange' })
+    .control-panel__checkbox.js-control-panel__checkbox
+      +checkbox({ text: 'is vertical', name: 'isVertical' })
+    .control-panel__input-text-field.js-control-panel__input-text-field
+      +input-text-field({ text: 'min', name: 'min' })
+    .control-panel__input-text-field.js-control-panel__input-text-field
+      +input-text-field({ text: 'max', name: 'max' })
+    .control-panel__input-text-field.js-control-panel__input-text-field
+      +input-text-field({ text: 'step', name: 'step' })
+    .control-panel__input-text-field.js-control-panel__input-text-field
+      +input-text-field({ text: 'first value', name: 'from' })
+    .control-panel__input-text-field.js-control-panel__input-text-field
+      +input-text-field({ text: 'second value', name: 'to' })

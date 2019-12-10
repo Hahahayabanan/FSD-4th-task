@@ -13,17 +13,7 @@ class Slider {
     this.$slider = $container.find('.js-slider');
   }
 
-  initializeSlider(settings?: {
-    isRange?: boolean;
-    min?: number;
-    max?: number;
-    step?: number;
-    orientation?: string;
-    from?: number;
-    to?: number;
-    hasTip?: boolean;
-    hasLine?: boolean;
-  }) {
+  initializeSlider(settings?: ISliderSettings) {
     this.$slider.HYBSlider(settings);
   }
 
