@@ -19,76 +19,82 @@ class Model {
     return { ...this.settings };
   }
 
+  setMin(newSettings: ISliderSettings) {
+    const { min, max } = newSettings;
+    const isMinBiggerMax = min >= (max || this.settings.max);
+    if (isMinBiggerMax) new ErrorMessage('MAX', 'min');
+    else {
+      this.settings.min = min;
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+  }
+
+  setMax(newSettings: ISliderSettings) {
+    const { min, max } = newSettings;
+    const isMaxSmallerMin = max <= (min || this.settings.min);
+    if (isMaxSmallerMin) new ErrorMessage('MIN', 'max');
+    else {
+      this.settings.max = max;
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+  }
+
+  setStep(newSettings: ISliderSettings) {
+    const { step } = newSettings;
+    const isStepValid = step < 0 && step > this.settings.max - this.settings.min;
+    if (isStepValid) new ErrorMessage('STEP', 'step');
+    else {
+      this.settings.step = step;
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+  }
+
+  setFrom(newSettings: ISliderSettings) {
+    const { from, to } = newSettings;
+    const isValueBiggerSecond = from >= (to || this.settings.to) - this.settings.step;
+    this.settings.from = this.calculateValueWithStep(from);
+    if (this.settings.isRange && isValueBiggerSecond) {
+      const valueMinusStep = this.settings.to - this.settings.step;
+      this.settings.from = valueMinusStep > this.settings.min
+        ? valueMinusStep : this.settings.min;
+    }
+  }
+
+  setTo(newSettings: ISliderSettings) {
+    const { to } = newSettings;
+    const valuePlusStep = this.settings.from + this.settings.step;
+    const isValueSmallerFirst = to <= valuePlusStep;
+    this.settings.to = this.calculateValueWithStep(to);
+    if (isValueSmallerFirst) {
+      this.settings.to = valuePlusStep < this.settings.max ? valuePlusStep : this.settings.max;
+      this.setSettings({ from: this.settings.from });
+    }
+  }
+
+  setIsRange(newSettings: ISliderSettings) {
+    const { isRange } = newSettings;
+    const isSecondSmallerFirst = this.settings.to === null
+      || (this.settings.to <= this.settings.from);
+    this.settings.isRange = isRange;
+    if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
+  }
+
   setSettings(settings: ISliderSettings = {}) {
     const {
       min, max, step, hasLine, hasTip, isRange, from, to, isVertical,
     } = settings;
-
-    const setMin = () => {
-      const isMinBiggerMax = min >= (max || this.settings.max);
-      if (isMinBiggerMax) new ErrorMessage('MAX', 'min');
-      else {
-        this.settings.min = min;
-        this.setSettings({ from: this.settings.from, to: this.settings.to });
-      }
-    };
-
-    const setMax = () => {
-      const isMaxSmallerMin = max <= (min || this.settings.min);
-      if (isMaxSmallerMin) new ErrorMessage('MIN', 'max');
-      else {
-        this.settings.max = max;
-        this.setSettings({ from: this.settings.from, to: this.settings.to });
-      }
-    };
-
-    const setFrom = () => {
-      const isValueBiggerSecond = from >= this.settings.to - this.settings.step;
-      this.settings.from = this.calculateValueWithStep(from);
-      if (this.settings.isRange && isValueBiggerSecond) {
-        const valueMinusStep = this.settings.to - this.settings.step;
-        this.settings.from = valueMinusStep > this.settings.min
-          ? valueMinusStep : this.settings.min;
-      }
-    };
-
-    const setTo = () => {
-      const valuePlusStep = this.settings.from + this.settings.step;
-      const isValueSmallerFirst = to <= valuePlusStep;
-      this.settings.to = this.calculateValueWithStep(to);
-      if (isValueSmallerFirst) {
-        this.settings.to = valuePlusStep < this.settings.max ? valuePlusStep : this.settings.max;
-        this.setSettings({ from: this.settings.from });
-      }
-    };
-
-    const setStep = () => {
-      const isStepValid = step < 0 && step > this.settings.max - this.settings.min;
-      if (isStepValid) new ErrorMessage('STEP', 'step');
-      else {
-        this.settings.step = step;
-        this.setSettings({ from: this.settings.from, to: this.settings.to });
-      }
-    };
-
-    const setIsRange = () => {
-      const isSecondSmallerFirst = this.settings.to === null
-        || (this.settings.to <= this.settings.from);
-      this.settings.isRange = isRange;
-      if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
-    };
 
     if (this.settings.from === null) this.settings.from = this.settings.min;
 
     if (hasTip !== undefined) this.settings.hasTip = hasTip;
     if (hasLine !== undefined) this.settings.hasLine = hasLine;
     if (isVertical !== undefined) this.settings.isVertical = isVertical;
-    if (min !== undefined) setMin();
-    if (max !== undefined) setMax();
-    if (step !== undefined) setStep();
-    if (from !== undefined) setFrom();
-    if (to !== undefined) setTo();
-    if (isRange !== undefined) setIsRange();
+    if (min !== undefined) this.setMin(settings);
+    if (max !== undefined) this.setMax(settings);
+    if (step !== undefined) this.setStep(settings);
+    if (from !== undefined) this.setFrom(settings);
+    if (to !== undefined) this.setTo(settings);
+    if (isRange !== undefined) this.setIsRange(settings);
   }
 
   applySettings(settings: ISliderSettings) {
