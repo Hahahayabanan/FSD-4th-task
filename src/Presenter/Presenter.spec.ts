@@ -7,13 +7,7 @@ const shadowSlider = document.querySelector('#test') as HTMLElement;
 describe('Presenter / Test initialization default options', () => {
   shadowSlider.style.cssText = 'width: 300px';
 
-  let presenter: Presenter = new Presenter(shadowSlider, {
-    min: 10,
-    step: 5,
-    max: 100,
-    isRange: false,
-    hasTip: true,
-  });
+  let presenter: Presenter;
 
   it("Should coincide constructor set values 'from'", () => {
     presenter = new Presenter(shadowSlider, {
@@ -39,16 +33,7 @@ describe('Presenter / Test initialization default options', () => {
       max: 100,
       isRange: false,
     });
-    expect(presenter.getSettings().from).toEqual(10);
-  });
-
-  it('Should coincide follower pointer value', () => {
-    presenter = new Presenter(shadowSlider, {
-      hasTip: true,
-    });
-    expect(presenter.model.getSettings().from).toEqual(
-      parseInt(presenter.view.pointer0.tip.tipHTML.innerHTML, 10),
-    );
+    expect(presenter.getSettings().from).toEqual(null);
   });
 });
 
@@ -98,8 +83,8 @@ describe('Presenter / Test methods', () => {
     });
   });
 
-  it('updateViewWithNewSettings', async () => {
-    await presenter.setSettings({ isRange: false, hasTip: true });
+  it('Update view with new settings', () => {
+    presenter.setSettings({ isRange: false, hasTip: true });
     expect(presenter.view.isRange).toBeFalsy();
     expect(presenter.view.pointer0.tip).toBeDefined();
     expect(presenter.view.pointer1).toBeNull();

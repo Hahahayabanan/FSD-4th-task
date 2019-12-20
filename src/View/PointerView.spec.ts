@@ -19,13 +19,13 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(pointer).toBeDefined(PointerView);
   });
 
-  it('Curpos should be set in percents', async () => {
-    await pointer.setPointerPosition(33);
+  it('Curpos should be set in percents', () => {
+    pointer.setPointerPosition(33);
     expect(Math.round(pointer.curPos)).toEqual(33);
   });
 
-  it('Render in pixels', async () => {
-    await pointer.renderInPercents(29);
+  it('Render in pixels', () => {
+    pointer.renderInPercents(29);
     expect(
       Math.round(parseInt(pointer.pointerHTML.style.left, 10)),
     ).toBeCloseTo(29);
@@ -39,12 +39,12 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(Math.round(pointer.calculatePixelsToPercents(150))).toBeCloseTo(50);
   });
 
-  it('Calc percents to pixels', async () => {
+  it('Calc percents to pixels', () => {
     expect(pointer.calculatePercentsToPixels(60)).toBeCloseTo(180);
   });
 
-  it('Create tip', async () => {
-    await pointer.createTip();
+  it('Create tip', () => {
+    pointer.createTip();
     expect(pointer.tip).toBeDefined();
     expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');
   });

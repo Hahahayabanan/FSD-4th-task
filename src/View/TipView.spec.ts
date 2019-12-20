@@ -2,9 +2,9 @@ import { TipView } from './TipView';
 
 document.body.innerHTML = '<div id="test" class="j-slider-plugin__thumb"></div>';
 
-const shadowFollower = document.querySelector(
+const shadowFollower: HTMLElement = document.querySelector(
   '.j-slider-plugin__thumb',
-) as HTMLElement;
+);
 const follower = new TipView(shadowFollower);
 
 describe('View / Follower point / Test of setting', () => {

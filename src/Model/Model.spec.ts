@@ -12,7 +12,7 @@ describe('Model / Test of setting other pointer values', () => {
 
   model.setSettings({ step: 5 });
 
-  it('Should change pointer position 60', () => {
+  it('Should change pointer position 65', () => {
     model.applyValue(58, 'second');
     expect(model.getSettings().to).toEqual(65);
   });
@@ -112,7 +112,7 @@ describe('Model / Test default values setting', () => {
   });
 
   it('Should init default value', () => {
-    expect(model.getSettings().from).toEqual(0);
+    expect(model.getSettings().from).toEqual(null);
   });
 
   it('Should init default values', () => {

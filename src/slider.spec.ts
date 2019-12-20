@@ -66,6 +66,7 @@ describe('Slider / Test dynamic set', () => {
     const { min } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
     expect(min).toEqual(50);
   });
+
   it('Should coincide manual multiple set', () => {
     $slider.HYBSlider('setSettings', { max: 200, isVertical: true, hasLine: false });
     const { max, isVertical, hasLine } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
@@ -73,6 +74,7 @@ describe('Slider / Test dynamic set', () => {
     expect(isVertical).toBeTruthy();
     expect(hasLine).toBeFalsy();
   });
+
   it('Should coincide callback return', () => {
     $slider.HYBSlider('callbackOnUpdate', (options: ISliderSettings) => {
       expect(options.from).toEqual(82);

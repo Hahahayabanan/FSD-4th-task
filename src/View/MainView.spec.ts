@@ -62,13 +62,13 @@ describe('View / Slider template / Test of calculations', () => {
     slider.pointer1.renderInPercents(50);
   });
 
-  it('setDataAttribute', async () => {
-    await slider.setDataAttribute('value', '99');
+  it('Test of set data attribute', () => {
+    slider.setDataAttribute('value', '99');
     expect(slider.sliderHTML.dataset.value).toEqual('99');
   });
 
-  it('getClear', async () => {
-    await slider.getClear();
+  it('Test of get clear', () => {
+    slider.getClear();
     expect(slider.pointer0).toBeNull();
     expect(slider.pointer1).toBeNull();
   });
