@@ -10,7 +10,7 @@ class Model {
 
   public settingsObserver: EventObserver = new EventObserver();
 
-  constructor(settings?: object) {
+  constructor(settings?: ISliderSettings) {
     this.settings = { ...defaultSettings };
     this.setSettings(settings);
   }
@@ -64,9 +64,9 @@ class Model {
     this.dispatchValue();
   }
 
-  calculateValueWithStep(newValue: number) {
+  calculateValueWithStep(value: number) {
     const { min, max, step } = this.getSettings();
-    const currentValue: number = newValue - min;
+    const currentValue: number = value - min;
     const currentValueWithoutStep: number = Math.round(currentValue / step);
     let currentValueWithStep: number = currentValueWithoutStep * step + min;
     if (currentValueWithStep > max) currentValueWithStep = max;

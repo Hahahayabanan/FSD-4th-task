@@ -49,7 +49,7 @@ class Presenter {
     ];
   }
 
-  getValueDataAttributes(): Attribute[] {
+  getPositionDataAttributes(): Attribute[] {
     const { from, to } = this.model.getSettings();
     return [
       { name: 'from', value: `${from}` },
@@ -86,7 +86,7 @@ class Presenter {
       newFromInPercents,
       newToInPercents,
     } = data;
-    const newAttribute = this.getValueDataAttributes();
+    const newAttribute = this.getPositionDataAttributes();
 
     this.view.setPointerPosition({
       newAttribute,
@@ -102,7 +102,7 @@ class Presenter {
       isRange, hasTip, hasLine, isVertical,
     } = data;
     const dataAttributes: Attribute[] = this.getDataAttributes();
-    dataAttributes.concat(this.getValueDataAttributes());
+    dataAttributes.concat(this.getPositionDataAttributes());
 
     this.view.update({
       isRange,
