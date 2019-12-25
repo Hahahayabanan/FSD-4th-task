@@ -36,21 +36,23 @@ class PointerView {
   }
 
   getPathLength() {
-    const widthOrHeight: number = this.isVertical
+    const pathLength: number = this.isVertical
       ? this.pathHTML.getBoundingClientRect().height
         || parseInt(this.pathHTML.style.height, 10)
       : this.pathHTML.getBoundingClientRect().width
         || parseInt(this.pathHTML.style.width, 10);
-    return widthOrHeight;
+    return pathLength;
   }
 
   getCurPosInPixels() {
-    return this.calculatePercentsToPixels(this.curPos);
+    return this.calculateToPixels(this.curPos);
   }
 
-  dispatchPointerPosition(newCurPos: number) {
-    const pointerToUpdate: PointerView = this;
-    this.observer.broadcast({ newCurPos, pointerToUpdate });
+  dispatchPointerPosition(positionInPixels: number) {
+    this.observer.broadcast({
+      position: this.calculateToPercents(positionInPixels),
+      pointerToUpdate: this,
+    });
   }
 
   setPointerPosition(newCurPos: number) {
@@ -65,13 +67,13 @@ class PointerView {
     );
   }
 
-  calculatePixelsToPercents(valueInPixels: number) {
+  calculateToPercents(valueInPixels: number) {
     const lengthInPixels = this.getPathLength();
     const valueInPercents = (valueInPixels * 100) / lengthInPixels;
     return valueInPercents;
   }
 
-  calculatePercentsToPixels(valueInPercents: number) {
+  calculateToPixels(valueInPercents: number) {
     const lengthInPixels = this.getPathLength();
     const valueInPixels = (valueInPercents / 100) * lengthInPixels;
     return valueInPixels;
@@ -109,15 +111,12 @@ class PointerView {
   private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     const { mouseX, mouseY } = this.moveSettings;
-
-    const endPosInPixels = this.calculatePercentsToPixels(this.endPos);
-
+    const endPosInPixels = this.calculateToPixels(this.endPos);
     const newCurPos: number = this.isVertical
       ? endPosInPixels - mouseY + event.clientY
       : endPosInPixels - mouseX + event.clientX;
 
-    const newCurPosInPercents = this.calculatePixelsToPercents(newCurPos);
-    this.dispatchPointerPosition(newCurPosInPercents);
+    this.dispatchPointerPosition(newCurPos);
   }
 
   private handleDocumentMouseUp() {

@@ -12,7 +12,7 @@ class Model {
 
   constructor(settings?: ISliderSettings) {
     this.settings = { ...defaultSettings };
-    this.setSettings(settings);
+    this.applySettings(settings);
   }
 
   getSettings() {
@@ -33,12 +33,29 @@ class Model {
     if (this.isDefined(hasTip)) this.settings.hasTip = hasTip;
     if (this.isDefined(hasLine)) this.settings.hasLine = hasLine;
     if (this.isDefined(isVertical)) this.settings.isVertical = isVertical;
-    if (this.isDefined(min)) this.setMin(settings);
-    if (this.isDefined(max)) this.setMax(settings);
-    if (this.isDefined(step)) this.setStep(settings);
-    if (this.isDefined(from)) this.setFrom(settings);
-    if (this.isDefined(to)) this.setTo(settings);
-    if (this.isDefined(isRange)) this.setIsRange(settings);
+    if (this.isDefined(min)) {
+      this.settings.min = this.validateMin(settings);
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+    if (this.isDefined(max)) {
+      this.settings.max = this.validateMax(settings);
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+    if (this.isDefined(step)) {
+      this.settings.step = this.validateStep(settings);
+      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    }
+    if (this.isDefined(from)) this.settings.from = this.validateFrom(settings);
+    if (this.isDefined(to)) {
+      this.settings.to = this.validateTo(settings);
+      this.setSettings({ from });
+    }
+    if (this.isDefined(isRange)) {
+      this.settings.isRange = isRange;
+      const isSecondSmallerFirst = this.settings.isRange
+        && (this.settings.to === null || (this.settings.to <= this.settings.from));
+      if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
+    }
   }
 
   applySettings(settings: ISliderSettings) {
@@ -60,45 +77,27 @@ class Model {
     this.dispatchValue();
   }
 
-  applyStartValues() {
-    this.dispatchValue();
-  }
-
   calculateValueWithStep(value: number) {
-    const { min, max, step } = this.getSettings();
-    const currentValue: number = value - min;
-    const currentValueWithoutStep: number = Math.round(currentValue / step);
-    let currentValueWithStep: number = currentValueWithoutStep * step + min;
-    if (currentValueWithStep > max) currentValueWithStep = max;
-    if (currentValueWithStep < min) currentValueWithStep = min;
-
-    return currentValueWithStep;
+    const { min, step } = this.getSettings();
+    return Math.round((value - min) / step) * step + min;
   }
 
   calculatePercentsToValue(curPosInPercents: number): number {
     const { min, max } = this.getSettings();
-    const rangeVal: number = max - min;
-    const curPosInValue: number = (rangeVal * curPosInPercents) / 100;
-
-    return curPosInValue + min;
+    return ((max - min) * curPosInPercents) / 100 + min;
   }
 
   calculateValueToPercents(curPosInValue: number): number {
     const { min, max } = this.getSettings();
-    const rangeVal: number = max - min;
-    const currPosInPercents: number = ((curPosInValue - min) * 100) / rangeVal;
-
-    return currPosInPercents;
+    return ((curPosInValue - min) * 100) / (max - min);
   }
 
   private dispatchValue() {
     const { from, to } = this.getSettings();
-    const newFrom: number = from;
-    const newTo: number = to;
-    const newFromInPercents: number = this.calculateValueToPercents(newFrom);
-    const newToInPercents: number = this.calculateValueToPercents(newTo);
+    const fromInPercents: number = this.calculateValueToPercents(from);
+    const toInPercents: number = this.calculateValueToPercents(to);
     this.valuesObserver.broadcast({
-      newFrom, newTo, newFromInPercents, newToInPercents,
+      from, to, fromInPercents, toInPercents,
     });
   }
 
@@ -139,64 +138,66 @@ class Model {
     return value !== undefined && value !== null;
   }
 
-  private setMin(newSettings: ISliderSettings) {
+  private validateMin(newSettings: ISliderSettings) {
     const { min, max } = newSettings;
     const isMinBiggerMax = min >= (max || this.settings.max);
-    if (isMinBiggerMax) new ErrorMessage('MAX', 'min');
-    else {
-      this.settings.min = min;
-      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    if (isMinBiggerMax) {
+      new ErrorMessage('MAX', 'min');
+      return this.settings.min;
     }
+    return min;
   }
 
-  private setMax(newSettings: ISliderSettings) {
+  private validateMax(newSettings: ISliderSettings) {
     const { min, max } = newSettings;
     const isMaxSmallerMin = max <= (min || this.settings.min);
-    if (isMaxSmallerMin) new ErrorMessage('MIN', 'max');
-    else {
-      this.settings.max = max;
-      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    if (isMaxSmallerMin) {
+      new ErrorMessage('MIN', 'max');
+      return this.settings.max;
     }
+    return max;
   }
 
-  private setStep(newSettings: ISliderSettings) {
+  private validateStep(newSettings: ISliderSettings) {
     const { step } = newSettings;
-    const isStepValid = step < 0 && step > this.settings.max - this.settings.min;
-    if (isStepValid) new ErrorMessage('STEP', 'step');
-    else {
-      this.settings.step = step;
-      this.setSettings({ from: this.settings.from, to: this.settings.to });
+    const { max, min } = this.getSettings();
+    const isStepInvalid = step <= 0 || step > max - min;
+    if (isStepInvalid) {
+      new ErrorMessage('STEP', 'step');
+      return this.settings.step;
     }
+    return step;
   }
 
-  private setFrom(newSettings: ISliderSettings) {
-    const { from, to } = newSettings;
-    const isValueBiggerSecond = from >= (to || this.settings.to) - this.settings.step;
-    this.settings.from = this.calculateValueWithStep(from);
-    if (this.settings.isRange && isValueBiggerSecond) {
-      const valueMinusStep = this.settings.to - this.settings.step;
-      this.settings.from = valueMinusStep > this.settings.min
-        ? valueMinusStep : this.settings.min;
+  private validateFrom(newSettings: ISliderSettings) {
+    let { from } = newSettings;
+    const to = newSettings.to || this.settings.to;
+    const {
+      step, min, max, isRange
+    } = this.getSettings();
+    from = this.calculateValueWithStep(from);
+    const isValueBiggerSecond = from >= to - step;
+    if (isRange && isValueBiggerSecond) {
+      return to - step > min ? to - step : min;
     }
+    if (from > max) return max;
+    if (from < min) return min;
+    return from;
   }
 
-  private setTo(newSettings: ISliderSettings) {
-    const { to } = newSettings;
-    const valuePlusStep = this.settings.from + this.settings.step;
-    const isValueSmallerFirst = to <= valuePlusStep;
-    this.settings.to = this.calculateValueWithStep(to);
+  private validateTo(newSettings: ISliderSettings) {
+    let { to } = newSettings;
+    const {
+      from, step, min, max
+    } = this.getSettings();
+    to = this.calculateValueWithStep(to);
+    const isValueSmallerFirst = to <= from + step;
     if (isValueSmallerFirst) {
-      this.settings.to = valuePlusStep < this.settings.max ? valuePlusStep : this.settings.max;
-      this.setSettings({ from: this.settings.from });
+      return from + step < max ? from + step : max;
     }
-  }
-
-  private setIsRange(newSettings: ISliderSettings) {
-    const { isRange } = newSettings;
-    const isSecondSmallerFirst = this.settings.to === null
-      || (this.settings.to <= this.settings.from);
-    this.settings.isRange = isRange;
-    if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
+    if (to > max) return max;
+    if (to < min) return min;
+    return to;
   }
 }
 

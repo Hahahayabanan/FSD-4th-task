@@ -9,16 +9,16 @@ interface Attribute {
 }
 
 interface PointerPositionData {
-  newCurPos: number;
+  position: number;
   pointerThatChanged: string;
   updateAttributes: Attribute[];
 }
 
 interface CalculatedSettings {
-  newFrom: number;
-  newTo: number;
-  newFromInPercents: number;
-  newToInPercents: number;
+  from: number;
+  to: number;
+  fromInPercents: number;
+  toInPercents: number;
 }
 
 interface ErrorType {

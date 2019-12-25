@@ -11,10 +11,9 @@ class Presenter {
   public view: MainView;
 
   constructor(rootElement: HTMLElement, options: ISliderSettings) {
-    this.model = new Model(options);
     const {
       hasLine, hasTip, isRange, isVertical,
-    } = this.model.getSettings();
+    } = options;
     this.view = new MainView({
       isVertical,
       hasTip,
@@ -22,6 +21,7 @@ class Presenter {
       isRange,
       rootElem: rootElement,
     });
+    this.model = new Model(options);
 
     this.getSettings = this.getSettings.bind(this);
     this.setSettings = this.setSettings.bind(this);
@@ -31,12 +31,12 @@ class Presenter {
     this.updateViewPointer = this.updateViewPointer.bind(this);
 
     this.addObservers();
-    this.applyStartValues();
+    this.setSettings({});
   }
 
   getDataAttributes(): Attribute[] {
     const {
-      min, max, step, hasLine, hasTip, isRange, isVertical,
+      from, to, min, max, step, hasLine, hasTip, isRange, isVertical,
     } = this.model.getSettings();
     return [
       { name: 'min', value: `${min}` },
@@ -46,12 +46,6 @@ class Presenter {
       { name: 'isVertical', value: `${isVertical}` },
       { name: 'isRange', value: `${isRange}` },
       { name: 'step', value: `${step}` },
-    ];
-  }
-
-  getPositionDataAttributes(): Attribute[] {
-    const { from, to } = this.model.getSettings();
-    return [
       { name: 'from', value: `${from}` },
       { name: 'to', value: `${to}` },
     ];
@@ -75,25 +69,21 @@ class Presenter {
     this.model.valuesObserver.subscribe(this.updateViewPointer);
   }
 
-  private applyStartValues() {
-    this.model.applyStartValues();
-  }
-
   private updateViewPointer(data: CalculatedSettings) {
     const {
-      newFrom,
-      newTo,
-      newFromInPercents,
-      newToInPercents,
+      from,
+      to,
+      fromInPercents,
+      toInPercents,
     } = data;
-    const newAttribute = this.getPositionDataAttributes();
+    const attributes = this.getDataAttributes();
 
     this.view.setPointerPosition({
-      newAttribute,
-      newFirst: newFromInPercents,
-      newSecond: newToInPercents,
-      newFirstTipValue: newFrom,
-      newSecondTipValue: newTo,
+      attributes,
+      first: fromInPercents,
+      second: toInPercents,
+      firstTipValue: from,
+      secondTipValue: to,
     });
   }
 
@@ -102,7 +92,6 @@ class Presenter {
       isRange, hasTip, hasLine, isVertical,
     } = data;
     const dataAttributes: Attribute[] = this.getDataAttributes();
-    dataAttributes.concat(this.getPositionDataAttributes());
 
     this.view.update({
       isRange,
@@ -114,8 +103,8 @@ class Presenter {
   }
 
   private updateModelValue(data: PointerPositionData) {
-    const { newCurPos, pointerThatChanged } = data;
-    this.model.applyValue(newCurPos, pointerThatChanged);
+    const { position, pointerThatChanged } = data;
+    this.model.applyValue(position, pointerThatChanged);
   }
 }
 

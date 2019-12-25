@@ -36,11 +36,11 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Calc pixels to percents', () => {
-    expect(Math.round(pointer.calculatePixelsToPercents(150))).toBeCloseTo(50);
+    expect(Math.round(pointer.calculateToPercents(150))).toBeCloseTo(50);
   });
 
   it('Calc percents to pixels', () => {
-    expect(pointer.calculatePercentsToPixels(60)).toBeCloseTo(180);
+    expect(pointer.calculateToPixels(60)).toBeCloseTo(180);
   });
 
   it('Create tip', () => {

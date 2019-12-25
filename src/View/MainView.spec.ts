@@ -63,8 +63,8 @@ describe('View / Slider template / Test of calculations', () => {
   });
 
   it('Test of set data attribute', () => {
-    slider.setDataAttribute('value', '99');
-    expect(slider.sliderHTML.dataset.value).toEqual('99');
+    slider.setDataAttributes([{ name: 'from', value: '99' }]);
+    expect(slider.sliderHTML.dataset.from).toEqual('99');
   });
 
   it('Test of get clear', () => {

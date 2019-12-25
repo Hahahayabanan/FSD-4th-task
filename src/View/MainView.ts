@@ -72,35 +72,31 @@ class MainView {
   }
 
   setPointerPosition(options: {
-    newFirst: number,
-    newSecond: number,
-    newFirstTipValue: number,
-    newSecondTipValue: number,
-    newAttribute: Attribute[],
+    first: number,
+    second: number,
+    firstTipValue: number,
+    secondTipValue: number,
+    attributes: Attribute[],
   }) {
     const {
-      newFirst, newSecond, newFirstTipValue, newSecondTipValue, newAttribute,
+      first, second, firstTipValue, secondTipValue, attributes,
     } = options;
-    this.pointer0.setPointerPosition(newFirst);
-    this.pointer0.updateTipValue(newFirstTipValue);
+    this.pointer0.setPointerPosition(first);
+    this.pointer0.updateTipValue(firstTipValue);
 
     if (this.isRange) {
-      this.pointer1.setPointerPosition(newSecond);
-      this.pointer1.updateTipValue(newSecondTipValue);
+      this.pointer1.setPointerPosition(second);
+      this.pointer1.updateTipValue(secondTipValue);
     }
     if (this.hasLine) this.calculateAndApplyLine();
 
-    this.setDataAttributes(newAttribute);
-  }
-
-  setDataAttribute(attr: string, value: string) {
-    this.sliderHTML.dataset[attr] = value;
+    this.setDataAttributes(attributes);
   }
 
   setDataAttributes(attributes: Attribute[]) {
     attributes.forEach((attribute: Attribute) => {
       const { name, value } = attribute;
-      this.setDataAttribute(name, value);
+      this.sliderHTML.dataset[name] = value;
     });
   }
 
@@ -123,17 +119,8 @@ class MainView {
     this.createPointers();
     this.setOrientationClass();
     this.createTip();
-    this.bindEventListeners();
     this.addObservers();
-    attributes.forEach((attr: Attribute) => {
-      const { name, value } = attr;
-      this.updateDataAttribute(name, value);
-    });
-  }
-
-  updateDataAttribute(attr: string, value: string) {
-    this.removeDataAttribute(attr);
-    this.setDataAttribute(attr, value);
+    this.setDataAttributes(attributes);
   }
 
   removeDataAttribute(attr: string) {
@@ -160,6 +147,7 @@ class MainView {
     this.createPointers();
     this.setOrientationClass();
     this.createTip();
+    this.sliderHTML.append(this.pathHTML);
     this.lastPointerMoved = this.pointer0;
   }
 
@@ -167,14 +155,13 @@ class MainView {
     this.pathHTML = document.createElement('div');
     this.sliderHTML.classList.add(this.styleClasses.SLIDER);
     this.pathHTML.classList.add(this.styleClasses.PATH);
-    this.sliderHTML.append(this.pathHTML);
   }
 
   private createPointers() {
     let thumb = document.createElement('div');
+    thumb.classList.add(this.styleClasses.THUMB);
     this.pathHTML.append(thumb);
     this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
-    this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB);
 
     if (this.hasLine) {
       this.lineHTML = document.createElement('div');
@@ -183,9 +170,9 @@ class MainView {
     }
     if (this.isRange) {
       thumb = document.createElement('div');
+      thumb.classList.add(this.styleClasses.THUMB);
       this.pathHTML.append(thumb);
       this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
-      this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB);
     }
   }
 
@@ -206,16 +193,11 @@ class MainView {
       : event.clientX - this.pathHTML.getBoundingClientRect().left;
 
     if (this.isRange) {
-      const midpointBetweenPoints = this.calculateMidpointBetweenPointers();
-
-      if (newLeft < midpointBetweenPoints) {
-        this.pointer0.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
-      }
-      if (newLeft > midpointBetweenPoints) {
-        this.pointer1.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
-      }
+      const midpointBetweenPoints = this.getMidpointBetweenPointers();
+      if (newLeft < midpointBetweenPoints) this.pointer0.dispatchPointerPosition(newLeft);
+      if (newLeft > midpointBetweenPoints) this.pointer1.dispatchPointerPosition(newLeft);
     } else {
-      this.pointer0.dispatchPointerPosition(this.pointer0.calculatePixelsToPercents(newLeft));
+      this.pointer0.dispatchPointerPosition(newLeft);
     }
   }
 
@@ -241,21 +223,20 @@ class MainView {
     }
   }
 
-  private calculateMidpointBetweenPointers() {
-    const res: number = (this.pointer1.getCurPosInPixels() - this.pointer0.getCurPosInPixels())
-        / 2
-      + this.pointer0.getCurPosInPixels();
-    return res;
+  private getMidpointBetweenPointers() {
+    const pos0 = this.pointer0.getCurPosInPixels();
+    const pos1 = this.pointer1.getCurPosInPixels();
+    return (pos1 - pos0) / 2 + pos0;
   }
 
-  private dispatchPointerPosition(data: { newCurPos: number, pointerToUpdate: PointerView }) {
-    const { newCurPos, pointerToUpdate } = data;
+  private dispatchPointerPosition(data: { position: number, pointerToUpdate: PointerView }) {
+    const { position, pointerToUpdate } = data;
     let pointerThatChanged: string;
     if (pointerToUpdate === this.pointer0) pointerThatChanged = 'first';
     if (pointerToUpdate === this.pointer1) pointerThatChanged = 'second';
 
-    this.updateZIndex(pointerThatChanged);
-    this.observer.broadcast({ newCurPos, pointerThatChanged });
+    this.updateZIndex(pointerToUpdate);
+    this.observer.broadcast({ position, pointerThatChanged });
   }
 
   private setOrientationClass() {
@@ -266,19 +247,14 @@ class MainView {
     }
   }
 
-  private updateZIndex(curPointer: string) {
-    if (this.isRange) {
-      if (curPointer === 'first') {
-        this.pointer0.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
-        this.pointer1.pointerHTML.classList.remove(
-          this.styleClasses.THUMB_SELECTED,
-        );
-      } else {
-        this.pointer1.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
-        this.pointer0.pointerHTML.classList.remove(
-          this.styleClasses.THUMB_SELECTED,
-        );
-      }
+  private updateZIndex(pointer: PointerView) {
+    const wasPointerMoved = pointer.pointerHTML.classList.contains(
+      this.styleClasses.THUMB_SELECTED
+    );
+    if (!wasPointerMoved && this.isRange) {
+      this.pointer0.pointerHTML.classList.remove(this.styleClasses.THUMB_SELECTED);
+      this.pointer1.pointerHTML.classList.remove(this.styleClasses.THUMB_SELECTED);
+      pointer.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
     }
   }
 }
