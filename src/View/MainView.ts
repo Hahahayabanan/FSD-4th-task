@@ -1,6 +1,6 @@
 import { PointerView } from './PointerView';
 import { EventObserver } from '../EventObserver/EventObserver';
-import { Attribute } from '../helpers/interfaces';
+import { Attributes } from '../helpers/interfaces';
 
 
 class MainView {
@@ -29,7 +29,7 @@ class MainView {
   public styleClasses = {
     SLIDER: 'j-plugin-slider',
     PATH: 'j-plugin-slider__path',
-    THUMB: 'j-plugin-slider__thumb',
+    THUMB: 'j-plugin-slider__pointer',
     THUMB_SELECTED: 'j-plugin-slider__thumb_selected',
     LINE: 'j-plugin-slider__path-line',
     SLIDER_VERTICAL: 'j-plugin-slider_vertical',
@@ -71,16 +71,16 @@ class MainView {
     }
   }
 
-  setPointerPosition(options: {
+  setPointerPosition(data: {
     first: number,
     second: number,
     firstTipValue: number,
     secondTipValue: number,
-    attributes: Attribute[],
+    attributes: Attributes,
   }) {
     const {
       first, second, firstTipValue, secondTipValue, attributes,
-    } = options;
+    } = data;
     this.pointer0.setPointerPosition(first);
     this.pointer0.updateTipValue(firstTipValue);
 
@@ -93,23 +93,22 @@ class MainView {
     this.setDataAttributes(attributes);
   }
 
-  setDataAttributes(attributes: Attribute[]) {
-    attributes.forEach((attribute: Attribute) => {
-      const { name, value } = attribute;
-      this.sliderHTML.dataset[name] = value;
+  setDataAttributes(attributes: Attributes) {
+    Object.keys(attributes).forEach(key => {
+      this.sliderHTML.dataset[key] = `${attributes[key]}`;
     });
   }
 
-  update(options: {
+  update(data: {
     isRange: boolean,
     isVertical: boolean,
     hasTip: boolean,
     hasLine: boolean,
-    attributes: Attribute[]
+    attributes: Attributes
   }) {
     const {
       isVertical, hasTip, hasLine, isRange, attributes,
-    } = options;
+    } = data;
     this.isVertical = isVertical;
     this.hasTip = hasTip;
     this.hasLine = hasLine;
@@ -242,6 +241,7 @@ class MainView {
   private setOrientationClass() {
     if (this.isVertical) {
       this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
+      // this.sliderHTML.style.height = `${this.sliderHTML.parentElement.clientHeight - this.sliderHTML.parentElement}px`;
     } else {
       this.sliderHTML.classList.remove(this.styleClasses.SLIDER_VERTICAL);
     }

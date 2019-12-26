@@ -63,7 +63,7 @@ describe('View / Slider template / Test of calculations', () => {
   });
 
   it('Test of set data attribute', () => {
-    slider.setDataAttributes([{ name: 'from', value: '99' }]);
+    slider.setDataAttributes({ from: 99 });
     expect(slider.sliderHTML.dataset.from).toEqual('99');
   });
 

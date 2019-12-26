@@ -3,22 +3,8 @@ interface MouseSettings {
   mouseY: number;
 }
 
-interface Attribute {
-  name: string;
-  value: string;
-}
-
-interface PointerPositionData {
-  position: number;
-  pointerThatChanged: string;
-  updateAttributes: Attribute[];
-}
-
-interface CalculatedSettings {
-  from: number;
-  to: number;
-  fromInPercents: number;
-  toInPercents: number;
+interface Attributes {
+  [key: string]: boolean | number;
 }
 
 interface ErrorType {
@@ -28,5 +14,5 @@ interface ErrorType {
 }
 
 export {
-  MouseSettings, Attribute, PointerPositionData, CalculatedSettings, ErrorType,
+  MouseSettings, Attributes, ErrorType,
 };

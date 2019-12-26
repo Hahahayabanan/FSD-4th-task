@@ -1,9 +1,6 @@
 import { MainView } from '../View/MainView';
 import { Model } from '../Model/Model';
 import ISliderSettings from '../Model/ISliderSettings';
-import {
-  PointerPositionData, Attribute, CalculatedSettings,
-} from '../helpers/interfaces';
 
 class Presenter {
   public model: Model;
@@ -34,23 +31,6 @@ class Presenter {
     this.setSettings({});
   }
 
-  getDataAttributes(): Attribute[] {
-    const {
-      from, to, min, max, step, hasLine, hasTip, isRange, isVertical,
-    } = this.model.getSettings();
-    return [
-      { name: 'min', value: `${min}` },
-      { name: 'max', value: `${max}` },
-      { name: 'hasTip', value: `${hasTip}` },
-      { name: 'hasLine', value: `${hasLine}` },
-      { name: 'isVertical', value: `${isVertical}` },
-      { name: 'isRange', value: `${isRange}` },
-      { name: 'step', value: `${step}` },
-      { name: 'from', value: `${from}` },
-      { name: 'to', value: `${to}` },
-    ];
-  }
-
   getSettings() {
     return this.model.getSettings();
   }
@@ -69,17 +49,18 @@ class Presenter {
     this.model.valuesObserver.subscribe(this.updateViewPointer);
   }
 
-  private updateViewPointer(data: CalculatedSettings) {
+  private updateViewPointer(data: {
+    from: number;
+    to: number;
+    fromInPercents: number;
+    toInPercents: number;
+  }) {
     const {
-      from,
-      to,
-      fromInPercents,
-      toInPercents,
+      from, to, fromInPercents, toInPercents
     } = data;
-    const attributes = this.getDataAttributes();
 
     this.view.setPointerPosition({
-      attributes,
+      attributes: this.getSettings(),
       first: fromInPercents,
       second: toInPercents,
       firstTipValue: from,
@@ -91,18 +72,20 @@ class Presenter {
     const {
       isRange, hasTip, hasLine, isVertical,
     } = data;
-    const dataAttributes: Attribute[] = this.getDataAttributes();
 
     this.view.update({
       isRange,
       hasTip,
       hasLine,
       isVertical,
-      attributes: dataAttributes,
+      attributes: this.getSettings(),
     });
   }
 
-  private updateModelValue(data: PointerPositionData) {
+  private updateModelValue(data: {
+    position: number,
+    pointerThatChanged: string,
+  }) {
     const { position, pointerThatChanged } = data;
     this.model.applyValue(position, pointerThatChanged);
   }
