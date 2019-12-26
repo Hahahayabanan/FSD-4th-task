@@ -8,7 +8,7 @@ const shadowThumb = document.querySelector(
 const shadowPath = document.querySelector(
   '.j-slider-plugin__path',
 ) as HTMLElement;
-const pointer = new PointerView(shadowThumb, shadowPath);
+const pointer = new PointerView(shadowPath);
 
 describe('View / Slider Pointer / Test of setting', () => {
   beforeEach(() => {
@@ -20,12 +20,12 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('Curpos should be set in percents', () => {
-    pointer.setPointerPosition(33);
+    pointer.applyPointerPosition(33);
     expect(Math.round(pointer.curPos)).toEqual(33);
   });
 
   it('Render in pixels', () => {
-    pointer.renderInPercents(29);
+    pointer.render(29);
     expect(
       Math.round(parseInt(pointer.pointerHTML.style.left, 10)),
     ).toBeCloseTo(29);

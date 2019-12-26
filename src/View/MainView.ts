@@ -1,7 +1,8 @@
 import { PointerView } from './PointerView';
 import { EventObserver } from '../EventObserver/EventObserver';
 import { Attributes } from '../helpers/interfaces';
-
+import { createNode } from './utilities';
+import styleClasses from './styleClasses';
 
 class MainView {
   public sliderHTML: HTMLElement;
@@ -26,16 +27,6 @@ class MainView {
 
   public observer: EventObserver = new EventObserver();
 
-  public styleClasses = {
-    SLIDER: 'j-plugin-slider',
-    PATH: 'j-plugin-slider__path',
-    THUMB: 'j-plugin-slider__pointer',
-    THUMB_SELECTED: 'j-plugin-slider__thumb_selected',
-    LINE: 'j-plugin-slider__path-line',
-    SLIDER_VERTICAL: 'j-plugin-slider_vertical',
-    SLIDER_WITH_POINT: 'j-plugin-slider_with-point',
-  };
-
   constructor(options: {
     rootElem: HTMLElement;
     isVertical?: boolean;
@@ -51,6 +42,7 @@ class MainView {
     this.hasTip = hasTip;
     this.hasLine = hasLine;
     this.isRange = isRange;
+    this.lastPointerMoved = this.pointer0;
 
     this.handlePathHTMLMouseDown = this.handlePathHTMLMouseDown.bind(this);
     this.setPointerPosition = this.setPointerPosition.bind(this);
@@ -64,7 +56,7 @@ class MainView {
   createTip() {
     if (this.hasTip) {
       this.pointer0.createTip();
-      this.sliderHTML.classList.add('j-plugin-slider_with-point');
+      this.sliderHTML.classList.add(styleClasses.SLIDER_WITH_TIP);
       if (this.isRange) {
         this.pointer1.createTip();
       }
@@ -81,11 +73,11 @@ class MainView {
     const {
       first, second, firstTipValue, secondTipValue, attributes,
     } = data;
-    this.pointer0.setPointerPosition(first);
+    this.pointer0.applyPointerPosition(first);
     this.pointer0.updateTipValue(firstTipValue);
 
     if (this.isRange) {
-      this.pointer1.setPointerPosition(second);
+      this.pointer1.applyPointerPosition(second);
       this.pointer1.updateTipValue(secondTipValue);
     }
     if (this.hasLine) this.calculateAndApplyLine();
@@ -115,25 +107,21 @@ class MainView {
     this.isRange = isRange;
 
     this.getClear();
-    this.createPointers();
-    this.setOrientationClass();
-    this.createTip();
+    this.createTemplate();
     this.addObservers();
     this.setDataAttributes(attributes);
   }
 
-  removeDataAttribute(attr: string) {
-    delete this.sliderHTML.dataset[attr];
-  }
-
   getClear() {
     this.sliderHTML.classList.remove(
-      this.styleClasses.SLIDER_VERTICAL,
-      this.styleClasses.SLIDER_WITH_POINT,
+      styleClasses.SLIDER,
+      styleClasses.SLIDER_VERTICAL,
+      styleClasses.SLIDER_WITH_TIP,
     );
     this.pointer0 = null;
     this.pointer1 = null;
-    this.pathHTML.innerHTML = '';
+    this.pathHTML = null;
+    this.sliderHTML.innerHTML = '';
   }
 
   private addObservers() {
@@ -142,36 +130,30 @@ class MainView {
   }
 
   private createTemplate() {
+    this.sliderHTML.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
+    this.createLine();
     this.setOrientationClass();
     this.createTip();
     this.sliderHTML.append(this.pathHTML);
-    this.lastPointerMoved = this.pointer0;
   }
 
   private createPath() {
-    this.pathHTML = document.createElement('div');
-    this.sliderHTML.classList.add(this.styleClasses.SLIDER);
-    this.pathHTML.classList.add(this.styleClasses.PATH);
+    this.pathHTML = createNode('div', styleClasses.PATH);
+  }
+
+  private createLine() {
+    if (this.hasLine) {
+      this.lineHTML = createNode('div', styleClasses.LINE);
+      this.pathHTML.prepend(this.lineHTML);
+    }
   }
 
   private createPointers() {
-    let thumb = document.createElement('div');
-    thumb.classList.add(this.styleClasses.THUMB);
-    this.pathHTML.append(thumb);
-    this.pointer0 = new PointerView(thumb, this.pathHTML, this.isVertical);
-
-    if (this.hasLine) {
-      this.lineHTML = document.createElement('div');
-      this.lineHTML.classList.add(this.styleClasses.LINE);
-      this.pathHTML.prepend(this.lineHTML);
-    }
+    this.pointer0 = new PointerView(this.pathHTML, this.isVertical);
     if (this.isRange) {
-      thumb = document.createElement('div');
-      thumb.classList.add(this.styleClasses.THUMB);
-      this.pathHTML.append(thumb);
-      this.pointer1 = new PointerView(thumb, this.pathHTML, this.isVertical);
+      this.pointer1 = new PointerView(this.pathHTML, this.isVertical);
     }
   }
 
@@ -183,8 +165,8 @@ class MainView {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
-    const isValidClick: boolean = curTarget.className === this.styleClasses.PATH
-      || curTarget.className === this.styleClasses.LINE;
+    const isValidClick: boolean = curTarget.className === styleClasses.PATH
+      || curTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
 
     const newLeft: number = this.isVertical
@@ -240,21 +222,20 @@ class MainView {
 
   private setOrientationClass() {
     if (this.isVertical) {
-      this.sliderHTML.classList.add(this.styleClasses.SLIDER_VERTICAL);
-      // this.sliderHTML.style.height = `${this.sliderHTML.parentElement.clientHeight - this.sliderHTML.parentElement}px`;
+      this.sliderHTML.classList.add(styleClasses.SLIDER_VERTICAL);
     } else {
-      this.sliderHTML.classList.remove(this.styleClasses.SLIDER_VERTICAL);
+      this.sliderHTML.classList.remove(styleClasses.SLIDER_VERTICAL);
     }
   }
 
   private updateZIndex(pointer: PointerView) {
     const wasPointerMoved = pointer.pointerHTML.classList.contains(
-      this.styleClasses.THUMB_SELECTED
+      styleClasses.POINTER_SELECTED
     );
     if (!wasPointerMoved && this.isRange) {
-      this.pointer0.pointerHTML.classList.remove(this.styleClasses.THUMB_SELECTED);
-      this.pointer1.pointerHTML.classList.remove(this.styleClasses.THUMB_SELECTED);
-      pointer.pointerHTML.classList.add(this.styleClasses.THUMB_SELECTED);
+      this.pointer0.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
+      this.pointer1.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
+      pointer.pointerHTML.classList.add(styleClasses.POINTER_SELECTED);
     }
   }
 }

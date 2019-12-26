@@ -15,10 +15,4 @@ describe('View / Follower point / Test of setting', () => {
     follower.setValue(25);
     expect(follower.tipHTML.innerHTML).toEqual('25');
   });
-  it('Slider pointer should be unset', () => {
-    follower.destroy();
-    expect(
-      document.querySelector('.j-plugin-slider__follower-point'),
-    ).toBeNull();
-  });
 });

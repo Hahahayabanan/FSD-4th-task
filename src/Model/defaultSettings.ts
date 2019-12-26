@@ -6,7 +6,7 @@ const defaultSettings: ISliderSettings = {
   max: 100,
   step: 1,
   isVertical: false,
-  from: null,
+  from: 0,
   to: null,
   hasTip: false,
   hasLine: true,

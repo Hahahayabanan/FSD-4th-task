@@ -1,3 +1,6 @@
+import styleClasses from './styleClasses';
+import { createNode } from './utilities';
+
 class TipView {
   public tipHTML: HTMLElement;
 
@@ -10,17 +13,12 @@ class TipView {
   }
 
   createTemplate() {
-    this.tipHTML = document.createElement('div');
-    this.tipHTML.classList.add('j-plugin-slider__follower-point');
+    this.tipHTML = createNode('div', styleClasses.TIP);
     this.pointerHTML.appendChild(this.tipHTML);
   }
 
   setValue(value: number) {
     this.tipHTML.textContent = `${value}`;
-  }
-
-  destroy() {
-    this.tipHTML.remove();
   }
 }
 export { TipView };

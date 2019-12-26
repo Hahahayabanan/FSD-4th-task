@@ -26,7 +26,7 @@
       width: 5px;
     }
 
-    &.j-plugin-slider_with-point {
+    &.j-plugin-slider_with-tip {
       padding-right: 100px;
       padding-top: 20px;
     }
@@ -39,7 +39,7 @@
       width: 100%;
     }
 
-    & .j-plugin-slider__follower-point {
+    & .j-plugin-slider__tip {
       top: 0;
       transform: translateX(25px);
 
@@ -50,7 +50,7 @@
     }
   }
 
-  &_with-point {
+  &_with-tip {
     padding-top: 40px;
   }
 
@@ -75,7 +75,7 @@
 
       background: $hoverColor;
 
-      .j-plugin-slider__follower-point {
+      .j-plugin-slider__tip {
         background: $hoverColor;
         
         &::after {
@@ -91,7 +91,7 @@
     background: rgb(255, 211, 201);
   }
 
-  &__follower-point {
+  &__tip {
     min-width: 30px;
     height: 18px;
     position: absolute;

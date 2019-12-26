@@ -1,6 +1,8 @@
 import { TipView } from './TipView';
 import { EventObserver } from '../EventObserver/EventObserver';
 import { MouseSettings } from '../helpers/interfaces';
+import { createNode } from './utilities';
+import styleClasses from './styleClasses';
 
 class PointerView {
   private moveSettings: MouseSettings;
@@ -19,8 +21,7 @@ class PointerView {
 
   public observer: EventObserver = new EventObserver();
 
-  constructor(elemHTML: HTMLElement, pathHTML: HTMLElement, isVertical?: boolean) {
-    this.pointerHTML = elemHTML;
+  constructor(pathHTML: HTMLElement, isVertical?: boolean) {
     this.isVertical = isVertical;
     this.pathHTML = pathHTML;
 
@@ -28,7 +29,13 @@ class PointerView {
     this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
     this.handleDocumentMouseUp = this.handleDocumentMouseUp.bind(this);
 
+    this.createTemplate();
     this.bindEventListeners();
+  }
+
+  createTemplate() {
+    this.pointerHTML = createNode('div', styleClasses.POINTER);
+    this.pathHTML.append(this.pointerHTML);
   }
 
   createTip() {
@@ -55,10 +62,10 @@ class PointerView {
     });
   }
 
-  setPointerPosition(newCurPos: number) {
-    this.curPos = newCurPos;
+  applyPointerPosition(position: number) {
+    this.curPos = position;
 
-    this.renderInPercents(newCurPos);
+    this.render(position);
     this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
@@ -79,7 +86,7 @@ class PointerView {
     return valueInPixels;
   }
 
-  renderInPercents(newPos: number) {
+  render(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
       ? (this.pointerHTML.style.top = `${newPos}%`)
       : (this.pointerHTML.style.left = `${newPos}%`);

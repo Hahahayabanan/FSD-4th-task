@@ -1,5 +1,6 @@
 import { MainView } from './MainView';
 import { PointerView } from './PointerView';
+import styleClasses from './styleClasses';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
@@ -22,12 +23,12 @@ describe('View / Slider template / Test of initialization parameters', () => {
 
   it('Slider class with point should be set', () => {
     expect(slider.sliderHTML).toHaveClass(
-      slider.styleClasses.SLIDER_WITH_POINT,
+      styleClasses.SLIDER_WITH_TIP,
     );
   });
 
   it('Slider class vertical should be set', () => {
-    expect(slider.sliderHTML).toHaveClass(slider.styleClasses.SLIDER_VERTICAL);
+    expect(slider.sliderHTML).toHaveClass(styleClasses.SLIDER_VERTICAL);
   });
 
   it('Slider should be vertical', () => {
@@ -56,10 +57,10 @@ describe('View / Slider template / Test of calculations', () => {
       isRange: true,
       hasTip: true,
     });
-    slider.pointer0.setPointerPosition(20);
-    slider.pointer1.setPointerPosition(50);
-    slider.pointer0.renderInPercents(20);
-    slider.pointer1.renderInPercents(50);
+    slider.pointer0.applyPointerPosition(20);
+    slider.pointer1.applyPointerPosition(50);
+    slider.pointer0.render(20);
+    slider.pointer1.render(50);
   });
 
   it('Test of set data attribute', () => {
