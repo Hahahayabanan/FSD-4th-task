@@ -1,12 +1,117 @@
 .checkbox {
   min-height: 20px;
-  height: min-content;
   min-width: 100px;
-  width: min-content;
 
   &__label {
     white-space: nowrap;
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
+  }
+
+  &__input {
+    display: none;
+
+    ~ .checkbox__flag > .checkbox__flag-background{
+      left: 100%;
+      top: -180%;
+    }
+
+    &:checked {
+      ~ .checkbox__flag > .checkbox__flag-background{
+        left: -50%;
+        top: -50%;
+      }
+    }
+  }
+
+  &__input_checked {
+    ~ .checkbox__flag > .checkbox__flag-background{
+      animation: background-in .6s forwards;
+    }
+  }
+
+  &__input_unchecked {
+    ~ .checkbox__flag > .checkbox__flag-background{
+      animation: background-out .6s forwards;
+    }
+  }
+  
+  @keyframes background-in {
+    from {
+      left: 100%;
+      top: -180%;
+    }
+    99% {
+      left: -100%;
+      top: 20%;
+    }
+    to {
+      left: -50%;
+      top: -50%;
+    }
+  }
+
+  @keyframes background-out {
+    from {
+      left: -50%;
+      top: -50%;
+    }
+    70% {
+      left: -100%;
+      top: 20%;
+    }
+    to {
+      left: 100%;
+      top: -180%;
+    }
+  }
+
+  &__header-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    width: 100%;
+    padding-left: 10px;
+    margin-right: 5px;
+  }
+
+  &__flag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding-bottom: 5px;
+    background-color: white;
+    border: 2px black solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 7px;
+      transform: rotate(-45deg);
+      transform-origin: center;
+      border-left: 4px white solid;
+      border-bottom: 4px white solid;
+    }
+  }
+
+  &__flag-background {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: black;
+    transform: rotate(45deg);
   }
 }

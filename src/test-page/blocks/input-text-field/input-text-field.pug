@@ -1,4 +1,5 @@
 mixin input-text-field({ text = 'input-text-field', name = '' } = {})
   .input-text-field.js-input-text-field
-    label.input-text-field__label=text
+    label.input-text-field__label
+      .input-text-field__header-test=text
       input(type='number' class=`input-text-field__input js-input-text-field__input` name=name)

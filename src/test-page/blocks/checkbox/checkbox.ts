@@ -18,6 +18,7 @@ class Checkbox {
     this.$checkbox = $container.find('.js-checkbox__input');
     this.responsibleProperty = this.$checkbox.attr('name');
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
     this.toggleChecked(this.slider.getProperties()[this.responsibleProperty]);
   }
 
@@ -39,10 +40,21 @@ class Checkbox {
 
   private bindEventListeners() {
     this.$checkbox.on('change', this.handleCheckboxChange);
+    this.$checkbox.on('click', this.handleCheckboxClick);
   }
 
   private handleCheckboxChange() {
     this.slider.setPropertyValue(this.responsibleProperty, this.isChecked());
+  }
+
+  private handleCheckboxClick() {
+    if (this.isChecked()) {
+      this.$checkbox.removeClass('checkbox__input_unchecked');
+      this.$checkbox.addClass('checkbox__input_checked');
+    } else {
+      this.$checkbox.removeClass('checkbox__input_checked');
+      this.$checkbox.addClass('checkbox__input_unchecked');
+    }
   }
 }
 

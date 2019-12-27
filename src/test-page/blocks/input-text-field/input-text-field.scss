@@ -1,7 +1,38 @@
 .input-text-field {
-  max-width: 170px;
+  min-width: 200px;
   
   &_invisible {
     display: none;
+  }
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    min-height: 30px;
+  }
+
+  &__header-test {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .8);
+    color: white;
+    width: 100%;
+    padding-left: 10px;
+    margin-right: 5px;
+  }
+
+  &__input {
+    max-width: 80px;
+    padding-left: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    border: 2px black solid;
+    border-radius: 4px;
   }
 }

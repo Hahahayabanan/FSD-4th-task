@@ -1,4 +1,7 @@
 mixin checkbox({ text = 'checkbox', isChecked = false, name = '' } = {})
   .checkbox
-    label.checkbox__label=text
+    label.checkbox__label
       input(type='checkbox' class=`checkbox__input js-checkbox__input` name=name checked=isChecked)
+      span.checkbox__header-text=text
+      span.checkbox__flag
+        span.checkbox__flag-background

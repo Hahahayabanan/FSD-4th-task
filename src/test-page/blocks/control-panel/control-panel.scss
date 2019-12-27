@@ -1,6 +1,13 @@
-.control {
+.control-panel {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-end;
+
+  &__checkbox {
+    margin-bottom: 2px;
+  }
+
+  &__input-text-field {
+    margin-bottom: 2px;
+  }
 }
