@@ -1,4 +1,12 @@
 .particles-background {
   overflow: hidden;
-  background-color: rgb(9, 5, 48);
+
+  &__canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+  }
 }

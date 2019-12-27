@@ -5,7 +5,12 @@
   &__element {
     display: flex;
     justify-content: center;
-    margin: 30px auto;
+    padding: 30px 10px 0 10px;
+    margin: 0 auto;
     max-width: 700px;
+
+    &:last-of-type {
+      padding-bottom: 30px;
+    }
   }
 }
