@@ -134,7 +134,7 @@ class Model {
     return typeof value === 'boolean' ? value : null;
   }
 
-  private isDefined(value: ISliderSettings[keyof ISliderSettings]) {
+  private isDefined(value: boolean | number | null | undefined) {
     return value !== undefined && value !== null;
   }
 
