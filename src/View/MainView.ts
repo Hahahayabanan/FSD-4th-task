@@ -108,6 +108,7 @@ class MainView {
 
     this.getClear();
     this.createTemplate();
+    this.bindEventListeners();
     this.addObservers();
     this.setDataAttributes(attributes);
   }
@@ -168,7 +169,6 @@ class MainView {
     const isValidClick: boolean = curTarget.className === styleClasses.PATH
       || curTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
-
     const newLeft: number = this.isVertical
       ? event.clientY - this.pathHTML.getBoundingClientRect().top
       : event.clientX - this.pathHTML.getBoundingClientRect().left;

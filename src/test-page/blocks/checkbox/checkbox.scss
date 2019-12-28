@@ -12,13 +12,13 @@
   &__input {
     display: none;
 
-    ~ .checkbox__flag > .checkbox__flag-background{
+    ~ .checkbox__flag > .checkbox__flag-background {
       left: 100%;
       top: -180%;
     }
 
     &:checked {
-      ~ .checkbox__flag > .checkbox__flag-background{
+      ~ .checkbox__flag > .checkbox__flag-background {
         left: -50%;
         top: -50%;
       }
@@ -26,13 +26,13 @@
   }
 
   &__input_checked {
-    ~ .checkbox__flag > .checkbox__flag-background{
+    ~ .checkbox__flag > .checkbox__flag-background {
       animation: background-in .6s forwards;
     }
   }
 
   &__input_unchecked {
-    ~ .checkbox__flag > .checkbox__flag-background{
+    ~ .checkbox__flag > .checkbox__flag-background {
       animation: background-out .6s forwards;
     }
   }

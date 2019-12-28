@@ -1,9 +1,8 @@
-import Particle from '../particle/particle';
+import Particle from './particle';
 import { ParticleProperties } from '../../helpers/interfaces';
+import defaultProperties from './defaultProperties';
 
 class ParticlesBackground {
-  public elemHTML: HTMLElement;
-
   public canvas: HTMLCanvasElement;
 
   public context: CanvasRenderingContext2D;
@@ -12,23 +11,20 @@ class ParticlesBackground {
 
   public properties: ParticleProperties;
 
-  constructor(elemHTML: HTMLElement, properties: ParticleProperties) {
-    this.elemHTML = elemHTML;
-    this.properties = properties;
-
+  constructor(elemHTML: HTMLCanvasElement) {
+    this.canvas = elemHTML;
+    this.properties = $.extend(defaultProperties, $(this.canvas).data());
+    console.log(this.properties);
     this.init();
   }
 
   init() {
-    this.canvas = document.createElement('canvas');
-    this.canvas.classList.add('particles-background__canvas');
     this.context = this.canvas.getContext('2d');
-    this.canvas.width = this.elemHTML.getBoundingClientRect().width;
-    this.canvas.height = this.elemHTML.getBoundingClientRect().height;
-    this.canvas.style.webkitFilter = 'blur(1.5px)';
+    this.canvas.width = this.canvas.parentElement.getBoundingClientRect().width;
+    this.canvas.height = this.canvas.parentElement.getBoundingClientRect().height;
+    this.canvas.style.webkitFilter = 'blur(1.3px)';
     this.properties.width = this.canvas.width;
     this.properties.height = this.canvas.height;
-    this.elemHTML.prepend(this.canvas);
 
     this.bindEventListeners();
 
@@ -41,9 +37,9 @@ class ParticlesBackground {
 
   bindEventListeners() {
     window.onresize = () => {
-      this.canvas.width = this.elemHTML.getBoundingClientRect().width;
+      this.canvas.width = this.canvas.parentElement.getBoundingClientRect().width;
       this.properties.width = this.canvas.width;
-      this.canvas.height = this.elemHTML.getBoundingClientRect().height;
+      this.canvas.height = this.canvas.parentElement.getBoundingClientRect().height;
       this.properties.height = this.canvas.height;
     };
   }

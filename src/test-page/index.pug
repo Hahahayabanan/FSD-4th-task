@@ -21,8 +21,10 @@ html(lang='en')
   body
     block content
       include ./blocks/example/example.pug
-
+      include ./blocks/particles-background/particles-background.pug
+      
       main.sliders
+        +particles-background()
         .sliders__element
           +example({ parameters: {
             min: 3, max: 199, step: 15, isRange: 'false', from: 59, hasTip: 'true',
