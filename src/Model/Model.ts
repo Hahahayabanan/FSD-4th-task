@@ -20,10 +20,10 @@ class Model {
   }
 
   setSettings(newSettings: ISliderSettings = {}) {
-    const settings = newSettings;
+    const settings: ISliderSettings = {};
 
-    Object.keys(settings).forEach(key => {
-      settings[key] = this.validateSettingType(key, settings[key]);
+    Object.keys(newSettings).forEach(key => {
+      settings[key] = this.validateSettingType(key, newSettings[key]);
     });
 
     const {
