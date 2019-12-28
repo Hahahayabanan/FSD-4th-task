@@ -15,6 +15,14 @@ class Particle {
 
   public velocityY: number;
 
+  public shadowBlur: number;
+
+  public shadowModifier: number = 0.1;
+
+  public alpha: number;
+
+  public alphaModifier: number = 0.005;
+
   constructor(properties: ParticleProperties, context: CanvasRenderingContext2D) {
     this.properties = properties;
     this.context = context;
@@ -29,15 +37,17 @@ class Particle {
     this.velocityY = Math.random() * this.properties.particleMaxVelocity
       * 2 - this.properties.particleMaxVelocity;
     this.radius = Math.random() * (this.properties.particleRadius - 1) + 1;
+    this.shadowBlur = Math.random() * (20 - 10) + 10;
+    this.alpha = Math.random() * (1 - 0.2) + 0.2;
   }
 
   reDraw() {
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     this.context.closePath();
-    this.context.shadowBlur = 15;
+    this.context.shadowBlur = this.getShadowBlur();
     this.context.shadowColor = 'rgba(255, 255, 255, 1)';
-    this.context.fillStyle = this.properties.particleColor;
+    this.context.fillStyle = this.getParticleColor();
     this.context.fill();
   }
 
@@ -51,6 +61,20 @@ class Particle {
     if (currentYBiggerWindow) this.velocityY *= -1;
     this.x += this.velocityX;
     this.y += this.velocityY;
+  }
+
+  getShadowBlur() {
+    if (this.shadowBlur < 15) this.shadowModifier = 0.1;
+    if (this.shadowBlur > 25) this.shadowModifier = -0.1;
+    this.shadowBlur += this.shadowModifier;
+    return this.shadowBlur;
+  }
+
+  getParticleColor() {
+    if (this.alpha > 0.9) this.alphaModifier = -0.005;
+    if (this.alpha < 0.2) this.alphaModifier = 0.005;
+    this.alpha += this.alphaModifier;
+    return this.properties.particleColor.replace(/[^,]+(?=\))/, `${this.alpha}`);
   }
 }
 

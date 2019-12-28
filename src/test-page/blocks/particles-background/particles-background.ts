@@ -14,7 +14,6 @@ class ParticlesBackground {
   constructor(elemHTML: HTMLCanvasElement) {
     this.canvas = elemHTML;
     this.properties = $.extend(defaultProperties, $(this.canvas).data());
-    console.log(this.properties);
     this.init();
   }
 

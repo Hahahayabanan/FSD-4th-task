@@ -51,7 +51,6 @@ class ControlPanel {
   initCheckboxes() {
     this.$checkboxes = this.$controlPanel.find('.js-control-panel__checkbox');
     this.$checkboxes.each((index, elem) => {
-      new Checkbox($(elem), this.slider);
       const checkbox = new Checkbox($(elem), this.slider);
       if (checkbox.getProperty() === 'isRange') this.isRangeCheckbox = checkbox;
     });
