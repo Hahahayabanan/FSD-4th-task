@@ -33,7 +33,7 @@ describe('Presenter / Test initialization default options', () => {
       max: 100,
       isRange: false,
     });
-    expect(presenter.getSettings().from).toEqual(null);
+    expect(presenter.getSettings().from).toEqual(10);
   });
 });
 

@@ -111,11 +111,11 @@ describe('Model / Test default values setting', () => {
     expect(model.getSettings().step).toEqual(1);
   });
 
-  it('Should init default value', () => {
-    expect(model.getSettings().from).toEqual(null);
+  it('Should init default from', () => {
+    expect(model.getSettings().from).toEqual(0);
   });
 
-  it('Should init default values', () => {
+  it('Should init default to', () => {
     expect(model.getSettings().to).toEqual(null);
   });
 });

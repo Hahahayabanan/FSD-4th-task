@@ -1,10 +1,7 @@
 import { PointerView } from './PointerView';
 
-document.body.innerHTML = '<div class="slider"><div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__thumb"></div></div></div>';
+document.body.innerHTML = '<div class="slider"><div class="j-slider-plugin__path"><div id="test" class="j-slider-plugin__slider-pointer"></div></div></div>';
 
-const shadowThumb = document.querySelector(
-  '.j-slider-plugin__thumb',
-) as HTMLElement;
 const shadowPath = document.querySelector(
   '.j-slider-plugin__path',
 ) as HTMLElement;
@@ -46,6 +43,6 @@ describe('View / Slider Pointer / Test of setting', () => {
   it('Create tip', () => {
     pointer.createTip();
     expect(pointer.tip).toBeDefined();
-    expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__follower-point');
+    expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__tip');
   });
 });
