@@ -85,26 +85,26 @@ class MainView {
     this.setDataAttributes(attributes);
   }
 
-  setDataAttributes(attributes: Attributes) {
+  setDataAttributes(attributes: Attributes = {}) {
     Object.keys(attributes).forEach(key => {
       this.sliderHTML.dataset[key] = `${attributes[key]}`;
     });
   }
 
   update(data: {
-    isRange: boolean,
-    isVertical: boolean,
-    hasTip: boolean,
-    hasLine: boolean,
-    attributes: Attributes
+    isRange?: boolean,
+    isVertical?: boolean,
+    hasTip?: boolean,
+    hasLine?: boolean,
+    attributes?: Attributes
   }) {
     const {
       isVertical, hasTip, hasLine, isRange, attributes,
     } = data;
-    this.isVertical = isVertical;
-    this.hasTip = hasTip;
-    this.hasLine = hasLine;
-    this.isRange = isRange;
+    if (isVertical !== undefined) this.isVertical = isVertical;
+    if (hasTip !== undefined) this.hasTip = hasTip;
+    if (hasLine !== undefined) this.hasLine = hasLine;
+    if (isRange !== undefined) this.isRange = isRange;
 
     this.getClear();
     this.createTemplate();
@@ -212,12 +212,19 @@ class MainView {
 
   private dispatchPointerPosition(data: { position: number, pointerToUpdate: PointerView }) {
     const { position, pointerToUpdate } = data;
-    let pointerThatChanged: string;
-    if (pointerToUpdate === this.pointer0) pointerThatChanged = 'first';
-    if (pointerToUpdate === this.pointer1) pointerThatChanged = 'second';
-
     this.updateZIndex(pointerToUpdate);
-    this.observer.broadcast({ position, pointerThatChanged });
+    this.observer.broadcast({
+      position,
+      pointerThatChanged: this.checkPointerNumber(pointerToUpdate),
+    });
+  }
+
+  private checkPointerNumber(pointer: PointerView) {
+    switch (pointer) {
+      case this.pointer0: return 'first';
+      case this.pointer1: return 'second';
+      default:
+    }
   }
 
   private setOrientationClass() {

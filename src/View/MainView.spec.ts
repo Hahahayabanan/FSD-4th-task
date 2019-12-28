@@ -7,11 +7,10 @@ document.body.innerHTML = '<div id="test" class="slider"></div>';
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
 describe('View / Slider template / Test of initialization parameters', () => {
-  let slider: MainView;
+  const slider: MainView = new MainView({ rootElem: shadowSlider });
 
   beforeEach(() => {
-    slider = new MainView({
-      rootElem: shadowSlider,
+    slider.update({
       isVertical: true,
       hasTip: true,
     });
@@ -49,11 +48,10 @@ describe('View / Slider template / Test of initialization pointers', () => {
 });
 
 describe('View / Slider template / Test of calculations', () => {
-  let slider: MainView;
+  const slider: MainView = new MainView({ rootElem: shadowSlider });
 
   beforeEach(() => {
-    slider = new MainView({
-      rootElem: shadowSlider,
+    slider.update({
       isRange: true,
       hasTip: true,
     });

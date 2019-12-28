@@ -33,10 +33,10 @@ describe('Model / Test of setting other pointer values', () => {
 });
 
 describe('Model / Test getters and setters', () => {
-  let model: Model;
+  const model: Model = new Model();
 
   beforeEach(() => {
-    model = new Model({
+    model.setSettings({
       isRange: false,
       min: -1000,
       max: 1000,
@@ -89,33 +89,33 @@ describe('Model / Test getters and setters', () => {
 });
 
 describe('Model / Test default values setting', () => {
-  let model: Model;
-
-  beforeEach(() => {
-    model = new Model({});
-  });
-
   it('Should init default isVertical', () => {
+    const model = new Model({});
     expect(model.getSettings().isVertical).toBeFalsy();
   });
 
   it('Should init default isRange', () => {
+    const model = new Model({});
     expect(model.getSettings().isRange).toBeFalsy();
   });
 
   it('Should init default minVal', () => {
+    const model = new Model({});
     expect(model.getSettings().min).toEqual(0);
   });
 
   it('Should init default stepVal', () => {
+    const model = new Model({});
     expect(model.getSettings().step).toEqual(1);
   });
 
   it('Should init default from', () => {
+    const model = new Model({});
     expect(model.getSettings().from).toEqual(0);
   });
 
   it('Should init default to', () => {
+    const model = new Model({});
     expect(model.getSettings().to).toEqual(null);
   });
 });

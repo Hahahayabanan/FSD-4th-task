@@ -170,12 +170,11 @@ class Model {
   }
 
   private validateFrom(newSettings: ISliderSettings) {
-    let { from } = newSettings;
+    const from = this.calculateValueWithStep(newSettings.from);
     const to = newSettings.to || this.settings.to;
     const {
       step, min, max, isRange
     } = this.getSettings();
-    from = this.calculateValueWithStep(from);
     const isValueBiggerSecond = from >= to - step;
     if (isRange && isValueBiggerSecond) {
       return to - step > min ? to - step : min;
@@ -186,11 +185,10 @@ class Model {
   }
 
   private validateTo(newSettings: ISliderSettings) {
-    let { to } = newSettings;
+    const to = this.calculateValueWithStep(newSettings.to);
     const {
       from, step, min, max
     } = this.getSettings();
-    to = this.calculateValueWithStep(to);
     const isValueSmallerFirst = to <= from + step;
     if (isValueSmallerFirst) {
       return from + step < max ? from + step : max;
