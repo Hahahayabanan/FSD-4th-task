@@ -1,4 +1,5 @@
 import Slider from '../slider/slider';
+import { EventObserver } from '../../../EventObserver/EventObserver';
 
 class InputTextField {
   public $inputField: JQuery<Object>;
@@ -8,6 +9,8 @@ class InputTextField {
   public responsibleProperty: string;
 
   public slider: Slider;
+
+  public observer = new EventObserver();
 
   constructor($container: JQuery<Object>, slider: Slider) {
     this.slider = slider;
@@ -23,15 +26,17 @@ class InputTextField {
     this.responsibleProperty = this.$inputField.attr('name');
     this.handleInputFieldChange = this.handleInputFieldChange.bind(this);
 
-    this.setValue(this.slider.getProperties()[this.responsibleProperty]);
+    this.updateValue();
   }
 
   getProperty(): string {
     return this.responsibleProperty;
   }
 
-  setValue(newValue: string) {
+  updateValue() {
+    const newValue = this.slider.getProperties()[this.responsibleProperty];
     this.$inputField.val(newValue);
+    this.observer.broadcast({ responsibleProperty: this.responsibleProperty, value: newValue });
   }
 
   getValue(): number | string {
@@ -57,8 +62,7 @@ class InputTextField {
 
   private handleInputFieldChange() {
     this.slider.setPropertyValue(this.responsibleProperty, this.getValue());
-    const trueValue = `${this.slider.getProperties()[this.responsibleProperty]}`;
-    this.setValue(trueValue);
+    this.updateValue();
   }
 }
 

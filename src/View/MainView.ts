@@ -80,7 +80,7 @@ class MainView {
       this.pointer1.applyPointerPosition(second);
       this.pointer1.updateTipValue(secondTipValue);
     }
-    if (this.hasLine) this.calculateAndApplyLine();
+    if (this.hasLine) this.updateLine();
 
     this.setDataAttributes(attributes);
   }
@@ -182,25 +182,14 @@ class MainView {
     }
   }
 
-  private calculateAndApplyLine() {
-    if (this.isRange) {
-      if (this.isVertical) {
-        this.lineHTML.style.top = this.pointer0.pointerHTML.style.top;
-        const range = parseFloat(this.pointer1.pointerHTML.style.top)
-          - parseFloat(this.pointer0.pointerHTML.style.top);
-        this.lineHTML.style.height = `${range}%`;
-      } else {
-        this.lineHTML.style.left = this.pointer0.pointerHTML.style.left;
-        const range = parseFloat(this.pointer1.pointerHTML.style.left)
-          - parseFloat(this.pointer0.pointerHTML.style.left);
-        this.lineHTML.style.width = `${range}%`;
-      }
-    } else if (this.isVertical) {
-      this.lineHTML.style.top = '0px';
-      this.lineHTML.style.height = `${parseFloat(this.pointer0.pointerHTML.style.top)}%`;
+  private updateLine() {
+    const pos0 = this.pointer0.curPos;
+    if (this.isVertical) {
+      this.lineHTML.style.top = this.isRange ? `${pos0}%` : '0px';
+      this.lineHTML.style.height = this.isRange ? `${this.pointer1.curPos - pos0}%` : `${pos0}%`;
     } else {
-      this.lineHTML.style.left = '0px';
-      this.lineHTML.style.width = `${parseFloat(this.pointer0.pointerHTML.style.left)}%`;
+      this.lineHTML.style.left = this.isRange ? `${pos0}%` : '0px';
+      this.lineHTML.style.width = this.isRange ? `${this.pointer1.curPos - pos0}%` : `${pos0}%`;
     }
   }
 

@@ -1,7 +1,10 @@
 import ParticlesBackground from './particles-background';
 
+const particlesBackgrounds: ParticlesBackground[] = [];
 $(() => {
   $('.particles-background').each((index, val: HTMLCanvasElement) => {
-    new ParticlesBackground(val);
+    particlesBackgrounds.push(new ParticlesBackground(val));
   });
 });
+
+export { particlesBackgrounds };

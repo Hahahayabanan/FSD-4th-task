@@ -1,6 +1,7 @@
 import Checkbox from '../checkbox/checkbox';
 import InputTextField from '../input-text-field/input-text-field';
 import Slider from '../slider/slider';
+import { TextFieldsArray } from '../../helpers/interfaces';
 
 class ControlPanel {
   public $controlPanel: JQuery<Object>;
@@ -9,9 +10,9 @@ class ControlPanel {
 
   public isRangeCheckbox: Checkbox;
 
-  public firstValueField: InputTextField;
+  public textFields: TextFieldsArray = {};
 
-  public secondValueField: InputTextField;
+  public checkboxes: Checkbox[] = [];
 
   public $inputFields: JQuery<Object>;
 
@@ -35,15 +36,7 @@ class ControlPanel {
     this.$inputFields = this.$controlPanel.find('.js-control-panel__input-text-field');
     this.$inputFields.each((index, elem) => {
       const textField = new InputTextField($(elem), this.slider);
-      switch (textField.getProperty()) {
-        case 'from':
-          this.firstValueField = textField;
-          break;
-        case 'to':
-          this.secondValueField = textField;
-          break;
-        default:
-      }
+      this.textFields[textField.getProperty()] = textField;
     });
     this.toggleValueFields();
   }
@@ -57,11 +50,11 @@ class ControlPanel {
   }
 
   toggleValueFields() {
-    if (this.secondValueField) {
+    if (this.textFields.to) {
       if (this.slider.getProperties().isRange) {
-        this.secondValueField.toggleInvisible(false);
+        this.textFields.to.toggleInvisible(false);
       } else {
-        this.secondValueField.toggleInvisible(true);
+        this.textFields.to.toggleInvisible(true);
       }
     }
   }
@@ -70,16 +63,19 @@ class ControlPanel {
     return this.$controlPanel;
   }
 
+  setFieldObserver(field: string, fn: Function) {
+    if (this.textFields[field]) this.textFields[field].observer.subscribe(fn);
+  }
+
   private bindEventListeners() {
     this.isRangeCheckbox.getElement().on('change', this.handleIsRangeCheckboxChange);
     this.slider.getElement().on('changePointer', this.handleSliderChangePointer);
   }
 
   private handleSliderChangePointer() {
-    const { from, to } = this.slider.getProperties();
-    if (this.firstValueField && this.secondValueField) {
-      this.firstValueField.setValue(`${from}`);
-      this.secondValueField.setValue(`${to}`);
+    if (this.textFields.from && this.textFields.to) {
+      this.textFields.from.updateValue();
+      this.textFields.to.updateValue();
     }
   }
 

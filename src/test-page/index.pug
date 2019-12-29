@@ -26,20 +26,32 @@ html(lang='en')
       main.sliders
         +particles-background()
         .sliders__element
-          +example({ parameters: {
-            min: 3, max: 199, step: 15, isRange: 'false', from: 59, hasTip: 'true',
-          } })
-        .sliders__element
-          +example({ parameters: {
-            min: 99, max: 199, step: 5, isRange: 'true', isVertical: 'true', from: 102, to: 159, hasTip: 'true',
-          } })
-        .sliders__element
-          +example()
+          +example({ 
+            parameters: {
+              hasTip: 'true',
+              isVertical: 'true',
+            }, 
+            propertyForChange: 'speed',
+          })
         .sliders__element
           +example({ 
             parameters: {
-              min: 1000, max: 100000, step: 10, isRange: 'true', from: 20000, to: 63999, hasTip: 'true', hasLine: 'false',
-            } 
+              max: 50,
+            }, 
+            propertyForChange: 'size', 
+          })
+        .sliders__element
+          +example({ 
+            parameters: {
+              min: 0, max: 360, step: 1, hasTip: 'true',
+            }, 
+            propertyForChange: 'color', 
+          })
+        .sliders__element
+          +example({ 
+            parameters: {
+              isRange: 'true',
+            }, 
           })
 
     
