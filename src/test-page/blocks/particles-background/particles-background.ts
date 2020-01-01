@@ -1,4 +1,4 @@
-import Particle from './particle';
+import Particle from './Particle';
 import { ParticleProperties } from '../../helpers/interfaces';
 import defaultProperties from './defaultProperties';
 
@@ -25,6 +25,8 @@ class ParticlesBackground {
     this.particleProperties.bgWidth = this.canvas.width;
     this.particleProperties.bgHeight = this.canvas.height;
 
+    this.handleWindowResize = this.handleWindowResize.bind(this);
+
     this.bindEventListeners();
     this.initParticles();
     this.loop();
@@ -38,16 +40,18 @@ class ParticlesBackground {
   }
 
   bindEventListeners() {
-    window.onresize = () => {
-      this.canvas.width = this.canvas.parentElement.getBoundingClientRect().width;
-      this.canvas.height = this.canvas.parentElement.getBoundingClientRect().height;
-      this.setParticleProperties({
-        bgWidth: this.canvas.width,
-        bgHeight: this.canvas.height,
-      });
-      this.particleProperties.bgWidth = this.canvas.width;
-      this.particleProperties.bgHeight = this.canvas.height;
-    };
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  handleWindowResize() {
+    this.canvas.width = this.canvas.parentElement.getBoundingClientRect().width;
+    this.canvas.height = this.canvas.parentElement.getBoundingClientRect().height;
+    this.setParticleProperties({
+      bgWidth: this.canvas.width,
+      bgHeight: this.canvas.height,
+    });
+    this.particleProperties.bgWidth = this.canvas.width;
+    this.particleProperties.bgHeight = this.canvas.height;
   }
 
   reDrawBackground() {
@@ -86,9 +90,9 @@ class ParticlesBackground {
     });
   }
 
-  setParticleProperties(newProperty: ParticleProperties) {
+  setParticleProperties(newProperties: ParticleProperties) {
     this.particles.forEach((particle: Particle) => {
-      particle.setProperties(newProperty);
+      particle.setProperties(newProperties);
     });
   }
 }

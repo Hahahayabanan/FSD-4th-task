@@ -48,7 +48,7 @@ class Model {
     if (this.isDefined(from)) this.settings.from = this.validateFrom(settings);
     if (this.isDefined(to)) {
       this.settings.to = this.validateTo(settings);
-      this.setSettings({ from });
+      this.setSettings({ from: this.settings.from });
     }
     if (this.isDefined(isRange)) {
       this.settings.isRange = isRange;

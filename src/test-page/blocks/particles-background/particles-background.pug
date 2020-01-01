@@ -1,8 +1,7 @@
-mixin particles-background({ bgColor = 'rgba(17, 17, 19, 1)', color = 'rgba(255, 255, 255, 1)', radius = 5, count = 100, velocityModifier = 1 } = {})
+mixin particles-background({ bgColor = 'rgba(17, 17, 19, 1)', color='rgba(255, 255, 255, 1)', radius = 10, count = 100 } = {})
   canvas.particles-background(
-    data-bg-color=bgColor 
+    data-bg-color=bgColor
     data-color=color
-    data-radius=radius
     data-count=count
-    data-velocity-modifier=velocityModifier
+    data-radius=radius
   )

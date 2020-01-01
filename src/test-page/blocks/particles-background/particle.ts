@@ -43,13 +43,12 @@ class Particle {
     const {
       x, y, velocityX, velocityY, velocityModifier, bgWidth, bgHeight,
     } = this.getProperties();
-    const currentXBiggerWindow = (x + velocityX > bgWidth + 20 && velocityX > 0)
+    const isCurrentXBiggerWindow = (x + velocityX > bgWidth + 20 && velocityX > 0)
       || (x + velocityX + 20 < 0 && velocityX < 0);
-    const currentYBiggerWindow = (y + velocityY > bgHeight + 20 && velocityY > 0)
+    const isCurrentYBiggerWindow = (y + velocityY > bgHeight + 20 && velocityY > 0)
       || (y + velocityY + 20 < 0 && velocityY < 0);
-
-    if (currentXBiggerWindow) this.setProperties({ velocityX: velocityX * -1 });
-    if (currentYBiggerWindow) this.setProperties({ velocityY: velocityY * -1 });
+    if (isCurrentXBiggerWindow) this.setProperties({ velocityX: velocityX * -1 });
+    if (isCurrentYBiggerWindow) this.setProperties({ velocityY: velocityY * -1 });
     this.setProperties({
       x: x + this.getProperties().velocityX * velocityModifier,
       y: y + this.getProperties().velocityY * velocityModifier,

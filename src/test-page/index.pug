@@ -30,12 +30,14 @@ html(lang='en')
             parameters: {
               hasTip: 'true',
               isVertical: 'true',
+              from: 5,
             }, 
             propertyForChange: 'speed',
           })
         .sliders__element
           +example({ 
             parameters: {
+              from: 3,
               max: 50,
             }, 
             propertyForChange: 'size', 
@@ -43,7 +45,7 @@ html(lang='en')
         .sliders__element
           +example({ 
             parameters: {
-              min: 0, max: 360, step: 1, hasTip: 'true',
+              min: 0, max: 360, step: 1, from: 273, hasTip: 'true',
             }, 
             propertyForChange: 'color', 
           })

@@ -24,6 +24,7 @@ class Example {
     this.parameters = parameters;
     this.initExample($container);
     this.init();
+    this.initBackgroundChanging();
   }
 
   initExample($container: JQuery<Object>) {
@@ -38,22 +39,19 @@ class Example {
     this.changeParticlesSpeed = this.changeParticlesSpeed.bind(this);
     this.changeParticlesSize = this.changeParticlesSize.bind(this);
     this.changeParticlesColor = this.changeParticlesColor.bind(this);
-
-    this.initBackgroundChanging();
   }
 
   initBackgroundChanging() {
     switch (this.propertyForChange) {
       case 'speed':
-        this.controlPanel.textFields.from.slider.setPropertyValue('from', `${particlesBackgrounds[0].particleProperties.velocityModifier}`);
+        this.changeParticlesSpeed();
         this.controlPanel.setFieldObserver('from', this.changeParticlesSpeed);
         break;
       case 'size':
-        this.controlPanel.textFields.from.slider.setPropertyValue('from', `${particlesBackgrounds[0].particleProperties.radiusModifier}`);
+        this.changeParticlesSize();
         this.controlPanel.setFieldObserver('from', this.changeParticlesSize);
         break;
       case 'color':
-        this.controlPanel.textFields.from.slider.setPropertyValue('from', `${this.particlesColor.hue}`);
         this.changeParticlesColor();
         this.controlPanel.setFieldObserver('from', this.changeParticlesColor);
         break;
