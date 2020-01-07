@@ -69,7 +69,7 @@ class PointerView {
     this.pointerHTML.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
-        detail: this,
+        detail: this.curPos,
       }),
     );
   }

@@ -57,9 +57,7 @@ class MainView {
     if (this.hasTip) {
       this.pointer0.createTip();
       this.sliderHTML.classList.add(styleClasses.SLIDER_WITH_TIP);
-      if (this.isRange) {
-        this.pointer1.createTip();
-      }
+      if (this.isRange) this.pointer1.createTip();
     }
   }
 
