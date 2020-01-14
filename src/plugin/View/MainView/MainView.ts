@@ -5,9 +5,9 @@ import { createNode } from '../utilities';
 import styleClasses from '../styleClasses';
 
 class MainView {
-  public sliderHTML: HTMLElement;
+  public sliderElement: HTMLElement;
 
-  public pathHTML: HTMLElement;
+  public pathElement: HTMLElement;
 
   public firstPointer: PointerView = null;
 
@@ -21,7 +21,7 @@ class MainView {
 
   public isRange: boolean = false;
 
-  public lineHTML: HTMLElement;
+  public lineElement: HTMLElement;
 
   public lastPointerMoved: PointerView = null;
 
@@ -37,14 +37,14 @@ class MainView {
     const {
       rootElem, isVertical, hasTip, isRange, hasLine,
     } = options;
-    this.sliderHTML = rootElem;
+    this.sliderElement = rootElem;
     this.isVertical = isVertical;
     this.hasTip = hasTip;
     this.hasLine = hasLine;
     this.isRange = isRange;
     this.lastPointerMoved = this.firstPointer;
 
-    this.handlePathHTMLMouseDown = this.handlePathHTMLMouseDown.bind(this);
+    this.handlepathElementMouseDown = this.handlepathElementMouseDown.bind(this);
     this.setPointerPosition = this.setPointerPosition.bind(this);
     this.dispatchPointerPosition = this.dispatchPointerPosition.bind(this);
 
@@ -56,7 +56,7 @@ class MainView {
   createTip() {
     if (this.hasTip) {
       this.firstPointer.createTip();
-      this.sliderHTML.classList.add(styleClasses.SLIDER_WITH_TIP);
+      this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
       if (this.isRange) this.secondPointer.createTip();
     }
   }
@@ -85,7 +85,7 @@ class MainView {
 
   setDataAttributes(attributes: Attributes = {}) {
     Object.keys(attributes).forEach(key => {
-      this.sliderHTML.dataset[key] = `${attributes[key]}`;
+      this.sliderElement.dataset[key] = `${attributes[key]}`;
     });
   }
 
@@ -112,15 +112,15 @@ class MainView {
   }
 
   getClear() {
-    this.sliderHTML.classList.remove(
+    this.sliderElement.classList.remove(
       styleClasses.SLIDER,
       styleClasses.SLIDER_VERTICAL,
       styleClasses.SLIDER_WITH_TIP,
     );
     this.firstPointer = null;
     this.secondPointer = null;
-    this.pathHTML = null;
-    this.sliderHTML.innerHTML = '';
+    this.pathElement = null;
+    this.sliderElement.innerHTML = '';
   }
 
   private addObservers() {
@@ -129,38 +129,38 @@ class MainView {
   }
 
   private createTemplate() {
-    this.sliderHTML.classList.add(styleClasses.SLIDER);
+    this.sliderElement.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
     this.createLine();
     this.setOrientationClass();
     this.createTip();
-    this.sliderHTML.append(this.pathHTML);
+    this.sliderElement.append(this.pathElement);
   }
 
   private createPath() {
-    this.pathHTML = createNode('div', styleClasses.PATH);
+    this.pathElement = createNode('div', styleClasses.PATH);
   }
 
   private createLine() {
     if (this.hasLine) {
-      this.lineHTML = createNode('div', styleClasses.LINE);
-      this.pathHTML.prepend(this.lineHTML);
+      this.lineElement = createNode('div', styleClasses.LINE);
+      this.pathElement.prepend(this.lineElement);
     }
   }
 
   private createPointers() {
-    this.firstPointer = new PointerView(this.pathHTML, this.isVertical);
+    this.firstPointer = new PointerView(this.pathElement, this.isVertical);
     if (this.isRange) {
-      this.secondPointer = new PointerView(this.pathHTML, this.isVertical);
+      this.secondPointer = new PointerView(this.pathElement, this.isVertical);
     }
   }
 
   private bindEventListeners() {
-    this.pathHTML.addEventListener('mousedown', this.handlePathHTMLMouseDown);
+    this.pathElement.addEventListener('mousedown', this.handlepathElementMouseDown);
   }
 
-  private handlePathHTMLMouseDown(event: MouseEvent) {
+  private handlepathElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
@@ -168,8 +168,8 @@ class MainView {
       || curTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
     const newLeft: number = this.isVertical
-      ? event.clientY - this.pathHTML.getBoundingClientRect().top
-      : event.clientX - this.pathHTML.getBoundingClientRect().left;
+      ? event.clientY - this.pathElement.getBoundingClientRect().top
+      : event.clientX - this.pathElement.getBoundingClientRect().left;
 
     if (this.isRange) {
       const midpointBetweenPoints = this.getMidpointBetweenPointers();
@@ -183,11 +183,11 @@ class MainView {
   private updateLine() {
     const pos0 = this.firstPointer.curPos;
     if (this.isVertical) {
-      this.lineHTML.style.top = this.isRange ? `${pos0}%` : '0px';
-      this.lineHTML.style.height = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
+      this.lineElement.style.top = this.isRange ? `${pos0}%` : '0px';
+      this.lineElement.style.height = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
     } else {
-      this.lineHTML.style.left = this.isRange ? `${pos0}%` : '0px';
-      this.lineHTML.style.width = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
+      this.lineElement.style.left = this.isRange ? `${pos0}%` : '0px';
+      this.lineElement.style.width = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
     }
   }
 
@@ -216,20 +216,20 @@ class MainView {
 
   private setOrientationClass() {
     if (this.isVertical) {
-      this.sliderHTML.classList.add(styleClasses.SLIDER_VERTICAL);
+      this.sliderElement.classList.add(styleClasses.SLIDER_VERTICAL);
     } else {
-      this.sliderHTML.classList.remove(styleClasses.SLIDER_VERTICAL);
+      this.sliderElement.classList.remove(styleClasses.SLIDER_VERTICAL);
     }
   }
 
   private updateZIndex(pointer: PointerView) {
-    const wasPointerMoved = pointer.pointerHTML.classList.contains(
+    const wasPointerMoved = pointer.pointerElement.classList.contains(
       styleClasses.POINTER_SELECTED
     );
     if (!wasPointerMoved && this.isRange) {
-      this.firstPointer.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
-      this.secondPointer.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
-      pointer.pointerHTML.classList.add(styleClasses.POINTER_SELECTED);
+      this.firstPointer.pointerElement.classList.remove(styleClasses.POINTER_SELECTED);
+      this.secondPointer.pointerElement.classList.remove(styleClasses.POINTER_SELECTED);
+      pointer.pointerElement.classList.add(styleClasses.POINTER_SELECTED);
     }
   }
 }

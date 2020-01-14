@@ -2,23 +2,23 @@ import styleClasses from '../styleClasses';
 import { createNode } from '../utilities';
 
 class TipView {
-  public tipHTML: HTMLElement;
+  public tipElement: HTMLElement;
 
-  public pointerHTML: HTMLElement;
+  public pointerElement: HTMLElement;
 
-  constructor(pointerHTML: HTMLElement) {
-    this.pointerHTML = pointerHTML;
+  constructor(pointerElement: HTMLElement) {
+    this.pointerElement = pointerElement;
 
     this.createTemplate();
   }
 
   createTemplate() {
-    this.tipHTML = createNode('div', styleClasses.TIP);
-    this.pointerHTML.appendChild(this.tipHTML);
+    this.tipElement = createNode('div', styleClasses.TIP);
+    this.pointerElement.appendChild(this.tipElement);
   }
 
   setValue(value: number) {
-    this.tipHTML.textContent = `${value}`;
+    this.tipElement.textContent = `${value}`;
   }
 }
 export { TipView };

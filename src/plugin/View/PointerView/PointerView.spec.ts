@@ -24,7 +24,7 @@ describe('View / Slider Pointer / Test of setting', () => {
   it('Render in pixels', () => {
     pointer.render(29);
     expect(
-      Math.round(parseInt(pointer.pointerHTML.style.left, 10)),
+      Math.round(parseInt(pointer.pointerElement.style.left, 10)),
     ).toBeCloseTo(29);
   });
 

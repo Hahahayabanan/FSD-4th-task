@@ -21,13 +21,13 @@ describe('View / Slider template / Test of initialization parameters', () => {
   });
 
   it('Slider class with point should be set', () => {
-    expect(view.sliderHTML).toHaveClass(
+    expect(view.sliderElement).toHaveClass(
       styleClasses.SLIDER_WITH_TIP,
     );
   });
 
   it('Slider class vertical should be set', () => {
-    expect(view.sliderHTML).toHaveClass(styleClasses.SLIDER_VERTICAL);
+    expect(view.sliderElement).toHaveClass(styleClasses.SLIDER_VERTICAL);
   });
 
   it('Slider should be vertical', () => {
@@ -63,7 +63,7 @@ describe('View / Slider template / Test of calculations', () => {
 
   it('Test of set data attribute', () => {
     view.setDataAttributes({ from: 99 });
-    expect(view.sliderHTML.dataset.from).toEqual('99');
+    expect(view.sliderElement.dataset.from).toEqual('99');
   });
 
   it('Test of get clear', () => {

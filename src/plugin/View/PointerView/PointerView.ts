@@ -7,9 +7,9 @@ import styleClasses from '../styleClasses';
 class PointerView {
   private moveSettings: MouseSettings;
 
-  public pointerHTML: HTMLElement;
+  public pointerElement: HTMLElement;
 
-  public pathHTML: HTMLElement;
+  public pathElement: HTMLElement;
 
   public curPos: number = null;
 
@@ -21,11 +21,11 @@ class PointerView {
 
   public observer: EventObserver = new EventObserver();
 
-  constructor(pathHTML: HTMLElement, isVertical?: boolean) {
+  constructor(pathElement: HTMLElement, isVertical?: boolean) {
     this.isVertical = isVertical;
-    this.pathHTML = pathHTML;
+    this.pathElement = pathElement;
 
-    this.handlePointerHTMLMouseDown = this.handlePointerHTMLMouseDown.bind(this);
+    this.handlepointerElementMouseDown = this.handlepointerElementMouseDown.bind(this);
     this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
     this.handleDocumentMouseUp = this.handleDocumentMouseUp.bind(this);
 
@@ -34,20 +34,20 @@ class PointerView {
   }
 
   createTemplate() {
-    this.pointerHTML = createNode('div', styleClasses.POINTER);
-    this.pathHTML.append(this.pointerHTML);
+    this.pointerElement = createNode('div', styleClasses.POINTER);
+    this.pathElement.append(this.pointerElement);
   }
 
   createTip() {
-    this.tip = new TipView(this.pointerHTML);
+    this.tip = new TipView(this.pointerElement);
   }
 
   getPathLength() {
     const pathLength: number = this.isVertical
-      ? this.pathHTML.getBoundingClientRect().height
-        || parseInt(this.pathHTML.style.height, 10)
-      : this.pathHTML.getBoundingClientRect().width
-        || parseInt(this.pathHTML.style.width, 10);
+      ? this.pathElement.getBoundingClientRect().height
+        || parseInt(this.pathElement.style.height, 10)
+      : this.pathElement.getBoundingClientRect().width
+        || parseInt(this.pathElement.style.width, 10);
     return pathLength;
   }
 
@@ -66,7 +66,7 @@ class PointerView {
     this.curPos = position;
 
     this.render(position);
-    this.pointerHTML.dispatchEvent(
+    this.pointerElement.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
         detail: this.curPos,
@@ -88,8 +88,8 @@ class PointerView {
 
   render(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
-      ? (this.pointerHTML.style.top = `${newPos}%`)
-      : (this.pointerHTML.style.left = `${newPos}%`);
+      ? (this.pointerElement.style.top = `${newPos}%`)
+      : (this.pointerElement.style.left = `${newPos}%`);
     return newCssLeftOrTop;
   }
 
@@ -98,11 +98,11 @@ class PointerView {
   }
 
   private bindEventListeners() {
-    this.pointerHTML.addEventListener('mousedown', this.handlePointerHTMLMouseDown);
-    this.pointerHTML.addEventListener('dragstart', this.handlePointerHTMLDragStart);
+    this.pointerElement.addEventListener('mousedown', this.handlepointerElementMouseDown);
+    this.pointerElement.addEventListener('dragstart', this.handlepointerElementDragStart);
   }
 
-  private handlePointerHTMLMouseDown(event: MouseEvent) {
+  private handlepointerElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.endPos = this.curPos;
 
@@ -131,7 +131,7 @@ class PointerView {
     document.removeEventListener('mousemove', this.handleDocumentMouseMove);
   }
 
-  private handlePointerHTMLDragStart() {
+  private handlepointerElementDragStart() {
     return false;
   }
 }
