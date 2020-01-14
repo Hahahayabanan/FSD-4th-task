@@ -86,6 +86,18 @@ class PointerView {
     return valueInPixels;
   }
 
+  getClassList() {
+    return `${this.pointerElement.classList}`;
+  }
+
+  removeClass(targetClass: string) {
+    this.pointerElement.classList.remove(targetClass);
+  }
+
+  addClass(targetClass: string) {
+    this.pointerElement.classList.add(targetClass);
+  }
+
   render(newPos: number) {
     const newCssLeftOrTop: string = this.isVertical
       ? (this.pointerElement.style.top = `${newPos}%`)

@@ -223,13 +223,18 @@ class MainView {
   }
 
   private updateZIndex(pointer: PointerView) {
-    const wasPointerMoved = pointer.pointerElement.classList.contains(
-      styleClasses.POINTER_SELECTED
-    );
+    const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED);
     if (!wasPointerMoved && this.isRange) {
-      this.firstPointer.pointerElement.classList.remove(styleClasses.POINTER_SELECTED);
-      this.secondPointer.pointerElement.classList.remove(styleClasses.POINTER_SELECTED);
-      pointer.pointerElement.classList.add(styleClasses.POINTER_SELECTED);
+      switch (pointer) {
+        case this.firstPointer:
+          this.secondPointer.removeClass(styleClasses.POINTER_SELECTED);
+          break;
+        case this.secondPointer:
+          this.firstPointer.removeClass(styleClasses.POINTER_SELECTED);
+          break;
+        default:
+      }
+      pointer.addClass(styleClasses.POINTER_SELECTED);
     }
   }
 }

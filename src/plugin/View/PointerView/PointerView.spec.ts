@@ -43,6 +43,29 @@ describe('View / Slider Pointer / Test of setting', () => {
   it('Create tip', () => {
     pointer.createTip();
     expect(pointer.tip).toBeDefined();
-    expect(pointer.tip.tipHTML).toHaveClass('j-plugin-slider__tip');
+    expect(pointer.tip.tipElement).toHaveClass('j-plugin-slider__tip');
+  });
+});
+
+describe('View / Slider Pointer / Test methods', () => {
+  beforeEach(() => {
+    shadowPath.style.width = '300Px';
+  });
+
+  it('Get classList as string value', () => {
+    expect(pointer.getClassList()).toBeDefined(`${pointer.pointerElement.classList}`);
+  });
+
+  it('Add class to classList', () => {
+    const personalPointer = new PointerView(shadowPath);
+    personalPointer.addClass('test123');
+    expect(personalPointer.pointerElement.classList.contains('test123')).toBeTrue();
+  });
+
+  it('Remove class from classList', () => {
+    const personalPointer = new PointerView(shadowPath);
+    personalPointer.addClass('test123');
+    personalPointer.removeClass('test123');
+    expect(personalPointer.pointerElement.classList.contains('test123')).toBeFalse();
   });
 });
