@@ -9,9 +9,9 @@ class MainView {
 
   public pathHTML: HTMLElement;
 
-  public pointer0: PointerView = null;
+  public firstPointer: PointerView = null;
 
-  public pointer1: PointerView = null;
+  public secondPointer: PointerView = null;
 
   public isVertical: boolean = false;
 
@@ -42,7 +42,7 @@ class MainView {
     this.hasTip = hasTip;
     this.hasLine = hasLine;
     this.isRange = isRange;
-    this.lastPointerMoved = this.pointer0;
+    this.lastPointerMoved = this.firstPointer;
 
     this.handlePathHTMLMouseDown = this.handlePathHTMLMouseDown.bind(this);
     this.setPointerPosition = this.setPointerPosition.bind(this);
@@ -55,9 +55,9 @@ class MainView {
 
   createTip() {
     if (this.hasTip) {
-      this.pointer0.createTip();
+      this.firstPointer.createTip();
       this.sliderHTML.classList.add(styleClasses.SLIDER_WITH_TIP);
-      if (this.isRange) this.pointer1.createTip();
+      if (this.isRange) this.secondPointer.createTip();
     }
   }
 
@@ -71,12 +71,12 @@ class MainView {
     const {
       first, second, firstTipValue, secondTipValue, attributes,
     } = data;
-    this.pointer0.applyPointerPosition(first);
-    this.pointer0.updateTipValue(firstTipValue);
+    this.firstPointer.applyPointerPosition(first);
+    this.firstPointer.updateTipValue(firstTipValue);
 
     if (this.isRange) {
-      this.pointer1.applyPointerPosition(second);
-      this.pointer1.updateTipValue(secondTipValue);
+      this.secondPointer.applyPointerPosition(second);
+      this.secondPointer.updateTipValue(secondTipValue);
     }
     if (this.hasLine) this.updateLine();
 
@@ -117,15 +117,15 @@ class MainView {
       styleClasses.SLIDER_VERTICAL,
       styleClasses.SLIDER_WITH_TIP,
     );
-    this.pointer0 = null;
-    this.pointer1 = null;
+    this.firstPointer = null;
+    this.secondPointer = null;
     this.pathHTML = null;
     this.sliderHTML.innerHTML = '';
   }
 
   private addObservers() {
-    this.pointer0.observer.subscribe(this.dispatchPointerPosition);
-    if (this.isRange) this.pointer1.observer.subscribe(this.dispatchPointerPosition);
+    this.firstPointer.observer.subscribe(this.dispatchPointerPosition);
+    if (this.isRange) this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
   }
 
   private createTemplate() {
@@ -150,9 +150,9 @@ class MainView {
   }
 
   private createPointers() {
-    this.pointer0 = new PointerView(this.pathHTML, this.isVertical);
+    this.firstPointer = new PointerView(this.pathHTML, this.isVertical);
     if (this.isRange) {
-      this.pointer1 = new PointerView(this.pathHTML, this.isVertical);
+      this.secondPointer = new PointerView(this.pathHTML, this.isVertical);
     }
   }
 
@@ -173,27 +173,27 @@ class MainView {
 
     if (this.isRange) {
       const midpointBetweenPoints = this.getMidpointBetweenPointers();
-      if (newLeft < midpointBetweenPoints) this.pointer0.dispatchPointerPosition(newLeft);
-      if (newLeft > midpointBetweenPoints) this.pointer1.dispatchPointerPosition(newLeft);
+      if (newLeft < midpointBetweenPoints) this.firstPointer.dispatchPointerPosition(newLeft);
+      if (newLeft > midpointBetweenPoints) this.secondPointer.dispatchPointerPosition(newLeft);
     } else {
-      this.pointer0.dispatchPointerPosition(newLeft);
+      this.firstPointer.dispatchPointerPosition(newLeft);
     }
   }
 
   private updateLine() {
-    const pos0 = this.pointer0.curPos;
+    const pos0 = this.firstPointer.curPos;
     if (this.isVertical) {
       this.lineHTML.style.top = this.isRange ? `${pos0}%` : '0px';
-      this.lineHTML.style.height = this.isRange ? `${this.pointer1.curPos - pos0}%` : `${pos0}%`;
+      this.lineHTML.style.height = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
     } else {
       this.lineHTML.style.left = this.isRange ? `${pos0}%` : '0px';
-      this.lineHTML.style.width = this.isRange ? `${this.pointer1.curPos - pos0}%` : `${pos0}%`;
+      this.lineHTML.style.width = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
     }
   }
 
   private getMidpointBetweenPointers() {
-    const pos0 = this.pointer0.getCurPosInPixels();
-    const pos1 = this.pointer1.getCurPosInPixels();
+    const pos0 = this.firstPointer.getCurPosInPixels();
+    const pos1 = this.secondPointer.getCurPosInPixels();
     return (pos1 - pos0) / 2 + pos0;
   }
 
@@ -208,8 +208,8 @@ class MainView {
 
   private checkPointerNumber(pointer: PointerView) {
     switch (pointer) {
-      case this.pointer0: return 'first';
-      case this.pointer1: return 'second';
+      case this.firstPointer: return 'first';
+      case this.secondPointer: return 'second';
       default:
     }
   }
@@ -227,8 +227,8 @@ class MainView {
       styleClasses.POINTER_SELECTED
     );
     if (!wasPointerMoved && this.isRange) {
-      this.pointer0.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
-      this.pointer1.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
+      this.firstPointer.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
+      this.secondPointer.pointerHTML.classList.remove(styleClasses.POINTER_SELECTED);
       pointer.pointerHTML.classList.add(styleClasses.POINTER_SELECTED);
     }
   }

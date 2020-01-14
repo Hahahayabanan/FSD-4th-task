@@ -17,7 +17,7 @@ describe('View / Slider template / Test of initialization parameters', () => {
   });
 
   it('Slider pointer should be set', () => {
-    expect(view.pointer0).toBeDefined(PointerView);
+    expect(view.firstPointer).toBeDefined(PointerView);
   });
 
   it('Slider class with point should be set', () => {
@@ -42,8 +42,8 @@ describe('View / Slider template / Test of initialization pointers', () => {
   });
 
   it('Slider pointers should be set', () => {
-    expect(slider.pointer0).toBeDefined(PointerView);
-    expect(slider.pointer1).toBeDefined(PointerView);
+    expect(slider.firstPointer).toBeDefined(PointerView);
+    expect(slider.secondPointer).toBeDefined(PointerView);
   });
 });
 
@@ -55,10 +55,10 @@ describe('View / Slider template / Test of calculations', () => {
       isRange: true,
       hasTip: true,
     });
-    view.pointer0.applyPointerPosition(20);
-    view.pointer1.applyPointerPosition(50);
-    view.pointer0.render(20);
-    view.pointer1.render(50);
+    view.firstPointer.applyPointerPosition(20);
+    view.secondPointer.applyPointerPosition(50);
+    view.firstPointer.render(20);
+    view.secondPointer.render(50);
   });
 
   it('Test of set data attribute', () => {
@@ -68,7 +68,7 @@ describe('View / Slider template / Test of calculations', () => {
 
   it('Test of get clear', () => {
     view.getClear();
-    expect(view.pointer0).toBeNull();
-    expect(view.pointer1).toBeNull();
+    expect(view.firstPointer).toBeNull();
+    expect(view.secondPointer).toBeNull();
   });
 });
