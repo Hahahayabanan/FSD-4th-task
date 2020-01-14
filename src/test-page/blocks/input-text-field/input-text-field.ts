@@ -1,5 +1,5 @@
 import Slider from '../slider/slider';
-import { EventObserver } from '../../../EventObserver/EventObserver';
+import { EventObserver } from '../../../plugin/EventObserver/EventObserver';
 
 class InputTextField {
   public $inputField: JQuery<Object>;

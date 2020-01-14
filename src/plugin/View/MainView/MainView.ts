@@ -1,8 +1,8 @@
-import { PointerView } from './PointerView';
-import { EventObserver } from '../EventObserver/EventObserver';
-import { Attributes } from '../helpers/interfaces';
-import { createNode } from './utilities';
-import styleClasses from './styleClasses';
+import { PointerView } from '../PointerView/PointerView';
+import { EventObserver } from '../../EventObserver/EventObserver';
+import { Attributes } from '../../helpers/interfaces';
+import { createNode } from '../utilities';
+import styleClasses from '../styleClasses';
 
 class MainView {
   public sliderHTML: HTMLElement;

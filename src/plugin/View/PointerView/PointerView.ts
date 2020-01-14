@@ -1,8 +1,8 @@
-import { TipView } from './TipView';
-import { EventObserver } from '../EventObserver/EventObserver';
-import { MouseSettings } from '../helpers/interfaces';
-import { createNode } from './utilities';
-import styleClasses from './styleClasses';
+import { TipView } from '../TipView/TipView';
+import { EventObserver } from '../../EventObserver/EventObserver';
+import { MouseSettings } from '../../helpers/interfaces';
+import { createNode } from '../utilities';
+import styleClasses from '../styleClasses';
 
 class PointerView {
   private moveSettings: MouseSettings;

@@ -1,4 +1,4 @@
-import { MainView } from '../View/MainView';
+import { MainView } from '../View/MainView/MainView';
 import { Model } from '../Model/Model';
 import ISliderSettings from '../Model/ISliderSettings';
 

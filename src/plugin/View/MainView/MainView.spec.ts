@@ -1,6 +1,6 @@
 import { MainView } from './MainView';
-import { PointerView } from './PointerView';
-import styleClasses from './styleClasses';
+import { PointerView } from '../PointerView/PointerView';
+import styleClasses from '../styleClasses';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 

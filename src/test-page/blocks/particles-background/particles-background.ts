@@ -72,24 +72,6 @@ class ParticlesBackground {
     requestAnimationFrame(this.loop.bind(this));
   }
 
-  setBackgroundProperties(newProperties: ParticleProperties) {
-    Object.keys(newProperties).forEach(key => {
-      const value = newProperties[key];
-      switch (key) {
-        case 'bgWidth' || 'bgHeight':
-          if (value > 0) this.particleProperties[key] = value;
-          break;
-        case 'count':
-          if (value > 0 && value < 500) {
-            this.particleProperties[key] = value;
-            this.initParticles();
-          }
-          break;
-        default:
-      }
-    });
-  }
-
   setParticleProperties(newProperties: ParticleProperties) {
     this.particles.forEach((particle: Particle) => {
       particle.setProperties(newProperties);

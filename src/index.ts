@@ -1,5 +1,6 @@
 import './test-page/index';
 
+
 function importAll(resolve: any) {
   resolve.keys().forEach(resolve);
 }

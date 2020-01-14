@@ -1,5 +1,5 @@
-import styleClasses from './styleClasses';
-import { createNode } from './utilities';
+import styleClasses from '../styleClasses';
+import { createNode } from '../utilities';
 
 class TipView {
   public tipHTML: HTMLElement;

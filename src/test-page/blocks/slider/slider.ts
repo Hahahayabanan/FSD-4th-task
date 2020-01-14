@@ -1,5 +1,5 @@
-import '../../../slider';
-import ISliderSettings from '../../../Model/ISliderSettings';
+import '../../../plugin/slider';
+import ISliderSettings from '../../../plugin/Model/ISliderSettings';
 
 class Slider {
   public $slider: JQuery<Object>;
