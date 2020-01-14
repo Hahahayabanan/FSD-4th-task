@@ -76,8 +76,8 @@ describe('Model / Test getters and setters', () => {
   });
 
   it('Should coincide set values \'from and to\'', () => {
-    model.setSettings({ isRange: true, from: 35 });
-    expect(model.getSettings().from).toEqual(35);
+    model.setSettings({ isRange: true, from: 20 });
+    expect(model.getSettings().from).toEqual(20);
     model.setSettings({ to: 55 });
     expect(model.getSettings().to).toEqual(55);
   });

@@ -1,14 +1,14 @@
 import bind from 'bind-decorator';
 import { PointerView } from '../PointerView/PointerView';
+import { PathView } from '../PathView/PathView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { Attributes } from '../../helpers/interfaces';
-import { createNode } from '../utilities';
 import styleClasses from '../styleClasses';
 
 class MainView {
   public sliderElement: HTMLElement;
 
-  public pathElement: HTMLElement;
+  public path: PathView;
 
   public firstPointer: PointerView = null;
 
@@ -21,8 +21,6 @@ class MainView {
   public hasLine: boolean = true;
 
   public isRange: boolean = false;
-
-  public lineElement: HTMLElement;
 
   public lastPointerMoved: PointerView = null;
 
@@ -46,7 +44,6 @@ class MainView {
     this.lastPointerMoved = this.firstPointer;
 
     this.createTemplate();
-    this.bindEventListeners();
     this.addObservers();
   }
 
@@ -60,11 +57,11 @@ class MainView {
 
   @bind
   setPointerPosition(data: {
-    first: number,
-    second: number,
-    firstTipValue: number,
-    secondTipValue: number,
-    attributes: Attributes,
+    first?: number,
+    second?: number,
+    firstTipValue?: number,
+    secondTipValue?: number,
+    attributes?: Attributes,
   }) {
     const {
       first, second, firstTipValue, secondTipValue, attributes,
@@ -76,7 +73,7 @@ class MainView {
       this.secondPointer.applyPointerPosition(second);
       this.secondPointer.updateTipValue(secondTipValue);
     }
-    if (this.hasLine) this.updateLine();
+    this.path.updateLine();
 
     this.setDataAttributes(attributes);
   }
@@ -104,7 +101,6 @@ class MainView {
 
     this.getClear();
     this.createTemplate();
-    this.bindEventListeners();
     this.addObservers();
     this.setDataAttributes(attributes);
   }
@@ -117,7 +113,7 @@ class MainView {
     );
     this.firstPointer = null;
     this.secondPointer = null;
-    this.pathElement = null;
+    this.path = null;
     this.sliderElement.innerHTML = '';
   }
 
@@ -130,70 +126,24 @@ class MainView {
     this.sliderElement.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
-    this.createLine();
+    this.path.setPointers(this.firstPointer, this.secondPointer);
     this.setOrientationClass();
     this.createTip();
-    this.sliderElement.append(this.pathElement);
+    this.sliderElement.append(this.path.pathElement);
   }
 
   private createPath() {
-    this.pathElement = createNode('div', styleClasses.PATH);
-  }
-
-  private createLine() {
-    if (this.hasLine) {
-      this.lineElement = createNode('div', styleClasses.LINE);
-      this.pathElement.prepend(this.lineElement);
-    }
+    this.path = new PathView({
+      isVertical: this.isVertical,
+      hasLine: this.hasLine,
+    });
   }
 
   private createPointers() {
-    this.firstPointer = new PointerView(this.pathElement, this.isVertical);
+    this.firstPointer = new PointerView(this.path.pathElement, this.isVertical);
     if (this.isRange) {
-      this.secondPointer = new PointerView(this.pathElement, this.isVertical);
+      this.secondPointer = new PointerView(this.path.pathElement, this.isVertical);
     }
-  }
-
-  private bindEventListeners() {
-    this.pathElement.addEventListener('mousedown', this.handlePathElementMouseDown);
-  }
-
-  @bind
-  private handlePathElementMouseDown(event: MouseEvent) {
-    event.preventDefault();
-    const curTarget: HTMLElement = event.target as HTMLElement;
-
-    const isValidClick: boolean = curTarget.className === styleClasses.PATH
-      || curTarget.className === styleClasses.LINE;
-    if (!isValidClick) return;
-    const newLeft: number = this.isVertical
-      ? event.clientY - this.pathElement.getBoundingClientRect().top
-      : event.clientX - this.pathElement.getBoundingClientRect().left;
-
-    if (this.isRange) {
-      const midpointBetweenPoints = this.getMidpointBetweenPointers();
-      if (newLeft < midpointBetweenPoints) this.firstPointer.dispatchPointerPosition(newLeft);
-      if (newLeft > midpointBetweenPoints) this.secondPointer.dispatchPointerPosition(newLeft);
-    } else {
-      this.firstPointer.dispatchPointerPosition(newLeft);
-    }
-  }
-
-  private updateLine() {
-    const pos0 = this.firstPointer.curPos;
-    if (this.isVertical) {
-      this.lineElement.style.top = this.isRange ? `${pos0}%` : '0px';
-      this.lineElement.style.height = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
-    } else {
-      this.lineElement.style.left = this.isRange ? `${pos0}%` : '0px';
-      this.lineElement.style.width = this.isRange ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
-    }
-  }
-
-  private getMidpointBetweenPointers() {
-    const pos0 = this.firstPointer.getCurPosInPixels();
-    const pos1 = this.secondPointer.getCurPosInPixels();
-    return (pos1 - pos0) / 2 + pos0;
   }
 
   @bind

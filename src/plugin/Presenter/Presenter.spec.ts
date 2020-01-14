@@ -60,7 +60,7 @@ describe('Presenter / Test initialization options', () => {
   });
 
   it('Should coincide constructor set values on range line', () => {
-    expect(presenter.view.lineElement.style.left).toEqual(
+    expect(presenter.view.path.lineElement.style.left).toEqual(
       presenter.view.firstPointer.pointerElement.style.left,
     );
   });
