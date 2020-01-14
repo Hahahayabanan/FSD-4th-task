@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import { MainView } from '../View/MainView/MainView';
 import { Model } from '../Model/Model';
 import ISliderSettings from '../Model/ISliderSettings';
@@ -20,25 +21,21 @@ class Presenter {
     });
     this.model = new Model(options);
 
-    this.getSettings = this.getSettings.bind(this);
-    this.setSettings = this.setSettings.bind(this);
-    this.callbackOnUpdate = this.callbackOnUpdate.bind(this);
-    this.updateModelValue = this.updateModelValue.bind(this);
-    this.updateViewSettings = this.updateViewSettings.bind(this);
-    this.updateViewPointer = this.updateViewPointer.bind(this);
-
     this.addObservers();
     this.setSettings({});
   }
 
+  @bind
   getSettings() {
     return this.model.getSettings();
   }
 
+  @bind
   setSettings(options: ISliderSettings) {
     this.model.applySettings(options);
   }
 
+  @bind
   callbackOnUpdate(fn: Function) {
     this.model.settingsObserver.subscribe(() => fn(this.model.getSettings()));
   }
@@ -49,6 +46,7 @@ class Presenter {
     this.model.valuesObserver.subscribe(this.updateViewPointer);
   }
 
+  @bind
   private updateViewPointer(data: {
     from: number;
     to: number;
@@ -68,6 +66,7 @@ class Presenter {
     });
   }
 
+  @bind
   private updateViewSettings(data: ISliderSettings) {
     const {
       isRange, hasTip, hasLine, isVertical,
@@ -82,6 +81,7 @@ class Presenter {
     });
   }
 
+  @bind
   private updateModelValue(data: {
     position: number,
     pointerThatChanged: string,

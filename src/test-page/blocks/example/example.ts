@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Slider from '../slider/slider';
 import ControlPanel from '../control-panel/control-panel';
 import ISliderSettings from '../../../plugin/Model/ISliderSettings';
@@ -35,10 +36,6 @@ class Example {
   init() {
     this.slider = new Slider(this.$example, this.parameters);
     this.controlPanel = new ControlPanel(this.$example, this.slider);
-
-    this.changeParticlesSpeed = this.changeParticlesSpeed.bind(this);
-    this.changeParticlesSize = this.changeParticlesSize.bind(this);
-    this.changeParticlesColor = this.changeParticlesColor.bind(this);
   }
 
   initBackgroundChanging() {
@@ -59,7 +56,8 @@ class Example {
     }
   }
 
-  changeParticlesColor() {
+  @bind
+  private changeParticlesColor() {
     const hue = this.controlPanel.textFields.from.getValue() as number;
     this.particlesColor.hue = hue;
     if (hue >= 0 && hue <= 360) {
@@ -69,12 +67,14 @@ class Example {
     }
   }
 
-  changeParticlesSpeed() {
+  @bind
+  private changeParticlesSpeed() {
     const speed: number = this.controlPanel.textFields.from.getValue() as number;
     particlesBackgrounds[0].setParticleProperties({ velocityModifier: speed });
   }
 
-  changeParticlesSize() {
+  @bind
+  private changeParticlesSize() {
     const size: number = this.controlPanel.textFields.from.getValue() as number;
     particlesBackgrounds[0].setParticleProperties({ radiusModifier: size });
   }

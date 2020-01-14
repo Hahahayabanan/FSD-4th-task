@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import { PointerView } from '../PointerView/PointerView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { Attributes } from '../../helpers/interfaces';
@@ -44,10 +45,6 @@ class MainView {
     this.isRange = isRange;
     this.lastPointerMoved = this.firstPointer;
 
-    this.handlepathElementMouseDown = this.handlepathElementMouseDown.bind(this);
-    this.setPointerPosition = this.setPointerPosition.bind(this);
-    this.dispatchPointerPosition = this.dispatchPointerPosition.bind(this);
-
     this.createTemplate();
     this.bindEventListeners();
     this.addObservers();
@@ -61,6 +58,7 @@ class MainView {
     }
   }
 
+  @bind
   setPointerPosition(data: {
     first: number,
     second: number,
@@ -157,10 +155,11 @@ class MainView {
   }
 
   private bindEventListeners() {
-    this.pathElement.addEventListener('mousedown', this.handlepathElementMouseDown);
+    this.pathElement.addEventListener('mousedown', this.handlePathElementMouseDown);
   }
 
-  private handlepathElementMouseDown(event: MouseEvent) {
+  @bind
+  private handlePathElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     const curTarget: HTMLElement = event.target as HTMLElement;
 
@@ -197,6 +196,7 @@ class MainView {
     return (pos1 - pos0) / 2 + pos0;
   }
 
+  @bind
   private dispatchPointerPosition(data: { position: number, pointerToUpdate: PointerView }) {
     const { position, pointerToUpdate } = data;
     this.updateZIndex(pointerToUpdate);
@@ -224,7 +224,7 @@ class MainView {
 
   private updateZIndex(pointer: PointerView) {
     const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED);
-    if (!wasPointerMoved && this.isRange) {
+    if (wasPointerMoved === -1 && this.isRange) {
       switch (pointer) {
         case this.firstPointer:
           this.secondPointer.removeClass(styleClasses.POINTER_SELECTED);

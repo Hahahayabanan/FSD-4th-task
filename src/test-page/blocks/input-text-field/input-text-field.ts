@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Slider from '../slider/slider';
 import { EventObserver } from '../../../plugin/EventObserver/EventObserver';
 
@@ -22,10 +23,7 @@ class InputTextField {
   initInputField($container: JQuery<Object>) {
     this.$inputFieldBlock = $container.find('.js-input-text-field');
     this.$inputField = $container.find('.js-input-text-field__input');
-
     this.responsibleProperty = this.$inputField.attr('name');
-    this.handleInputFieldChange = this.handleInputFieldChange.bind(this);
-
     this.updateValue();
   }
 
@@ -60,6 +58,7 @@ class InputTextField {
     this.$inputField.on('change', this.handleInputFieldChange);
   }
 
+  @bind
   private handleInputFieldChange() {
     this.slider.setPropertyValue(this.responsibleProperty, this.getValue());
     this.updateValue();

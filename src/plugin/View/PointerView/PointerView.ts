@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { MouseSettings } from '../../helpers/interfaces';
@@ -24,10 +25,6 @@ class PointerView {
   constructor(pathElement: HTMLElement, isVertical?: boolean) {
     this.isVertical = isVertical;
     this.pathElement = pathElement;
-
-    this.handlepointerElementMouseDown = this.handlepointerElementMouseDown.bind(this);
-    this.handleDocumentMouseMove = this.handleDocumentMouseMove.bind(this);
-    this.handleDocumentMouseUp = this.handleDocumentMouseUp.bind(this);
 
     this.createTemplate();
     this.bindEventListeners();
@@ -110,11 +107,12 @@ class PointerView {
   }
 
   private bindEventListeners() {
-    this.pointerElement.addEventListener('mousedown', this.handlepointerElementMouseDown);
-    this.pointerElement.addEventListener('dragstart', this.handlepointerElementDragStart);
+    this.pointerElement.addEventListener('mousedown', this.handlePointerElementMouseDown);
+    this.pointerElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  private handlepointerElementMouseDown(event: MouseEvent) {
+  @bind
+  private handlePointerElementMouseDown(event: MouseEvent) {
     event.preventDefault();
     this.endPos = this.curPos;
 
@@ -127,6 +125,7 @@ class PointerView {
     document.addEventListener('mouseup', this.handleDocumentMouseUp);
   }
 
+  @bind
   private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     const { mouseX, mouseY } = this.moveSettings;
@@ -138,12 +137,13 @@ class PointerView {
     this.dispatchPointerPosition(newCurPos);
   }
 
+  @bind
   private handleDocumentMouseUp() {
     document.removeEventListener('mouseup', this.handleDocumentMouseUp);
     document.removeEventListener('mousemove', this.handleDocumentMouseMove);
   }
 
-  private handlepointerElementDragStart() {
+  private handlePointerElementDragStart() {
     return false;
   }
 }

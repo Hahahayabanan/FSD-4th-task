@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Slider from '../slider/slider';
 
 class Checkbox {
@@ -17,8 +18,6 @@ class Checkbox {
   initCheckbox($container: JQuery<Object>) {
     this.$checkbox = $container.find('.js-checkbox__input');
     this.responsibleProperty = this.$checkbox.attr('name');
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-    this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
     this.toggleChecked(this.slider.getProperties()[this.responsibleProperty]);
   }
 
@@ -43,10 +42,12 @@ class Checkbox {
     this.$checkbox.on('click', this.handleCheckboxClick);
   }
 
+  @bind
   private handleCheckboxChange() {
     this.slider.setPropertyValue(this.responsibleProperty, this.isChecked());
   }
 
+  @bind
   private handleCheckboxClick() {
     if (this.isChecked()) {
       this.$checkbox.removeClass('checkbox__input_unchecked');

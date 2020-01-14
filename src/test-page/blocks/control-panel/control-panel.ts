@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Checkbox from '../checkbox/checkbox';
 import InputTextField from '../input-text-field/input-text-field';
 import Slider from '../slider/slider';
@@ -25,8 +26,6 @@ class ControlPanel {
 
   initControlPanel($container: JQuery<Object>) {
     this.$controlPanel = $container.find('.js-control-panel');
-    this.handleIsRangeCheckboxChange = this.handleIsRangeCheckboxChange.bind(this);
-    this.handleSliderChangePointer = this.handleSliderChangePointer.bind(this);
     this.initCheckboxes();
     this.initInputFields();
     this.bindEventListeners();
@@ -72,6 +71,7 @@ class ControlPanel {
     this.slider.getElement().on('changePointer', this.handleSliderChangePointer);
   }
 
+  @bind
   private handleSliderChangePointer() {
     if (this.textFields.from && this.textFields.to) {
       this.textFields.from.updateValue();
@@ -79,6 +79,7 @@ class ControlPanel {
     }
   }
 
+  @bind
   private handleIsRangeCheckboxChange() {
     this.toggleValueFields();
   }

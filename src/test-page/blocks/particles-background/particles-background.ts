@@ -1,3 +1,4 @@
+import bind from 'bind-decorator';
 import Particle from './Particle';
 import { ParticleProperties } from '../../helpers/interfaces';
 import defaultProperties from './defaultProperties';
@@ -25,8 +26,6 @@ class ParticlesBackground {
     this.particleProperties.bgWidth = this.canvas.width;
     this.particleProperties.bgHeight = this.canvas.height;
 
-    this.handleWindowResize = this.handleWindowResize.bind(this);
-
     this.bindEventListeners();
     this.initParticles();
     this.loop();
@@ -43,6 +42,7 @@ class ParticlesBackground {
     window.addEventListener('resize', this.handleWindowResize);
   }
 
+  @bind
   handleWindowResize() {
     this.canvas.width = this.canvas.parentElement.getBoundingClientRect().width;
     this.canvas.height = this.canvas.parentElement.getBoundingClientRect().height;
