@@ -14,6 +14,7 @@ declare global {
 }
 
 (function initialization($: JQueryStatic) {
+  // eslint-disable-next-line no-param-reassign
   $.fn.HYBSlider = function getStart(options?, otherOptions?) {
     return this.map((i: number, htmlElem: HTMLElement) => {
       if (typeof options === 'object' || !options) {
