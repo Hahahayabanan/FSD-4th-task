@@ -103,6 +103,7 @@
   "dependencies": {
     "@types/jsdom": "^12.2.4",
     "autoprefixer": "^9.7.3",
+    "bind-decorator": "^1.0.11",
     "core-js": "^3.6.4",
     "eslint-utils": "^1.4.3",
     "gh-pages": "^2.2.0",
