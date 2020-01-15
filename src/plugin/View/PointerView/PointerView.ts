@@ -16,14 +16,11 @@ class PointerView {
 
   public startPosition: number = null;
 
-  public isVertical: boolean = false;
-
   public tip: TipView;
 
   public observer: EventObserver = new EventObserver();
 
-  constructor(pathElement: HTMLElement, isVertical?: boolean) {
-    this.isVertical = isVertical;
+  constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
 
     this.createTemplate();
@@ -39,8 +36,12 @@ class PointerView {
     this.tip = new TipView(this.pointerElement);
   }
 
+  checkIsVertical() {
+    return this.pathElement.classList.contains(styleClasses.SLIDER_PATH_VERTICAL);
+  }
+
   getPathLength() {
-    const pathLength: number = this.isVertical
+    const pathLength: number = this.checkIsVertical()
       ? this.pathElement.getBoundingClientRect().height
         || parseInt(this.pathElement.style.height, 10)
       : this.pathElement.getBoundingClientRect().width
@@ -96,7 +97,7 @@ class PointerView {
   }
 
   render(newPos: number) {
-    const newCssLeftOrTop: string = this.isVertical
+    const newCssLeftOrTop: string = this.checkIsVertical()
       ? (this.pointerElement.style.top = `${newPos}%`)
       : (this.pointerElement.style.left = `${newPos}%`);
     return newCssLeftOrTop;
@@ -130,7 +131,7 @@ class PointerView {
     event.preventDefault();
     const { mouseX, mouseY } = this.mousePosition;
     const startPositionInPixels = this.calculateToPixels(this.startPosition);
-    const newCurrentPosition: number = this.isVertical
+    const newCurrentPosition: number = this.checkIsVertical()
       ? startPositionInPixels - mouseY + event.clientY
       : startPositionInPixels - mouseX + event.clientX;
 

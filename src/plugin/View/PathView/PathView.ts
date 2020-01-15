@@ -8,30 +8,16 @@ class PathView {
 
   public pathElement: HTMLElement;
 
-  public isVertical: boolean = false;
-
-  public hasLine: boolean = true;
-
   public firstPointer: PointerView;
 
   public secondPointer: PointerView;
 
-  constructor(options: {
-    isVertical: boolean,
-    hasLine: boolean,
-  }) {
-    const {
-      isVertical, hasLine
-    } = options;
-    this.isVertical = isVertical;
-    this.hasLine = hasLine;
-
+  constructor() {
     this.init();
   }
 
   init() {
     this.createPath();
-    this.createLine();
     this.bindEventListeners();
   }
 
@@ -39,10 +25,23 @@ class PathView {
     this.pathElement = createNode('div', styleClasses.PATH);
   }
 
-  createLine() {
-    if (this.hasLine) {
-      this.lineElement = createNode('div', styleClasses.LINE);
-      this.pathElement.prepend(this.lineElement);
+  toggleLine(hasLine: boolean) {
+    if (hasLine) {
+      if (!this.lineElement) {
+        this.lineElement = createNode('div', styleClasses.LINE);
+        this.pathElement.prepend(this.lineElement);
+      }
+    } else if (this.lineElement) {
+      this.lineElement.remove();
+      this.lineElement = null;
+    }
+  }
+
+  toggleOrientationClass(isVertical: boolean) {
+    if (isVertical) {
+      this.pathElement.classList.add(styleClasses.SLIDER_PATH_VERTICAL);
+    } else {
+      this.pathElement.classList.remove(styleClasses.SLIDER_PATH_VERTICAL);
     }
   }
 
@@ -53,8 +52,9 @@ class PathView {
 
   updateLine() {
     if (this.lineElement) {
+      this.lineElement.removeAttribute('style');
       const firstPointerPosition = this.firstPointer.currentPosition;
-      if (this.isVertical) {
+      if (this.checkIsVertical()) {
         this.lineElement.style.top = this.secondPointer ? `${firstPointerPosition}%` : '0%';
         this.lineElement.style.height = this.secondPointer
           ? `${this.secondPointer.currentPosition - firstPointerPosition}%`
@@ -70,6 +70,10 @@ class PathView {
     }
   }
 
+  checkIsVertical() {
+    return this.pathElement.classList.contains(styleClasses.SLIDER_PATH_VERTICAL);
+  }
+
   private bindEventListeners() {
     this.pathElement.addEventListener('mousedown', this.handlePathElementMouseDown);
   }
@@ -82,7 +86,8 @@ class PathView {
     const isValidClick: boolean = currentTarget.className === styleClasses.PATH
       || currentTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
-    const newLeft: number = this.isVertical
+
+    const newLeft: number = this.checkIsVertical()
       ? event.clientY - this.pathElement.getBoundingClientRect().top
       : event.clientX - this.pathElement.getBoundingClientRect().left;
 

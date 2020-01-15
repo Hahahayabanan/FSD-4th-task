@@ -7,7 +7,13 @@ document.body.innerHTML = '<div id="test" class="slider"></div>';
 const shadowSlider = document.querySelector('#test') as HTMLElement;
 
 describe('View / Slider template / Test of initialization parameters', () => {
-  const view: MainView = new MainView({ rootElem: shadowSlider });
+  const view: MainView = new MainView({
+    rootElem: shadowSlider,
+    isRange: false,
+    isVertical: false,
+    hasLine: false,
+    hasTip: false,
+  });
 
   beforeEach(() => {
     view.update({
@@ -29,16 +35,15 @@ describe('View / Slider template / Test of initialization parameters', () => {
   it('Slider class vertical should be set', () => {
     expect(view.sliderElement).toHaveClass(styleClasses.SLIDER_VERTICAL);
   });
-
-  it('Slider should be vertical', () => {
-    expect(view.isVertical).toBeTruthy();
-  });
 });
 
 describe('View / Slider template / Test of initialization pointers', () => {
   const slider = new MainView({
     rootElem: shadowSlider,
     isRange: true,
+    isVertical: false,
+    hasLine: false,
+    hasTip: false,
   });
 
   it('Slider pointers should be set', () => {
@@ -48,7 +53,13 @@ describe('View / Slider template / Test of initialization pointers', () => {
 });
 
 describe('View / Slider template / Test of calculations', () => {
-  const view: MainView = new MainView({ rootElem: shadowSlider });
+  const view: MainView = new MainView({
+    rootElem: shadowSlider,
+    isRange: false,
+    isVertical: false,
+    hasLine: false,
+    hasTip: false,
+  });
 
   beforeEach(() => {
     view.update({
@@ -65,10 +76,42 @@ describe('View / Slider template / Test of calculations', () => {
     view.setDataAttributes({ from: 99 });
     expect(view.sliderElement.dataset.from).toEqual('99');
   });
+});
 
-  it('Test of get clear', () => {
-    view.getClear();
-    expect(view.firstPointer).toBeNull();
-    expect(view.secondPointer).toBeNull();
+describe('View / Slider template / Test of update', () => {
+  const view: MainView = new MainView({
+    rootElem: shadowSlider,
+    isRange: false,
+    isVertical: false,
+    hasLine: false,
+    hasTip: false,
+  });
+
+  it('Test of set range', () => {
+    view.update({
+      isRange: true,
+    });
+    expect(view.secondPointer).toBeTruthy();
+  });
+
+  it('Test of set range', () => {
+    view.update({
+      isVertical: true,
+    });
+    expect(view.sliderElement.classList.contains(styleClasses.SLIDER_VERTICAL)).toBeTrue();
+  });
+
+  it('Test of set range', () => {
+    view.update({
+      hasLine: true,
+    });
+    expect(view.path.lineElement).toBeTruthy();
+  });
+
+  it('Test of set range', () => {
+    view.update({
+      hasTip: true,
+    });
+    expect(view.firstPointer.tip).toBeTruthy();
   });
 });

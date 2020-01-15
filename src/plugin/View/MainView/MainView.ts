@@ -14,45 +14,26 @@ class MainView {
 
   public secondPointer: PointerView = null;
 
-  public isVertical: boolean = false;
-
-  public hasTip: boolean = false;
-
-  public hasLine: boolean = true;
-
-  public isRange: boolean = false;
-
-  public lastPointerMoved: PointerView = null;
+  public lastPointerMoved: PointerView = this.firstPointer;
 
   public observer: EventObserver = new EventObserver();
 
   constructor(options: {
     rootElem: HTMLElement;
-    isVertical?: boolean;
-    hasTip?: boolean;
-    isRange?: boolean;
-    hasLine?: boolean;
+    isVertical: boolean;
+    hasTip: boolean;
+    isRange: boolean;
+    hasLine: boolean;
   }) {
     const {
-      rootElem, isVertical, hasTip, isRange, hasLine,
+      isVertical, hasTip, isRange, hasLine,
     } = options;
-    this.sliderElement = rootElem;
-    this.isVertical = isVertical;
-    this.hasTip = hasTip;
-    this.hasLine = hasLine;
-    this.isRange = isRange;
-    this.lastPointerMoved = this.firstPointer;
 
-    this.createTemplate();
+    this.createTemplate(options);
     this.addObservers();
-  }
-
-  createTip() {
-    if (this.hasTip) {
-      this.firstPointer.createTip();
-      this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
-      if (this.isRange) this.secondPointer.createTip();
-    }
+    this.update({
+      isRange, isVertical, hasLine, hasTip,
+    });
   }
 
   @bind
@@ -64,12 +45,12 @@ class MainView {
     attributes?: Attributes,
   }) {
     const {
-      first, second, firstTipValue, secondTipValue, attributes,
+      first, second, firstTipValue, secondTipValue, attributes
     } = data;
     this.firstPointer.applyPointerPosition(first);
     this.firstPointer.updateTipValue(firstTipValue);
 
-    if (this.isRange) {
+    if (this.secondPointer) {
       this.secondPointer.applyPointerPosition(second);
       this.secondPointer.updateTipValue(secondTipValue);
     }
@@ -94,55 +75,87 @@ class MainView {
     const {
       isVertical, hasTip, hasLine, isRange, attributes,
     } = data;
-    if (isVertical !== undefined) this.isVertical = isVertical;
-    if (hasTip !== undefined) this.hasTip = hasTip;
-    if (hasLine !== undefined) this.hasLine = hasLine;
-    if (isRange !== undefined) this.isRange = isRange;
+    if (isVertical !== undefined) {
+      this.toggleOrientationClass(isVertical);
+      this.path.updateLine();
+    }
+    if (hasTip !== undefined) {
+      this.toggleTip(hasTip);
+    }
+    if (hasLine !== undefined) {
+      this.path.toggleLine(hasLine);
+      this.path.updateLine();
+    }
+    if (isRange !== undefined) {
+      this.toggleRange(isRange);
+      this.path.setPointers(this.firstPointer, this.secondPointer);
+      this.path.updateLine();
+    }
 
-    this.getClear();
-    this.createTemplate();
-    this.addObservers();
     this.setDataAttributes(attributes);
-  }
-
-  getClear() {
-    this.sliderElement.classList.remove(
-      styleClasses.SLIDER,
-      styleClasses.SLIDER_VERTICAL,
-      styleClasses.SLIDER_WITH_TIP,
-    );
-    this.firstPointer = null;
-    this.secondPointer = null;
-    this.path = null;
-    this.sliderElement.innerHTML = '';
   }
 
   private addObservers() {
     this.firstPointer.observer.subscribe(this.dispatchPointerPosition);
-    if (this.isRange) this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
+    if (this.secondPointer) this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
   }
 
-  private createTemplate() {
+  private createTemplate(options: {
+    rootElem: HTMLElement;
+    isVertical: boolean;
+    hasTip: boolean;
+    isRange: boolean;
+    hasLine: boolean;
+  }) {
+    const { rootElem } = options;
+
+    this.sliderElement = rootElem;
     this.sliderElement.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
     this.path.setPointers(this.firstPointer, this.secondPointer);
-    this.setOrientationClass();
-    this.createTip();
     this.sliderElement.append(this.path.pathElement);
   }
 
+  private toggleTip(hasTip: boolean) {
+    if (hasTip) {
+      if (!this.firstPointer.tip) {
+        this.firstPointer.createTip();
+        this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
+        if (this.secondPointer) this.secondPointer.createTip();
+      }
+    } else {
+      this.sliderElement.classList.remove(styleClasses.SLIDER_WITH_TIP);
+      this.firstPointer.pointerElement.innerHTML = '';
+      this.firstPointer.tip = null;
+      if (this.secondPointer) {
+        this.secondPointer.pointerElement.innerHTML = '';
+        this.firstPointer.tip = null;
+      }
+    }
+  }
+
+  private toggleRange(isRange: boolean) {
+    if (isRange) {
+      if (!this.secondPointer) {
+        this.secondPointer = new PointerView(this.path.pathElement);
+        if (this.firstPointer.tip) this.secondPointer.createTip();
+        this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
+      }
+    } else if (this.secondPointer) {
+      this.secondPointer.pointerElement.remove();
+      this.secondPointer = null;
+    }
+  }
+
   private createPath() {
-    this.path = new PathView({
-      isVertical: this.isVertical,
-      hasLine: this.hasLine,
-    });
+    this.path = new PathView();
   }
 
   private createPointers() {
-    this.firstPointer = new PointerView(this.path.pathElement, this.isVertical);
-    if (this.isRange) {
-      this.secondPointer = new PointerView(this.path.pathElement, this.isVertical);
+    this.firstPointer = new PointerView(this.path.pathElement);
+    if (this.secondPointer) {
+      this.secondPointer = new PointerView(this.path.pathElement);
     }
   }
 
@@ -160,21 +173,22 @@ class MainView {
     switch (pointer) {
       case this.firstPointer: return 'first';
       case this.secondPointer: return 'second';
-      default:
+      default: return null;
     }
   }
 
-  private setOrientationClass() {
-    if (this.isVertical) {
+  private toggleOrientationClass(isVertical: boolean) {
+    if (isVertical) {
       this.sliderElement.classList.add(styleClasses.SLIDER_VERTICAL);
     } else {
       this.sliderElement.classList.remove(styleClasses.SLIDER_VERTICAL);
     }
+    this.path.toggleOrientationClass(isVertical);
   }
 
   private updateZIndex(pointer: PointerView) {
     const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED);
-    if (wasPointerMoved === -1 && this.isRange) {
+    if (wasPointerMoved === -1 && this.secondPointer) {
       switch (pointer) {
         case this.firstPointer:
           this.secondPointer.removeClass(styleClasses.POINTER_SELECTED);

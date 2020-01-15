@@ -80,7 +80,6 @@ describe('Presenter / Test methods', () => {
 
   it('Update view with new settings', () => {
     presenter.setSettings({ isRange: false, hasTip: true });
-    expect(presenter.view.isRange).toBeFalsy();
     expect(presenter.view.firstPointer.tip).toBeDefined();
     expect(presenter.view.secondPointer).toBeNull();
   });
