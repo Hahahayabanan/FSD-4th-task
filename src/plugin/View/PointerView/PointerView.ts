@@ -1,20 +1,20 @@
 import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
-import { MouseSettings } from '../../helpers/interfaces';
+import { MousePosition } from '../../helpers/interfaces';
 import { createNode } from '../utilities';
 import styleClasses from '../styleClasses';
 
 class PointerView {
-  private moveSettings: MouseSettings;
+  private mousePosition: MousePosition;
 
   public pointerElement: HTMLElement;
 
   public pathElement: HTMLElement;
 
-  public curPos: number = null;
+  public currentPosition: number = null;
 
-  public endPos: number = null;
+  public startPosition: number = null;
 
   public isVertical: boolean = false;
 
@@ -49,7 +49,7 @@ class PointerView {
   }
 
   getCurPosInPixels() {
-    return this.calculateToPixels(this.curPos);
+    return this.calculateToPixels(this.currentPosition);
   }
 
   dispatchPointerPosition(positionInPixels: number) {
@@ -60,13 +60,13 @@ class PointerView {
   }
 
   applyPointerPosition(position: number) {
-    this.curPos = position;
+    this.currentPosition = position;
 
     this.render(position);
     this.pointerElement.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
-        detail: this.curPos,
+        detail: this.currentPosition,
       }),
     );
   }
@@ -114,9 +114,9 @@ class PointerView {
   @bind
   private handlePointerElementMouseDown(event: MouseEvent) {
     event.preventDefault();
-    this.endPos = this.curPos;
+    this.startPosition = this.currentPosition;
 
-    this.moveSettings = {
+    this.mousePosition = {
       mouseX: event.clientX,
       mouseY: event.clientY,
     };
@@ -128,13 +128,13 @@ class PointerView {
   @bind
   private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
-    const { mouseX, mouseY } = this.moveSettings;
-    const endPosInPixels = this.calculateToPixels(this.endPos);
-    const newCurPos: number = this.isVertical
-      ? endPosInPixels - mouseY + event.clientY
-      : endPosInPixels - mouseX + event.clientX;
+    const { mouseX, mouseY } = this.mousePosition;
+    const startPositionInPixels = this.calculateToPixels(this.startPosition);
+    const newCurrentPosition: number = this.isVertical
+      ? startPositionInPixels - mouseY + event.clientY
+      : startPositionInPixels - mouseX + event.clientX;
 
-    this.dispatchPointerPosition(newCurPos);
+    this.dispatchPointerPosition(newCurrentPosition);
   }
 
   @bind

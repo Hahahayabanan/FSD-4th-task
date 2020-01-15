@@ -53,13 +53,19 @@ class PathView {
 
   updateLine() {
     if (this.lineElement) {
-      const pos0 = this.firstPointer.curPos;
+      const firstPointerPosition = this.firstPointer.currentPosition;
       if (this.isVertical) {
-        this.lineElement.style.top = this.secondPointer ? `${pos0}%` : '0%';
-        this.lineElement.style.height = this.secondPointer ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
+        this.lineElement.style.top = this.secondPointer ? `${firstPointerPosition}%` : '0%';
+        this.lineElement.style.height = this.secondPointer
+          ? `${this.secondPointer.currentPosition - firstPointerPosition}%`
+          : `${firstPointerPosition}%`;
       } else {
-        this.lineElement.style.left = this.secondPointer ? `${pos0}%` : '0%';
-        this.lineElement.style.width = this.secondPointer ? `${this.secondPointer.curPos - pos0}%` : `${pos0}%`;
+        this.lineElement.style.left = this.secondPointer
+          ? `${firstPointerPosition}%`
+          : '0%';
+        this.lineElement.style.width = this.secondPointer
+          ? `${this.secondPointer.currentPosition - firstPointerPosition}%`
+          : `${firstPointerPosition}%`;
       }
     }
   }
@@ -71,10 +77,10 @@ class PathView {
   @bind
   private handlePathElementMouseDown(event: MouseEvent) {
     event.preventDefault();
-    const curTarget: HTMLElement = event.target as HTMLElement;
+    const currentTarget: HTMLElement = event.target as HTMLElement;
 
-    const isValidClick: boolean = curTarget.className === styleClasses.PATH
-      || curTarget.className === styleClasses.LINE;
+    const isValidClick: boolean = currentTarget.className === styleClasses.PATH
+      || currentTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
     const newLeft: number = this.isVertical
       ? event.clientY - this.pathElement.getBoundingClientRect().top
@@ -90,9 +96,9 @@ class PathView {
   }
 
   private getMidpointBetweenPointers() {
-    const pos0 = this.firstPointer.getCurPosInPixels();
-    const pos1 = this.secondPointer.getCurPosInPixels();
-    return (pos1 - pos0) / 2 + pos0;
+    const firstPointerPosition = this.firstPointer.getCurPosInPixels();
+    const secondPointerPosition = this.secondPointer.getCurPosInPixels();
+    return (secondPointerPosition - firstPointerPosition) / 2 + firstPointerPosition;
   }
 }
 export { PathView };

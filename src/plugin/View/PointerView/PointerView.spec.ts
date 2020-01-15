@@ -16,9 +16,9 @@ describe('View / Slider Pointer / Test of setting', () => {
     expect(pointer).toBeDefined(PointerView);
   });
 
-  it('Curpos should be set in percents', () => {
+  it('currentPosition should be set in percents', () => {
     pointer.applyPointerPosition(33);
-    expect(Math.round(pointer.curPos)).toEqual(33);
+    expect(Math.round(pointer.currentPosition)).toEqual(33);
   });
 
   it('Render in pixels', () => {

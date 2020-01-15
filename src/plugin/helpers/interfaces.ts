@@ -1,18 +1,14 @@
-interface MouseSettings {
+export interface MousePosition {
   mouseX: number;
   mouseY: number;
 }
 
-interface Attributes {
+export interface Attributes {
   [key: string]: boolean | number;
 }
 
-interface ErrorType {
+export interface ErrorType {
   MIN?: string;
   MAX?: string;
   STEP?: string;
 }
-
-export {
-  MouseSettings, Attributes, ErrorType,
-};
