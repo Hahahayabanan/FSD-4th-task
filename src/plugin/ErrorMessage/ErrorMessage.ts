@@ -1,5 +1,5 @@
 import { ErrorType } from '../helpers/interfaces';
-import ISliderSettings from '../Model/ISliderSettings';
+import { ISliderSettings } from '../Model/ISliderSettings';
 
 const ErrorMessages: ErrorType = {
   MIN: 'smaller than min',

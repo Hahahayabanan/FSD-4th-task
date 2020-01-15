@@ -1,4 +1,4 @@
-import ISliderSettings from './Model/ISliderSettings';
+import { ISliderSettings } from './Model/ISliderSettings';
 import { Presenter } from './Presenter/Presenter';
 
 declare global {
@@ -34,6 +34,7 @@ declare global {
       } else {
         $.error('To call methods the slider should be initialized');
       }
+      return null;
     });
   };
 }(jQuery));

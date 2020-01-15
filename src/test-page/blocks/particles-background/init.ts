@@ -7,4 +7,4 @@ $(() => {
   });
 });
 
-export { particlesBackgrounds };
+export default particlesBackgrounds;

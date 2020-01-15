@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { MousePosition } from '../../helpers/interfaces';
-import { createNode } from '../utilities';
+import createNode from '../utilities';
 import styleClasses from '../styleClasses';
 
 class PointerView {

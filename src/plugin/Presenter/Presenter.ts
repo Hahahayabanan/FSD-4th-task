@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
 import { MainView } from '../View/MainView/MainView';
 import { Model } from '../Model/Model';
-import ISliderSettings from '../Model/ISliderSettings';
+import { ISliderSettings } from '../Model/ISliderSettings';
 
 class Presenter {
   public model: Model;

@@ -1,9 +1,10 @@
-/* eslint-disable global-require */
+const autoPrefixer = require('autoprefixer');
+const cssNano = require('cssnano');
+
 module.exports = {
   plugins: [
-    require('autoprefixer'),
-    // require('css-mqpacker'),
-    require('cssnano')({
+    autoPrefixer,
+    cssNano({
       preset: [
         'default', {
           discardComments: {
@@ -13,4 +14,4 @@ module.exports = {
       ],
     }),
   ],
-}
+};

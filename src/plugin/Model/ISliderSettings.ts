@@ -1,4 +1,4 @@
-interface ISliderSettings {
+export interface ISliderSettings {
   isRange?: boolean;
   min?: number;
   max?: number;
@@ -9,5 +9,3 @@ interface ISliderSettings {
   hasTip?: boolean;
   hasLine?: boolean;
 }
-
-export default ISliderSettings;

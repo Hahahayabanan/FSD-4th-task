@@ -1,6 +1,6 @@
 import bind from 'bind-decorator';
 import styleClasses from '../styleClasses';
-import { createNode } from '../utilities';
+import createNode from '../utilities';
 import { PointerView } from '../PointerView/PointerView';
 
 class PathView {

@@ -1,5 +1,5 @@
 import { EventObserver } from '../EventObserver/EventObserver';
-import ISliderSettings from './ISliderSettings';
+import { ISliderSettings } from './ISliderSettings';
 import defaultSettings from './defaultSettings';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
@@ -122,12 +122,14 @@ class Model {
       case 'isRange': return this.validateBoolean(value);
       case 'hasLine': return this.validateBoolean(value);
       case 'hasTip': return this.validateBoolean(value);
-      default:
+      default: return null;
     }
   }
 
   private validateNumber(value: ISliderSettings[keyof ISliderSettings]): number | null {
-    return !isNaN(parseFloat(`${value}`)) ? parseFloat(`${value}`) : null;
+    const parsedValue = parseFloat(`${value}`);
+    const isValueNaN = Number.isNaN(parsedValue);
+    return !isValueNaN ? parsedValue : null;
   }
 
   private validateBoolean(value: ISliderSettings[keyof ISliderSettings]): boolean | null {

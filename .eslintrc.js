@@ -17,6 +17,16 @@ module.exports = {
     'comma-dangle': ['error', 'only-multiline'],
     'import/extensions': [2, 'ignorePackages'],
     'consistent-return': [1],
-    'no-dupe-class-members': 'off'
+    'no-dupe-class-members': 'off',
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+   ]
   }
 };

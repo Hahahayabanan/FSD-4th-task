@@ -1,8 +1,8 @@
 import bind from 'bind-decorator';
 import Slider from '../slider/slider';
 import ControlPanel from '../control-panel/control-panel';
-import ISliderSettings from '../../../plugin/Model/ISliderSettings';
-import { particlesBackgrounds } from '../particles-background/init';
+import { ISliderSettings } from '../../../plugin/Model/ISliderSettings';
+import particlesBackgrounds from '../particles-background/init';
 
 class Example {
   public $example: JQuery<Object>;

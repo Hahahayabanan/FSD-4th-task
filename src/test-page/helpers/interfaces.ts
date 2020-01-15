@@ -1,6 +1,6 @@
 import InputTextField from '../blocks/input-text-field/input-text-field';
 
-interface ParticleProperties {
+export interface ParticleProperties {
   bgWidth?: number;
   bgHeight?: number;
   bgColor?: string;
@@ -19,8 +19,6 @@ interface ParticleProperties {
   alphaModifier?: number;
 }
 
-type TextFieldsArray = {
+export type TextFieldsArray = {
   [key: string] : InputTextField;
 };
-
-export { ParticleProperties, TextFieldsArray };
