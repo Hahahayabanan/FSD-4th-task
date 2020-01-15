@@ -8,9 +8,9 @@ class PathView {
 
   public pathElement: HTMLElement;
 
-  public firstPointer: PointerView;
+  public fromValuePointer: PointerView;
 
-  public secondPointer: PointerView;
+  public toValuePointer: PointerView;
 
   constructor() {
     this.init();
@@ -45,27 +45,27 @@ class PathView {
     }
   }
 
-  setPointers(firstPointer: PointerView, secondPointer: PointerView) {
-    this.firstPointer = firstPointer;
-    this.secondPointer = secondPointer;
+  setPointers(fromValuePointer: PointerView, toValuePointer: PointerView) {
+    this.fromValuePointer = fromValuePointer;
+    this.toValuePointer = toValuePointer;
   }
 
   updateLine() {
     if (this.lineElement) {
       this.lineElement.removeAttribute('style');
-      const firstPointerPosition = this.firstPointer.currentPosition;
+      const fromValuePointerPosition = this.fromValuePointer.currentPosition;
       if (this.checkIsVertical()) {
-        this.lineElement.style.top = this.secondPointer ? `${firstPointerPosition}%` : '0%';
-        this.lineElement.style.height = this.secondPointer
-          ? `${this.secondPointer.currentPosition - firstPointerPosition}%`
-          : `${firstPointerPosition}%`;
+        this.lineElement.style.top = this.toValuePointer ? `${fromValuePointerPosition}%` : '0%';
+        this.lineElement.style.height = this.toValuePointer
+          ? `${this.toValuePointer.currentPosition - fromValuePointerPosition}%`
+          : `${fromValuePointerPosition}%`;
       } else {
-        this.lineElement.style.left = this.secondPointer
-          ? `${firstPointerPosition}%`
+        this.lineElement.style.left = this.toValuePointer
+          ? `${fromValuePointerPosition}%`
           : '0%';
-        this.lineElement.style.width = this.secondPointer
-          ? `${this.secondPointer.currentPosition - firstPointerPosition}%`
-          : `${firstPointerPosition}%`;
+        this.lineElement.style.width = this.toValuePointer
+          ? `${this.toValuePointer.currentPosition - fromValuePointerPosition}%`
+          : `${fromValuePointerPosition}%`;
       }
     }
   }
@@ -91,19 +91,19 @@ class PathView {
       ? event.clientY - this.pathElement.getBoundingClientRect().top
       : event.clientX - this.pathElement.getBoundingClientRect().left;
 
-    if (this.secondPointer) {
+    if (this.toValuePointer) {
       const midpointBetweenPoints = this.getMidpointBetweenPointers();
-      if (newLeft < midpointBetweenPoints) this.firstPointer.dispatchPointerPosition(newLeft);
-      if (newLeft > midpointBetweenPoints) this.secondPointer.dispatchPointerPosition(newLeft);
+      if (newLeft < midpointBetweenPoints) this.fromValuePointer.dispatchPointerPosition(newLeft);
+      if (newLeft > midpointBetweenPoints) this.toValuePointer.dispatchPointerPosition(newLeft);
     } else {
-      this.firstPointer.dispatchPointerPosition(newLeft);
+      this.fromValuePointer.dispatchPointerPosition(newLeft);
     }
   }
 
   private getMidpointBetweenPointers() {
-    const firstPointerPosition = this.firstPointer.getCurPosInPixels();
-    const secondPointerPosition = this.secondPointer.getCurPosInPixels();
-    return (secondPointerPosition - firstPointerPosition) / 2 + firstPointerPosition;
+    const fromValuePointerPosition = this.fromValuePointer.getCurPosInPixels();
+    const toValuePointerPosition = this.toValuePointer.getCurPosInPixels();
+    return (toValuePointerPosition - fromValuePointerPosition) / 2 + fromValuePointerPosition;
   }
 }
 export { PathView };

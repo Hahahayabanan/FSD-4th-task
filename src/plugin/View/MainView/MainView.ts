@@ -10,11 +10,11 @@ class MainView {
 
   public path: PathView;
 
-  public firstPointer: PointerView = null;
+  public fromValuePointer: PointerView = null;
 
-  public secondPointer: PointerView = null;
+  public toValuePointer: PointerView = null;
 
-  public lastPointerMoved: PointerView = this.firstPointer;
+  public lastPointerMoved: PointerView = this.fromValuePointer;
 
   public observer: EventObserver = new EventObserver();
 
@@ -47,12 +47,12 @@ class MainView {
     const {
       first, second, firstTipValue, secondTipValue, attributes
     } = data;
-    this.firstPointer.applyPointerPosition(first);
-    this.firstPointer.updateTipValue(firstTipValue);
+    this.fromValuePointer.applyPointerPosition(first);
+    this.fromValuePointer.updateTipValue(firstTipValue);
 
-    if (this.secondPointer) {
-      this.secondPointer.applyPointerPosition(second);
-      this.secondPointer.updateTipValue(secondTipValue);
+    if (this.toValuePointer) {
+      this.toValuePointer.applyPointerPosition(second);
+      this.toValuePointer.updateTipValue(secondTipValue);
     }
     this.path.updateLine();
 
@@ -88,7 +88,7 @@ class MainView {
     }
     if (isRange !== undefined) {
       this.toggleRange(isRange);
-      this.path.setPointers(this.firstPointer, this.secondPointer);
+      this.path.setPointers(this.fromValuePointer, this.toValuePointer);
       this.path.updateLine();
     }
 
@@ -96,8 +96,8 @@ class MainView {
   }
 
   private addObservers() {
-    this.firstPointer.observer.subscribe(this.dispatchPointerPosition);
-    if (this.secondPointer) this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
+    this.fromValuePointer.observer.subscribe(this.dispatchPointerPosition);
+    if (this.toValuePointer) this.toValuePointer.observer.subscribe(this.dispatchPointerPosition);
   }
 
   private createTemplate(options: {
@@ -113,38 +113,38 @@ class MainView {
     this.sliderElement.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
-    this.path.setPointers(this.firstPointer, this.secondPointer);
+    this.path.setPointers(this.fromValuePointer, this.toValuePointer);
     this.sliderElement.append(this.path.pathElement);
   }
 
   private toggleTip(hasTip: boolean) {
     if (hasTip) {
-      if (!this.firstPointer.tip) {
-        this.firstPointer.createTip();
+      if (!this.fromValuePointer.tip) {
+        this.fromValuePointer.createTip();
         this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
-        if (this.secondPointer) this.secondPointer.createTip();
+        if (this.toValuePointer) this.toValuePointer.createTip();
       }
     } else {
       this.sliderElement.classList.remove(styleClasses.SLIDER_WITH_TIP);
-      this.firstPointer.pointerElement.innerHTML = '';
-      this.firstPointer.tip = null;
-      if (this.secondPointer) {
-        this.secondPointer.pointerElement.innerHTML = '';
-        this.firstPointer.tip = null;
+      this.fromValuePointer.pointerElement.innerHTML = '';
+      this.fromValuePointer.tip = null;
+      if (this.toValuePointer) {
+        this.toValuePointer.pointerElement.innerHTML = '';
+        this.fromValuePointer.tip = null;
       }
     }
   }
 
   private toggleRange(isRange: boolean) {
     if (isRange) {
-      if (!this.secondPointer) {
-        this.secondPointer = new PointerView(this.path.pathElement);
-        if (this.firstPointer.tip) this.secondPointer.createTip();
-        this.secondPointer.observer.subscribe(this.dispatchPointerPosition);
+      if (!this.toValuePointer) {
+        this.toValuePointer = new PointerView(this.path.pathElement);
+        if (this.fromValuePointer.tip) this.toValuePointer.createTip();
+        this.toValuePointer.observer.subscribe(this.dispatchPointerPosition);
       }
-    } else if (this.secondPointer) {
-      this.secondPointer.pointerElement.remove();
-      this.secondPointer = null;
+    } else if (this.toValuePointer) {
+      this.toValuePointer.pointerElement.remove();
+      this.toValuePointer = null;
     }
   }
 
@@ -153,9 +153,9 @@ class MainView {
   }
 
   private createPointers() {
-    this.firstPointer = new PointerView(this.path.pathElement);
-    if (this.secondPointer) {
-      this.secondPointer = new PointerView(this.path.pathElement);
+    this.fromValuePointer = new PointerView(this.path.pathElement);
+    if (this.toValuePointer) {
+      this.toValuePointer = new PointerView(this.path.pathElement);
     }
   }
 
@@ -171,8 +171,8 @@ class MainView {
 
   private checkPointerNumber(pointer: PointerView) {
     switch (pointer) {
-      case this.firstPointer: return 'first';
-      case this.secondPointer: return 'second';
+      case this.fromValuePointer: return 'first';
+      case this.toValuePointer: return 'second';
       default: return null;
     }
   }
@@ -188,13 +188,13 @@ class MainView {
 
   private updateZIndex(pointer: PointerView) {
     const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED);
-    if (wasPointerMoved === -1 && this.secondPointer) {
+    if (wasPointerMoved === -1 && this.toValuePointer) {
       switch (pointer) {
-        case this.firstPointer:
-          this.secondPointer.removeClass(styleClasses.POINTER_SELECTED);
+        case this.fromValuePointer:
+          this.toValuePointer.removeClass(styleClasses.POINTER_SELECTED);
           break;
-        case this.secondPointer:
-          this.firstPointer.removeClass(styleClasses.POINTER_SELECTED);
+        case this.toValuePointer:
+          this.fromValuePointer.removeClass(styleClasses.POINTER_SELECTED);
           break;
         default:
       }
