@@ -2,13 +2,13 @@ import { Presenter } from './Presenter';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
-const shadowSlider = document.querySelector('#test') as HTMLElement;
+const sliderElement = document.querySelector('#test') as HTMLElement;
 
-describe('Presenter / Test initialization default options', () => {
-  shadowSlider.style.cssText = 'width: 300px';
+describe('Presenter / Test of initialization default options', () => {
+  sliderElement.style.cssText = 'width: 300px';
 
-  it("Should coincide constructor set values 'from'", () => {
-    const presenter = new Presenter(shadowSlider, {
+  it('Should coincide constructor set values \'from\'', () => {
+    const presenter = new Presenter(sliderElement, {
       isRange: false,
       min: 10,
       step: 5,
@@ -18,15 +18,15 @@ describe('Presenter / Test initialization default options', () => {
     expect(presenter.getSettings().from).toEqual(55);
   });
 
-  it("Should coincide constructor values 'step'", () => {
-    const presenter = new Presenter(shadowSlider, {
+  it('Should coincide constructor values \'step\'', () => {
+    const presenter = new Presenter(sliderElement, {
       step: 5,
     });
     expect(presenter.getSettings().step).toEqual(5);
   });
 
-  it("Should coincide constructor values default 'from'", () => {
-    const presenter = new Presenter(shadowSlider, {
+  it('Should coincide constructor values default \'from\'', () => {
+    const presenter = new Presenter(sliderElement, {
       min: 10,
       max: 100,
       isRange: false,
@@ -36,9 +36,9 @@ describe('Presenter / Test initialization default options', () => {
 });
 
 describe('Presenter / Test initialization options', () => {
-  shadowSlider.style.cssText = 'width: 300px';
+  sliderElement.style.cssText = 'width: 300px';
 
-  const presenter: Presenter = new Presenter(shadowSlider, {
+  const presenter: Presenter = new Presenter(sliderElement, {
     min: 10,
     max: 100,
     step: 5,
@@ -47,15 +47,15 @@ describe('Presenter / Test initialization options', () => {
     to: 75,
   });
 
-  it("Should coincide constructor set values 'range'", () => {
+  it('Should coincide constructor set values \'range\'', () => {
     expect(presenter.getSettings().isRange).toBeTruthy();
   });
 
-  it("Should coincide constructor set values 'from'", () => {
+  it('Should coincide constructor set values \'from\'', () => {
     expect(presenter.getSettings().from).toEqual(50);
   });
 
-  it("Should coincide constructor set values 'to'", () => {
+  it('Should coincide constructor set values \'to\'', () => {
     expect(presenter.getSettings().to).toEqual(75);
   });
 
@@ -66,10 +66,10 @@ describe('Presenter / Test initialization options', () => {
   });
 });
 
-describe('Presenter / Test methods', () => {
-  shadowSlider.style.cssText = 'width: 300px';
+describe('Presenter / Test of methods', () => {
+  sliderElement.style.cssText = 'width: 300px';
 
-  const presenter = new Presenter(shadowSlider, {
+  const presenter = new Presenter(sliderElement, {
     min: 10,
     step: 5,
     max: 100,

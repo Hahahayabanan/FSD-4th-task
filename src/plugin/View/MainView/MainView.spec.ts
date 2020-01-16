@@ -1,14 +1,13 @@
 import { MainView } from './MainView';
-import { PointerView } from '../PointerView/PointerView';
 import styleClasses from '../styleClasses';
 
 document.body.innerHTML = '<div id="test" class="slider"></div>';
 
-const shadowSlider = document.querySelector('#test') as HTMLElement;
+const sliderElement = document.querySelector('#test') as HTMLElement;
 
-describe('View / Slider template / Test of initialization parameters', () => {
+describe('View / Main view / Test of initialization', () => {
   const view: MainView = new MainView({
-    rootElem: shadowSlider,
+    rootElem: sliderElement,
     isRange: false,
     isVertical: false,
     hasLine: false,
@@ -23,7 +22,7 @@ describe('View / Slider template / Test of initialization parameters', () => {
   });
 
   it('Slider pointer should be set', () => {
-    expect(view.fromValuePointer).toBeDefined(PointerView);
+    expect(view.fromValuePointer).toBeDefined();
   });
 
   it('Slider class with point should be set', () => {
@@ -37,24 +36,24 @@ describe('View / Slider template / Test of initialization parameters', () => {
   });
 });
 
-describe('View / Slider template / Test of initialization pointers', () => {
+describe('View / Main view / Test of initialization pointers', () => {
   const slider = new MainView({
-    rootElem: shadowSlider,
+    rootElem: sliderElement,
     isRange: true,
     isVertical: false,
     hasLine: false,
     hasTip: false,
   });
 
-  it('Slider pointers should be set', () => {
-    expect(slider.fromValuePointer).toBeDefined(PointerView);
-    expect(slider.toValuePointer).toBeDefined(PointerView);
+  it('Both slider pointers should be set', () => {
+    expect(slider.fromValuePointer).toBeDefined();
+    expect(slider.toValuePointer).toBeDefined();
   });
 });
 
-describe('View / Slider template / Test of calculations', () => {
+describe('View / Main view / Test of calculations', () => {
   const view: MainView = new MainView({
-    rootElem: shadowSlider,
+    rootElem: sliderElement,
     isRange: false,
     isVertical: false,
     hasLine: false,
@@ -72,46 +71,48 @@ describe('View / Slider template / Test of calculations', () => {
     view.toValuePointer.render(50);
   });
 
-  it('Test of set data attribute', () => {
-    view.setDataAttributes({ from: 99 });
+  it('Should coincide set data attributes', () => {
+    view.setDataAttributes({ from: 99, isVertical: true });
     expect(view.sliderElement.dataset.from).toEqual('99');
+    expect(view.sliderElement.dataset.isVertical).toEqual('true');
   });
 });
 
-describe('View / Slider template / Test of update', () => {
+describe('View / Main view / Test of update view', () => {
   const view: MainView = new MainView({
-    rootElem: shadowSlider,
+    rootElem: sliderElement,
     isRange: false,
     isVertical: false,
     hasLine: false,
     hasTip: false,
   });
 
-  it('Test of set range', () => {
+  it('Should coincide update value \'isRange\'', () => {
     view.update({
       isRange: true,
     });
-    expect(view.toValuePointer).toBeTruthy();
+    expect(view.toValuePointer).toBeDefined();
   });
 
-  it('Test of set range', () => {
+  it('Should coincide update value \'isVertical\'', () => {
     view.update({
       isVertical: true,
     });
     expect(view.sliderElement.classList.contains(styleClasses.SLIDER_VERTICAL)).toBeTrue();
   });
 
-  it('Test of set range', () => {
+  it('Should coincide update value \'hasLine\'', () => {
     view.update({
       hasLine: true,
     });
-    expect(view.path.lineElement).toBeTruthy();
+    expect(view.path.lineElement).toBeDefined();
   });
 
-  it('Test of set range', () => {
+  it('Should coincide update value \'hasTip\'', () => {
     view.update({
       hasTip: true,
     });
-    expect(view.fromValuePointer.tip).toBeTruthy();
+    expect(view.fromValuePointer.tip).toBeDefined();
+    expect(view.sliderElement.classList.contains(styleClasses.SLIDER_WITH_TIP)).toBeTrue();
   });
 });

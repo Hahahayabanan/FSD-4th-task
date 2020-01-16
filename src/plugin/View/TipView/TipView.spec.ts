@@ -7,11 +7,12 @@ const shadowFollower: HTMLElement = document.querySelector(
 );
 const follower = new TipView(shadowFollower);
 
-describe('View / Tip / Test of setting', () => {
-  it('Slider pointer should be set', () => {
+describe('View / Tip / Test of initializing', () => {
+  it('Tip should be defined', () => {
     expect(follower.tipElement).toHaveClass('j-plugin-slider__tip');
   });
-  it('Slider pointer value should be set', () => {
+
+  it('Tip value should coincide setting value', () => {
     follower.setValue(25);
     expect(follower.tipElement.innerHTML).toEqual('25');
   });

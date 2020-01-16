@@ -1,7 +1,7 @@
 import './slider';
 import { ISliderSettings } from './Model/ISliderSettings';
 
-describe('Slider / Test initialization', () => {
+describe('Slider / Test of initialization', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
   const shadowSlider = document.querySelector('#test') as HTMLElement;
   shadowSlider.style.cssText = 'width: 300px';
@@ -27,7 +27,7 @@ describe('Slider / Test initialization', () => {
   });
 });
 
-describe('Slider / Test empty initialization', () => {
+describe('Slider / Test of empty initialization', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
   const shadowSlider = document.querySelector('#test') as HTMLElement;
   shadowSlider.style.cssText = 'width: 300px';
@@ -35,7 +35,7 @@ describe('Slider / Test empty initialization', () => {
 
   $slider.HYBSlider();
 
-  it('Should coincide constructor set', () => {
+  it('Should coincide default settings', () => {
     const {
       max, min, isRange, isVertical,
     } = $slider.HYBSlider('getSettings').get(0) as ISliderSettings;
@@ -47,7 +47,7 @@ describe('Slider / Test empty initialization', () => {
   });
 });
 
-describe('Slider / Test dynamic set', () => {
+describe('Slider / Test of getters and setters', () => {
   document.body.innerHTML = '<div id="test" class="slider"></div>';
   const shadowSlider = document.querySelector('#test') as HTMLElement;
   shadowSlider.style.cssText = 'width: 300px';

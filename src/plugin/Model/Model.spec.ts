@@ -1,6 +1,6 @@
 import { Model } from './Model';
 
-describe('Model / Test of setting other pointer values', () => {
+describe('Model / Test of setting pointer values', () => {
   const model = new Model({
     min: 20,
     max: 100,
@@ -12,27 +12,27 @@ describe('Model / Test of setting other pointer values', () => {
 
   model.setSettings({ step: 5 });
 
-  it('Should change pointer position 65', () => {
-    model.applyValue(58, 'second');
+  it('Should change toValue pointer position 65', () => {
+    model.applyValue(58, 'toValue');
     expect(model.getSettings().to).toEqual(65);
   });
 
-  it('Should change pointer position 90', () => {
+  it('Method calculateValueWithStep', () => {
     expect(model.calculateValueWithStep(92)).toEqual(90);
   });
 
   describe('Model / Test of calculating value', () => {
-    it('calculatePercentsToValue', () => {
+    it('Method calculatePercentsToValue', () => {
       expect(model.calculatePercentsToValue(58)).toEqual(66.4);
     });
 
-    it('calculateValueToPercents', () => {
+    it('Method calculateValueToPercents', () => {
       expect(model.calculateValueToPercents(58)).toEqual(47.5);
     });
   });
 });
 
-describe('Model / Test getters and setters', () => {
+describe('Model / Test of getters and setters', () => {
   const model: Model = new Model();
 
   beforeEach(() => {
@@ -88,33 +88,33 @@ describe('Model / Test getters and setters', () => {
   });
 });
 
-describe('Model / Test default values setting', () => {
-  it('Should init default isVertical', () => {
+describe('Model / Test of default values setting', () => {
+  it('Should initialize default \'isVertical\'', () => {
     const model = new Model({});
     expect(model.getSettings().isVertical).toBeFalsy();
   });
 
-  it('Should init default isRange', () => {
+  it('Should initialize default \'isRange\'', () => {
     const model = new Model({});
     expect(model.getSettings().isRange).toBeFalsy();
   });
 
-  it('Should init default minVal', () => {
+  it('Should initialize default \'minVal\'', () => {
     const model = new Model({});
     expect(model.getSettings().min).toEqual(0);
   });
 
-  it('Should init default stepVal', () => {
+  it('Should initialize default \'stepVal\'', () => {
     const model = new Model({});
     expect(model.getSettings().step).toEqual(1);
   });
 
-  it('Should init default from', () => {
+  it('Should initialize default \'from\'', () => {
     const model = new Model({});
     expect(model.getSettings().from).toEqual(0);
   });
 
-  it('Should init default to', () => {
+  it('Should initialize default \'to\'', () => {
     const model = new Model({});
     expect(model.getSettings().to).toEqual(null);
   });
