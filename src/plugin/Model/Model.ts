@@ -22,7 +22,7 @@ class Model {
   setSettings(newSettings: ISliderSettings = {}) {
     const settings: ISliderSettings = {};
 
-    Object.keys(newSettings).forEach(key => {
+    Object.keys(newSettings).forEach((key) => {
       settings[key] = this.validateSettingType(key, newSettings[key]);
     });
 

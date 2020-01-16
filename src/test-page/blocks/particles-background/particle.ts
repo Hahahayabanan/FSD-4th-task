@@ -76,7 +76,7 @@ class Particle {
   }
 
   setProperties(newProperties: ParticleProperties) {
-    Object.keys(newProperties).forEach(key => {
+    Object.keys(newProperties).forEach((key) => {
       const value = newProperties[key];
       switch (key) {
         case 'bgWidth' || 'bgHeight':

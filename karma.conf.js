@@ -1,6 +1,6 @@
 const webpackConf = require('./webpack.config.js');
 
-module.exports = config => {
+module.exports = (config) => {
   config.set({
     basePath: '',
     plugins: ['@metahub/karma-jasmine-jquery', 'karma-*'],

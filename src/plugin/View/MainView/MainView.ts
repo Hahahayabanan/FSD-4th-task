@@ -60,7 +60,7 @@ class MainView {
   }
 
   setDataAttributes(attributes: Attributes = {}) {
-    Object.keys(attributes).forEach(key => {
+    Object.keys(attributes).forEach((key) => {
       this.sliderElement.dataset[key] = `${attributes[key]}`;
     });
   }
