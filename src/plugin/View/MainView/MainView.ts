@@ -187,8 +187,8 @@ class MainView {
   }
 
   private updateZIndex(pointer: PointerView) {
-    const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED);
-    if (wasPointerMoved === -1 && this.toValuePointer) {
+    const wasPointerMoved = pointer.getClassList().indexOf(styleClasses.POINTER_SELECTED) !== -1;
+    if (!wasPointerMoved && this.toValuePointer) {
       switch (pointer) {
         case this.fromValuePointer:
           this.toValuePointer.removeClass(styleClasses.POINTER_SELECTED);
