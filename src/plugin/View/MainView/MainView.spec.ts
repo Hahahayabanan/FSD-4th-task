@@ -66,8 +66,8 @@ describe('View / Slider template / Test of calculations', () => {
       isRange: true,
       hasTip: true,
     });
-    view.fromValuePointer.applyPointerPosition(20);
-    view.toValuePointer.applyPointerPosition(50);
+    view.fromValuePointer.applyPosition(20);
+    view.toValuePointer.applyPosition(50);
     view.fromValuePointer.render(20);
     view.toValuePointer.render(50);
   });

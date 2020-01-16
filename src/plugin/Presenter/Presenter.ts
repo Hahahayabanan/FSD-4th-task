@@ -59,10 +59,10 @@ class Presenter {
 
     this.view.setPointerPosition({
       attributes: this.getSettings(),
-      first: fromInPercents,
-      second: toInPercents,
-      firstTipValue: from,
-      secondTipValue: to,
+      fromValue: fromInPercents,
+      toValue: toInPercents,
+      fromValueTipValue: from,
+      toValueTipValue: to,
     });
   }
 

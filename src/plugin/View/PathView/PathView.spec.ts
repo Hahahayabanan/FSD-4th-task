@@ -27,7 +27,7 @@ describe('View / Path / Test of setting', () => {
   });
 
   it('Line should be updated', () => {
-    view.setPointerPosition({ first: 10, second: 50 });
+    view.setPointerPosition({ fromValue: 10, toValue: 50 });
     expect(view.path.lineElement.style.left).toEqual('10%');
   });
 });

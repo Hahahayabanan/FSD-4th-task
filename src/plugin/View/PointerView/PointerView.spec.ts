@@ -17,7 +17,7 @@ describe('View / Slider Pointer / Test of setting', () => {
   });
 
   it('currentPosition should be set in percents', () => {
-    pointer.applyPointerPosition(33);
+    pointer.applyPosition(33);
     expect(Math.round(pointer.currentPosition)).toEqual(33);
   });
 

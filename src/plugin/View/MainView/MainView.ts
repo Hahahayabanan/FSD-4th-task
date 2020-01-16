@@ -38,21 +38,21 @@ class MainView {
 
   @bind
   setPointerPosition(data: {
-    first?: number,
-    second?: number,
-    firstTipValue?: number,
-    secondTipValue?: number,
+    fromValue?: number,
+    toValue?: number,
+    fromValueTipValue?: number,
+    toValueTipValue?: number,
     attributes?: Attributes,
   }) {
     const {
-      first, second, firstTipValue, secondTipValue, attributes
+      fromValue, toValue, fromValueTipValue, toValueTipValue, attributes
     } = data;
-    this.fromValuePointer.applyPointerPosition(first);
-    this.fromValuePointer.updateTipValue(firstTipValue);
+    this.fromValuePointer.applyPosition(fromValue);
+    this.fromValuePointer.updateTipValue(fromValueTipValue);
 
     if (this.toValuePointer) {
-      this.toValuePointer.applyPointerPosition(second);
-      this.toValuePointer.updateTipValue(secondTipValue);
+      this.toValuePointer.applyPosition(toValue);
+      this.toValuePointer.updateTipValue(toValueTipValue);
     }
     this.path.updateLine();
 

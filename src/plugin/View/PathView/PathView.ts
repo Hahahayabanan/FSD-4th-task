@@ -87,22 +87,22 @@ class PathView {
       || currentTarget.className === styleClasses.LINE;
     if (!isValidClick) return;
 
-    const newLeft: number = this.checkIsVertical()
+    const newPosition: number = this.checkIsVertical()
       ? event.clientY - this.pathElement.getBoundingClientRect().top
       : event.clientX - this.pathElement.getBoundingClientRect().left;
 
     if (this.toValuePointer) {
       const midpointBetweenPoints = this.getMidpointBetweenPointers();
-      if (newLeft < midpointBetweenPoints) this.fromValuePointer.dispatchPointerPosition(newLeft);
-      if (newLeft > midpointBetweenPoints) this.toValuePointer.dispatchPointerPosition(newLeft);
+      if (newPosition < midpointBetweenPoints) this.fromValuePointer.dispatchPosition(newPosition);
+      if (newPosition > midpointBetweenPoints) this.toValuePointer.dispatchPosition(newPosition);
     } else {
-      this.fromValuePointer.dispatchPointerPosition(newLeft);
+      this.fromValuePointer.dispatchPosition(newPosition);
     }
   }
 
   private getMidpointBetweenPointers() {
-    const fromValuePointerPosition = this.fromValuePointer.getCurPosInPixels();
-    const toValuePointerPosition = this.toValuePointer.getCurPosInPixels();
+    const fromValuePointerPosition = this.fromValuePointer.getCurrentPositionInPixels();
+    const toValuePointerPosition = this.toValuePointer.getCurrentPositionInPixels();
     return (toValuePointerPosition - fromValuePointerPosition) / 2 + fromValuePointerPosition;
   }
 }

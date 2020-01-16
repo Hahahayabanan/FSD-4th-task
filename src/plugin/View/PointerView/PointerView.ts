@@ -49,18 +49,18 @@ class PointerView {
     return pathLength;
   }
 
-  getCurPosInPixels() {
+  getCurrentPositionInPixels() {
     return this.calculateToPixels(this.currentPosition);
   }
 
-  dispatchPointerPosition(positionInPixels: number) {
+  dispatchPosition(positionInPixels: number) {
     this.observer.broadcast({
       position: this.calculateToPercents(positionInPixels),
       pointerToUpdate: this,
     });
   }
 
-  applyPointerPosition(position: number) {
+  applyPosition(position: number) {
     this.currentPosition = position;
 
     this.render(position);
@@ -96,11 +96,12 @@ class PointerView {
     this.pointerElement.classList.add(targetClass);
   }
 
-  render(newPos: number) {
-    const newCssLeftOrTop: string = this.checkIsVertical()
-      ? (this.pointerElement.style.top = `${newPos}%`)
-      : (this.pointerElement.style.left = `${newPos}%`);
-    return newCssLeftOrTop;
+  render(newPosition: number) {
+    if (this.checkIsVertical()) {
+      this.pointerElement.style.top = `${newPosition}%`;
+    } else {
+      this.pointerElement.style.left = `${newPosition}%`;
+    }
   }
 
   updateTipValue(newValue: number) {
@@ -131,11 +132,11 @@ class PointerView {
     event.preventDefault();
     const { mouseX, mouseY } = this.mousePosition;
     const startPositionInPixels = this.calculateToPixels(this.startPosition);
-    const newCurrentPosition: number = this.checkIsVertical()
+    const newPosition: number = this.checkIsVertical()
       ? startPositionInPixels - mouseY + event.clientY
       : startPositionInPixels - mouseX + event.clientX;
 
-    this.dispatchPointerPosition(newCurrentPosition);
+    this.dispatchPosition(newPosition);
   }
 
   @bind

@@ -63,8 +63,8 @@ class Model {
     this.dispatchSettings();
   }
 
-  applyValue(curPosInPercents: number, updateValue: string) {
-    const newValue: number = this.calculatePercentsToValue(curPosInPercents);
+  applyValue(positionInPercents: number, updateValue: string) {
+    const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (updateValue) {
       case 'first':
         this.setSettings({ from: newValue });
@@ -82,14 +82,14 @@ class Model {
     return Math.round((value - min) / step) * step + min;
   }
 
-  calculatePercentsToValue(curPosInPercents: number): number {
+  calculatePercentsToValue(positionInPercents: number): number {
     const { min, max } = this.getSettings();
-    return ((max - min) * curPosInPercents) / 100 + min;
+    return ((max - min) * positionInPercents) / 100 + min;
   }
 
-  calculateValueToPercents(curPosInValue: number): number {
+  calculateValueToPercents(positionValue: number): number {
     const { min, max } = this.getSettings();
-    return ((curPosInValue - min) * 100) / (max - min);
+    return ((positionValue - min) * 100) / (max - min);
   }
 
   private dispatchValue() {
