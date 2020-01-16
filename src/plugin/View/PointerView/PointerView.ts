@@ -27,11 +27,6 @@ class PointerView {
     this.bindEventListeners();
   }
 
-  createTemplate() {
-    this.pointerElement = createNode('div', styleClasses.POINTER);
-    this.pathElement.append(this.pointerElement);
-  }
-
   createTip() {
     this.tip = new TipView(this.pointerElement);
   }
@@ -51,13 +46,6 @@ class PointerView {
 
   getCurrentPositionInPixels() {
     return this.calculateToPixels(this.currentPosition);
-  }
-
-  dispatchPosition(positionInPixels: number) {
-    this.observer.broadcast({
-      position: this.calculateToPercents(positionInPixels),
-      pointerToUpdate: this,
-    });
   }
 
   applyPosition(position: number) {
@@ -106,6 +94,18 @@ class PointerView {
 
   updateTipValue(newValue: number) {
     if (this.tip) this.tip.setValue(newValue);
+  }
+
+  private dispatchPosition(positionInPixels: number) {
+    this.observer.broadcast({
+      position: this.calculateToPercents(positionInPixels),
+      pointerToUpdate: this,
+    });
+  }
+
+  private createTemplate() {
+    this.pointerElement = createNode('div', styleClasses.POINTER);
+    this.pathElement.append(this.pointerElement);
   }
 
   private bindEventListeners() {

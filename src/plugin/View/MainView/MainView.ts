@@ -171,8 +171,8 @@ class MainView {
 
   private checkPointerNumber(pointer: PointerView) {
     switch (pointer) {
-      case this.fromValuePointer: return 'first';
-      case this.toValuePointer: return 'second';
+      case this.fromValuePointer: return 'fromValue';
+      case this.toValuePointer: return 'toValue';
       default: return null;
     }
   }

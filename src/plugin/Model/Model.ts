@@ -66,10 +66,10 @@ class Model {
   applyValue(positionInPercents: number, updateValue: string) {
     const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (updateValue) {
-      case 'first':
+      case 'fromValue':
         this.setSettings({ from: newValue });
         break;
-      case 'second':
+      case 'toValue':
         this.setSettings({ to: newValue });
         break;
       default:
