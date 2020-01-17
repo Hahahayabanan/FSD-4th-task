@@ -60,14 +60,6 @@ describe('View / Slider Pointer / Test methods', () => {
     expect(pointer.getPathLength()).toBeCloseTo(300);
   });
 
-  it('Calc pixels to percents', () => {
-    expect(Math.round(pointer.calculateToPercents(150))).toBeCloseTo(50);
-  });
-
-  it('Calc percents to pixels', () => {
-    expect(pointer.calculateToPixels(60)).toBeCloseTo(180);
-  });
-
   it('Create tip', () => {
     pointer.createTip();
     expect(pointer.tip).toBeDefined();

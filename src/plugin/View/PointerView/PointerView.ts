@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { MousePosition } from '../../helpers/interfaces';
-import createNode from '../utilities';
+import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 import styleClasses from '../styleClasses';
 
 class PointerView {
@@ -32,7 +32,7 @@ class PointerView {
   }
 
   checkIsVertical() {
-    return this.pathElement.classList.contains(styleClasses.SLIDER_PATH_VERTICAL);
+    return this.pathElement.classList.contains(styleClasses.PATH_VERTICAL);
   }
 
   getPathLength() {
@@ -45,7 +45,11 @@ class PointerView {
   }
 
   getCurrentPositionInPixels() {
-    return this.calculateToPixels(this.currentPosition);
+    return calculateToPixels({
+      valueInPercents: this.currentPosition,
+      pathElement: this.pathElement,
+      isVertical: this.checkIsVertical(),
+    });
   }
 
   applyPosition(position: number) {
@@ -58,18 +62,6 @@ class PointerView {
         detail: this.currentPosition,
       }),
     );
-  }
-
-  calculateToPercents(valueInPixels: number) {
-    const lengthInPixels = this.getPathLength();
-    const valueInPercents = (valueInPixels * 100) / lengthInPixels;
-    return valueInPercents;
-  }
-
-  calculateToPixels(valueInPercents: number) {
-    const lengthInPixels = this.getPathLength();
-    const valueInPixels = (valueInPercents / 100) * lengthInPixels;
-    return valueInPixels;
   }
 
   getClassList() {
@@ -98,7 +90,11 @@ class PointerView {
 
   private dispatchPosition(positionInPixels: number) {
     this.observer.broadcast({
-      position: this.calculateToPercents(positionInPixels),
+      position: calculateToPercents({
+        valueInPixels: positionInPixels,
+        pathElement: this.pathElement,
+        isVertical: this.checkIsVertical(),
+      }),
       pointerToUpdate: this,
     });
   }
@@ -131,7 +127,11 @@ class PointerView {
   private handleDocumentMouseMove(event: MouseEvent) {
     event.preventDefault();
     const { mouseX, mouseY } = this.mousePosition;
-    const startPositionInPixels = this.calculateToPixels(this.startPosition);
+    const startPositionInPixels = calculateToPixels({
+      valueInPercents: this.startPosition,
+      pathElement: this.pathElement,
+      isVertical: this.checkIsVertical(),
+    });
     const newPosition: number = this.checkIsVertical()
       ? startPositionInPixels - mouseY + event.clientY
       : startPositionInPixels - mouseX + event.clientX;
