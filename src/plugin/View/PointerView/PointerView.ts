@@ -18,6 +18,8 @@ class PointerView {
 
   public tip: TipView;
 
+  public isVertical: boolean = false;
+
   public observer: EventObserver = new EventObserver();
 
   constructor(pathElement: HTMLElement) {
@@ -31,12 +33,8 @@ class PointerView {
     this.tip = new TipView(this.pointerElement);
   }
 
-  checkIsVertical() {
-    return this.pathElement.classList.contains(styleClasses.PATH_VERTICAL);
-  }
-
   getPathLength() {
-    const pathLength: number = this.checkIsVertical()
+    const pathLength: number = this.isVertical
       ? this.pathElement.getBoundingClientRect().height
         || parseInt(this.pathElement.style.height, 10)
       : this.pathElement.getBoundingClientRect().width
@@ -48,7 +46,7 @@ class PointerView {
     return calculateToPixels({
       valueInPercents: this.currentPosition,
       pathElement: this.pathElement,
-      isVertical: this.checkIsVertical(),
+      isVertical: this.isVertical,
     });
   }
 
@@ -77,7 +75,7 @@ class PointerView {
   }
 
   render(newPosition: number) {
-    if (this.checkIsVertical()) {
+    if (this.isVertical) {
       this.pointerElement.style.top = `${newPosition}%`;
     } else {
       this.pointerElement.style.left = `${newPosition}%`;
@@ -93,7 +91,7 @@ class PointerView {
       position: calculateToPercents({
         valueInPixels: positionInPixels,
         pathElement: this.pathElement,
-        isVertical: this.checkIsVertical(),
+        isVertical: this.isVertical,
       }),
       pointerToUpdate: this,
     });
@@ -130,9 +128,9 @@ class PointerView {
     const startPositionInPixels = calculateToPixels({
       valueInPercents: this.startPosition,
       pathElement: this.pathElement,
-      isVertical: this.checkIsVertical(),
+      isVertical: this.isVertical,
     });
-    const newPosition: number = this.checkIsVertical()
+    const newPosition: number = this.isVertical
       ? startPositionInPixels - mouseY + event.clientY
       : startPositionInPixels - mouseX + event.clientX;
 

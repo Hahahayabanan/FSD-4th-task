@@ -9,36 +9,44 @@ describe('View / Path / Test of initialization', () => {
   it('Path should be initialized', () => {
     expect(path.pathElement).toHaveClass(styleClasses.PATH);
   });
+
+  it('Slider pointer should be set', () => {
+    expect(path.fromValuePointer).toBeDefined();
+  });
+
+  it('Both slider pointers should be set', () => {
+    expect(path.fromValuePointer).toBeDefined();
+    expect(path.toValuePointer).toBeDefined();
+  });
 });
 
 describe('View / Path / Test of methods', () => {
   const path = new PathView();
+
+  it('Pointer position should coincide', () => {
+    path.toggleRange(true);
+    path.setPointerPosition({ fromValue: 50, toValue: 100 });
+    expect(path.fromValuePointer.currentPosition).toEqual(50);
+    expect(path.toValuePointer.currentPosition).toEqual(100);
+  });
 
   it('Line should be initialized', () => {
     path.toggleLine(true);
     expect(path.lineElement).toHaveClass(styleClasses.LINE);
   });
 
-  it('Orientation class should be changed', () => {
+  it('ToValuePointer should be initialized by using toggleRange', () => {
+    path.toggleRange(true);
+    expect(path.toValuePointer).toBeDefined();
+  });
+
+  it('Path class should be set', () => {
     path.toggleOrientation(true);
-    expect(path.pathElement).toHaveClass(styleClasses.PATH_VERTICAL);
+    expect(path.isVertical).toBeTrue();
   });
 
-  it('Type class should be changed', () => {
-    path.toggleLine(true);
-    path.toggleLineType(true);
-    expect(path.lineElement).toHaveClass(styleClasses.LINE_RANGE);
-  });
-});
-
-describe('View / Path / Test of line update', () => {
-  const path = new PathView();
-
-  it('Line scope should be changed', () => {
-    path.toggleLine(true);
-    path.toggleLineType(true);
-    path.setLineScope(20, 50);
-    expect(path.lineElement.style.left).toEqual('20%');
-    expect(path.lineElement.style.width).toEqual('30%');
+  it('Tip should be initialized by using toggleTip', () => {
+    path.toggleTip(true);
+    expect(path.fromValuePointer.tip).toBeDefined();
   });
 });

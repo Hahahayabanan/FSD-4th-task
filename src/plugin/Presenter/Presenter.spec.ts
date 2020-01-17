@@ -61,7 +61,7 @@ describe('Presenter / Test initialization options', () => {
 
   it('Should coincide constructor set values on range line', () => {
     expect(presenter.view.path.lineElement.style.left).toEqual(
-      presenter.view.fromValuePointer.pointerElement.style.left,
+      presenter.view.path.fromValuePointer.pointerElement.style.left,
     );
   });
 });
@@ -80,7 +80,7 @@ describe('Presenter / Test of methods', () => {
 
   it('Update view with new settings', () => {
     presenter.setSettings({ isRange: false, hasTip: true });
-    expect(presenter.view.fromValuePointer.tip).toBeDefined();
-    expect(presenter.view.toValuePointer).toBeNull();
+    expect(presenter.view.path.fromValuePointer.tip).toBeDefined();
+    expect(presenter.view.path.toValuePointer).toBeNull();
   });
 });

@@ -21,9 +21,6 @@ describe('View / Main view / Test of initialization', () => {
     });
   });
 
-  it('Slider pointer should be set', () => {
-    expect(view.fromValuePointer).toBeDefined();
-  });
 
   it('Slider class with point should be set', () => {
     expect(view.sliderElement).toHaveClass(
@@ -36,48 +33,6 @@ describe('View / Main view / Test of initialization', () => {
   });
 });
 
-describe('View / Main view / Test of initialization pointers', () => {
-  const slider = new MainView({
-    rootElem: sliderElement,
-    isRange: true,
-    isVertical: false,
-    hasLine: false,
-    hasTip: false,
-  });
-
-  it('Both slider pointers should be set', () => {
-    expect(slider.fromValuePointer).toBeDefined();
-    expect(slider.toValuePointer).toBeDefined();
-  });
-});
-
-describe('View / Main view / Test of calculations', () => {
-  const view: MainView = new MainView({
-    rootElem: sliderElement,
-    isRange: false,
-    isVertical: false,
-    hasLine: false,
-    hasTip: false,
-  });
-
-  beforeEach(() => {
-    view.update({
-      isRange: true,
-      hasTip: true,
-    });
-    view.fromValuePointer.applyPosition(20);
-    view.toValuePointer.applyPosition(50);
-    view.fromValuePointer.render(20);
-    view.toValuePointer.render(50);
-  });
-
-  it('Should coincide set data attributes', () => {
-    view.setDataAttributes({ from: 99, isVertical: true });
-    expect(view.sliderElement.dataset.from).toEqual('99');
-    expect(view.sliderElement.dataset.isVertical).toEqual('true');
-  });
-});
-
 describe('View / Main view / Test of update view', () => {
   const view: MainView = new MainView({
     rootElem: sliderElement,
@@ -87,11 +42,17 @@ describe('View / Main view / Test of update view', () => {
     hasTip: false,
   });
 
+  it('Should coincide set data attributes', () => {
+    view.setDataAttributes({ from: 99, isVertical: true });
+    expect(view.sliderElement.dataset.from).toEqual('99');
+    expect(view.sliderElement.dataset.isVertical).toEqual('true');
+  });
+
   it('Should coincide update value \'isRange\'', () => {
     view.update({
       isRange: true,
     });
-    expect(view.toValuePointer).toBeDefined();
+    expect(view.path.toValuePointer).toBeDefined();
   });
 
   it('Should coincide update value \'isVertical\'', () => {
@@ -112,7 +73,7 @@ describe('View / Main view / Test of update view', () => {
     view.update({
       hasTip: true,
     });
-    expect(view.fromValuePointer.tip).toBeDefined();
+    expect(view.path.fromValuePointer.tip).toBeDefined();
     expect(view.sliderElement.classList.contains(styleClasses.SLIDER_WITH_TIP)).toBeTrue();
   });
 });
