@@ -54,7 +54,7 @@ class MainView {
       this.toValuePointer.applyPosition(toValue);
       this.toValuePointer.updateTipValue(toValueTipValue);
     }
-    this.path.updateLine();
+    this.path.setLineScope(fromValue, toValue);
 
     this.setDataAttributes(attributes);
   }
@@ -76,7 +76,7 @@ class MainView {
       isVertical, hasTip, hasLine, isRange, attributes,
     } = data;
     if (isVertical !== undefined) {
-      this.toggleOrientationClass(isVertical);
+      this.toggleOrientation(isVertical);
       this.path.updateLine();
     }
     if (hasTip !== undefined) {
@@ -84,11 +84,10 @@ class MainView {
     }
     if (hasLine !== undefined) {
       this.path.toggleLine(hasLine);
-      this.path.updateLine();
     }
     if (isRange !== undefined) {
       this.toggleRange(isRange);
-      this.path.setPointers(this.fromValuePointer, this.toValuePointer);
+      this.path.toggleLineType(isRange);
       this.path.updateLine();
     }
 
@@ -113,7 +112,6 @@ class MainView {
     this.sliderElement.classList.add(styleClasses.SLIDER);
     this.createPath();
     this.createPointers();
-    this.path.setPointers(this.fromValuePointer, this.toValuePointer);
     this.sliderElement.append(this.path.pathElement);
   }
 
@@ -177,13 +175,13 @@ class MainView {
     }
   }
 
-  private toggleOrientationClass(isVertical: boolean) {
+  private toggleOrientation(isVertical: boolean) {
     if (isVertical) {
       this.sliderElement.classList.add(styleClasses.SLIDER_VERTICAL);
     } else {
       this.sliderElement.classList.remove(styleClasses.SLIDER_VERTICAL);
     }
-    this.path.toggleOrientationClass(isVertical);
+    this.path.toggleOrientation(isVertical);
   }
 
   private updateZIndex(pointer: PointerView) {

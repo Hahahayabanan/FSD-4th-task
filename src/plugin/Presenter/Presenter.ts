@@ -42,6 +42,7 @@ class Presenter {
 
   private addObservers() {
     this.view.observer.subscribe(this.updateModelValue);
+    this.view.path.observer.subscribe(this.updateModelValue);
     this.model.settingsObserver.subscribe(this.updateViewSettings);
     this.model.valuesObserver.subscribe(this.updateViewPointer);
   }

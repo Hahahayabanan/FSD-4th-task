@@ -1,16 +1,18 @@
 import bind from 'bind-decorator';
 import styleClasses from '../styleClasses';
-import createNode from '../utilities';
-import { PointerView } from '../PointerView/PointerView';
+import { EventObserver } from '../../EventObserver/EventObserver';
+import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 
 class PathView {
   public lineElement: HTMLElement;
 
   public pathElement: HTMLElement;
 
-  public fromValuePointer: PointerView;
+  public fromValuePointerPosition: number = 0;
 
-  public toValuePointer: PointerView;
+  public toValuePointerPosition: number = null;
+
+  public observer = new EventObserver();
 
   constructor() {
     this.init();
@@ -21,15 +23,12 @@ class PathView {
     this.bindEventListeners();
   }
 
-  createPath() {
-    this.pathElement = createNode('div', styleClasses.PATH);
-  }
-
   toggleLine(hasLine: boolean) {
     if (hasLine) {
       if (!this.lineElement) {
         this.lineElement = createNode('div', styleClasses.LINE);
         this.pathElement.prepend(this.lineElement);
+        this.updateLine();
       }
     } else if (this.lineElement) {
       this.lineElement.remove();
@@ -37,41 +36,63 @@ class PathView {
     }
   }
 
-  toggleOrientationClass(isVertical: boolean) {
+  toggleOrientation(isVertical: boolean) {
     if (isVertical) {
-      this.pathElement.classList.add(styleClasses.SLIDER_PATH_VERTICAL);
+      this.pathElement.classList.add(styleClasses.PATH_VERTICAL);
     } else {
-      this.pathElement.classList.remove(styleClasses.SLIDER_PATH_VERTICAL);
+      this.pathElement.classList.remove(styleClasses.PATH_VERTICAL);
     }
   }
 
-  setPointers(fromValuePointer: PointerView, toValuePointer: PointerView) {
-    this.fromValuePointer = fromValuePointer;
-    this.toValuePointer = toValuePointer;
+  toggleLineType(isRange: boolean) {
+    if (this.lineElement) {
+      if (isRange) {
+        this.lineElement.classList.add(styleClasses.LINE_RANGE);
+      } else {
+        this.lineElement.classList.remove(styleClasses.LINE_RANGE);
+      }
+    }
+  }
+
+  setLineScope(fromValuePointerPosition: number, toValuePointerPosition: number) {
+    this.fromValuePointerPosition = fromValuePointerPosition;
+    this.toValuePointerPosition = toValuePointerPosition !== undefined
+      ? toValuePointerPosition : null;
+
+    this.updateLine();
   }
 
   updateLine() {
     if (this.lineElement) {
       this.lineElement.removeAttribute('style');
-      const fromValuePointerPosition = this.fromValuePointer.currentPosition;
       if (this.checkIsVertical()) {
-        this.lineElement.style.top = this.toValuePointer ? `${fromValuePointerPosition}%` : '0%';
-        this.lineElement.style.height = this.toValuePointer
-          ? `${this.toValuePointer.currentPosition - fromValuePointerPosition}%`
-          : `${fromValuePointerPosition}%`;
-      } else {
-        this.lineElement.style.left = this.toValuePointer
-          ? `${fromValuePointerPosition}%`
+        this.lineElement.style.top = this.checkIsRange()
+          ? `${this.fromValuePointerPosition}%`
           : '0%';
-        this.lineElement.style.width = this.toValuePointer
-          ? `${this.toValuePointer.currentPosition - fromValuePointerPosition}%`
-          : `${fromValuePointerPosition}%`;
+        this.lineElement.style.height = this.checkIsRange()
+          ? `${this.toValuePointerPosition - this.fromValuePointerPosition}%`
+          : `${this.fromValuePointerPosition}%`;
+      } else {
+        this.lineElement.style.left = this.checkIsRange()
+          ? `${this.fromValuePointerPosition}%`
+          : '0%';
+        this.lineElement.style.width = this.checkIsRange()
+          ? `${this.toValuePointerPosition - this.fromValuePointerPosition}%`
+          : `${this.fromValuePointerPosition}%`;
       }
     }
   }
 
   checkIsVertical() {
-    return this.pathElement.classList.contains(styleClasses.SLIDER_PATH_VERTICAL);
+    return this.pathElement.classList.contains(styleClasses.PATH_VERTICAL);
+  }
+
+  checkIsRange() {
+    return this.lineElement.classList.contains(styleClasses.LINE_RANGE);
+  }
+
+  private createPath() {
+    this.pathElement = createNode('div', styleClasses.PATH);
   }
 
   private bindEventListeners() {
@@ -83,27 +104,47 @@ class PathView {
     event.preventDefault();
     const currentTarget: HTMLElement = event.target as HTMLElement;
 
-    const isValidClick: boolean = currentTarget.className === styleClasses.PATH
-      || currentTarget.className === styleClasses.LINE;
+    const isValidClick: boolean = currentTarget.classList.contains(styleClasses.PATH)
+      || currentTarget.classList.contains(styleClasses.LINE);
+
     if (!isValidClick) return;
 
     const newPosition: number = this.checkIsVertical()
       ? event.clientY - this.pathElement.getBoundingClientRect().top
       : event.clientX - this.pathElement.getBoundingClientRect().left;
 
-    if (this.toValuePointer) {
-      const midpointBetweenPoints = this.getMidpointBetweenPointers();
-      if (newPosition < midpointBetweenPoints) this.fromValuePointer.dispatchPosition(newPosition);
-      if (newPosition > midpointBetweenPoints) this.toValuePointer.dispatchPosition(newPosition);
+    const fromValuePointerPositionInPixels = calculateToPixels({
+      valueInPercents: this.fromValuePointerPosition,
+      pathElement: this.pathElement,
+      isVertical: this.checkIsVertical(),
+    });
+    const toValuePointerPositionInPixels = calculateToPixels({
+      valueInPercents: this.toValuePointerPosition,
+      pathElement: this.pathElement,
+      isVertical: this.checkIsVertical(),
+    });
+    const newPositionInPercents = calculateToPercents({
+      valueInPixels: newPosition,
+      pathElement: this.pathElement,
+      isVertical: this.checkIsVertical(),
+    });
+
+    if (this.checkIsRange()) {
+      const midpointBetweenPoints = (toValuePointerPositionInPixels
+        - fromValuePointerPositionInPixels) / 2 + fromValuePointerPositionInPixels;
+      if (newPosition < midpointBetweenPoints) {
+        this.dispatchPointerPosition({ position: newPositionInPercents, pointerThatChanged: 'fromValue' });
+      }
+      if (newPosition > midpointBetweenPoints) {
+        this.dispatchPointerPosition({ position: newPositionInPercents, pointerThatChanged: 'toValue' });
+      }
     } else {
-      this.fromValuePointer.dispatchPosition(newPosition);
+      this.dispatchPointerPosition({ position: newPositionInPercents, pointerThatChanged: 'fromValue' });
     }
   }
 
-  private getMidpointBetweenPointers() {
-    const fromValuePointerPosition = this.fromValuePointer.getCurrentPositionInPixels();
-    const toValuePointerPosition = this.toValuePointer.getCurrentPositionInPixels();
-    return (toValuePointerPosition - fromValuePointerPosition) / 2 + fromValuePointerPosition;
+  private dispatchPointerPosition(data: { position: number, pointerThatChanged: string }) {
+    this.observer.broadcast(data);
   }
 }
 export { PathView };
