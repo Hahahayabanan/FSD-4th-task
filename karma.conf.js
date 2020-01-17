@@ -6,10 +6,10 @@ module.exports = (config) => {
     plugins: ['@metahub/karma-jasmine-jquery', 'karma-*'],
     frameworks: ['jasmine', 'jasmine-jquery'],
     files: [
-      { pattern: './tests/unit/spec-bundle.js', watched: false },
+      { pattern: './tests-coverage/unit/spec-bundle.js', watched: false },
       './node_modules/jquery/dist/jquery.js',
     ],
-    preprocessors: { './tests/unit/spec-bundle.js': ['webpack', 'sourcemap'] },
+    preprocessors: { './tests-coverage/unit/spec-bundle.js': ['webpack', 'sourcemap'] },
     karmaTypescriptConfig: {
       compilerOptions: {
         noImplicitAny: true,
@@ -37,8 +37,8 @@ module.exports = (config) => {
       showSpecTiming: true // print the time elapsed for each spec
     },
     coverageIstanbulReporter: {
-      reports: ['html', 'lcov', 'text-summary'],
-      dir: './tests/coverage', // coverage results needs to be saved under coverage/
+      reports: ['html'],
+      dir: './tests-coverage', // coverage results needs to be saved under coverage/
       fixWebpackSourcePaths: true,
       query: {
         esModules: true
