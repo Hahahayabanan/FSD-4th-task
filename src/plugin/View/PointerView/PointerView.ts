@@ -1,13 +1,10 @@
-import bind from 'bind-decorator';
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
-import { MousePosition } from '../../helpers/interfaces';
+import { MousePosition, UpdateData } from '../../helpers/interfaces';
 import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 import styleClasses from '../styleClasses';
 
 class PointerView {
-  private mousePosition: MousePosition;
-
   public pointerElement: HTMLElement;
 
   public pathElement: HTMLElement;
@@ -18,23 +15,28 @@ class PointerView {
 
   public tip: TipView;
 
-  public isVertical: boolean = false;
-
   public observer: EventObserver = new EventObserver();
+
+  private mousePosition: MousePosition;
+
+  private handleDocumentMouseMoveBoundWithData: EventListenerOrEventListenerObject;
+
+  private handlePointerElementMouseDownBoundWithData: EventListenerOrEventListenerObject;
+
+  private handleDocumentMouseUpBoundWithData: EventListenerOrEventListenerObject;
 
   constructor(pathElement: HTMLElement) {
     this.pathElement = pathElement;
 
     this.createTemplate();
-    this.bindEventListeners();
   }
 
   createTip() {
     this.tip = new TipView(this.pointerElement);
   }
 
-  getPathLength() {
-    const pathLength: number = this.isVertical
+  getPathLength(isVertical: boolean) {
+    const pathLength: number = isVertical
       ? this.pathElement.getBoundingClientRect().height
         || parseInt(this.pathElement.style.height, 10)
       : this.pathElement.getBoundingClientRect().width
@@ -42,18 +44,18 @@ class PointerView {
     return pathLength;
   }
 
-  getCurrentPositionInPixels() {
+  getCurrentPositionInPixels(isVertical: boolean) {
     return calculateToPixels({
       valueInPercents: this.currentPosition,
       pathElement: this.pathElement,
-      isVertical: this.isVertical,
+      isVertical,
     });
   }
 
-  applyPosition(position: number) {
+  applyPosition(position: number, isVertical: boolean) {
     this.currentPosition = position;
 
-    this.render(position);
+    this.render(position, isVertical);
     this.pointerElement.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
@@ -74,8 +76,8 @@ class PointerView {
     this.pointerElement.classList.add(targetClass);
   }
 
-  render(newPosition: number) {
-    if (this.isVertical) {
+  render(newPosition: number, isVertical: boolean) {
+    if (isVertical) {
       this.pointerElement.style.top = `${newPosition}%`;
     } else {
       this.pointerElement.style.left = `${newPosition}%`;
@@ -86,29 +88,27 @@ class PointerView {
     if (this.tip) this.tip.setValue(newValue);
   }
 
-  private dispatchPosition(positionInPixels: number) {
-    this.observer.broadcast({
-      position: calculateToPercents({
-        valueInPixels: positionInPixels,
-        pathElement: this.pathElement,
-        isVertical: this.isVertical,
-      }),
-      pointerToUpdate: this,
-    });
+  update(data: UpdateData) {
+    this.removeEventListeners();
+    this.bindEventListeners(data);
   }
 
-  private createTemplate() {
-    this.pointerElement = createNode('div', styleClasses.POINTER);
-    this.pathElement.append(this.pointerElement);
-  }
+  private bindEventListeners(data: UpdateData) {
+    const { isVertical } = data;
+    this.handlePointerElementMouseDownBoundWithData = this.handlePointerElementMouseDown.bind(
+      this, isVertical,
+    );
 
-  private bindEventListeners() {
-    this.pointerElement.addEventListener('mousedown', this.handlePointerElementMouseDown);
+    this.pointerElement.addEventListener('mousedown', this.handlePointerElementMouseDownBoundWithData);
     this.pointerElement.addEventListener('dragstart', this.handlePointerElementDragStart);
   }
 
-  @bind
-  private handlePointerElementMouseDown(event: MouseEvent) {
+  private removeEventListeners() {
+    document.removeEventListener('mousedown', this.handlePointerElementMouseDownBoundWithData);
+    document.removeEventListener('dragstart', this.handlePointerElementDragStart);
+  }
+
+  private handlePointerElementMouseDown(isVertical: boolean, event: MouseEvent) {
     event.preventDefault();
     this.startPosition = this.currentPosition;
 
@@ -117,34 +117,57 @@ class PointerView {
       mouseY: event.clientY,
     };
 
-    document.addEventListener('mousemove', this.handleDocumentMouseMove);
-    document.addEventListener('mouseup', this.handleDocumentMouseUp);
+    this.handleDocumentMouseMoveBoundWithData = this.handleDocumentMouseMove.bind(this, isVertical);
+    document.addEventListener('mousemove', this.handleDocumentMouseMoveBoundWithData);
+    this.handleDocumentMouseUpBoundWithData = this.handleDocumentMouseUp.bind(
+      null,
+      this.handleDocumentMouseMoveBoundWithData,
+      this.handleDocumentMouseUpBoundWithData,
+    );
+    document.addEventListener('mouseup', this.handleDocumentMouseUpBoundWithData);
   }
 
-  @bind
-  private handleDocumentMouseMove(event: MouseEvent) {
+  private handleDocumentMouseMove(isVertical: boolean, event: MouseEvent) {
     event.preventDefault();
     const { mouseX, mouseY } = this.mousePosition;
     const startPositionInPixels = calculateToPixels({
+      isVertical,
       valueInPercents: this.startPosition,
       pathElement: this.pathElement,
-      isVertical: this.isVertical,
     });
-    const newPosition: number = this.isVertical
+    const newPosition: number = isVertical
       ? startPositionInPixels - mouseY + event.clientY
       : startPositionInPixels - mouseX + event.clientX;
 
-    this.dispatchPosition(newPosition);
+    this.dispatchPosition(newPosition, isVertical);
   }
 
-  @bind
-  private handleDocumentMouseUp() {
-    document.removeEventListener('mouseup', this.handleDocumentMouseUp);
-    document.removeEventListener('mousemove', this.handleDocumentMouseMove);
+  private handleDocumentMouseUp(
+    mouseMove: EventListenerOrEventListenerObject,
+    mouseUp: EventListenerOrEventListenerObject,
+  ) {
+    document.removeEventListener('mousemove', mouseMove);
+    document.removeEventListener('mouseup', mouseUp);
   }
 
   private handlePointerElementDragStart() {
     return false;
+  }
+
+  private dispatchPosition(positionInPixels: number, isVertical: boolean) {
+    this.observer.broadcast({
+      position: calculateToPercents({
+        valueInPixels: positionInPixels,
+        pathElement: this.pathElement,
+        isVertical,
+      }),
+      pointerToUpdate: this,
+    });
+  }
+
+  private createTemplate() {
+    this.pointerElement = createNode('div', styleClasses.POINTER);
+    this.pathElement.append(this.pointerElement);
   }
 }
 export { PointerView };

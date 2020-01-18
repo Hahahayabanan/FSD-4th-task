@@ -1,6 +1,6 @@
 import bind from 'bind-decorator';
 import { PathView } from '../PathView/PathView';
-import { Attributes } from '../../helpers/interfaces';
+import { Attributes, UpdateData } from '../../helpers/interfaces';
 import styleClasses from '../styleClasses';
 
 class MainView {
@@ -33,15 +33,17 @@ class MainView {
     fromValueTipValue?: number,
     toValueTipValue?: number,
     attributes?: Attributes,
+    options: UpdateData,
   }) {
     const {
-      fromValue, toValue, fromValueTipValue, toValueTipValue, attributes,
+      fromValue, toValue, fromValueTipValue, toValueTipValue, attributes, options,
     } = data;
     this.path.setPointerPosition({
       fromValue,
       toValue,
       fromValueTipValue,
       toValueTipValue,
+      options,
     });
     this.setDataAttributes(attributes);
   }
@@ -52,34 +54,25 @@ class MainView {
     });
   }
 
-  update(data: {
-    isRange?: boolean,
-    isVertical?: boolean,
-    hasTip?: boolean,
-    hasLine?: boolean,
-    attributes?: Attributes
-  }) {
+  update(data: UpdateData) {
     const {
       isVertical, hasTip, hasLine, isRange, attributes,
     } = data;
+    if (isRange !== undefined) {
+      this.path.toggleRange(isRange);
+      this.path.updateLine(data);
+    }
     if (isVertical !== undefined) {
       this.toggleOrientation(isVertical);
-      this.path.updateLine();
+      this.path.toggleOrientation(data);
+      this.path.updateLine(data);
     }
     if (hasTip !== undefined) {
-      if (this.sliderElement.classList.contains(styleClasses.SLIDER_WITH_TIP) && !hasTip) {
-        this.sliderElement.classList.remove(styleClasses.SLIDER_WITH_TIP);
-      } else {
-        this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
-      }
+      this.toggleTip(hasTip);
       this.path.toggleTip(hasTip);
     }
     if (hasLine !== undefined) {
-      this.path.toggleLine(hasLine);
-    }
-    if (isRange !== undefined) {
-      this.path.toggleRange(isRange);
-      this.path.updateLine();
+      this.path.toggleLine(data);
     }
 
     this.setDataAttributes(attributes);
@@ -97,7 +90,14 @@ class MainView {
     } else {
       this.sliderElement.classList.remove(styleClasses.SLIDER_VERTICAL);
     }
-    this.path.toggleOrientation(isVertical);
+  }
+
+  private toggleTip(hasTip: boolean) {
+    if (hasTip) {
+      this.sliderElement.classList.add(styleClasses.SLIDER_WITH_TIP);
+    } else {
+      this.sliderElement.classList.remove(styleClasses.SLIDER_WITH_TIP);
+    }
   }
 }
 

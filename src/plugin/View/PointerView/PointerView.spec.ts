@@ -45,19 +45,19 @@ describe('View / Slider Pointer / Test methods', () => {
   });
 
   it('currentPosition should be set in percents', () => {
-    pointer.applyPosition(33);
+    pointer.applyPosition(33, false);
     expect(Math.round(pointer.currentPosition)).toEqual(33);
   });
 
   it('Render current position', () => {
-    pointer.render(29);
+    pointer.render(29, false);
     expect(
       Math.round(parseInt(pointer.pointerElement.style.left, 10)),
     ).toBeCloseTo(29);
   });
 
   it('Get path length', () => {
-    expect(pointer.getPathLength()).toBeCloseTo(300);
+    expect(pointer.getPathLength(false)).toBeCloseTo(300);
   });
 
   it('Create tip', () => {

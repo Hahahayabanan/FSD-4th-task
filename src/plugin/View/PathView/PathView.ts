@@ -3,6 +3,7 @@ import styleClasses from '../styleClasses';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 import { PointerView } from '../PointerView/PointerView';
+import { UpdateData } from '../../helpers/interfaces';
 
 class PathView {
   public lineElement: HTMLElement;
@@ -15,11 +16,11 @@ class PathView {
 
   public observer = new EventObserver();
 
-  public isVertical: boolean = false;
+  private handlePathElementMouseDownBoundWithData: EventListenerOrEventListenerObject;
 
   constructor() {
     this.createTemplate();
-    this.bindEventListeners();
+
     this.addObservers();
   }
 
@@ -33,25 +34,28 @@ class PathView {
     toValue?: number,
     fromValueTipValue?: number,
     toValueTipValue?: number,
+    options: UpdateData,
   }) {
     const {
-      fromValue, toValue, fromValueTipValue, toValueTipValue
+      fromValue, toValue, fromValueTipValue, toValueTipValue, options,
     } = data;
-    this.fromValuePointer.applyPosition(fromValue);
+    const { isVertical } = options;
+    this.fromValuePointer.applyPosition(fromValue, isVertical);
     this.fromValuePointer.updateTipValue(fromValueTipValue);
 
     if (this.toValuePointer) {
-      this.toValuePointer.applyPosition(toValue);
+      this.toValuePointer.applyPosition(toValue, isVertical);
       this.toValuePointer.updateTipValue(toValueTipValue);
     }
 
-    this.updateLine();
+    this.updateLine(options);
   }
 
-  updateLine() {
+  updateLine(data: UpdateData) {
+    const { isVertical } = data;
     if (this.lineElement) {
       this.lineElement.removeAttribute('style');
-      if (this.isVertical) {
+      if (isVertical) {
         this.lineElement.style.top = this.toValuePointer
           ? `${this.fromValuePointer.currentPosition}%`
           : '0%';
@@ -69,12 +73,13 @@ class PathView {
     }
   }
 
-  toggleLine(hasLine: boolean) {
+  toggleLine(data: UpdateData) {
+    const { hasLine } = data;
     if (hasLine) {
       if (!this.lineElement) {
         this.lineElement = createNode('div', styleClasses.LINE);
         this.pathElement.prepend(this.lineElement);
-        this.updateLine();
+        this.updateLine(data);
       }
     } else if (this.lineElement) {
       this.lineElement.remove();
@@ -82,10 +87,12 @@ class PathView {
     }
   }
 
-  toggleOrientation(isVertical: boolean) {
-    this.isVertical = isVertical;
-    this.fromValuePointer.isVertical = isVertical;
-    if (this.toValuePointer) this.toValuePointer.isVertical = isVertical;
+  toggleOrientation(data: UpdateData) {
+    this.fromValuePointer.update(data);
+    if (this.toValuePointer) this.toValuePointer.update(data);
+
+    this.removeEventListeners();
+    this.bindEventListeners(data);
   }
 
   toggleRange(isRange: boolean) {
@@ -117,13 +124,18 @@ class PathView {
     }
   }
 
-  private bindEventListeners() {
-    this.pathElement.addEventListener('mousedown', this.handlePathElementMouseDown);
+  private bindEventListeners(data: UpdateData) {
+    this.handlePathElementMouseDownBoundWithData = this.handlePathElementMouseDown.bind(this, data);
+    this.pathElement.addEventListener('mousedown', this.handlePathElementMouseDownBoundWithData);
   }
 
-  @bind
-  private handlePathElementMouseDown(event: MouseEvent) {
+  private removeEventListeners() {
+    this.pathElement.removeEventListener('mousedown', this.handlePathElementMouseDownBoundWithData);
+  }
+
+  private handlePathElementMouseDown(data: UpdateData, event: MouseEvent) {
     event.preventDefault();
+    const { isVertical, isRange } = data;
     const currentTarget: HTMLElement = event.target as HTMLElement;
 
     const isValidClick: boolean = currentTarget.classList.contains(styleClasses.PATH)
@@ -131,27 +143,29 @@ class PathView {
 
     if (!isValidClick) return;
 
-    const newPosition: number = this.isVertical
+    const newPosition: number = isVertical
       ? event.clientY - this.pathElement.getBoundingClientRect().top
       : event.clientX - this.pathElement.getBoundingClientRect().left;
 
     const fromValuePointerPositionInPixels = calculateToPixels({
+      isVertical,
       valueInPercents: this.fromValuePointer.currentPosition,
       pathElement: this.pathElement,
-      isVertical: this.isVertical,
-    });
-    const toValuePointerPositionInPixels = calculateToPixels({
-      valueInPercents: this.toValuePointer.currentPosition,
-      pathElement: this.pathElement,
-      isVertical: this.isVertical,
-    });
-    const newPositionInPercents = calculateToPercents({
-      valueInPixels: newPosition,
-      pathElement: this.pathElement,
-      isVertical: this.isVertical,
     });
 
-    if (this.toValuePointer) {
+    const newPositionInPercents = calculateToPercents({
+      isVertical,
+      valueInPixels: newPosition,
+      pathElement: this.pathElement,
+    });
+
+    if (isRange) {
+      const toValuePointerPositionInPixels = calculateToPixels({
+        isVertical,
+        valueInPercents: this.toValuePointer.currentPosition,
+        pathElement: this.pathElement,
+      });
+
       const midpointBetweenPoints = (toValuePointerPositionInPixels
         - fromValuePointerPositionInPixels) / 2 + fromValuePointerPositionInPixels;
       if (newPosition < midpointBetweenPoints) {

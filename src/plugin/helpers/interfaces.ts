@@ -12,3 +12,11 @@ export interface ErrorType {
   MAX?: string;
   STEP?: string;
 }
+
+export interface UpdateData {
+  isRange?: boolean,
+  isVertical?: boolean,
+  hasTip?: boolean,
+  hasLine?: boolean,
+  attributes?: Attributes
+}

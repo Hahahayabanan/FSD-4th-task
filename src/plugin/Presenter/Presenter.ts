@@ -63,6 +63,7 @@ class Presenter {
       toValue: toInPercents,
       fromValueTipValue: from,
       toValueTipValue: to,
+      options: this.getSettings(),
     });
   }
 

@@ -22,16 +22,22 @@ describe('View / Path / Test of initialization', () => {
 
 describe('View / Path / Test of methods', () => {
   const path = new PathView();
+  const options = {
+    isRange: false,
+    isVertical: true,
+    hasTip: false,
+    hasLine: true,
+  };
 
   it('Pointer position should coincide', () => {
     path.toggleRange(true);
-    path.setPointerPosition({ fromValue: 50, toValue: 100 });
+    path.setPointerPosition({ fromValue: 50, toValue: 100, options });
     expect(path.fromValuePointer.currentPosition).toEqual(50);
     expect(path.toValuePointer.currentPosition).toEqual(100);
   });
 
   it('Line should be initialized', () => {
-    path.toggleLine(true);
+    path.toggleLine(options);
     expect(path.lineElement).toHaveClass(styleClasses.LINE);
   });
 
@@ -40,13 +46,26 @@ describe('View / Path / Test of methods', () => {
     expect(path.toValuePointer).toBeDefined();
   });
 
-  it('Path class should be set', () => {
-    path.toggleOrientation(true);
-    expect(path.isVertical).toBeTrue();
-  });
-
   it('Tip should be initialized by using toggleTip', () => {
     path.toggleTip(true);
     expect(path.fromValuePointer.tip).toBeDefined();
+  });
+});
+
+
+describe('View / Path / Test of pointer update', () => {
+  const path = new PathView();
+  const options = {
+    isRange: false,
+    isVertical: true,
+    hasTip: false,
+    hasLine: true,
+  };
+
+  it('Pointer position should coincide', () => {
+    path.toggleRange(false);
+    path.setPointerPosition({ fromValue: 50, toValue: 100, options });
+    expect(path.fromValuePointer.currentPosition).toEqual(50);
+    expect(path.toValuePointer).toBeNull();
   });
 });
