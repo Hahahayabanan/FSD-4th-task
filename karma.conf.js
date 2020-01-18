@@ -37,7 +37,7 @@ module.exports = (config) => {
       showSpecTiming: true // print the time elapsed for each spec
     },
     coverageIstanbulReporter: {
-      reports: ['html'],
+      reports: ['html', 'text-summary'],
       dir: './tests-coverage', // coverage results needs to be saved under coverage/
       fixWebpackSourcePaths: true,
       query: {
