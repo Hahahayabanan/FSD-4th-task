@@ -1,5 +1,5 @@
 import bind from 'bind-decorator';
-import Particle from './Particle';
+import Particle from './particle';
 import { ParticleProperties } from '../../helpers/interfaces';
 import defaultProperties from './defaultProperties';
 
