@@ -21,33 +21,28 @@ html(lang='en')
   body
     block content
       include ./blocks/example/example.pug
-      include ./blocks/particles-background/particles-background.pug
       
       main.sliders
-        +particles-background()
         .sliders__element
           +example({ 
             parameters: {
               hasTip: 'true',
               isVertical: 'true',
               from: 5,
-            }, 
-            propertyForChange: 'speed',
+            }
           })
         .sliders__element
           +example({ 
             parameters: {
               from: 3,
               max: 50,
-            }, 
-            propertyForChange: 'size', 
+            }
           })
         .sliders__element
           +example({ 
             parameters: {
               min: 0, max: 360, step: 1, from: 273, hasTip: 'true',
-            }, 
-            propertyForChange: 'color', 
+            }
           })
         .sliders__element
           +example({ 

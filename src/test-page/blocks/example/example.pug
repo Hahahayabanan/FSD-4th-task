@@ -1,7 +1,7 @@
 include ../slider/slider.pug
 include ../control-panel/control-panel.pug
 
-mixin example({ parameters, propertyForChange = '' } = {})
-  .example.js-example(data-property-for-change=propertyForChange)
+mixin example({ parameters } = {})
+  .example.js-example
     +slider(parameters)
     +control-panel()
