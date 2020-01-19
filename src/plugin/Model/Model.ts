@@ -64,6 +64,7 @@ class Model {
   }
 
   applyValue(positionInPercents: number, updateValue: string) {
+    const cacheSettings = this.getSettings();
     const newValue: number = this.calculatePercentsToValue(positionInPercents);
     switch (updateValue) {
       case 'fromValue':
@@ -74,7 +75,10 @@ class Model {
         break;
       default:
     }
-    this.dispatchValue();
+    const isSettingsChanged = Object.keys(cacheSettings).find(
+      (key) => cacheSettings[key] !== this.getSettings()[key]
+    );
+    if (isSettingsChanged) this.dispatchValue();
   }
 
   calculateValueWithStep(value: number) {

@@ -143,11 +143,11 @@ class PointerView {
   }
 
   private handleDocumentMouseUp(
-    mouseMove: EventListenerOrEventListenerObject,
-    mouseUp: EventListenerOrEventListenerObject,
+    handleDocumentMouseMoveBoundWithData: EventListenerOrEventListenerObject,
+    handleDocumentMouseUpBoundWithData: EventListenerOrEventListenerObject,
   ) {
-    document.removeEventListener('mousemove', mouseMove);
-    document.removeEventListener('mouseup', mouseUp);
+    document.removeEventListener('mousemove', handleDocumentMouseMoveBoundWithData);
+    document.removeEventListener('mouseup', handleDocumentMouseUpBoundWithData);
   }
 
   private handlePointerElementDragStart() {
