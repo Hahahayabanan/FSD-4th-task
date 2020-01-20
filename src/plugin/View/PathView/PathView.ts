@@ -3,7 +3,7 @@ import styleClasses from '../styleClasses';
 import { EventObserver } from '../../EventObserver/EventObserver';
 import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 import { PointerView } from '../PointerView/PointerView';
-import { UpdateData } from '../../helpers/interfaces';
+import { UpdateData } from '../../types/interfaces';
 
 class PathView {
   public lineElement: HTMLElement;

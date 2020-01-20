@@ -1,6 +1,6 @@
 import { TipView } from '../TipView/TipView';
 import { EventObserver } from '../../EventObserver/EventObserver';
-import { MousePosition, UpdateData } from '../../helpers/interfaces';
+import { MousePosition, UpdateData } from '../../types/interfaces';
 import { createNode, calculateToPercents, calculateToPixels } from '../utilities';
 import styleClasses from '../styleClasses';
 

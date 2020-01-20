@@ -1,6 +1,6 @@
 import bind from 'bind-decorator';
 import { PathView } from '../PathView/PathView';
-import { Attributes, UpdateData } from '../../helpers/interfaces';
+import { Attributes, UpdateData } from '../../types/interfaces';
 import styleClasses from '../styleClasses';
 
 class MainView {

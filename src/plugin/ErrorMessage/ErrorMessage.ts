@@ -1,4 +1,4 @@
-import { ErrorType } from '../helpers/interfaces';
+import { ErrorType } from '../types/interfaces';
 import { ISliderSettings } from '../Model/ISliderSettings';
 
 const ErrorMessages: ErrorType = {

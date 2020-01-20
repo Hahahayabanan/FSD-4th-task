@@ -52,9 +52,9 @@ class Model {
     }
     if (this.isDefined(isRange)) {
       this.settings.isRange = isRange;
-      const isSecondSmallerFirst = this.settings.isRange
+      const isToSmallerFrom = this.settings.isRange
         && (this.settings.to === null || (this.settings.to <= this.settings.from));
-      if (isSecondSmallerFirst) this.setSettings({ to: this.settings.max });
+      if (isToSmallerFrom) this.setSettings({ to: this.settings.max });
     }
   }
 
@@ -181,8 +181,8 @@ class Model {
     const {
       step, min, max, isRange
     } = this.getSettings();
-    const isValueBiggerSecond = from >= to - step;
-    if (isRange && isValueBiggerSecond) {
+    const isValueBiggerTo = from >= to - step;
+    if (isRange && isValueBiggerTo) {
       return to - step > min ? to - step : min;
     }
     if (from > max) return max;
