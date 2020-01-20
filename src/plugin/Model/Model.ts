@@ -20,38 +20,32 @@ class Model {
   }
 
   setSettings(newSettings: ISliderSettings = {}) {
-    const settings: ISliderSettings = {};
-
-    Object.keys(newSettings).forEach((key) => {
-      settings[key] = this.validateSettingType(key, newSettings[key]);
-    });
-
     const {
       min, max, step, hasLine, hasTip, isRange, from, to, isVertical,
-    } = settings;
+    } = newSettings;
 
-    if (this.isDefined(hasTip)) this.settings.hasTip = hasTip;
-    if (this.isDefined(hasLine)) this.settings.hasLine = hasLine;
-    if (this.isDefined(isVertical)) this.settings.isVertical = isVertical;
+    if (this.isDefined(hasTip)) this.settings.hasTip = this.validateBoolean(hasTip);
+    if (this.isDefined(hasLine)) this.settings.hasLine = this.validateBoolean(hasLine);
+    if (this.isDefined(isVertical)) this.settings.isVertical = this.validateBoolean(isVertical);
     if (this.isDefined(min)) {
-      this.settings.min = this.validateMin(settings);
+      this.settings.min = this.validateMin(newSettings);
       this.setSettings({ from: this.settings.from, to: this.settings.to });
     }
     if (this.isDefined(max)) {
-      this.settings.max = this.validateMax(settings);
+      this.settings.max = this.validateMax(newSettings);
       this.setSettings({ from: this.settings.from, to: this.settings.to });
     }
     if (this.isDefined(step)) {
-      this.settings.step = this.validateStep(settings);
+      this.settings.step = this.validateStep(newSettings);
       this.setSettings({ from: this.settings.from, to: this.settings.to });
     }
-    if (this.isDefined(from)) this.settings.from = this.validateFrom(settings);
+    if (this.isDefined(from)) this.settings.from = this.validateFrom(newSettings);
     if (this.isDefined(to)) {
-      this.settings.to = this.validateTo(settings);
+      this.settings.to = this.validateTo(newSettings);
       this.setSettings({ from: this.settings.from });
     }
     if (this.isDefined(isRange)) {
-      this.settings.isRange = isRange;
+      this.settings.isRange = this.validateBoolean(isRange);
       const isToSmallerFrom = this.settings.isRange
         && (this.settings.to === null || (this.settings.to <= this.settings.from));
       if (isToSmallerFrom) this.setSettings({ to: this.settings.max });
@@ -75,8 +69,8 @@ class Model {
         break;
       default:
     }
-    const isSettingsChanged = Object.keys(cacheSettings).find(
-      (key) => cacheSettings[key] !== this.getSettings()[key]
+    const isSettingsChanged = Object.entries(cacheSettings).find(
+      (value, key) => value !== this.getSettings()[key]
     );
     if (isSettingsChanged) this.dispatchValue();
   }
@@ -115,21 +109,6 @@ class Model {
     this.dispatchValue();
   }
 
-  private validateSettingType(key: string, value: ISliderSettings[keyof ISliderSettings]) {
-    switch (key) {
-      case 'min': return this.validateNumber(value);
-      case 'max': return this.validateNumber(value);
-      case 'step': return this.validateNumber(value);
-      case 'from': return this.validateNumber(value);
-      case 'to': return this.validateNumber(value);
-      case 'isVertical': return this.validateBoolean(value);
-      case 'isRange': return this.validateBoolean(value);
-      case 'hasLine': return this.validateBoolean(value);
-      case 'hasTip': return this.validateBoolean(value);
-      default: return null;
-    }
-  }
-
   private validateNumber(value: ISliderSettings[keyof ISliderSettings]): number | null {
     const parsedValue = parseFloat(`${value}`);
     const isValueNaN = Number.isNaN(parsedValue);
@@ -155,7 +134,8 @@ class Model {
   }
 
   private validateMax(newSettings: ISliderSettings) {
-    const { min, max } = newSettings;
+    const min = this.validateNumber(newSettings.min);
+    const max = this.validateNumber(newSettings.max);
     const isMaxSmallerMin = max <= (min || this.settings.min);
     if (isMaxSmallerMin) {
       new ErrorMessage('MIN', 'max');
@@ -165,7 +145,7 @@ class Model {
   }
 
   private validateStep(newSettings: ISliderSettings) {
-    const { step } = newSettings;
+    const step = this.validateNumber(newSettings.step);
     const { max, min } = this.getSettings();
     const isStepInvalid = step <= 0 || step > max - min;
     if (isStepInvalid) {
@@ -176,8 +156,8 @@ class Model {
   }
 
   private validateFrom(newSettings: ISliderSettings) {
-    const from = this.calculateValueWithStep(newSettings.from);
-    const to = newSettings.to || this.settings.to;
+    const from = this.calculateValueWithStep(this.validateNumber(newSettings.from));
+    const to = this.validateNumber(newSettings.to) || this.settings.to;
     const {
       step, min, max, isRange
     } = this.getSettings();
@@ -191,7 +171,7 @@ class Model {
   }
 
   private validateTo(newSettings: ISliderSettings) {
-    const to = this.calculateValueWithStep(newSettings.to);
+    const to = this.calculateValueWithStep(this.validateNumber(newSettings.to));
     const {
       from, step, min, max
     } = this.getSettings();
