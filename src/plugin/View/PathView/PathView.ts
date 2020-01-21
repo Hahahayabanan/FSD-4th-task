@@ -88,8 +88,8 @@ class PathView {
   }
 
   toggleOrientation(data: UpdateData) {
-    this.fromValuePointer.update(data);
-    if (this.toValuePointer) this.toValuePointer.update(data);
+    this.fromValuePointer.updateEventListeners(data);
+    if (this.toValuePointer) this.toValuePointer.updateEventListeners(data);
 
     this.removeEventListeners();
     this.bindEventListeners(data);

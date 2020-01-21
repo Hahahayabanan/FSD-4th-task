@@ -49,8 +49,8 @@ describe('View / Slider Pointer / Test methods', () => {
     expect(Math.round(pointer.currentPosition)).toEqual(33);
   });
 
-  it('Render current position', () => {
-    pointer.render(29, false);
+  it('update current position', () => {
+    pointer.updatePointerPosition(29, false);
     expect(
       Math.round(parseInt(pointer.pointerElement.style.left, 10)),
     ).toBeCloseTo(29);

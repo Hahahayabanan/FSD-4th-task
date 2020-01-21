@@ -55,7 +55,7 @@ class PointerView {
   applyPosition(position: number, isVertical: boolean) {
     this.currentPosition = position;
 
-    this.render(position, isVertical);
+    this.updatePointerPosition(position, isVertical);
     this.pointerElement.dispatchEvent(
       new CustomEvent('changePointer', {
         bubbles: true,
@@ -76,7 +76,7 @@ class PointerView {
     this.pointerElement.classList.add(targetClass);
   }
 
-  render(newPosition: number, isVertical: boolean) {
+  updatePointerPosition(newPosition: number, isVertical: boolean) {
     if (isVertical) {
       this.pointerElement.style.top = `${newPosition}%`;
     } else {
@@ -88,7 +88,7 @@ class PointerView {
     if (this.tip) this.tip.setValue(newValue);
   }
 
-  update(data: UpdateData) {
+  updateEventListeners(data: UpdateData) {
     this.removeEventListeners();
     this.bindEventListeners(data);
   }
