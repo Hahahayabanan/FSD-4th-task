@@ -124,7 +124,8 @@ class Model {
   }
 
   private validateMin(newSettings: ISliderSettings) {
-    const { min, max } = newSettings;
+    const min = this.validateNumber(newSettings.min);
+    const max = this.validateNumber(newSettings.max);
     const isMinBiggerMax = min >= (max || this.settings.max);
     if (isMinBiggerMax) {
       new ErrorMessage('MAX', 'min');
