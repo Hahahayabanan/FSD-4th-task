@@ -2,7 +2,7 @@ import bind from 'bind-decorator';
 import Checkbox from '../checkbox/checkbox';
 import InputTextField from '../input-text-field/input-text-field';
 import Slider from '../slider/slider';
-import { TextFieldsArray } from '../../helpers/interfaces';
+import { TextFieldsArray } from '../../types/interfaces';
 
 class ControlPanel {
   public $controlPanel: JQuery<Object>;

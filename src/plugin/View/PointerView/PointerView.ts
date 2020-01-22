@@ -78,8 +78,10 @@ class PointerView {
 
   updatePointerPosition(newPosition: number, isVertical: boolean) {
     if (isVertical) {
+      this.pointerElement.style.left = '';
       this.pointerElement.style.top = `${newPosition}%`;
     } else {
+      this.pointerElement.style.top = '';
       this.pointerElement.style.left = `${newPosition}%`;
     }
   }

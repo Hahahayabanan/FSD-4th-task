@@ -194,11 +194,11 @@ class PathView {
     this.updateZIndex(pointerToUpdate);
     this.observer.broadcast({
       position,
-      pointerThatChanged: this.checkPointerNumber(pointerToUpdate),
+      pointerThatChanged: this.checkPointerType(pointerToUpdate),
     });
   }
 
-  private checkPointerNumber(pointer: PointerView) {
+  private checkPointerType(pointer: PointerView) {
     switch (pointer) {
       case this.fromValuePointer: return 'fromValue';
       case this.toValuePointer: return 'toValue';
