@@ -126,7 +126,8 @@ class Model {
   private validateMin(newSettings: ISliderSettings) {
     const min = this.validateNumber(newSettings.min);
     const max = this.validateNumber(newSettings.max);
-    const isMinBiggerMax = min >= (max || this.settings.max);
+    const step = newSettings.step || this.getSettings().step;
+    const isMinBiggerMax = min >= ((max || this.settings.max) - step);
     if (isMinBiggerMax) {
       new ErrorMessage('MAX', 'min');
       return this.settings.min;
@@ -137,7 +138,8 @@ class Model {
   private validateMax(newSettings: ISliderSettings) {
     const min = this.validateNumber(newSettings.min);
     const max = this.validateNumber(newSettings.max);
-    const isMaxSmallerMin = max <= (min || this.settings.min);
+    const step = newSettings.step || this.getSettings().step;
+    const isMaxSmallerMin = max <= ((min || this.settings.min) + step);
     if (isMaxSmallerMin) {
       new ErrorMessage('MIN', 'max');
       return this.settings.max;
