@@ -75,16 +75,29 @@ describe('Model / Test of getters and setters', () => {
     expect(model.getSettings().to).toEqual(35);
   });
 
-  it('Should coincide set values \'from and to\'', () => {
-    model.setSettings({ isRange: true, from: 20 });
-    expect(model.getSettings().from).toEqual(20);
-    model.setSettings({ to: 55 });
-    expect(model.getSettings().to).toEqual(55);
-  });
-
   it("Should coincide set values 'isVertical'", () => {
     model.setSettings({ isVertical: true });
     expect(model.getSettings().isVertical).toBeTruthy();
+  });
+});
+
+describe('Model / Test of getters and setters from and to values', () => {
+  const model: Model = new Model();
+
+  beforeEach(() => {
+    model.setSettings({
+      isRange: false,
+      min: -1000,
+      max: 1000,
+      step: 1,
+    });
+  });
+
+  it('Should coincide set values \'from and to\'', () => {
+    model.setSettings({ isRange: true, from: 200, to: 550 });
+    expect(model.getSettings().isRange).toEqual(true);
+    expect(model.getSettings().from).toEqual(200);
+    expect(model.getSettings().to).toEqual(550);
   });
 });
 
